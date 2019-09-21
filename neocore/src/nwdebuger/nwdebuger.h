@@ -28,8 +28,7 @@
 // Младшие два бита уровень логирования 
 #define DBG_MASK_LEVEL 0x03
 
-__attribute__((weak)) void STACK_FAILURE(char* msg) {while(1);}
-
+__attribute__((weak)) void STACK_FAILURE(char* msg);
 
 #ifdef LOG_ENABLE
 	#define LOG(level,...) {\

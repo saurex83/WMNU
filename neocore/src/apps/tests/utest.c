@@ -1,16 +1,17 @@
-#include "nwdebuger.h"
-#include "stdlib.h"
-#include "printf.h"
+#include "utest_suite.h"
+#include "utest_framepart.h"
 
-void main()
+int main()
 {
-		//char * buffer = (char*) malloc(200); 
-		//free(buffer);
-		//tfp_printf("dd");
-		LOG(MSG_ON | MSG_ALARM | MSG_TRACE, "defege");
-		 int x=5;
+	nwDebugerInit();
 
-		//ASSERT(x,"hello %s", "wer");
-		ASSERT_HALT(x,"hello %s", "wer");
-		SIG_SET_SFD_DETECTED();
+// Вызов функций тестирования
+	run_utest_framepart();
+
+
+
+// Добавляем результаты тестов
+	umsg_summary();
+	while(0);
+	return 0;
 }

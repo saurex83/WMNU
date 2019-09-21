@@ -1,2 +1,5 @@
 SOURCEDIRS +=  $(APP_DIR)
+SOURCEDIRS +=  $(APP_DIR)/nwstack
+
 INCLUDES +=  $(APP_DIR)
+INCLUDES +=  $(APP_DIR)/nwstack
