@@ -1,0 +1,2 @@
+SOURCEDIRS +=  $(APP_DIR)
+INCLUDES +=  $(APP_DIR)
