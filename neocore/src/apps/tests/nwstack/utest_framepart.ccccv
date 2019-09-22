@@ -6,7 +6,7 @@
 // size_t x = heap_size
 static void create_test()
 {
-	framePart_s* fp = NULL;
+/*	framePart_s* fp = NULL;
 	bool res;
 
 	umsg_line("Frame part");
@@ -31,12 +31,12 @@ static void create_test()
 	umsg("FP_create", "Last", fp->last == NULL);
 	umsg("FP_create", "Next", fp->next == NULL);
 
-	FP_delete(fp);	
+	FP_delete(fp);*/	
 }
 
 static void delete_test()
 {
-	bool memory_ok;
+/*	bool memory_ok;
 	framePart_s* fp = NULL;
 	bool res = false;
 
@@ -55,7 +55,7 @@ static void delete_test()
 
 	umsg("framepart", "test 1", true);
 
-	memory_ok = before_malloc == heap_size();
+	memory_ok = before_malloc == heap_size();*/
 }
 
 void run_utest_framepart(void)

@@ -5,6 +5,7 @@
 
 struct utest_summary_s utest_summary = {.passed =0, .failed = 0};
 
+// Требует много програмной памяти
 size_t heap_size(void)
 {
 	struct mallinfo info = mallinfo();
