@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <fileVersion>2</fileVersion>
+    <fileChecksum>444162774</fileChecksum>
+    <configuration>
+        <name>Debug</name>
+        <outputs>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\FChain.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\FChain.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\FItem.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\FItem.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\nwdebuger.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\nwdebuger.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\sig_trace.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\sig_trace_defs.h</file>
+            <file>$PROJ_DIR$\src\utest.c</file>
+            <file>$PROJ_DIR$\src\utest_suite.c</file>
+            <file>$PROJ_DIR$\src\utest_suite.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\ysizet.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\string.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\DLib_Defaults.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\stddef.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\DLib_Threads.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\stdbool.h</file>
+            <file>$TOOLKIT_DIR$\lib\dlib\dl8051Normal.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\yvals.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\FItem.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\utest.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\FChain.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\nwdebuger.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\utest_suite.pbi</file>
+            <file>$TOOLKIT_DIR$\config\devices\Texas Instruments\lnk51ew_cc2530F256_banked.xcl</file>
+            <file>$PROJ_DIR$\Debug\List\unitest.map</file>
+            <file>$TOOLKIT_DIR$\lib\dlib\dl-pli-blxd-1e16x01n.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\utest_suite.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\utest.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\FItem.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\FChain.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\nwdebuger.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\unitest.pbd</file>
+            <file>$PROJ_DIR$\Debug\Exe\unitest.d51</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\ycheck.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\stdint.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\stdlib.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\xencoding_limits.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\DLib_Product.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\utest_suite.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\nwdebuger.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\utest.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\FItem.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\FChain.__cstat.et</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\ystdio.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\stdio.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\utest_FChain.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\utest_FItem.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\utest_FChain.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\utest_FChain.r51</file>
+            <file>$PROJ_DIR$\src\utest_FItem.c</file>
+            <file>$PROJ_DIR$\src\utest_FItem.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\utest_FItem.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\utest_FItem.pbi</file>
+            <file>$PROJ_DIR$\src\utest_FChain.h</file>
+            <file>$PROJ_DIR$\src\utest_FChain.c</file>
+        </outputs>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\FChain.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 30</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 21</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 43</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 13 37 34 36 35 18 16 5 12 3 15 6 11 1 17 38 45 44 7</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 16 35 34 18 13 17 38 37 15 45 11 44 36 12</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\FItem.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 29</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 19</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 42</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 34 38 37 36 35 5 12 16 18 17 6 11 3 13 15 45 44 7</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 16 35 34 18 13 17 38 37 15 45 11 44 36 12</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>[ROOT_NODE]</name>
+            <outputs>
+                <tool>
+                    <name>XLINK</name>
+                    <file> 33 25</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\nwdebuger.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 31</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 22</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 40</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 13 18 44 37 38 45 34 11 17 5 6 15 7</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 45 34 18 13 17 38 37 15 11 44</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 20</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 28</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 41</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 11 35 34 37 38 18 45 5 17 10 16 14 13 15 44 51 6 7 54</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 16 35 34 18 13 17 38 37 15 14 11 45 44</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_suite.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 23</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 27</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 39</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 15 18 10 34 44 13 35 45 11 37 17 38 16 14</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 45 34 18 13 17 38 37 15 11 44 16 35 14</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Debug\Exe\unitest.d51</name>
+            <outputs>
+                <tool>
+                    <name>XLINK</name>
+                    <file> 25</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>XLINK</name>
+                    <file> 24 26</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_FItem.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 53</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 52</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 47</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 13 11 35 18 3 16 14 34 15 10 37 17 38</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 16 35 34 18 13 17 38 37 15 14 11</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_FChain.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 48</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 49</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 46</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 3 18 11 35 13 15 34 16 1 14 37 17 38 10</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 16 35 34 18 13 17 38 37 15 14 11</file>
+                </tool>
+            </inputs>
+        </file>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\FChain.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\FItem.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\nwdebuger.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\src\utest.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\src\utest_suite.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\src\utest_FItem.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\src\utest_FChain.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+    </configuration>
+    <configuration>
+        <name>Release</name>
+        <outputs />
+        <forcedrebuild>
+            <name>[MULTI_TOOL]</name>
+            <tool>XLINK</tool>
+        </forcedrebuild>
+    </configuration>
+</project>
