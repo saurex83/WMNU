@@ -2112,6 +2112,24 @@
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\FItem.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\LLC.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\LLC.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\MAC.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\MAC.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\NTMR.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\NTMR.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\nwdebuger.c</name>
         </file>
         <file>
@@ -2122,6 +2140,12 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\sig_trace_defs.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\TIC.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\TIC.h</name>
         </file>
     </group>
     <group>
@@ -2139,6 +2163,12 @@
             <name>$PROJ_DIR$\src\utest_FItem.h</name>
         </file>
     </group>
+    <file>
+        <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.c</name>
+    </file>
+    <file>
+        <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.h</name>
+    </file>
     <file>
         <name>$PROJ_DIR$\src\utest.c</name>
     </file>
