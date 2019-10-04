@@ -1,6 +1,7 @@
 #include "stdbool.h"
 #include "stdint.h"
 #include "TIC.h"
+#include "RADIO.h"
 #include "FChain.h"
 
 typedef struct
@@ -9,11 +10,9 @@ typedef struct
   void (*MAC_CloseRXSlot)(uint8_t CH);
   void (*MAC_Send)(FChain_s *fc, uint8_t attempts);
   void (*MAC_SetRXCallback)(FChain_s *fc);
-  void (*MAC_SetTICController)(TIC_s *tic);
   bool (*MAC_GetTXState)(uint8_t TS);
   bool (*MAC_GetRXState)(uint8_t TS);
-  void (*MAC_SetRIController)(void); //TODO
 } MAC_s;
 
-MAC_s* MAC_create(void);
-bool MAC_delete(MAC_s *mac);
+MAC_s* MAC_Create(TIC_s* tic, RI_s* RI);
+bool MAC_Delete(MAC_s *mac);

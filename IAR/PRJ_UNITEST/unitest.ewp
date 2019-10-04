@@ -2262,6 +2262,12 @@
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\nwdebuger.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\sig_trace.h</name>
         </file>
         <file>
@@ -2289,12 +2295,6 @@
             <name>$PROJ_DIR$\src\utest_FItem.h</name>
         </file>
     </group>
-    <file>
-        <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.c</name>
-    </file>
-    <file>
-        <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.h</name>
-    </file>
     <file>
         <name>$PROJ_DIR$\src\utest.c</name>
     </file>

@@ -16,10 +16,7 @@ typedef struct
  uint32_t (*TIC_getUptime)(void);
  uint32_t (*TIC_getRTC)(void);
  bool (*TIC_setRTC)(uint32_t RTC);
- void (*TIC_SetNTController)(NT_s *nt);   
 } TIC_s;
 
-
-
-TIC_s* TIC_create(void);
-bool TIC_delete(TIC_s *tic);
+TIC_s* TIC_Create(NT_s* nt);
+bool TIC_Delete(TIC_s *tic);
