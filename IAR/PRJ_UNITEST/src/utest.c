@@ -1,7 +1,13 @@
 #include "utest_suite.h"
 #include "nwdebuger.h"
-#include "utest_FItem.h"
-#include "utest_FChain.h"
+
+extern void suite_FItem(void);
+extern void suite_FChain(void);
+extern void suite_TIC(void);
+extern void suite_MAC(void);
+extern void suite_LLC(void);
+extern void suite_NT(void);
+extern void suite_Frames(void);
 
 int main()
 {
@@ -10,9 +16,12 @@ int main()
   LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Test log output\n");
   ASSERT(false, "Test assert output\n");
 
-  //suite_FItem();
-  suite_FChain();
   // Вызов функций тестирования
+
+    suite_Frames();
+//  suite_FItem();
+//  suite_FChain();
+  
 	//run_utest_framepart();
 
    

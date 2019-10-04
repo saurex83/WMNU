@@ -2238,6 +2238,9 @@
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\FItem.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\Frames.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\LLC.c</name>
         </file>
         <file>
@@ -2286,13 +2289,22 @@
             <name>$PROJ_DIR$\src\utest_FChain.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\src\utest_FChain.h</name>
-        </file>
-        <file>
             <name>$PROJ_DIR$\src\utest_FItem.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\src\utest_FItem.h</name>
+            <name>$PROJ_DIR$\src\utest_Frames.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_LLC.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_MAC.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_NTMR.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_TIC.c</name>
         </file>
     </group>
     <file>

@@ -3,13 +3,33 @@
 #include "stdint.h"
 #include "FItem.h"
 
-typedef struct 
+typedef struct FChain_s FChain_s;
+typedef struct Meta_s Meta_s;
+
+struct Meta_s
+{
+   uint16_t TIMESTAMP;
+   int8_t RSSI;
+   uint8_t TS;
+   uint8_t CH;
+   uint8_t PID;
+   uint16_t NDST;
+   uint16_t NSRC;
+   uint8_t ETX;
+   uint16_t FDST;
+   uint16_t FSRC;
+   uint8_t IPP;
+   FChain_s* (*SFD_Callback)(void);
+};
+
+struct FChain_s
 {
 	FItem_s* head;
 	FItem_s* tail;
 	uint8_t  quantity;
 	FItem_s* iterator;
-} __attribute__((packed)) FChain_s;
+        Meta_s   meta;
+} __attribute__((packed));
 
 FChain_s* FC_create(void);
 bool FC_delete(FChain_s* fc);

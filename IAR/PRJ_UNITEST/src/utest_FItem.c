@@ -6,7 +6,7 @@ static void test_create(void)
 {
   uint8_t data[] = {77,1,2,3,4,5,6,7,8,9};
   uint8_t data_size = sizeof(data);
-  FItem_t type = PPDU_HEADER;
+  FItem_t type = ETH_H;
   
   FItem_s* fi = FI_create(type, data, data_size);
   umsg("FItem", "Item created", fi != NULL);
@@ -28,8 +28,8 @@ static void test_frame_manipulation(void)
   uint8_t data[] = {1,2,3,4,5};
   uint8_t data_size = sizeof(data);
   
-  FItem_s* fi = FI_create(PPDU_HEADER, data, data_size);
-  FItem_s* fi_last = FI_create(PPDU_FOOTER, data, data_size);
+  FItem_s* fi = FI_create(ETH_H, data, data_size);
+  FItem_s* fi_last = FI_create(ETH_F, data, data_size);
   FItem_s* fi_next = FI_create(RAW , data, data_size);
   
   FI_setNext(fi, fi_next);
@@ -41,7 +41,7 @@ static void test_frame_manipulation(void)
   umsg("FItem", "Set next frame" ,geted_fi_next == fi_next);
   umsg("FItem", "Set last frame" ,geted_fi_last == fi_last);
   umsg("FItem", "FI_getType next frame" , FI_getType(geted_fi_next) == RAW);
-  umsg("FItem", "FI_getType last frame" , FI_getType(geted_fi_last) == PPDU_FOOTER);
+  umsg("FItem", "FI_getType last frame" , FI_getType(geted_fi_last) == ETH_F);
   umsg("FItem", "FI_getData" , FI_getData(fi) == fi->data);
   umsg("FItem", "FI_getObjectQuantity create" , FI_getObjectQuantity() == 3);
   

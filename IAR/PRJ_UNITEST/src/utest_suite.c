@@ -32,11 +32,11 @@ void umsg(char* module, char* name, bool status)
 {
 	if (status){
 		utest_summary.passed++;
-		printf("Module: %s, Name: %s, Status: %s\n", module, name, "PASSED");
+		printf("Module: %-15s Name: %-50s Status: %-10s\n", module, name, "PASSED");
 		}
 	else{
 		utest_summary.failed++;
-		printf("Module: %s, Name: %s, Status: %s\n", module, name, "FAILED");
+		printf("Module: %-15s Name: %-50s Status: %-10s\n", module, name, "FAILED <----");
 		}
 }
 

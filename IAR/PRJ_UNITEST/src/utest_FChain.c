@@ -18,9 +18,9 @@ static void test_create(void)
   umsg("FChain", "Iterator NULL", fc->iterator == NULL);
   umsg("FChain", "FC_getQuantity 0 item", FC_getQuantity(fc) == 0);
   
-  FItem_s* item1 = FI_create(PPDU_HEADER, "abc", 3);
+  FItem_s* item1 = FI_create(ETH_H, "abc", 3);
   FItem_s* item2 = FI_create(RAW, "abc", 3);
-  FItem_s* item3 = FI_create(METADATA, "abc", 3);
+  FItem_s* item3 = FI_create(ETH_F, "abc", 3);
  
   // Проверяем вставку первого элемента
   // Итератор указывает на вставленный элемент
@@ -103,51 +103,51 @@ static void test_create(void)
   iter_res = FC_last(fc);
   umsg("FChain", "FC_last return false", iter_res == false);
   
-  //Поиск элементов PPDU_HEADER, RAW, METADATA
+  //Поиск элементов ETH_H, RAW, ETH_F
   umsg_line("FChain: FC_iteratorToTypeHead");
   bool search_res;
  
-  search_res = FC_iteratorToTypeHead(fc, PPDU_HEADER);  
-  umsg("FChain", "Search result PPDU_HEADER", search_res == true);
-  umsg("FChain", "Search result PPDU_HEADER", FC_getIterator(fc) == item1);
+  search_res = FC_iteratorToTypeHead(fc, ETH_H);  
+  umsg("FChain", "Search result ETH_H", search_res == true);
+  umsg("FChain", "Search result ETH_H", FC_getIterator(fc) == item1);
   
   search_res = FC_iteratorToTypeHead(fc, RAW);  
   umsg("FChain", "Search result RAW", search_res == true);
   umsg("FChain", "Search result RAW", FC_getIterator(fc) == item2);
 
-  search_res = FC_iteratorToTypeHead(fc, METADATA);  
-  umsg("FChain", "Search result METADATA", search_res == true);
-  umsg("FChain", "Search result METADATA", FC_getIterator(fc) == item3);
+  search_res = FC_iteratorToTypeHead(fc, ETH_F);  
+  umsg("FChain", "Search result ETH_F", search_res == true);
+  umsg("FChain", "Search result ETH_F", FC_getIterator(fc) == item3);
   
-  //Поиск элементов PPDU_HEADER, RAW, METADATA
+  //Поиск элементов PPDU_HEADER, RAW, ETH_F
   // Ищем по порядку. Порядок в цеочке item3->item1->item2
   umsg_line("FChain: FC_iteratorToType");
   FC_iteratorToHead(fc);
   
-  search_res = FC_iteratorToType(fc, PPDU_HEADER);
-  umsg("FChain", "Search result PPDU_HEADER", search_res == true);
-  umsg("FChain", "Search result PPDU_HEADER", FC_getIterator(fc) == item1);
+  search_res = FC_iteratorToType(fc, ETH_H);
+  umsg("FChain", "Search result ETH_H", search_res == true);
+  umsg("FChain", "Search result ETH_H", FC_getIterator(fc) == item1);
 
   search_res = FC_iteratorToType(fc, RAW);
   umsg("FChain", "Search result RAW", search_res == true);
   umsg("FChain", "Search result RAW", FC_getIterator(fc) == item2);  
   
   // Этот элемент не найдем. так как он находится раньше item2
-  search_res = FC_iteratorToType(fc, METADATA);
-  umsg("FChain", "Search result METADATA. Missed.", search_res == false);
-  umsg("FChain", "Search result METADATA. Missed.", FC_getIterator(fc) != item3); 
+  search_res = FC_iteratorToType(fc, ETH_F);
+  umsg("FChain", "Search result ETH_F. Missed.", search_res == false);
+  umsg("FChain", "Search result ETH_F. Missed.", FC_getIterator(fc) != item3); 
  
   // Сбросим указатель на начало, теперь должны найти item3
   FC_iteratorToHead(fc);
-  search_res = FC_iteratorToType(fc, METADATA);
-  umsg("FChain", "Search result METADATA.", search_res == true);
-  umsg("FChain", "Search result METADATA.", FC_getIterator(fc) == item3);
+  search_res = FC_iteratorToType(fc, ETH_F);
+  umsg("FChain", "Search result ETH_F.", search_res == true);
+  umsg("FChain", "Search result ETH_F.", FC_getIterator(fc) == item3);
   
   //Удаляем всю цепочку
   umsg_line("FChain: FC_isHaveType");
   umsg("FChain", "FC_isHaveType RAW", FC_isHaveType(fc, RAW));
-  umsg("FChain", "FC_isHaveType METADATA", FC_isHaveType(fc, METADATA));
-  umsg("FChain", "FC_isHaveType PPDU_HEADER", FC_isHaveType(fc, PPDU_HEADER));
+  umsg("FChain", "FC_isHaveType ETH_F", FC_isHaveType(fc, ETH_F));
+  umsg("FChain", "FC_isHaveType ETH_H", FC_isHaveType(fc, ETH_H));
   umsg("FChain", "FC_isHaveType SYNC none", FC_isHaveType(fc, SYNC) == false);  
   
   //Удаляем всю цепочку
