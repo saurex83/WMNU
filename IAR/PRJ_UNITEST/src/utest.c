@@ -18,7 +18,8 @@ int main()
 
   // Вызов функций тестирования
 
-    suite_Frames();
+    suite_TIC();
+//  suite_Frames();
 //  suite_FItem();
 //  suite_FChain();
   

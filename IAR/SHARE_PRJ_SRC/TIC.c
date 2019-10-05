@@ -16,14 +16,18 @@ static bool TIC_GetRXState(uint8_t TS);
 static void TIC_SetRXCallback(void (*fn)(uint8_t TS));
 static void TIC_SetTXCallback(void (*fn)(uint8_t TS));
 static void TIC_SetSECallback(void (*fn)(uint8_t TS));
-static uint32_t TIC_getUptime(void);
-static uint32_t TIC_getRTC(void);
-static bool TIC_setRTC(uint32_t RTC);
+static uint32_t TIC_GetUptime(void);
+static uint32_t TIC_GetRTC(void);
+static bool TIC_SetRTC(uint32_t RTC);
 
 // Приватные методы
 static uint8_t TIC_getCurrentTS(uint16_t ticks);
 static void TIC_TDMAShelduler(uint8_t TS);
 static void TIC_HW_Timer_IRQ(uint16_t ticks);
+static inline void set_capture_time(uint8_t TS);
+static inline void Callback_execution(void (*fn)(uint8_t TS), uint8_t TS);
+static inline void incrementTS(uint8_t *TS);
+static void clocks_update(void);
 
 // Переменные модуля
 
@@ -40,16 +44,16 @@ static void TIC_HW_Timer_IRQ(uint16_t ticks);
 
 #define TS_RX (uint8_t)(1<<0)
 #define TS_TX (uint8_t)(1<<1)
-#define DAILY_SEC (uint32_t)(60*60*24)
+#define DAILY_SEC (uint32_t)86400
 #define MAX_TICKS (uint16_t)32768
 
-static uint32_t UPTIME = 0;
+static uint32_t NODE_UPTIME = 0;
 static uint32_t NODE_RTC = 0;
 static void (*RXCallback)(uint8_t TS);
 static void (*TXCallback)(uint8_t TS);
 static void (*SECallback)(uint8_t TS);
 static bool TIC_CREATED = false;
-static NT_s* nt;
+static NT_s* TIC_nt;
 static uint8_t TSStateTable[MAX_TS];
 
 TIC_s* TIC_Create(NT_s* nt)
@@ -61,7 +65,7 @@ TIC_s* TIC_Create(NT_s* nt)
   }
   
   ASSERT_HALT(nt != NULL, "NT must be set");
-  nt = nt;
+  TIC_nt = nt;
   
   TIC_s* tic = malloc(TIC_S_SIZE);
   ASSERT_HALT(nt != NULL, "Memory allocation fails");
@@ -78,9 +82,9 @@ TIC_s* TIC_Create(NT_s* nt)
   tic->TIC_SetRXCallback = TIC_SetRXCallback;
   tic->TIC_SetTXCallback = TIC_SetTXCallback;
   tic->TIC_SetSECallback = TIC_SetSECallback;
-  tic->TIC_getUptime = TIC_getUptime;
-  tic->TIC_getRTC = TIC_getRTC;
-  tic->TIC_setRTC = TIC_setRTC;
+  tic->TIC_GetUptime = TIC_GetUptime;
+  tic->TIC_GetRTC = TIC_GetRTC;
+  tic->TIC_SetRTC = TIC_SetRTC;
   
   // Устанавливаем обработчик прерываний таймера
   nt->NT_SetEventCallback(TIC_HW_Timer_IRQ);
@@ -106,13 +110,13 @@ static bool TIC_SetTimer(uint16_t ticks)
   if (ticks >= MAX_TICKS)
     return false;
   
-  nt->NT_SetTime(ticks);
+  TIC_nt->NT_SetTime(ticks);
   return true;
 }
 
 static uint16_t TIC_GetTimer(void)
 {
-  return nt->NT_GetTime();
+  return TIC_nt->NT_GetTime();
 }
 
 static bool TIC_SetTXState(uint8_t TS, bool state)
@@ -187,17 +191,17 @@ static void TIC_SetSECallback(void (*fn)(uint8_t TS))
   SECallback = fn;
 }
 
-static uint32_t TIC_getUptime(void)
+static uint32_t TIC_GetUptime(void)
 {
-  return UPTIME;
+  return NODE_UPTIME;
 }
 
-static uint32_t TIC_getRTC(void)
+static uint32_t TIC_GetRTC(void)
 {
   return NODE_RTC;
 }
 
-static bool TIC_setRTC(uint32_t RTC)
+static bool TIC_SetRTC(uint32_t RTC)
 {
   if (RTC >= DAILY_SEC)
     return false;
@@ -225,7 +229,7 @@ static uint8_t TIC_getCurrentTS(uint16_t ticks)
 static inline void incrementTS(uint8_t *TS)
 {
   // Выбираем следующий тайм слот
-  *TS++;
+  (*TS)++;
   if (*TS >= MAX_TS)
     *TS = 0;
 }
@@ -233,7 +237,7 @@ static inline void incrementTS(uint8_t *TS)
 static inline void set_capture_time(uint8_t TS)
 {
   // Установка прерывания на нужный слот
-    nt->NT_SetTime(FULL_SLOT*(uint16_t)TS);
+    TIC_nt->NT_SetCapture(FULL_SLOT*(uint16_t)TS);
 }
 
 static void TIC_TDMAShelduler(uint8_t TS)
@@ -244,7 +248,7 @@ static void TIC_TDMAShelduler(uint8_t TS)
   
   // Ищем следующий активный слот или слот 0
   incrementTS(&TS);
-  while ((TS != 0) || TSStateTable[TS])  
+  while ((TS != 0) && !TSStateTable[TS])  
     incrementTS(&TS); 
   
   set_capture_time(TS);
@@ -261,8 +265,13 @@ static inline void Callback_execution(void (*fn)(uint8_t TS), uint8_t TS)
 
 static void TIC_HW_Timer_IRQ(uint16_t ticks)
 {
+  // TODO Обработка TS=0xFF
   // Номер текущего слота 
   uint8_t c_TS = TIC_getCurrentTS(ticks);
+  
+  // Обновляем часы NODE_RTC и NODE_UPTIME
+  if (c_TS == 0)
+    clocks_update();
   
   // Вызываем один из указанных обработчиков.
   // Передача имеет приоритет над приемом.
@@ -278,4 +287,11 @@ static void TIC_HW_Timer_IRQ(uint16_t ticks)
   TIC_TDMAShelduler(c_TS);
 }
 
+static void clocks_update(void)
+{
+  NODE_UPTIME++;
+  NODE_RTC++;
+  if (NODE_RTC >= DAILY_SEC)
+    NODE_RTC = 0;
+}
 

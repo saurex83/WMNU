@@ -13,9 +13,9 @@ typedef struct
  void (*TIC_SetRXCallback)(void (*fn)(uint8_t TS));
  void (*TIC_SetTXCallback)(void (*fn)(uint8_t TS));
  void (*TIC_SetSECallback)(void (*fn)(uint8_t TS));
- uint32_t (*TIC_getUptime)(void);
- uint32_t (*TIC_getRTC)(void);
- bool (*TIC_setRTC)(uint32_t RTC);
+ uint32_t (*TIC_GetUptime)(void);
+ uint32_t (*TIC_GetRTC)(void);
+ bool (*TIC_SetRTC)(uint32_t RTC);
 } TIC_s;
 
 #define TIC_S_SIZE sizeof(TIC_s)

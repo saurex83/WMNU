@@ -11,5 +11,7 @@ typedef struct
   uint16_t (*NT_GetTime)(void);
 } NT_s;
 
+#define NT_S_SIZE sizeof(NT_s)
+
 NT_s* NT_Create(void);
 bool NT_Delete(NT_s *nt);
