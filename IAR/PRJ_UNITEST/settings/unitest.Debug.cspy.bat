@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "W:\Projects\WMNU\IAR\PRJ_UNITEST\settings\unitest.Debug.general.xcl" --backend -f "W:\Projects\WMNU\IAR\PRJ_UNITEST\settings\unitest.Debug.driver.xcl" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\settings\unitest.Debug.general.xcl" --backend -f "\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\settings\unitest.Debug.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "W:\Projects\WMNU\IAR\PRJ_UNITEST\settings\unitest.Debug.general.xcl" "--debug_file=%~1" --backend -f "W:\Projects\WMNU\IAR\PRJ_UNITEST\settings\unitest.Debug.driver.xcl" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\settings\unitest.Debug.general.xcl" "--debug_file=%~1" --backend -f "\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\settings\unitest.Debug.driver.xcl" 
 
 @echo off 
 :end

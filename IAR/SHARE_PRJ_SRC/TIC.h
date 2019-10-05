@@ -18,5 +18,7 @@ typedef struct
  bool (*TIC_setRTC)(uint32_t RTC);
 } TIC_s;
 
+#define TIC_S_SIZE sizeof(TIC_s)
+
 TIC_s* TIC_Create(NT_s* nt);
 bool TIC_Delete(TIC_s *tic);

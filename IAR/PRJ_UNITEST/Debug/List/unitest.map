@@ -2,56 +2,57 @@
 #                                                                              #
 #      IAR Universal Linker V6.4.6.89                                          #
 #                                                                              #
-#           Link time     =  04/Oct/2019  17:44:25                             #
+#           Link time     =  05/Oct/2019  13:39:19                             #
 #           Target CPU    =  x51                                               #
-#           List file     =  W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\List\unite #
-#                            st.map                                            #
-#           Output file 1 =  W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Exe\unites #
-#                            t.d51                                             #
+#           List file     =  "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
+#                            RJ_UNITEST\Debug\List\unitest.map"                #
+#           Output file 1 =  "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
+#                            RJ_UNITEST\Debug\Exe\unitest.d51"                 #
 #                            Format: ubrof10                                   #
 #                            UBROF version 10.0.6                              #
 #                            Using library modules for C-SPY (-rt)             #
-#           Command line  =  -f C:\Users\Oleg\AppData\Local\Temp\EW7426.tmp    #
-#                            (W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\FChai #
-#                            n.r51                                             #
-#                            W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\FItem. #
-#                            r51                                               #
-#                            W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\LLC.r5 #
-#                            1                                                 #
-#                            W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\MAC.r5 #
-#                            1                                                 #
-#                            W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\NTMR.r #
-#                            51                                                #
-#                            W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\nwdebu #
-#                            ger.r51                                           #
-#                            W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\RADIO. #
-#                            r51                                               #
-#                            W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\TIC.r5 #
-#                            1                                                 #
-#                            W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest. #
-#                            r51                                               #
-#                            W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_ #
-#                            FChain.r51                                        #
-#                            W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_ #
-#                            FItem.r51                                         #
-#                            W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_ #
-#                            Frames.r51                                        #
-#                            W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_ #
-#                            LLC.r51                                           #
-#                            W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_ #
-#                            MAC.r51                                           #
-#                            W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_ #
-#                            NTMR.r51                                          #
-#                            W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_ #
-#                            suite.r51                                         #
-#                            W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_ #
-#                            TIC.r51                                           #
+#           Command line  =  -f                                                #
+#                            C:\Users\08A4~1\AppData\Local\Temp\EWF6BF.tmp     #
+#                            ("\\vmware-host\Shared Folders\Projects\WMNU\IAR\ #
+#                            PRJ_UNITEST\Debug\Obj\FChain.r51"                 #
+#                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
+#                            RJ_UNITEST\Debug\Obj\FItem.r51"                   #
+#                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
+#                            RJ_UNITEST\Debug\Obj\LLC.r51"                     #
+#                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
+#                            RJ_UNITEST\Debug\Obj\MAC.r51"                     #
+#                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
+#                            RJ_UNITEST\Debug\Obj\NTMR.r51"                    #
+#                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
+#                            RJ_UNITEST\Debug\Obj\nwdebuger.r51"               #
+#                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
+#                            RJ_UNITEST\Debug\Obj\RADIO.r51"                   #
+#                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
+#                            RJ_UNITEST\Debug\Obj\TIC.r51"                     #
+#                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
+#                            RJ_UNITEST\Debug\Obj\utest.r51"                   #
+#                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
+#                            RJ_UNITEST\Debug\Obj\utest_FChain.r51"            #
+#                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
+#                            RJ_UNITEST\Debug\Obj\utest_FItem.r51"             #
+#                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
+#                            RJ_UNITEST\Debug\Obj\utest_Frames.r51"            #
+#                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
+#                            RJ_UNITEST\Debug\Obj\utest_LLC.r51"               #
+#                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
+#                            RJ_UNITEST\Debug\Obj\utest_MAC.r51"               #
+#                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
+#                            RJ_UNITEST\Debug\Obj\utest_NTMR.r51"              #
+#                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
+#                            RJ_UNITEST\Debug\Obj\utest_suite.r51"             #
+#                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
+#                            RJ_UNITEST\Debug\Obj\utest_TIC.r51"               #
 #                            -o                                                #
-#                            W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Exe\unites #
-#                            t.d51                                             #
+#                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
+#                            RJ_UNITEST\Debug\Exe\unitest.d51"                 #
 #                            -l                                                #
-#                            W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\List\unite #
-#                            st.map                                            #
+#                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
+#                            RJ_UNITEST\Debug\List\unitest.map"                #
 #                            -xms                                              #
 #                            "-IC:\Program Files (x86)\IAR Systems\Embedded Wo #
 #                            rkbench 8.0\8051\LIB\"                            #
@@ -277,22 +278,22 @@ Absolute parts
            _IDATA0_START           00000000 
     *************************************************************************
 
-  FILE NAME : W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\FChain.r51
+  FILE NAME : \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\FChain.r51
     *************************************************************************
 
-  FILE NAME : W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\FItem.r51
+  FILE NAME : \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\FItem.r51
     *************************************************************************
 
-  FILE NAME : W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\LLC.r51
+  FILE NAME : \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\LLC.r51
     *************************************************************************
 
-  FILE NAME : W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\MAC.r51
+  FILE NAME : \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\MAC.r51
     *************************************************************************
 
-  FILE NAME : W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\NTMR.r51
+  FILE NAME : \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\NTMR.r51
     *************************************************************************
 
-  FILE NAME : W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\nwdebuger.r51
+  FILE NAME : \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\nwdebuger.r51
   PROGRAM MODULE, NAME : nwdebuger
 
   SEGMENTS IN THE MODULE
@@ -313,13 +314,13 @@ BANK_RELAYS
 
     *************************************************************************
 
-  FILE NAME : W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\RADIO.r51
+  FILE NAME : \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\RADIO.r51
     *************************************************************************
 
-  FILE NAME : W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\TIC.r51
+  FILE NAME : \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\TIC.r51
     *************************************************************************
 
-  FILE NAME : W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest.r51
+  FILE NAME : \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest.r51
   PROGRAM MODULE, NAME : utest
 
   SEGMENTS IN THE MODULE
@@ -375,13 +376,13 @@ XDATA_I
 
     *************************************************************************
 
-  FILE NAME : W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_FChain.r51
+  FILE NAME : \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_FChain.r51
     *************************************************************************
 
-  FILE NAME : W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_FItem.r51
+  FILE NAME : \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_FItem.r51
     *************************************************************************
 
-  FILE NAME : W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_Frames.r51
+  FILE NAME : \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_Frames.r51
   PROGRAM MODULE, NAME : utest_Frames
 
   SEGMENTS IN THE MODULE
@@ -520,16 +521,16 @@ XDATA_I
 
     *************************************************************************
 
-  FILE NAME : W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_LLC.r51
+  FILE NAME : \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_LLC.r51
     *************************************************************************
 
-  FILE NAME : W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_MAC.r51
+  FILE NAME : \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_MAC.r51
     *************************************************************************
 
-  FILE NAME : W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_NTMR.r51
+  FILE NAME : \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_NTMR.r51
     *************************************************************************
 
-  FILE NAME : W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_suite.r51
+  FILE NAME : \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_suite.r51
   PROGRAM MODULE, NAME : utest_suite
 
   SEGMENTS IN THE MODULE
@@ -676,7 +677,7 @@ XDATA_I
 
     *************************************************************************
 
-  FILE NAME : W:\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_TIC.r51
+  FILE NAME : \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\Debug\Obj\utest_TIC.r51
     *************************************************************************
 
   FILE NAME : C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\8051\LIB\DLIB\dl-pli-blxd-1e16x01n.r51
