@@ -21,6 +21,7 @@ static void RI_StreamCrypt(bool state);
 
 // Приватные методы
 static void random_core_init(void);
+static inline void OP_EXE(uint8_t op);
 
 // TODO можно добавть простой алгоритм перестановки для сокрытия данных 
 // при передаче RAW формата. Алгоритм должен быть достаточно простой и 
@@ -80,7 +81,6 @@ typedef struct // Структура двух байт FCS1,FCS2 при APPEND_D
 
 RI_s* RI_create(void)
 {
-  
   if (RADIO_CREATED)
   {
     ASSERT_HALT(RADIO_CREATED == false, "RADIO already created");
@@ -132,8 +132,17 @@ of ~50 is typically the lowest quality frames detectable by CC2520.
   T1CCTL0=5;
 }
 
+// Выполняем команду радио
+static inline void OP_EXE(uint8_t op) 
+{
+  while (RFST); // Убедимся что радио не выполняет команд
+  RFST = op;
+  while (RFST); // Дождемся завершения
+}
+
 static void RI_Off(void)
 {
+  OP_EXE(OP_SRFOFF); // Останавливаем прием и передачу. отключаем синтезатор
 }
 
 static bool RI_SetChannel(uint8_t CH)
@@ -153,6 +162,8 @@ static bool RI_Send(FChain_s *fc)
 
 static FChain_s* RI_Receive(uint8_t timeout)
 {
+  OP_EXE(OP_SRXON);
+  return NULL;
 }
 
 static uint32_t RI_GetCRCError(void)

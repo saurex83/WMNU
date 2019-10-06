@@ -5,7 +5,8 @@
 enum RADIO_OPCODE {
   OP_SRXON = 0xD3, OP_STXON = 0xD9, OP_STXONCCA = 0xDA, OP_SSAMPLECCA = 0xDB,
   OP_SRFOFF = 0xDF, OP_SFLUSHRX = 0xDD, OP_SFLUSHTX = 0xDE
-}
+};
+
 union MDMCTRL0_u
 {
   uint8_t value;

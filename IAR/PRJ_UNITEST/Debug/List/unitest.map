@@ -2,7 +2,7 @@
 #                                                                              #
 #      IAR Universal Linker V6.4.6.89                                          #
 #                                                                              #
-#           Link time     =  06/Oct/2019  19:39:16                             #
+#           Link time     =  06/Oct/2019  23:48:49                             #
 #           Target CPU    =  x51                                               #
 #           List file     =  "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
 #                            RJ_UNITEST\Debug\List\unitest.map"                #
@@ -12,7 +12,7 @@
 #                            UBROF version 10.0.6                              #
 #                            Using library modules for C-SPY (-rt)             #
 #           Command line  =  -f                                                #
-#                            C:\Users\08A4~1\AppData\Local\Temp\EW9CFF.tmp     #
+#                            C:\Users\08A4~1\AppData\Local\Temp\EW750C.tmp     #
 #                            ("\\vmware-host\Shared Folders\Projects\WMNU\IAR\ #
 #                            PRJ_UNITEST\Debug\Obj\FChain.r51"                 #
 #                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
@@ -1189,8 +1189,15 @@ BANK_RELAYS
   SEGMENTS IN THE MODULE
   ======================
 SFR_AN
-  Relative segment, address: DATA 000000E5 - 000000E5 (0x1 bytes), align: 0
+  Relative segment, address: DATA 000000E1 - 000000E1 (0x1 bytes), align: 0
   Segment part 1. ROOT 
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RFST                    000000E1 
+    -------------------------------------------------------------------------
+SFR_AN
+  Relative segment, address: DATA 000000E5 - 000000E5 (0x1 bytes), align: 0
+  Segment part 2. ROOT 
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            T1CCTL0                 000000E5 
@@ -6459,7 +6466,8 @@ VREG                 DATA          00000008 - 0000000F           8   rel    0
 PSP                  DATA               00000010                     dse    0
 XSP                  DATA          00000010 - 00000011           2   rel    0
 BREG                 BIT        00000020.0  -  00000020.7        8   rel    0
-SFR_AN               DATA          000000E5 - 000000E5           1   rel    0
+SFR_AN               DATA          000000E1 - 000000E1           1   rel    0
+                     DATA          000000E5 - 000000E5           1 
 XSTACK               XDATA         00000001 - 00000EFF         EFF   rel    0
 XDATA_Z              XDATA         00000F00 - 00000F60          61   rel    0
 XDATA_I              XDATA         00000F61 - 00001C0F         CAF   rel    0
@@ -6473,7 +6481,7 @@ ISTACK               IDATA         000000C0 - 000000FF          40   rel    0
                 ****************************************
 
  26 877 bytes of CODE  memory
-     18 bytes of DATA  memory (+ 1 absolute )
+     18 bytes of DATA  memory (+ 2 absolute )
   7 438 bytes of XDATA memory
      64 bytes of IDATA memory
       8 bits  of BIT   memory

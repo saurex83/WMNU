@@ -299,7 +299,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 93 31 75 23 50 101 20 4 46 1 24 3 76 33 77 37 95 97 49 100 48</file>
+                    <file> 33 93 101 46 76 95 97 20 75 49 100 77 37 1 23 31 24 3 4 50 48</file>
                 </tool>
                 <tool>
                     <name>ICC8051</name>
