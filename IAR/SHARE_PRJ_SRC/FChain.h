@@ -10,6 +10,10 @@ struct Meta_s
 {
    uint16_t TIMESTAMP;
    int8_t RSSI;
+/* link quality. Calculate LQI = (CORR - a)b. Where a and b are found 
+   empirically based on PER measurements as a function of the correlation 
+   value. PER - packet error rate */
+   int8_t LIQ;  
    uint8_t TS;
    uint8_t CH;
    uint8_t PID;

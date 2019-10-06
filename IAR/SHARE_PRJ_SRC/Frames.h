@@ -36,6 +36,7 @@ typedef struct
   uint8_t NETID;
   uint16_t NDST;
   uint16_t NSRC;
+  uint32_t NONCE;
   uint8_t LENGTH;
 } __attribute__((packed)) ETH_H_t;
 

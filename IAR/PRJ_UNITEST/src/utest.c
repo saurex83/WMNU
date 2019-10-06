@@ -18,10 +18,10 @@ int main()
 
   // Вызов функций тестирования
 
-    suite_TIC();
-//  suite_Frames();
-//  suite_FItem();
-//  suite_FChain();
+  suite_TIC();
+  suite_Frames();
+  suite_FItem();
+  suite_FChain();
   
 	//run_utest_framepart();
 

@@ -16,6 +16,8 @@ typedef struct
  uint32_t (*TIC_GetUptime)(void);
  uint32_t (*TIC_GetRTC)(void);
  bool (*TIC_SetRTC)(uint32_t RTC);
+ void (*TIC_SetNonce)(uint32_t nonce);
+ uint32_t (*TIC_GetNonce)(void); 
 } TIC_s;
 
 #define TIC_S_SIZE sizeof(TIC_s)

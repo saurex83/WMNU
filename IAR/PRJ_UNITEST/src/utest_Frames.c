@@ -9,7 +9,7 @@ static void test_ETH_H(void)
   
   // Заполняем нулями.
   memset( &ETH_H, 0x00, ETH_H_T_SIZE);
-  umsg("Frames", "Size of ETH_H_t struct 8 bytes", ETH_H_T_SIZE == 8);
+  umsg("Frames", "Size of ETH_H_t struct 8 bytes", ETH_H_T_SIZE == 12);
 //  printf("size %d", ETH_H_T_SIZE);
 }
 

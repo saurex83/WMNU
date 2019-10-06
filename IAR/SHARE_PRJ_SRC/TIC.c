@@ -19,7 +19,9 @@ static void TIC_SetSECallback(void (*fn)(uint8_t TS));
 static uint32_t TIC_GetUptime(void);
 static uint32_t TIC_GetRTC(void);
 static bool TIC_SetRTC(uint32_t RTC);
-
+static void TIC_SetNonce(uint32_t nonce);
+static uint32_t TIC_GetNonce(void);
+ 
 // Приватные методы
 static uint8_t TIC_getCurrentTS(uint16_t ticks);
 static void TIC_TDMAShelduler(uint8_t TS);
@@ -49,6 +51,7 @@ static void clocks_update(void);
 
 static uint32_t NODE_UPTIME = 0;
 static uint32_t NODE_RTC = 0;
+static uint32_t NODE_NONCE = 0;
 static void (*RXCallback)(uint8_t TS);
 static void (*TXCallback)(uint8_t TS);
 static void (*SECallback)(uint8_t TS);
@@ -68,7 +71,7 @@ TIC_s* TIC_Create(NT_s* nt)
   TIC_nt = nt;
   
   TIC_s* tic = malloc(TIC_S_SIZE);
-  ASSERT_HALT(nt != NULL, "Memory allocation fails");
+  ASSERT_HALT(tic != NULL, "Memory allocation fails");
   if (tic == NULL)
     return NULL;
   
@@ -85,6 +88,8 @@ TIC_s* TIC_Create(NT_s* nt)
   tic->TIC_GetUptime = TIC_GetUptime;
   tic->TIC_GetRTC = TIC_GetRTC;
   tic->TIC_SetRTC = TIC_SetRTC;
+  tic->TIC_SetNonce = TIC_SetNonce;
+  tic->TIC_GetNonce = TIC_GetNonce;
   
   // Устанавливаем обработчик прерываний таймера
   nt->NT_SetEventCallback(TIC_HW_Timer_IRQ);
@@ -273,6 +278,15 @@ static void TIC_HW_Timer_IRQ(uint16_t ticks)
   if (c_TS == 0)
     clocks_update();
   
+  // Если что то пошло не так и мы промахнулись мимо слота
+  // запускаем планировщик заново
+  if (c_TS == NO_TIME_SLOT)
+  {
+    TIC_TDMAShelduler(c_TS);
+    return;
+  }
+    
+  
   // Вызываем один из указанных обработчиков.
   // Передача имеет приоритет над приемом.
   if (TSStateTable[c_TS] & TS_TX) 
@@ -291,7 +305,17 @@ static void clocks_update(void)
 {
   NODE_UPTIME++;
   NODE_RTC++;
+  NODE_NONCE++;
   if (NODE_RTC >= DAILY_SEC)
     NODE_RTC = 0;
 }
 
+static void TIC_SetNonce(uint32_t nonce)
+{
+  NODE_NONCE = nonce;
+}
+
+static uint32_t TIC_GetNonce(void)
+{
+  return NODE_NONCE;
+}
