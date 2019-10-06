@@ -2,6 +2,7 @@
 #include "stdlib.h"
 #include "nwdebuger.h"
 #include "ioCC2530.h"
+#include "Radio_defs.h"
 
 // Публичные методы
 RI_s* RI_create(void);
