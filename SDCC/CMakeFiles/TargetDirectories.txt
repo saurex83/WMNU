@@ -1,0 +1,3 @@
+/home/saurex83/Projects/WMNU/SDCC/CMakeFiles/rebuild_cache.dir
+/home/saurex83/Projects/WMNU/SDCC/CMakeFiles/main.dir
+/home/saurex83/Projects/WMNU/SDCC/CMakeFiles/edit_cache.dir

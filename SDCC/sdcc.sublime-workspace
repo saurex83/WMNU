@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"FCh",
+				"FChain_s\tabc"
+			],
+			[
 				"FI_get",
 				"FI_getType\t(Fitem.c)"
 			],
@@ -436,59 +440,23 @@
 	"buffers":
 	[
 		{
-			"file": "src/apps/tests/utest.c",
+			"contents": "#include \"FChain.h\"\n#include \"nwdebuger.h\"\n#include \"stdlib.h\"\n#include \"string.h\"\n\nstatic uint8_t QUANTITY = 0; // Подсчет обьектов\n\nFChain_s* FC_create(void);\nbool FC_delete(FChain_s* fc);\nvoid FC_iteratorToHead(FChain_s* fc);\nvoid FC_iteratorToTail(FChain_s* fc);\nbool FC_iteratorToType(FChain_s* fc, FItem_t type);\nbool FC_iteratorToTypeHead(FChain_s* fc, FItem_t type);\nbool FC_next(FChain_s* fc);\nbool FC_last(FChain_s* fc);\nvoid FC_insertAfter(FChain_s* fc, FItem_s* fi);\nvoid FC_insertBefore(FChain_s* fc, FItem_s* fi);\nuint8_t FC_getQuantity(FChain_s* fc);\nFItem_s* FC_getIterator(FChain_s* fc);\nuint8_t FC_getObjectQuantity();\nbool FC_isHaveType(FChain_s* fc, FItem_t type);\n\nFChain_s* FC_create(void)\n{\n\tFChain_s* fc = (FChain_s*)malloc(sizeof(FChain_s));\n\n\tASSERT_HALT(fc != NULL, \"Memory allocation fails\");\n\tfc->  \n\tif (fc == NULL)\n\t\treturn NULL;\n\n\tfc->head = NULL;\n\tfc->tail = NULL;\n\tfc->quantity = 0;\n\tfc->iterator = NULL;\n\tQUANTITY++;\n\treturn fc;\n}\n\nbool FC_delete(FChain_s* fc)\n{\n\tASSERT_HALT(fc != NULL, \"Cant delete NULL FChain\");\n\t\n\tif (fc == NULL)\n\t\treturn false;\n\n\tFItem_s* next = NULL;\n\tFItem_s* item = fc->head;\n\n// Удаляем все элементы цепочки\n\twhile (item != NULL)\n\t{\n\t\tnext = FI_getNext(item);\n\t\tFI_delete(item);\n\t\titem = next;\n        fc->quantity--;\n\t}\n\n\tfree(fc);\n    \n\treturn true;\n}\n\nvoid FC_iteratorToHead(FChain_s* fc)\n{\n\tfc->iterator = fc->head;\n}\n\nvoid FC_iteratorToTail(FChain_s* fc)\n{\n\tfc->iterator = fc->tail;\n}\n\nbool FC_iteratorToType(FChain_s* fc, FItem_t type)\n{\n\tASSERT_HALT(fc != NULL, \"Cant iterate NULL FChain\");\n\n\tFItem_s* new_iterator = fc->iterator;\n\n\t// Итератор может ни на что не указывать\n\tif (new_iterator == NULL)\n\t\treturn false;\n\n\twhile(true)\n\t{\n\t\tif (FI_getType(new_iterator) == type)\n\t\t{\n\t\t\tfc->iterator = new_iterator;\n\t\t\treturn true;\n\t\t}\n\n\t\tnew_iterator = FI_getNext(new_iterator);\n\n\t\t// Возможно дошли до конца\n\t\tif (new_iterator == NULL)\n\t\t\treturn false;\n\t}\n}\n\nbool FC_iteratorToTypeHead(FChain_s* fc, FItem_t type)\n{\n\tASSERT_HALT(fc != NULL, \"Cant iterate NULL FChain\");\n\n\t// Сохраним предыдущее состояние итератора\n\tFItem_s* old_iterator = fc->iterator;\t\n\t// Установим итератор на начало цепочки\n\tfc->iterator = fc->head;\n\tbool res = FC_iteratorToType(fc, type);\n\n\tif (!res)\n\t{\n\t\tfc->iterator = old_iterator;\n\t\treturn false;\n\t}\n\n\treturn true;\n}\n\nbool FC_next(FChain_s* fc)\n{\n\tASSERT_HALT(fc != NULL, \"Cant get next NULL FChain\");\n\tif (fc->iterator == NULL)\n      return false;\n\n    FItem_s* next = FI_getNext(fc->iterator);\n    // Итерируем до последнего элемента\n    if ( next == NULL)\n        return false;\n    \n    fc->iterator = next;\n    return true;\n}\n\nbool FC_last(FChain_s* fc)\n{\n\tASSERT_HALT(fc != NULL, \"Cant get last NULL FChain\");\n\tif (fc->iterator == NULL)\n\t\treturn false;\n    \n    FItem_s* last = FI_getLast(fc->iterator);\n    \n    if ( last == NULL)\n        return false;\n    \n    fc->iterator = last;\n    return true;\n}\n\nvoid FC_insertAfter(FChain_s* fc, FItem_s* fi)\n{\n\tASSERT_HALT(fc != NULL, \"Cant insert NULL FChain\");\n\tASSERT_HALT(fi != NULL, \"Cant insert NULL FItem\");\n    // Если цепочка пустая то итератор указывается на NULL.\n    // В этом случаи вставляем первый элемент.\n    if (fc->quantity == 0)\n    {\n      fc->head = fi;\n      fc->tail = fi;\n      fc->iterator = fc->head;\n      fi->last = NULL;\n      fi->next = NULL;\n      fc->quantity++;\n      return;\n    }\n    \n\tASSERT_HALT(fc->iterator != NULL, \"Cant insert NULL iterator\\n\");\n\n\tFItem_s* item_iter = fc->iterator; \n\tFItem_s* item_next = FI_getNext(item_iter);\n\n\t// К текущем итератору привязываем новый элемент\n\tFI_setNext(item_iter, fi);\n\tFI_setLast(fi, item_iter);\n\n\t// Если была вставка, то перепривяжем следующий элемент\n\tif (item_next != NULL)\n\t{\n\t\tFI_setLast(item_next, fi);\n\t\tFI_setNext(fi, item_next);\n\t}\n    else\n    {\n      // Если вставили последний элемент, установим хвост.\n      fc->tail = fi;\n    }\n\t\n\tfc->quantity++;\n}\n\nvoid FC_insertBefore(FChain_s* fc, FItem_s* fi)\n{\n\tASSERT_HALT(fc != NULL, \"Cant insert NULL FChain\");\n\tASSERT_HALT(fi != NULL, \"Cant insert NULL FItem\");\n\n    // Если цепочка пустая то итератор указывается на NULL.\n    // В этом случаи вставляем первый элемент.\n    if (fc->quantity == 0)\n    {\n      fc->head = fi;\n      fc->tail = fi;\n      fc->iterator = fc->head;\n      fi->last = NULL;\n      fi->next = NULL;\n      fc->quantity++;\n      return;\n    }\n\n\tASSERT_HALT(fc->iterator != NULL, \"Cant insert NULL iterator\");\n\n\tFItem_s* item_iter = fc->iterator; \n\tFItem_s* item_last = FI_getLast(item_iter);\n\n\t// К текущем итератору привязываем новый элемент\n\tFI_setLast(item_iter, fi);\n\tFI_setNext(fi, item_iter);\n\n\t// Если была вставка, то перепривяжим следующий элемент\n\tif (item_last != NULL)\n\t{\n\t\tFI_setNext(item_last, fi);\n\t\tFI_setLast(fi, item_last);\n\t}\n        else\n    {\n      // Если вставили первый элемент, установим голову.\n      fc->head = fi;\n    }\n\t\n\tfc->quantity++;\n}\n\nuint8_t FC_getQuantity(FChain_s* fc)\n{\n\tASSERT_HALT(fc != NULL, \"Cant get quantity NULL FChain\");\n\treturn fc->quantity;\n}\n\nFItem_s* FC_getIterator(FChain_s* fc)\n{\n\tASSERT_HALT(fc != NULL, \"Cant get iterator NULL FChain\");\n\treturn fc->iterator;\n}\n\nuint8_t FC_getObjectQuantity()\n{\n\treturn QUANTITY;\n}\n\nbool FC_isHaveType(FChain_s* fc, FItem_t type)\n{\n  \tASSERT_HALT(fc != NULL, \"Cant iterate NULL FChain\");\n\n\t// Сохраним предыдущее состояние итератора\n\tFItem_s* old_iterator = fc->iterator;\t\n\t// Установим итератор на начало цепочки\n\tfc->iterator = fc->head;\n\tbool res = FC_iteratorToType(fc, type);\n    fc->iterator = old_iterator;\n    \n\tif (!res)\n      return false;\n\n\treturn true;\n}",
+			"file": "core/FChain.c",
+			"file_size": 6477,
+			"file_write_time": 132155629241536112,
 			"settings":
 			{
-				"buffer_size": 189,
+				"buffer_size": 5556,
 				"encoding": "UTF-8",
-				"line_ending": "Unix"
+				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "src/nwstack/src/Fitem.c",
+			"file": "core/FChain.h",
 			"settings":
 			{
-				"buffer_size": 2538,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/nwstack/inc/FItem.h",
-			"settings":
-			{
-				"buffer_size": 784,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "Package Control Messages\n========================\n\nEasyClangComplete\n-----------------\n\n  A plugin for easy to use clang-based completions::\n  \n      ╔═╗┌─┐┌─┐┬ ┬  ╔═╗┬  ┌─┐┌┐┌┌─┐  ╔═╗┌─┐┌┬┐┌─┐┬  ┌─┐┌┬┐┌─┐\n      ║╣ ├─┤└─┐└┬┘  ║  │  ├─┤││││ ┬  ║  │ ││││├─┘│  ├┤  │ ├┤\n      ╚═╝┴ ┴└─┘ ┴   ╚═╝┴─┘┴ ┴┘└┘└─┘  ╚═╝└─┘┴ ┴┴  ┴─┘└─┘ ┴ └─┘\n  \n  Let't get started!\n  ==================\n  \n  You're just two steps away!\n  \n  1. Install clang\n  ----------------\n  \n  - **Ubuntu**        : ``sudo apt-get install clang``\n  - **OSX**           : ships `clang` by default. You are all set!\n  - **Windows**       : install the latest release from clang website.\n  - **Other Systems** : use your package manager or install from clang website.\n  - clang website: http://llvm.org/releases/download.html\n  \n  2. Configure your includes\n  --------------------------\n  \n  Using CMake?\n  ~~~~~~~~~~~~\n  \n  Plugin will run cmake on a proper ``CMakeLists.txt`` in your project folder and\n  will use information from it to complete your code out of the box.\n  \n  Don't like CMake?\n  ~~~~~~~~~~~~~~~~~~\n  \n  There are many ways of configuring the plugin!\n  Read the docs here: https://niosus.github.io/EasyClangComplete/configs/\n  \n  That's it! You're ready to use the plugin!\n  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n  \n  Intro and Documentation\n  ~~~~~~~~~~~~~~~~~~~~~~~\n  \n  https://niosus.github.io/EasyClangComplete/\n  \n  Thanks!\n  =======\n  \n  💜 this plugin? Consider buying me a 🍵\n  https://niosus.github.io/EasyClangComplete/support/\n",
-			"settings":
-			{
-				"buffer_size": 1517,
-				"line_ending": "Unix",
-				"name": "Package Control Messages",
-				"read_only": true,
-				"scratch": true
-			}
-		},
-		{
-			"file": "src/nwstack/inc/FChain.h",
-			"settings":
-			{
-				"buffer_size": 702,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/nwstack/src/FChain.c",
-			"settings":
-			{
-				"buffer_size": 4156,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
+				"buffer_size": 1275,
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -626,20 +594,20 @@
 	},
 	"expanded_folders":
 	[
-		"/home/saurex83/Projects/WMNU/neocore",
-		"/home/saurex83/Projects/WMNU/neocore/src",
-		"/home/saurex83/Projects/WMNU/neocore/src/apps",
-		"/home/saurex83/Projects/WMNU/neocore/src/apps/tests",
-		"/home/saurex83/Projects/WMNU/neocore/src/apps/tests/nwstack",
-		"/home/saurex83/Projects/WMNU/neocore/src/nwstack",
-		"/home/saurex83/Projects/WMNU/neocore/src/nwstack/inc",
-		"/home/saurex83/Projects/WMNU/neocore/src/nwstack/src"
+		"/home/saurex83/Projects/WMNU/SDCC",
+		"/home/saurex83/Projects/WMNU/SDCC/core",
+		"/home/saurex83/Projects/WMNU/SDCC/tests"
 	],
 	"file_history":
 	[
+		"/home/saurex83/Projects/WMNU/SDCC/tests/utest_FChain.h",
+		"/home/saurex83/Projects/WMNU/neocore/src/nwstack/src/FChain.c",
+		"/home/saurex83/Projects/WMNU/neocore/src/nwstack/inc/FChain.h",
+		"/home/saurex83/Projects/WMNU/neocore/src/nwstack/inc/FItem.h",
+		"/home/saurex83/Projects/WMNU/neocore/src/nwstack/src/Fitem.c",
+		"/home/saurex83/Projects/WMNU/neocore/src/apps/tests/utest.c",
 		"/home/saurex83/Projects/tmp_vmware_delite/script",
 		"/home/saurex83/Projects/WMNU/neocore/src/nwstack/inc/framepart.h",
-		"/home/saurex83/Projects/WMNU/neocore/src/nwstack/src/FChain.c",
 		"/home/saurex83/Projects/WMNU/neocore/src/nwstack/src/framepart.c",
 		"/home/saurex83/Projects/WMNU/neocore/src/apps/tests/nwstack/utest_suite.h",
 		"/home/saurex83/Projects/WMNU/neocore/src/nwstack/src/FChain.h",
@@ -759,12 +727,7 @@
 		"/home/saurex/Документы/Neos/cmsis/stm32l1xx.h",
 		"/home/saurex/Документы/Neos/cmsis/system_stm32l1xx.c",
 		"/home/saurex/Документы/Neos/cmsis/makefile",
-		"/home/saurex/Документы/Neos/stdperiph/src/makefile",
-		"/home/saurex/Документы/Neos/src/kernel/tiny_printf.cxx",
-		"/home/saurex/Документы/Neos/inc/hal/makefile",
-		"/home/saurex/Документы/Neos/src/kernel/core_post_event.c",
-		"/home/saurex/Документы/Neos/src/kernel/core_system_start.c",
-		"/home/saurex/Документы/Neos/src/kernel/core_scheulder_loop.c"
+		"/home/saurex/Документы/Neos/stdperiph/src/makefile"
 	],
 	"find":
 	{
@@ -832,27 +795,33 @@
 		"whole_word": false,
 		"wrap": true
 	},
+	"folders":
+	[
+		{
+			"path": "/home/saurex83/Projects/WMNU/SDCC"
+		}
+	],
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/apps/tests/utest.c",
+					"file": "core/FChain.c",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 189,
+						"buffer_size": 5556,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								156,
-								156
+								767,
+								767
 							]
 						],
 						"settings":
@@ -860,152 +829,40 @@
 							"syntax": "Packages/C++/C.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "src/nwstack/src/Fitem.c",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2538,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1100,
-								1100
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 1384.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "src/nwstack/inc/FItem.h",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 784,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								176,
-								176
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1517,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1517,
-								1517
-							]
-						],
-						"settings":
-						{
-							"auto_indent": false,
-							"syntax": "Packages/Text/Plain text.tmLanguage",
-							"tab_width": 2,
-							"word_wrap": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 330.0,
+						"translation.y": 222.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "src/nwstack/inc/FChain.h",
+					"buffer": 1,
+					"file": "core/FChain.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 702,
+						"buffer_size": 1275,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								153,
-								153
+								724,
+								724
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/C++/C++.sublime-syntax"
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 3,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 172.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "src/nwstack/src/FChain.c",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4156,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3745,
-								3745
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 3404.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
+					"stack_index": 1,
 					"type": "text"
 				}
 			]
@@ -1059,7 +916,7 @@
 		"height": 0.0
 	},
 	"pinned_build_system": "Packages/Makefile/Make.sublime-build",
-	"project": "neocore.sublime-project",
+	"project": "",
 	"replace":
 	{
 		"height": 66.0
