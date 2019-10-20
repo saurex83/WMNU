@@ -18,10 +18,11 @@ int main()
 
   // Вызов функций тестирования
 
-  suite_TIC();
-  suite_Frames();
-  suite_FItem();
-  suite_FChain();
+  //suite_TIC();
+  //suite_Frames();
+  //suite_FItem();
+  //suite_FChain();
+  suite_LLC();
   
 	//run_utest_framepart();
 
@@ -29,6 +30,6 @@ int main()
 
 // Добавляем результаты тестов
 	umsg_summary();
-      while(1);
+ //     while(1);
 	return 0;
 }

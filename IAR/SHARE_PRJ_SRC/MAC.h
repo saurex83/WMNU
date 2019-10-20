@@ -10,7 +10,7 @@ typedef struct
   void (*MAC_OpenRXSlot)(uint8_t TS, uint8_t CH);
   void (*MAC_CloseRXSlot)(uint8_t CH);
   void (*MAC_Send)(FChain_s *fc, uint8_t attempts);
-  void (*MAC_SetRXCallback)(FChain_s *fc);
+  void (*MAC_SetRXCallback)(void (*fn)(FChain_s *fc));
   bool (*MAC_GetTXState)(uint8_t TS);
   bool (*MAC_GetRXState)(uint8_t TS);
 } MAC_s;

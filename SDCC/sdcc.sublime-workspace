@@ -440,22 +440,19 @@
 	"buffers":
 	[
 		{
-			"contents": "#include \"FChain.h\"\n#include \"nwdebuger.h\"\n#include \"stdlib.h\"\n#include \"string.h\"\n\nstatic uint8_t QUANTITY = 0; // Подсчет обьектов\n\nFChain_s* FC_create(void);\nbool FC_delete(FChain_s* fc);\nvoid FC_iteratorToHead(FChain_s* fc);\nvoid FC_iteratorToTail(FChain_s* fc);\nbool FC_iteratorToType(FChain_s* fc, FItem_t type);\nbool FC_iteratorToTypeHead(FChain_s* fc, FItem_t type);\nbool FC_next(FChain_s* fc);\nbool FC_last(FChain_s* fc);\nvoid FC_insertAfter(FChain_s* fc, FItem_s* fi);\nvoid FC_insertBefore(FChain_s* fc, FItem_s* fi);\nuint8_t FC_getQuantity(FChain_s* fc);\nFItem_s* FC_getIterator(FChain_s* fc);\nuint8_t FC_getObjectQuantity();\nbool FC_isHaveType(FChain_s* fc, FItem_t type);\n\nFChain_s* FC_create(void)\n{\n\tFChain_s* fc = (FChain_s*)malloc(sizeof(FChain_s));\n\n\tASSERT_HALT(fc != NULL, \"Memory allocation fails\");\n\tfc->  \n\tif (fc == NULL)\n\t\treturn NULL;\n\n\tfc->head = NULL;\n\tfc->tail = NULL;\n\tfc->quantity = 0;\n\tfc->iterator = NULL;\n\tQUANTITY++;\n\treturn fc;\n}\n\nbool FC_delete(FChain_s* fc)\n{\n\tASSERT_HALT(fc != NULL, \"Cant delete NULL FChain\");\n\t\n\tif (fc == NULL)\n\t\treturn false;\n\n\tFItem_s* next = NULL;\n\tFItem_s* item = fc->head;\n\n// Удаляем все элементы цепочки\n\twhile (item != NULL)\n\t{\n\t\tnext = FI_getNext(item);\n\t\tFI_delete(item);\n\t\titem = next;\n        fc->quantity--;\n\t}\n\n\tfree(fc);\n    \n\treturn true;\n}\n\nvoid FC_iteratorToHead(FChain_s* fc)\n{\n\tfc->iterator = fc->head;\n}\n\nvoid FC_iteratorToTail(FChain_s* fc)\n{\n\tfc->iterator = fc->tail;\n}\n\nbool FC_iteratorToType(FChain_s* fc, FItem_t type)\n{\n\tASSERT_HALT(fc != NULL, \"Cant iterate NULL FChain\");\n\n\tFItem_s* new_iterator = fc->iterator;\n\n\t// Итератор может ни на что не указывать\n\tif (new_iterator == NULL)\n\t\treturn false;\n\n\twhile(true)\n\t{\n\t\tif (FI_getType(new_iterator) == type)\n\t\t{\n\t\t\tfc->iterator = new_iterator;\n\t\t\treturn true;\n\t\t}\n\n\t\tnew_iterator = FI_getNext(new_iterator);\n\n\t\t// Возможно дошли до конца\n\t\tif (new_iterator == NULL)\n\t\t\treturn false;\n\t}\n}\n\nbool FC_iteratorToTypeHead(FChain_s* fc, FItem_t type)\n{\n\tASSERT_HALT(fc != NULL, \"Cant iterate NULL FChain\");\n\n\t// Сохраним предыдущее состояние итератора\n\tFItem_s* old_iterator = fc->iterator;\t\n\t// Установим итератор на начало цепочки\n\tfc->iterator = fc->head;\n\tbool res = FC_iteratorToType(fc, type);\n\n\tif (!res)\n\t{\n\t\tfc->iterator = old_iterator;\n\t\treturn false;\n\t}\n\n\treturn true;\n}\n\nbool FC_next(FChain_s* fc)\n{\n\tASSERT_HALT(fc != NULL, \"Cant get next NULL FChain\");\n\tif (fc->iterator == NULL)\n      return false;\n\n    FItem_s* next = FI_getNext(fc->iterator);\n    // Итерируем до последнего элемента\n    if ( next == NULL)\n        return false;\n    \n    fc->iterator = next;\n    return true;\n}\n\nbool FC_last(FChain_s* fc)\n{\n\tASSERT_HALT(fc != NULL, \"Cant get last NULL FChain\");\n\tif (fc->iterator == NULL)\n\t\treturn false;\n    \n    FItem_s* last = FI_getLast(fc->iterator);\n    \n    if ( last == NULL)\n        return false;\n    \n    fc->iterator = last;\n    return true;\n}\n\nvoid FC_insertAfter(FChain_s* fc, FItem_s* fi)\n{\n\tASSERT_HALT(fc != NULL, \"Cant insert NULL FChain\");\n\tASSERT_HALT(fi != NULL, \"Cant insert NULL FItem\");\n    // Если цепочка пустая то итератор указывается на NULL.\n    // В этом случаи вставляем первый элемент.\n    if (fc->quantity == 0)\n    {\n      fc->head = fi;\n      fc->tail = fi;\n      fc->iterator = fc->head;\n      fi->last = NULL;\n      fi->next = NULL;\n      fc->quantity++;\n      return;\n    }\n    \n\tASSERT_HALT(fc->iterator != NULL, \"Cant insert NULL iterator\\n\");\n\n\tFItem_s* item_iter = fc->iterator; \n\tFItem_s* item_next = FI_getNext(item_iter);\n\n\t// К текущем итератору привязываем новый элемент\n\tFI_setNext(item_iter, fi);\n\tFI_setLast(fi, item_iter);\n\n\t// Если была вставка, то перепривяжем следующий элемент\n\tif (item_next != NULL)\n\t{\n\t\tFI_setLast(item_next, fi);\n\t\tFI_setNext(fi, item_next);\n\t}\n    else\n    {\n      // Если вставили последний элемент, установим хвост.\n      fc->tail = fi;\n    }\n\t\n\tfc->quantity++;\n}\n\nvoid FC_insertBefore(FChain_s* fc, FItem_s* fi)\n{\n\tASSERT_HALT(fc != NULL, \"Cant insert NULL FChain\");\n\tASSERT_HALT(fi != NULL, \"Cant insert NULL FItem\");\n\n    // Если цепочка пустая то итератор указывается на NULL.\n    // В этом случаи вставляем первый элемент.\n    if (fc->quantity == 0)\n    {\n      fc->head = fi;\n      fc->tail = fi;\n      fc->iterator = fc->head;\n      fi->last = NULL;\n      fi->next = NULL;\n      fc->quantity++;\n      return;\n    }\n\n\tASSERT_HALT(fc->iterator != NULL, \"Cant insert NULL iterator\");\n\n\tFItem_s* item_iter = fc->iterator; \n\tFItem_s* item_last = FI_getLast(item_iter);\n\n\t// К текущем итератору привязываем новый элемент\n\tFI_setLast(item_iter, fi);\n\tFI_setNext(fi, item_iter);\n\n\t// Если была вставка, то перепривяжим следующий элемент\n\tif (item_last != NULL)\n\t{\n\t\tFI_setNext(item_last, fi);\n\t\tFI_setLast(fi, item_last);\n\t}\n        else\n    {\n      // Если вставили первый элемент, установим голову.\n      fc->head = fi;\n    }\n\t\n\tfc->quantity++;\n}\n\nuint8_t FC_getQuantity(FChain_s* fc)\n{\n\tASSERT_HALT(fc != NULL, \"Cant get quantity NULL FChain\");\n\treturn fc->quantity;\n}\n\nFItem_s* FC_getIterator(FChain_s* fc)\n{\n\tASSERT_HALT(fc != NULL, \"Cant get iterator NULL FChain\");\n\treturn fc->iterator;\n}\n\nuint8_t FC_getObjectQuantity()\n{\n\treturn QUANTITY;\n}\n\nbool FC_isHaveType(FChain_s* fc, FItem_t type)\n{\n  \tASSERT_HALT(fc != NULL, \"Cant iterate NULL FChain\");\n\n\t// Сохраним предыдущее состояние итератора\n\tFItem_s* old_iterator = fc->iterator;\t\n\t// Установим итератор на начало цепочки\n\tfc->iterator = fc->head;\n\tbool res = FC_iteratorToType(fc, type);\n    fc->iterator = old_iterator;\n    \n\tif (!res)\n      return false;\n\n\treturn true;\n}",
-			"file": "core/FChain.c",
-			"file_size": 6477,
-			"file_write_time": 132155629241536112,
+			"file": "core/NTMR.h",
 			"settings":
 			{
-				"buffer_size": 5556,
-				"encoding": "UTF-8",
+				"buffer_size": 367,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "core/FChain.h",
+			"file": "core/NTMR.c",
 			"settings":
 			{
-				"buffer_size": 1275,
+				"buffer_size": 1060,
+				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		}
@@ -600,6 +597,9 @@
 	],
 	"file_history":
 	[
+		"/home/saurex83/Projects/WMNU/SDCC/core/LLC.h",
+		"/home/saurex83/Projects/WMNU/SDCC/core/FChain.c",
+		"/home/saurex83/Projects/WMNU/SDCC/core/FChain.h",
 		"/home/saurex83/Projects/WMNU/SDCC/tests/utest_FChain.h",
 		"/home/saurex83/Projects/WMNU/neocore/src/nwstack/src/FChain.c",
 		"/home/saurex83/Projects/WMNU/neocore/src/nwstack/inc/FChain.h",
@@ -724,10 +724,7 @@
 		"/home/saurex/Документы/Neos/cmsis/core_cm0.h",
 		"/home/saurex/Документы/Neos/stdperiph/inc/stm32l1xx_rcc.h",
 		"/home/saurex/Документы/Neos/stdperiph/src/stm32l1xx_rcc.c",
-		"/home/saurex/Документы/Neos/cmsis/stm32l1xx.h",
-		"/home/saurex/Документы/Neos/cmsis/system_stm32l1xx.c",
-		"/home/saurex/Документы/Neos/cmsis/makefile",
-		"/home/saurex/Документы/Neos/stdperiph/src/makefile"
+		"/home/saurex/Документы/Neos/cmsis/stm32l1xx.h"
 	],
 	"find":
 	{
@@ -804,65 +801,65 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "core/FChain.c",
+					"file": "core/NTMR.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5556,
+						"buffer_size": 367,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								767,
-								767
+								109,
+								109
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/C++/C.sublime-syntax"
+							"syntax": "Packages/C++/C++.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 222.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "core/FChain.h",
-					"semi_transient": false,
+					"file": "core/NTMR.c",
+					"semi_transient": true,
 					"settings":
 					{
-						"buffer_size": 1275,
+						"buffer_size": 1060,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								724,
-								724
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/C++/C++.sublime-syntax",
-							"tab_size": 3,
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 172.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
