@@ -8,7 +8,6 @@
 #define LOG_ENABLE
 #define ASSERT_ENABLE
 
-
 // Уровни логирования
 #define MSG_INFO	0x00
 #define MSG_WARNING	0x01
