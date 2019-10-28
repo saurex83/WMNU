@@ -32,28 +32,28 @@ void umsg(char* module, char* name, bool status)
 {
 	if (status){
 		utest_summary.passed++;
-		printf("Module: %-15s Name: %-50s Status: %-10s\n", module, name, "PASSED");
+		printf("Module: %-15s Name: %-50s Status: %-10s\r\n", module, name, "PASSED");
 		}
 	else{
 		utest_summary.failed++;
-		printf("Module: %-15s Name: %-50s Status: %-10s\n", module, name, "FAILED <----");
+		printf("Module: %-15s Name: %-50s Status: %-10s\r\n", module, name, "FAILED <----");
 		}
 }
 
 void umsg_line(char* name)
 {
-	printf("**************************************\n");
-	printf("%s\n", name);
-	printf("**************************************\n");
+	printf("**************************************\r\n");
+	printf("%s\r\n", name);
+	printf("**************************************\r\n");
 }
 
 void umsg_summary()
 {
 	umsg_line("Unit test symmary");
-	printf("PASSED: %d\n", utest_summary.passed);
-	printf("FAILD : %d\n", utest_summary.failed);
+	printf("PASSED: %d\r\n", utest_summary.passed);
+	printf("FAILD : %d\r\n", utest_summary.failed);
 	if (utest_summary.failed == 0)
-      printf("Tests PASSED\n");
+      printf("Tests PASSED\r\n");
 	else
-		printf("Tests FAILED\n");
+		printf("Tests FAILED\r\n");
 }

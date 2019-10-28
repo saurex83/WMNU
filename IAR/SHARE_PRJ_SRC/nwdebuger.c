@@ -3,90 +3,40 @@
 #include "stdint.h"
 #include "stdio.h"
 
+
+//#define UART_DEBUG // Если определено, то вывод в uart
+
 // Настройка выводов SIG и порта uart для отладки
-void nwDebugerInit(void)
+
+static void uart_init(void)
+{
+  // Выбор расположения UART на выводах
+  uint8_t U0CFG = 0; // 0={TX=P0_3, RX=P0_2
+  PERCFG |= (U0CFG<<0); 
+  
+  // U0UCR регистр настройки режима uart. меня устраивает по умолчанию
+  U0CSR = (1<<7); // Выбираем режим uart 
+  
+  // Настройка скорости передачи данных на 2М  
+  U0BAUD = 0;  // табличные значения из pdf
+  U0GCR =  16;
+  
+  // Включаем альтернативные функции выводов
+  P0SEL = (1<<2)|(1<<3);
+}
+
+static void SetCPU32M(void)
 {
   CLKCONCMD = 0x88;
   while (CLKCONSTA&(1<<6));
-  
-  // Выбор расположения UART на выводах
-  uint8_t U0CFG = 0; // 0={TX=P0_3, RX=P0_2
-  uint8_t U1CFG = 0; // 0={TX=P0_3, RX=P0_2
-  PERCFG |= (U0CFG<<0); 
-  PERCFG |= (U1CFG<<1);
-  // U0UCR регистр настройки режима uart. меня устраивает по умолчанию
-  
-  U0CSR = (1<<7); // Выбираем режим uart 
-  U1CSR = (1<<7); // Выбираем режим uart
-  
-//  U0UCR |= (1<<6);
- // U1UCR |= (1<<6);
-  // Настройка скорости передачи данных на 115200  
-  U0BAUD = 0;  // табличные значения из pdf
-  U0GCR =  16;
+}
 
-  U1BAUD = 216;  // табличные значения из pdf
-  U1GCR =  11;
-
-  
-  P0SEL = 0xff;
-  P0DIR = 0xff;
-  
-  P1SEL = 0xff;
-  P1DIR = 0xff;
-  
-  //U0DBUF - буфер передатчика
-  
-  while(1)
-  {
-    printf("TEST\r\n");
-  }
-  
-  while(1)
-  {
-    U0DBUF = 'A';
-    U1DBUF = 'B';
-    
-    while( U0CSR&(1<<0));
-    while( U1CSR&(1<<0));
-    
-    U0DBUF = '\n';
-    U1DBUF = '\n';
-    
-    while( U0CSR&(1<<0));
-    while( U1CSR&(1<<0));
-  }
-  
-  P0DIR = 0xff;
-  P0_0 = 0;
-  P0_1 = 0;
-  P0_1 = 0;
-  P0_2 = 0;
-  P0_3 = 0;
-  P0_4 = 0;
-  P0_5 = 0;
-  P0_6 = 0;
-  P0_7 = 0;
-  
-  P1DIR = 0xff;
-  P1_0 = 0;
-  P1_1 = 0;
-  P1_1 = 0;
-  P1_2 = 0;
-  P1_3 = 0;
-  P1_4 = 0;
-  P1_5 = 0;
-  P1_6 = 0;
-  P1_7 = 0;
-  
-  P2DIR = 0xff;
-  P2_0 = 0;
-  P2_1 = 0;
-  P2_1 = 0;
-  P2_2 = 0;
-  P2_3 = 0;
-  P2_4 = 0;
-  
+void nwDebugerInit(void)
+{
+  SetCPU32M();
+#ifdef UART_DEBUG
+  uart_init();
+#endif
 }
 
 __attribute__((weak)) void STACK_FAILURE(char* msg)
@@ -95,8 +45,8 @@ __attribute__((weak)) void STACK_FAILURE(char* msg)
   while(1);
 }
 
-
-
+// Переопределяем функцию записи в порт
+#ifdef UART_DEBUG
 #include <yfuns.h>
 
 _STD_BEGIN
@@ -155,3 +105,4 @@ size_t __write(int handle, const unsigned char * buffer, size_t size)
 }
 
 _STD_END
+#endif

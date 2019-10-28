@@ -40,7 +40,6 @@ static void mock_SE_hndl(uint8_t TS)
   results.TS = TS;
 }
 
-
 static void mock_NT_SetEventCallback(void (*fn)(uint16_t ticks))
 {
   results.nt_callback_set = true;
