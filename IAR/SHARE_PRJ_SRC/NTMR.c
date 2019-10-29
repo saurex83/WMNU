@@ -15,8 +15,6 @@
 // После пробуждения нужно убеиться что SLEEPSTA.CLK32K бит установлен прежде 
 // чем считывать ST0-3
 
-// TODO ОХУЕННО НУЖНО ПОДУМАТЬ С СМЕЩЕНИЯМИ ВРЕМЕНИ. ТАЙМЕР 24 БИТА
-// ОСТАЛЬНОЕ ВРЕМЯ 15 БИТ
 
 // Публичные методы
 NT_s* NT_Create(void);
@@ -40,7 +38,7 @@ void (*EventCallback)(uint16_t ticks);
 @details Смещение времени сети относительно времени таймера.
  NETWORK TIME = TIMER + TOFFSET
 */
-uint32_t TOFFSET; 
+uint16_t TOFFSET; 
 
 /**
 @brief Создание структуры LLC_s
@@ -57,13 +55,17 @@ NT_s* NT_Create(void)
   nt->NT_SetEventCallback = NT_SetEventCallback;
   nt->NT_GetTime = NT_GetTime;
   TOFFSET = 0;
+  EventCallback = NULL;
   NT_IRQEnable(false);
   return nt;
 }
 
-
+/**
+@brief Удаление обьекта
+*/
 bool NT_Delete(NT_s *nt)
 {
+  NT_IRQEnable(false);
   free(nt);
   return true;
 }
@@ -78,24 +80,10 @@ bool NT_SetTime(uint16_t ticks)
   ASSERT_HALT(ticks < 32768, "Incorrect ticks");
   if (ticks > 32767)
     return false;
-  
-  typedef union 
-  {
-    uint32_t val;
-    uint8_t fild[4];
-  } fild;
-  
-  fild timer, network;
-  timer.val = ReadTimer();
-  network.val = ticks;
-  
-  // TOFFSET = NETWORK TIME - TIMER
-  // тут нужно подумать как вычислять время в рамках 24 бит
-  // TIMER - 24 бита, TOFFSET - 24 бита
-  
-  network.fild[2] = timer.fild[2]; // Расширяем сетевое время до 24 бит
-  TOFFSET = network.val - timer.val; // Вычисляем смещение
-  TOFFSET &= 0xFFFFFF; // Обрезаем лишнии биты
+ 
+  uint16_t timer = ReadTimer();
+  TOFFSET = ticks - timer;
+  TOFFSET &= 0x7FFF;
   return true;
 }
 
@@ -108,9 +96,24 @@ bool NT_SetTime(uint16_t ticks)
 */
 bool NT_SetCapture(uint16_t ticks)
 {
-  uint32_t val = ReadTimer() & (~0x7FFF); 
-  val |= ticks;
-  loadTimerCompare(val);
+  ASSERT_HALT(ticks < 32768, "Incorrect ticks");
+  
+  uint32_t timer = ReadTimer();
+  uint16_t network_time = timer & 0x7FFF;
+  uint32_t compare_time;
+  
+  if (ticks > network_time)
+  {
+      compare_time =  (timer & (~0x7FFF)) | ticks;
+  }
+  else
+  {
+    compare_time =  (timer & (~0x7FFF)) | ticks;
+    compare_time += 0x8000;
+    compare_time &= 0xFFFFFF;
+  }
+ 
+  loadTimerCompare(compare_time);
   return true;
 }
 
@@ -131,11 +134,19 @@ void NT_IRQEnable(bool state)
   }
 }
 
+/**
+@brief Устанавливает обработчик прерывания таймера
+@param[in] fn(uint16_t ticks) указатель на функцию-обработчик
+*/
 void NT_SetEventCallback(void (*fn)(uint16_t ticks))
 {
   EventCallback = fn;
 }
 
+/**
+@brief Возвращает время сети 
+@return Время сети в тиках
+*/
 uint16_t NT_GetTime(void)
 {
   uint32_t val = ReadTimer();

@@ -44,7 +44,19 @@
 
 "--proc_driver" 
 
-"sim" 
+"chipcon" 
+
+"--retain_memory" 
+
+"--verify_download" 
+
+"use_crc16" 
+
+"--stack_overflow" 
+
+"--number_of_banks" 
+
+"4" 
 
 
 
