@@ -3,6 +3,17 @@
 #include "ioCC2530.h"
 #include "nwdebuger.h"
 
+
+/**
+@file 
+@brief Модуль управления таймером сна
+@details При создании обьекта с помощью NT_Create, производится иницилизация
+ аппаратного таймера сна и он переходит в активное состояние. 
+ Аппаратный таймер сделан на 24х битном счетчике, значение которого изменить
+ нельзя. В свою очередь время сети имеет значения шириной в 15 бит.
+*/
+
+
 // После вызова EventCallback аппаратное прерывание завершается
 // и управление передается в главный цикл main.
 // Пользователь сам должен положить систему в сон
@@ -33,6 +44,8 @@ static void loadTimerCompare(uint32_t ticks);
 
 // Переменные класса
 void (*EventCallback)(uint16_t ticks);
+static uint32_t COMPARE_TIME; //!< Значение загруженное в регистр compare
+static bool FiredFlag; //!< Флаг указывает, что прерывание состоялось 
 
 /**
 @details Смещение времени сети относительно времени таймера.
@@ -55,6 +68,8 @@ NT_s* NT_Create(void)
   nt->NT_SetEventCallback = NT_SetEventCallback;
   nt->NT_GetTime = NT_GetTime;
   TOFFSET = 0;
+  COMPARE_TIME = 0;
+  FiredFlag = false;
   EventCallback = NULL;
   NT_IRQEnable(false);
   return nt;
@@ -71,7 +86,7 @@ bool NT_Delete(NT_s *nt)
 }
 
 /**
-@brief Устанавливаем текущее время сети
+@brief Устанавливаем текущее время сети и переустанавливает capture time
 @param[in] ticks время от 0-32767. Один tick 1/32768
 @return true если аргумент в диапазоне
 */
@@ -84,6 +99,14 @@ bool NT_SetTime(uint16_t ticks)
   uint16_t timer = ReadTimer();
   TOFFSET = ticks - timer;
   TOFFSET &= 0x7FFF;
+
+  // После установки времени нужно изменить compare time в таймере
+  // Но только в случаи если прерывание установленно
+  if (!FiredFlag)
+  {
+    NT_SetCapture(COMPARE_TIME);
+  }
+
   return true;
 }
 
@@ -98,9 +121,15 @@ bool NT_SetCapture(uint16_t ticks)
 {
   ASSERT_HALT(ticks < 32768, "Incorrect ticks");
   
-  uint32_t timer = ReadTimer();
-  uint16_t network_time = timer & 0x7FFF;
+  uint32_t timer = ReadTimer(); // Текущее значение счетчика
+  //NETWORK TIME = TIMER + TOFFSET
+  uint16_t network_time = (timer + TOFFSET) & 0x7FFF; // Текущее  временя сети
   uint32_t compare_time;
+  
+  COMPARE_TIME = ticks; // Сохраняем установленное значение
+  FiredFlag = false;
+  
+
   
   if (ticks > network_time)
   {
@@ -163,11 +192,17 @@ uint16_t NT_GetTime(void)
 #pragma vector=ST_VECTOR
 __interrupt void TimerCompareInterrupt(void)
 {
+  // Установленное время прерывание уже было обслуженно, а новое не
+  // установленно
+  if (FiredFlag)
+    return;
+  
   uint16_t ticks = NT_GetTime();
   if (EventCallback == NULL)
     return;
   EventCallback(ticks); // Вызываем пользовательский обработчик
   STIF = 0; // Очищаем флаг прерывания
+  FiredFlag = true;
 }
 
 /**

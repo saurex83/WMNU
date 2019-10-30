@@ -245,7 +245,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 17 14 70 25 51 31 18 27 95 72 47 71 90 92 88 45 96 52</file>
+                    <file> 25 70 17 14 51 31 18 27 95 72 47 71 90 92 88 45 96 52</file>
                 </tool>
                 <tool>
                     <name>ICC8051</name>
