@@ -3,14 +3,31 @@
 #include "ioCC2530.h"
 #include "nwdebuger.h"
 
-
 /**
 @file 
 @brief Модуль управления таймером сна
 @details При создании обьекта с помощью NT_Create, производится иницилизация
- аппаратного таймера сна и он переходит в активное состояние. 
- Аппаратный таймер сделан на 24х битном счетчике, значение которого изменить
- нельзя. В свою очередь время сети имеет значения шириной в 15 бит.
+ аппаратного таймера сна и он переходит в активное состояние. Если установлено 
+ определение #define USE_OSC32K будет использван внешний кварц.
+ За установку глобального прерывания IE отвечает пользователь.
+ Для использования модуля необходимо установить обработчик прерывания
+ NT_SetEventCallback(..). Далее с помощью NT_SetCompare(..) установить
+ время срабатывания прерывания, она же включит прерывание таймера. 
+ Перед вызовом пользовательского обработчика, запрещается прерывание таймера,
+ пользователь должен установить его повторно на необходимое время.
+ Модуль сна пробуждает МК из режимов PM1,PM2, но не переводит их обратно.
+ После завершения обработки прерывание, продолжится выполнение основного 
+ потока программы. Пользователь самостоятельно должен перевести МК в режим сна.
+ Функция NT_SetTime(..) производит подстройку времени сети и корректирует время
+ срабатывания прерывания. Что бы было понятнее приведу пример: 
+ Время сети 400 и установленно прерывание на 700.
+ Пользователь корректирует время на 300, но из-за разной разрядности счетчиков
+ прерывание произойдет по "старым часам", так как NT_SetTime только изменит
+ переменную относительного смещения, а не непосредственно значение счетчика.
+ Поэтому необходимо пересчитать время прерывания 700 к новому смещению.
+ Из найденных особенностей: когда вызывается обработчик прерывания, значение
+ времени всегда больше на 2 тика. Предполагаю из за ожидания синхронизации при
+ чтении значения таймера. 
 */
 
 
@@ -27,25 +44,27 @@
 // чем считывать ST0-3
 
 
+//#define USE_OSC32K // Использовать внешний квац 32.768 кГц
+
 // Публичные методы
 NT_s* NT_Create(void);
 bool NT_Delete(NT_s *nt);
 
 // Методы класса
 bool NT_SetTime(uint16_t ticks);
-bool NT_SetCapture(uint16_t ticks);
-void NT_IRQEnable(bool state);
+void NT_SetCompare(uint16_t ticks);
 void NT_SetEventCallback(void (*fn)(uint16_t ticks));
 uint16_t NT_GetTime(void);
 
 // Приватные методы
 static uint32_t ReadTimer(void);
 static void loadTimerCompare(uint32_t ticks);
+static inline bool isIRQEnable(void);
+static inline void NT_IRQEnable(bool state);
 
 // Переменные класса
 void (*EventCallback)(uint16_t ticks);
 static uint32_t COMPARE_TIME; //!< Значение загруженное в регистр compare
-static bool FiredFlag; //!< Флаг указывает, что прерывание состоялось 
 
 /**
 @details Смещение времени сети относительно времени таймера.
@@ -53,24 +72,35 @@ static bool FiredFlag; //!< Флаг указывает, что прерыван
 */
 uint16_t TOFFSET; 
 
+bool NT_CREATED; //!< Показывает что обьект уже создан
+
 /**
-@brief Создание структуры LLC_s
-@param[in] mac Указатель на структуру mac
-@return Указатель на структуру LLC_s или NULL
+@brief Создание структуры NT_s
+@return Указатель на структуру NT_s или NULL
 */
 NT_s* NT_Create(void)
 {
+  if (NT_CREATED)
+  {
+    ASSERT_HALT(NT_CREATED == false, "NT already created");
+    return NULL;
+  }
+  NT_CREATED = true;
   // Заполняем структуру указателей
   NT_s* nt = (NT_s*)malloc(NT_S_SIZE);
   nt->NT_SetTime = NT_SetTime;
-  nt->NT_SetCapture = NT_SetCapture;
-  nt->NT_IRQEnable = NT_IRQEnable;
+  nt->NT_SetCompare = NT_SetCompare;
   nt->NT_SetEventCallback = NT_SetEventCallback;
   nt->NT_GetTime = NT_GetTime;
   TOFFSET = 0;
   COMPARE_TIME = 0;
-  FiredFlag = false;
   EventCallback = NULL;
+
+  #ifdef USE_OSC32K
+  CLKCONCMD &= ~(1<<7); // Сбрасываем бит OSC32K, будет выбран 32.768 кварц
+  while (CLKCONSTA & (1<<7)); // Ждем пока бит не станет 0
+  #endif
+
   NT_IRQEnable(false);
   return nt;
 }
@@ -81,6 +111,9 @@ NT_s* NT_Create(void)
 bool NT_Delete(NT_s *nt)
 {
   NT_IRQEnable(false);
+  EventCallback = NULL;
+  TOFFSET = 0;
+  NT_CREATED = false;
   free(nt);
   return true;
 }
@@ -101,13 +134,42 @@ bool NT_SetTime(uint16_t ticks)
   TOFFSET &= 0x7FFF;
 
   // После установки времени нужно изменить compare time в таймере
-  // Но только в случаи если прерывание установленно
-  if (!FiredFlag)
+  // Но только в случаи если прерывание активно
+  if (isIRQEnable())
   {
-    NT_SetCapture(COMPARE_TIME);
+    NT_SetCompare(COMPARE_TIME);
   }
 
   return true;
+}
+
+/**
+@brief Вычисляет значение, которое нужно установить в регистр compare таймера.
+@params[in] ticks время сети в тикак
+*/
+static inline uint32_t calcCompareTime(uint16_t ticks)
+{
+    uint32_t cmp_time;
+    uint16_t ticks_offset;
+    
+    uint32_t timer = ReadTimer(); // Текущее значение счетчика
+    uint16_t network_time = (timer + TOFFSET) & 0x7FFF; // Текущее время сети
+    //NETWORK TIME = TIMER + TOFFSET
+    
+    ticks_offset = (ticks - TOFFSET) & 0x7FFF;
+    
+    timer &=~0x7FFF; // Убираем младшие 15 бит
+    if (ticks > network_time)
+    {
+      cmp_time = timer + ticks_offset;
+    }
+    else
+    {
+      cmp_time = timer + ticks_offset + 0x8000;
+      cmp_time &=0xFFFFFF;
+    }
+    
+    return cmp_time;
 }
 
 /**
@@ -117,40 +179,22 @@ bool NT_SetTime(uint16_t ticks)
 Процедура учитывает текущее значение таймера и перерасчитывает значение ticks. 
 @params[in] ticks время сети в тиках когда нужно проснуться
 */
-bool NT_SetCapture(uint16_t ticks)
+void NT_SetCompare(uint16_t ticks)
 {
   ASSERT_HALT(ticks < 32768, "Incorrect ticks");
   
-  uint32_t timer = ReadTimer(); // Текущее значение счетчика
-  //NETWORK TIME = TIMER + TOFFSET
-  uint16_t network_time = (timer + TOFFSET) & 0x7FFF; // Текущее  временя сети
-  uint32_t compare_time;
-  
   COMPARE_TIME = ticks; // Сохраняем установленное значение
-  FiredFlag = false;
   
-
-  
-  if (ticks > network_time)
-  {
-      compare_time =  (timer & (~0x7FFF)) | ticks;
-  }
-  else
-  {
-    compare_time =  (timer & (~0x7FFF)) | ticks;
-    compare_time += 0x8000;
-    compare_time &= 0xFFFFFF;
-  }
- 
+  uint32_t compare_time = calcCompareTime(ticks);
   loadTimerCompare(compare_time);
-  return true;
+  NT_IRQEnable(true);
 }
 
 /**
 @brief Разрешение прерываний таймера сна
 @params[in] state = true - разрешить обработку прерываний
 */
-void NT_IRQEnable(bool state)
+static inline void NT_IRQEnable(bool state)
 {
   STIF = 0;
   if (state)
@@ -161,6 +205,18 @@ void NT_IRQEnable(bool state)
   {
     STIE = 0;
   }
+}
+
+/**
+@brief Проверка активности прерывания таймера
+@return true если прерывание установленно
+*/
+static inline bool isIRQEnable(void)
+{
+  if (STIE)
+    return true;
+  else 
+    return false;
 }
 
 /**
@@ -191,18 +247,14 @@ uint16_t NT_GetTime(void)
 */
 #pragma vector=ST_VECTOR
 __interrupt void TimerCompareInterrupt(void)
-{
-  // Установленное время прерывание уже было обслуженно, а новое не
-  // установленно
-  if (FiredFlag)
-    return;
-  
+{  
   uint16_t ticks = NT_GetTime();
   if (EventCallback == NULL)
     return;
+  // Отключаем прерывание таймера. Забота пользователя его включить
+  NT_IRQEnable(false); 
   EventCallback(ticks); // Вызываем пользовательский обработчик
   STIF = 0; // Очищаем флаг прерывания
-  FiredFlag = true;
 }
 
 /**

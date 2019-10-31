@@ -4,9 +4,10 @@
 extern void suite_FItem(void);
 extern void suite_FChain(void);
 extern void suite_TIC(void);
+extern void suite_TIC_HW(void);
 extern void suite_MAC(void);
 extern void suite_LLC(void);
-extern void suite_NT(void);
+extern void suite_NT_HW(void);
 extern void suite_Frames(void);
 
 int main()
@@ -19,11 +20,12 @@ int main()
   // Вызов функций тестирования
 
  // suite_TIC();
+   suite_TIC_HW();
  // suite_Frames();
  // suite_FItem();
  // suite_FChain();
  // suite_LLC();
-  suite_NT();
+ // suite_NT_HW(); // Это аппаратный тест
 	//run_utest_framepart();
 
 // Добавляем результаты тестов

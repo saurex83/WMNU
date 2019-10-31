@@ -1,6 +1,8 @@
 #include "utest_suite.h"
 #include "TIC.h"
 #include "NTMR.h"
+#include "ioCC2530.h"
+
 
 #define DAILY_SEC 86400
 #define TS_ACTIVE (uint16_t)327 // 9.979 мс
@@ -52,15 +54,9 @@ static bool mock_NT_SetTime(uint16_t ticks)
   return true;
 }
 
-static bool mock_NT_SetCapture(uint16_t ticks)
+static void mock_NT_SetCapture(uint16_t ticks)
 {
   results.set_capture = ticks;
-  return true;
-}
-
-static void mock_NT_IRQEnable(bool state)
-{
-  results.irq_enable = state;
 }
 
 static uint16_t mock_NT_GetTime(void)
@@ -80,8 +76,7 @@ static void create_test(void)
   NT_s *nt = NT_Create();
   nt->NT_SetEventCallback = mock_NT_SetEventCallback;
   nt->NT_SetTime = mock_NT_SetTime;
-  nt->NT_SetCapture = mock_NT_SetCapture;
-  nt->NT_IRQEnable = mock_NT_IRQEnable;
+  nt->NT_SetCompare = mock_NT_SetCapture;
   nt->NT_GetTime = mock_NT_GetTime;
   
   TIC_s *tic = TIC_Create(nt);
@@ -191,8 +186,74 @@ static void create_test(void)
   NT_Delete(nt);
 }
 
+static void RXC(uint8_t TS)
+{
+  P0_1 = 1;
+  P0_1 = 0;
+}
+
+static void TXC(uint8_t TS)
+{
+  P0_4 = 1;
+  P0_4 = 0;
+}
+
+static void SEC(uint8_t TS)
+{
+  if (TS == 0)
+  {
+    P0_0 = 1;
+    P0_0 = 0;
+  }
+}
+
+/**
+@details Аппаратный тест TIC. Выводит сигналы
+на выводы P0_0 завершение нулевого слота. P0_1 прием, P0_4 передача.
+Тайм слот 11 показывает приоритет передачи над приемом.
+*/
+static void test_hw(void)
+{
+  NT_s *nt = NT_Create();
+  TIC_s *tic = TIC_Create(nt);
+  EA = 1;
+  P0DIR = 0xff;
+  P0_0 = 0;
+  P0_1 = 0;
+  P0_2 = 0;
+  
+  tic->TIC_SetRXCallback(RXC);
+  tic->TIC_SetTXCallback(TXC);
+  tic->TIC_SetSECallback(SEC);
+  
+  tic->TIC_SetRXState(10, true);
+  tic->TIC_SetRXState(11, true);
+  tic->TIC_SetRXState(20, true);
+  tic->TIC_SetRXState(21, true);
+  
+  tic->TIC_SetTXState(5, true);
+  tic->TIC_SetTXState(11, true);
+ 
+  tic->TIC_SetRTC(10000);
+  tic->TIC_SetNonce(5000);
+  volatile uint32_t rtc, ut, nonce;
+  while(true)
+  {
+    // тут можно остановить программу и посмотреть работу таймеров
+    // rtc больше на 10000 чем uptime, nonce больше на 5000
+    ut = tic->TIC_GetUptime(); 
+    rtc = tic->TIC_GetRTC();
+    nonce = tic->TIC_GetNonce();
+  }
+}
+
 void suite_TIC(void)
 {
   umsg_line("TIC module");
   create_test();
+}
+
+void suite_TIC_HW(void)
+{
+  test_hw();
 }

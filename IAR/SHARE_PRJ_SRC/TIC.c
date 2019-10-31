@@ -2,6 +2,12 @@
 #include "stdlib.h"
 #include "nwdebuger.h"
 
+/**
+@file 
+@brief 
+@details
+*/
+
 // Публичные методы
 TIC_s* TIC_Create(NT_s* nt);
 bool TIC_Delete(TIC_s *tic);
@@ -93,7 +99,8 @@ TIC_s* TIC_Create(NT_s* nt)
   
   // Устанавливаем обработчик прерываний таймера
   nt->NT_SetEventCallback(TIC_HW_Timer_IRQ);
-  
+  // Запускаем процесс планировщика
+  nt->NT_SetCompare(0); 
   TIC_CREATED = true;
   return tic;
 }
@@ -242,7 +249,7 @@ static inline void incrementTS(uint8_t *TS)
 static inline void set_capture_time(uint8_t TS)
 {
   // Установка прерывания на нужный слот
-    TIC_nt->NT_SetCapture(FULL_SLOT*(uint16_t)TS);
+    TIC_nt->NT_SetCompare(FULL_SLOT*(uint16_t)TS);
 }
 
 static void TIC_TDMAShelduler(uint8_t TS)
