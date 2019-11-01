@@ -38,6 +38,8 @@ static inline void OP_EXE(uint8_t op);
 // Думаю это не будет являтся двойным шифрованием и будет устойчиво к взлому
 static void RI_BitRawCrypt(uint8_t *src, uint8_t size); // Шифрование передачи
 static void RI_BitRawDecrypt(uint8_t *src, uint8_t size); // Дешифрока приема
+static inline void setFreq(uint8_t CH); // Установка частоты передатчика
+static void LoadTXData(uint8_t *src, uint8_t len); // Загрузка данных в tx buf
 
 // Переменные модуля
 bool RADIO_CREATED = false;
@@ -75,6 +77,7 @@ enum TX_POWER_e
 #define CONST_A (int8_t)0 //!< Коэффициент A
 #define CONST_B (int8_t)1 //!< Коэффициент B
 #define LIQ_CALC(corr) ((corr-CONST_A)*CONST_B) //!< Формула вычисление LIQ 
+#define FRQ_CALC(x) (11+5*(x-11)) //!< Формул вычисления частоты сигнала
 
 /// Глобальные параметры модуля
 struct
@@ -125,7 +128,7 @@ RI_s* RI_create(void)
   RADIO_CFG.CH = CH11;
   RADIO_CFG.TX_POWER = m0x5;
   RADIO_CFG.MODULATION_MODE = IEEE_MODE;
-  
+  RADIO_CFG.STREAM_CRYPT_ENABLE = true;
   // Пост действия с радио
   random_core_init();
   return ri;
@@ -154,7 +157,19 @@ A correlation value of ~110 indicates a maximum quality frame while a value
 of ~50 is typically the lowest quality frames detectable by CC2520. 
 */
 /* После включения радио находится в активном режиме но приемник выключен */
-  T1CCTL0=5;
+  //T1CCTL0=5;
+  
+  // Устанавливаем частоту радиопередатчика
+  setFreq(RADIO_CFG.CH);
+  
+  // Устанавливаем мощность выходного сигнала
+  TXPOWER = RADIO_CFG.TX_POWER;
+  
+  // Устанавливаем режим модуляции
+  MDMTEST1_u MDM1;
+  MDM1.value = MDMTEST1;
+  MDM1.bits.MODULATION_MODE = RADIO_CFG.MODULATION_MODE;
+  MDMTEST1 = MDM1.value;
 }
 
 /*!
@@ -200,7 +215,59 @@ static bool RI_SetChannel(uint8_t CH)
 */
 static bool RI_Send(FChain_s *fc)
 {
-  return 0;
+  ASSERT_HALT(fc != NULL, "fc NULL");
+  if (fc == NULL)
+    return false;
+  
+  // Устанавливаем частоту передачи пакета
+  setFreq(fc->meta.CH);
+  
+  // TODO 
+  /*
+1. Извлекаем из fc данные в массив
+2. Если нужно массив шифруем
+3. Загружеаем данные в tx buf
+4. Пробуем передать с STXONCCA
+
+Другой вариант
+1. Очищаем буфер
+2. Пробуем STXONCCA
+3. Если канал доступен вызываем callback
+4. Извлекаем данные из fc
+5. шифруем данные
+6. загружаем данные
+
+*/
+  
+  // Загружаем данные из пакета в буфер передачи
+  LoadTXData(NULL, 0);
+  
+  
+  OP_EXE(OP_STXONCCA);
+  
+  
+  return true;
+}
+
+static void LoadTXData(uint8_t *src, uint8_t len)
+{
+  // Очищаем буфер передатчика
+  OP_EXE(OP_SFLUSHTX); 
+  // 
+  while (len)
+  {
+    RFD = *src;
+    src++;
+    len--;
+  }
+};
+static inline void setFreq(uint8_t CH)
+{
+  ASSERT_HALT( (CH >= 11) && (CH <= 26), "Incorrect radio channel");
+  // Устанавливаем частоту радиопередатчика
+  FREQCTRL_u FRQ;
+  FRQ.value = FRQ_CALC(RADIO_CFG.CH);
+  FREQCTRL = FRQ.value;  
 }
 
 /*!

@@ -27,7 +27,7 @@ union MDMCTRL1_u
   } bits;
 };
 
-union MDMTEST1_u
+typedef union 
 {
   uint8_t value;
   struct {
@@ -35,7 +35,7 @@ union MDMTEST1_u
     uint8_t MODULATION_MODE:1;
     uint8_t RFC_SNIFF_EN:1;
   } bits;
-};
+} MDMTEST1_u;
 
 union FRMCTRL0_u
 {
@@ -70,13 +70,13 @@ union FREQTUNE_u // Можно слегка сместить частоту, ч�
 };
 
 
-union FREQCTRL_u
+typedef union 
 {
   uint8_t value;
   struct {
     uint8_t FREQ:7;    
   } bits;
-};
+} FREQCTRL_u;
 
 
 union FSMSTAT0_u
