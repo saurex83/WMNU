@@ -19,7 +19,7 @@ uint8_t FC_getQuantity(FChain_s* fc);
 FItem_s* FC_getIterator(FChain_s* fc);
 uint8_t FC_getObjectQuantity();
 bool FC_isHaveType(FChain_s* fc, FItem_t type);
-
+void FC_copyChainData(FChain_s* fc, uint8_t *src, uint8_t *len);
 
 FChain_s* FC_create(void)
 {
@@ -262,4 +262,32 @@ bool FC_isHaveType(FChain_s* fc, FItem_t type)
       return false;
 
 	return true;
+}
+
+/**
+@brief Последовательно копируем данные элементов fitem содежращиеся в цепочке
+@params[out] src указатель область памяти, где будут размещены данные
+@params[out] len длинна скопированных данных. 0 - данных нет 
+*/
+void FC_copyChainData(FChain_s* fc, uint8_t *src, uint8_t *len)
+{
+  FItem_s* fi;
+ 
+  FC_iteratorToHead(fc);
+  fi = FC_getIterator(fc);
+  *len = 0;
+  uint8_t item_len;
+  uint8_t *item_data;
+  uint8_t *src_ptr = src;
+  
+  while (fi != NULL)
+  {
+    item_len = FI_getLength(fi);
+    item_data = FI_getData(fi);
+    memcpy(src_ptr, item_data, item_len);
+    src_ptr +=item_len;
+    fi = FI_getNext(fi);
+  }
+  
+  
 }

@@ -49,3 +49,4 @@ bool FC_isHaveType(FChain_s* fc, FItem_t type);
 uint8_t FC_getQuantity(FChain_s* fc);
 FItem_s* FC_getIterator(FChain_s* fc);
 uint8_t FC_getObjectQuantity();
+void FC_copyChainData(FChain_s* fc, uint8_t *src, uint8_t *len);

@@ -3,9 +3,14 @@
 // приводит к немедленному исполнению. Команды записываются в RFST.
 // Если RFST = 0, то контроллер готов выполнять следующию инструкцию.
 enum RADIO_OPCODE {
-  OP_SRXON = 0xD3, OP_STXON = 0xD9, OP_STXONCCA = 0xDA, OP_SSAMPLECCA = 0xDB,
-  OP_SRFOFF = 0xDF, OP_SFLUSHRX = 0xDD, OP_SFLUSHTX = 0xDE
+  OP_SRXON = 0xE3, OP_STXON = 0xE9, OP_STXONCCA = 0xEA, OP_SSAMPLECCA = 0xEB,
+  OP_SRFOFF = 0xEF, OP_SFLUSHRX = 0xED, OP_SFLUSHTX = 0xEE,
+  OP_CMD_DEMOD_TEST = 0x02, OP_CMD_SHUTDOWN = 0x01, OP_ISSTART = 0xE1
 };
+
+// Флаги прерывания RFIRQF0, RFIRQF1,
+#define RFIRQF1_TXDONE  (1<<1)
+#define RFIRQF0_SFD     (1<<1)
 
 union MDMCTRL0_u
 {
@@ -88,7 +93,7 @@ union FSMSTAT0_u
   } bits;
 };
 
-union FSMSTAT1_u
+typedef union 
 {
   uint8_t value;
   struct {
@@ -101,7 +106,7 @@ union FSMSTAT1_u
     uint8_t FIFOP:1;
     uint8_t FIFO:1;
   } bits;
-};
+} FSMSTAT1_u;
 
 union CCACTRL1_u
 {

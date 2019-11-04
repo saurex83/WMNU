@@ -12,7 +12,7 @@
         <ByteLimit>50</ByteLimit>
     </Stack>
     <DebugChecksum>
-        <Checksum>219133582</Checksum>
+        <Checksum>2425963070</Checksum>
     </DebugChecksum>
     <CodeCoverage>
         <Enabled>_ 0</Enabled>
@@ -82,6 +82,7 @@
         <Fmt0>{W}1:CLKCONCMD	1	0</Fmt0>
         <Fmt1>{W}1:CLKCONSTA	1	0</Fmt1>
         <Fmt2>{W}1:U0CSR	1	0</Fmt2>
+        <Fmt3>{W}1:op	1	0</Fmt3>
     </watch_formats>
     <LogFile>
         <LoggingEnabled>_ 0</LoggingEnabled>
@@ -94,8 +95,10 @@
     </TermIOLog>
     <Breakpoints>
         <Bp0>_ "STD_CODE" "{$PROJ_DIR$\src\utest_NTMR.c}.100.1" 0 0 0 0 "" 0 ""</Bp0>
-        <Bp1>_ "STD_CODE" "{$PROJ_DIR$\src\utest_TIC.c}.217.14" 1 0 0 0 "" 0 ""</Bp1>
-        <Count>2</Count>
+        <Bp1>_ "STD_CODE" "{$PROJ_DIR$\src\utest_TIC.c}.217.14" 0 0 0 0 "" 0 ""</Bp1>
+        <Bp2>_ "STD_CODE" "{$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.c}.498.3" 1 0 0 0 "" 0 ""</Bp2>
+        <Bp3>_ "STD_CODE" "{$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.c}.194.3" 1 0 0 0 "" 0 ""</Bp3>
+        <Count>4</Count>
     </Breakpoints>
     <ChipconEmu>
         <StopTimersOnHalt>0</StopTimersOnHalt>
