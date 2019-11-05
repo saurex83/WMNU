@@ -29,6 +29,10 @@
         <encoding>UTF-8</encoding>
     </override>
     <override>
+        <path>\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_delays.c</path>
+        <encoding>UTF-8</encoding>
+    </override>
+    <override>
         <path>\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\FChain.h</path>
         <encoding>UTF-8</encoding>
     </override>
@@ -54,6 +58,14 @@
     </override>
     <override>
         <path>\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\TIC.c</path>
+        <encoding>UTF-8</encoding>
+    </override>
+    <override>
+        <path>\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\delays.c</path>
+        <encoding>UTF-8</encoding>
+    </override>
+    <override>
+        <path>\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\delays.h</path>
         <encoding>UTF-8</encoding>
     </override>
 </userOverrides>

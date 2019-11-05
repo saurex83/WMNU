@@ -2226,6 +2226,12 @@
     <group>
         <name>share src</name>
         <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\delays.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\delays.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\FChain.c</name>
         </file>
         <file>
@@ -2288,6 +2294,9 @@
     </group>
     <group>
         <name>test modules</name>
+        <file>
+            <name>$PROJ_DIR$\src\utest_delays.c</name>
+        </file>
         <file>
             <name>$PROJ_DIR$\src\utest_FChain.c</name>
         </file>

@@ -6,7 +6,6 @@
 #include "RADIO.h"
 #include "stdlib.h"
 #include "nwdebuger.h"
-#include "ioCC2530.h"
 #include "Radio_defs.h"
 
 // Публичные методы
@@ -159,7 +158,6 @@ A correlation value of ~110 indicates a maximum quality frame while a value
 of ~50 is typically the lowest quality frames detectable by CC2520. 
 */
 /* После включения радио находится в активном режиме но приемник выключен */
-  //T1CCTL0=5;
   
   // Устанавливаем частоту радиопередатчика
   setFreq(RADIO_CFG.CH);
@@ -175,31 +173,11 @@ of ~50 is typically the lowest quality frames detectable by CC2520.
 }
 
 /*!
-\brief Выполняет команду на командном процессоре микросхемы радиопередатчика
-\param[in] op Номер OP команды см. документацию
-*/
-static inline void OP_EXE(uint8_t op) 
-{
-  op |= 0xE0;
-  
-  if (RFST == 0xD0)
-  {
-    RFST = op;
-  }
-  else
-  {
-    while (RFST); // Убедимся что радио не выполняет команд
-    RFST = op;
-  }
-  while (RFST); // Дождемся завершения
-}
-
-/*!
 \brief Отключает радиопередатчик
 */
 static void RI_Off(void)
 {
-  OP_EXE(OP_SRFOFF); // Останавливаем прием и передачу. отключаем синтезатор
+  ISRFOFF(); // Останавливаем прием и передачу. отключаем синтезатор
   // На диаграмме состояния передачтчика это режим idle
 }
 
@@ -276,13 +254,13 @@ static bool SendWithoutCallbalck(FChain_s *fc)
       // Копируем данные в буфер. Очистка буфера автоматическая
       LoadTXData(data, data_size);
       // Для начала передачи по команде STXONCCA нужно включить приемник
-      OP_EXE(OP_SRXON);
+      ISRXON();
       // Ждем пока статус RSSI_VALID станет true
       while(!RSSISTAT);
       // Очищаем флаг передачи сообщения
       RFIRQF1 &= ~RFIRQF1_TXDONE;
       // Начинаем передачу данных
-      OP_EXE(OP_STXONCCA);
+      ISTXONCCA();
       // Произошла ошибка передачи если SAMPLED_CCA false
       FSMSTAT1_u fsmstat1;
       fsmstat1.value = FSMSTAT1;
@@ -305,7 +283,7 @@ static bool SendWithoutCallbalck(FChain_s *fc)
   }
 
   free(data);
-  OP_EXE(OP_SRFOFF);
+  ISRFOFF();
   if (result)
     return true;
   return false; 
@@ -327,7 +305,7 @@ static bool SendWithCallback(FChain_s *fc)
       ASSERT_HALT(data != NULL, "Cant memory allocate");
         
       // Для начала передачи по команде STXONCCA нужно включить приемник
-      OP_EXE(OP_SRXON);
+      ISRXON();
       
       // Ждем пока статус RSSI_VALID станет true
       while(!RSSISTAT);
@@ -337,7 +315,7 @@ static bool SendWithCallback(FChain_s *fc)
       RFIRQF0 &= ~RFIRQF0_SFD;  
       
       // Начинаем передачу данных
-      OP_EXE(OP_STXONCCA);
+      ISTXONCCA();
       
       // Произошла ошибка передачи если SAMPLED_CCA false
       FSMSTAT1_u fsmstat1;
@@ -378,7 +356,7 @@ static bool SendWithCallback(FChain_s *fc)
       }
   }
   free(data);
-  OP_EXE(OP_SRFOFF);
+  ISRFOFF();
   if (result)
     return true;
   return false; 
@@ -388,8 +366,8 @@ static void LoadTXData(uint8_t *src, uint8_t len)
 {
   uint8_t *src_ptr = src;
   // Очищаем буфер передатчика
-  OP_EXE(OP_SFLUSHTX); 
-  // 
+  ISFLUSHTX(); 
+
   while (len)
   {
     RFD = *src_ptr;
@@ -415,7 +393,7 @@ RI_CRC_ERROR. Дешифрует данные при необходимости.
 */
 static FChain_s* RI_Receive(uint8_t timeout)
 {
-  OP_EXE(OP_SRXON);
+  ISRXON();
   return NULL;
 }
 
@@ -452,9 +430,23 @@ static uint32_t RI_GetUptime(void)
 */
 static uint8_t bits_count(uint8_t value) {
   int ret = 0;
-  for ( ; value; value >> 1 )
+  for ( ; value; value = value >> 1 )
     ret += value & 1;
   return ret;
+}
+
+/**
+@brief Возращает 1 байт случайного числа
+@details Радио выдает всего лишь дви бита, нам нужно 8 
+*/
+static inline uint8_t getRNDByte(void)
+{
+  uint8_t val = 0;
+  val |= RFRND << 0;
+  val |= RFRND << 2;
+  val |= RFRND << 4;
+  val |= RFRND << 6;
+  return val;
 }
 
 /**
@@ -467,11 +459,11 @@ static inline uint8_t readRandom(void)
 {
   uint8_t rnd_val = 0;
   uint8_t bit_cnt = 0;
-  while ( bit_cnt >= 2 && bit_cnt <= 6 )
+  while ( bit_cnt <= 2 || bit_cnt >= 6 )
   {
-    rnd_val = RFRND;
-    while (rnd_val == RFRND);
-    rnd_val = RFRND;
+    rnd_val = getRNDByte();
+    while (rnd_val == getRNDByte());
+    rnd_val = getRNDByte();
     bit_cnt = bits_count(rnd_val);
   }
   return rnd_val;
@@ -485,26 +477,26 @@ static void random_core_init(void)
   unsigned int rnd_core = 0;;
      
   RI_On();
-  FREQCTRL = 0x00;
-  CSPCTRL = 0x01;
+  FREQCTRL = 0x00; // Выбираем не используемую частоту
+
   // TODO По какой то причине OP_EXE не выполняет команду.
   // регистра RFST читается как 0xD0. это его состояние при reset
   // Включаем демодулятор
-  OP_EXE(OP_ISSTART);
+  ISRXON();
   
   // Ждем пока статус RSSI_VALID станет true
   while(!RSSISTAT);
   
   // Ждем случайных чисел
   while (RFRND == 0);
-
+  
   // Настраиваем ядро случайного генератора
   rnd_core = readRandom();
   rnd_core |= (unsigned int)readRandom()<<8;
   srand(rnd_core);
   
   // Включаем демодулятор
-  OP_EXE(OP_CMD_SHUTDOWN);
+  ISRFOFF();
 }
 
 /*!

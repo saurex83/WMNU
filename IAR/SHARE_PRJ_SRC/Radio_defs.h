@@ -1,12 +1,16 @@
+#include "ioCC2530.h"
 
 // Это Immediate Strobe instructions (ISxxx). Запись в командный регистр
 // приводит к немедленному исполнению. Команды записываются в RFST.
-// Если RFST = 0, то контроллер готов выполнять следующию инструкцию.
-enum RADIO_OPCODE {
-  OP_SRXON = 0xE3, OP_STXON = 0xE9, OP_STXONCCA = 0xEA, OP_SSAMPLECCA = 0xEB,
-  OP_SRFOFF = 0xEF, OP_SFLUSHRX = 0xED, OP_SFLUSHTX = 0xEE,
-  OP_CMD_DEMOD_TEST = 0x02, OP_CMD_SHUTDOWN = 0x01, OP_ISSTART = 0xE1
-};
+// Состояние RFST можно не проверять. Он при выполнении ISxxx равен 0xD0
+#define ISRXON()        RFST = 0xE3
+#define ISTXON()        RFST = 0xE9
+#define ISTXONCCA()     RFST = 0xEA
+#define ISSAMPLECCA()   RFST = 0xEB
+#define ISRFOFF()       RFST = 0xEF
+#define ISFLUSHRX()     RFST = 0xED
+#define ISFLUSHTX()     RFST = 0xEE
+
 
 // Флаги прерывания RFIRQF0, RFIRQF1,
 #define RFIRQF1_TXDONE  (1<<1)

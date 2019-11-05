@@ -19,41 +19,34 @@ static inline bool isNear(uint16_t A, uint16_t B, uint16_t x)
 
 
 static void TimerHndl(uint16_t ticks)
-{
-  uint16_t irq_table[] = {0,1000, 2000, 25000,26000,27000};
-  static uint8_t irq_num = 1; 
-  static uint8_t loops = 3;
-  
-  volatile static uint16_t xx;
-  xx = ticks;
-  
+{    
   if (isNear(ticks, 0 , 3))
   {
-    NT_SetCompare(1000);
+    nt->NT_SetCompare(1000);
     P0_0 = 1;
     P0_0 = 0;
   }
   else if (isNear(ticks, 1000 , 3))
   {
-    NT_SetCompare(2000);
+    nt->NT_SetCompare(2000);
     P0_0 = 1;
     P0_0 = 0;
   }
   else if (isNear(ticks, 2000 , 3))
   {
-    NT_SetCompare(25000);
+    nt->NT_SetCompare(25000);
     P0_0 = 1;
     P0_0 = 0;
   }  
   else if (isNear(ticks, 25000 , 3))
   {
-    NT_SetCompare(26000);
+    nt->NT_SetCompare(26000);
     P0_0 = 1;
     P0_0 = 0;
   }
   else if (isNear(ticks, 26000 , 3))
   {
-    NT_SetCompare(27000);
+    nt->NT_SetCompare(27000);
     P0_0 = 1;
     P0_0 = 0;
   }

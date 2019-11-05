@@ -10,6 +10,9 @@ extern void suite_LLC(void);
 extern void suite_NT_HW(void);
 extern void suite_Frames(void);
 extern void suite_RADIO_HW(void);
+extern void suite_delays_HW(void);
+extern void suite_delays(void);
+
 int main()
 {
   nwDebugerInit();
@@ -21,7 +24,9 @@ int main()
 
  // suite_TIC();
  //  suite_TIC_HW();
-   suite_RADIO_HW();
+   //suite_RADIO_HW();
+  suite_delays();
+  suite_delays_HW();
  // suite_Frames();
  // suite_FItem();
  // suite_FChain();
