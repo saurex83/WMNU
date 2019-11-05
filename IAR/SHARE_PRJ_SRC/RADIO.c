@@ -349,10 +349,16 @@ static bool SendWithCallback(FChain_s *fc)
         break;
       }
       
+      // TODO После SFD начинаются данные. Нужно вызывать callback после 
+      // SAMPLED_CCA и TX_STATE.
       // Ждем завершения передачи SFD
-      while (!RFIRQF0 & RFIRQF0_SFD);
+     // while (!RFIRQF0 & RFIRQF0_SFD);
+    
+      // Ждем начала передачи преамбалы
+      while (fsmstat1.bits.TX_ACTIVE)
+          fsmstat1.value = FSMSTAT1;
       
-      // Как только завершилась передача SFD запрашиваем fchain
+      // Как только началась передача преамбалы запрашиваем fchain
       FChain_s *new_fc = fc->meta.SFD_Callback();
       FC_copyChainData(new_fc, data, &data_size); // Копируем данные в буфер
       // Шифруем данные при необходимости
@@ -480,11 +486,11 @@ static void random_core_init(void)
      
   RI_On();
   FREQCTRL = 0x00;
-  
+  CSPCTRL = 0x01;
   // TODO По какой то причине OP_EXE не выполняет команду.
   // регистра RFST читается как 0xD0. это его состояние при reset
   // Включаем демодулятор
-  OP_EXE(OP_SRXON);
+  OP_EXE(OP_ISSTART);
   
   // Ждем пока статус RSSI_VALID станет true
   while(!RSSISTAT);
