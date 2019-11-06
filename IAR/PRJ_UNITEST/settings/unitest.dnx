@@ -12,7 +12,7 @@
         <ByteLimit>50</ByteLimit>
     </Stack>
     <DebugChecksum>
-        <Checksum>3038758100</Checksum>
+        <Checksum>3324115192</Checksum>
     </DebugChecksum>
     <CodeCoverage>
         <Enabled>_ 0</Enabled>
@@ -98,7 +98,10 @@
     <Breakpoints>
         <Bp0>_ "STD_CODE" "{$PROJ_DIR$\src\utest_NTMR.c}.93.1" 0 0 0 0 "" 0 ""</Bp0>
         <Bp1>_ "STD_CODE" "{$PROJ_DIR$\src\utest_TIC.c}.217.14" 0 0 0 0 "" 0 ""</Bp1>
-        <Count>2</Count>
+        <Bp2>_ "STD_CODE" "{$PROJ_DIR$\src\utest_delays.c}.37.3" 1 0 0 0 "" 0 ""</Bp2>
+        <Bp3>_ "STD_CODE" "{$PROJ_DIR$\src\utest_delays.c}.24.3" 1 0 0 0 "" 0 ""</Bp3>
+        <Bp4>_ "STD_CODE" "{$PROJ_DIR$\src\utest_delays.c}.29.3" 1 0 0 0 "" 0 ""</Bp4>
+        <Count>5</Count>
     </Breakpoints>
     <ChipconEmu>
         <StopTimersOnHalt>0</StopTimersOnHalt>
