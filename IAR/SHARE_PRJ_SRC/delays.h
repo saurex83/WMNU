@@ -1,9 +1,23 @@
 #pragma once
 #include "stdint.h"
 
+#define Tusec 1
+#define Tmsec 1000
+#define Tsec 1000000
+
+/**
+@brief Описание временных меток таймера
+*/
+typedef struct
+{
+  union
+  {
+    uint32_t timer;
+    uint8_t  byte[8];
+  };
+} TimeStamp_s;
+
 void TIM_init(void);
-uint32_t TIM_getTimeUs();
-uint32_t TIM_passedTimeUs(uint32_t time);
-void TIM_delayUs(uint32_t delay);
-uint16_t TIM_getMACTicks();
-uint32_t TIM_MAC_NS(uint16_t start, uint16_t stop);
+void TIM_TimeStamp(TimeStamp_s* timestamp);
+uint32_t TIM_passedTime(TimeStamp_s* start, TimeStamp_s* stop);
+void TIM_delay(uint32_t delay);

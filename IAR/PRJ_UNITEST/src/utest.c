@@ -12,6 +12,7 @@ extern void suite_Frames(void);
 extern void suite_RADIO_HW(void);
 extern void suite_delays_HW(void);
 extern void suite_delays(void);
+extern void suite_coder(void);
 
 int main()
 {
@@ -25,8 +26,9 @@ int main()
  // suite_TIC();
  //  suite_TIC_HW();
    //suite_RADIO_HW();
-  suite_delays();
-  suite_delays_HW();
+ // suite_delays();
+ // suite_delays_HW();
+  suite_coder();
  // suite_Frames();
  // suite_FItem();
  // suite_FChain();

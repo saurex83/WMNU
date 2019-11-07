@@ -4,37 +4,28 @@
 static void alg_test(void)
 {
   TIM_init();
-  uint32_t start = TIM_getTimeUs();
-  TIM_delayUs( (uint32_t)10 * (uint32_t)512);
-  TIM_delayUs( (uint32_t)100 * (uint32_t)512);
-  TIM_delayUs( (uint32_t)90 * (uint32_t)512);
-  uint32_t passed = TIM_passedTimeUs(start);
-  umsg("delays", "Delays test", passed == 102400);
-  // TODO Тест с переполнением таймера
   
-  start = TIM_getTimeUs();
-  TIM_delayUs( (uint32_t)130560-512);
-  TIM_delayUs( (uint32_t)100 * (uint32_t)512);
-  passed = TIM_passedTimeUs(start);
-  umsg("delays", "Delays test overflow", passed == 50688);
+  uint32_t passed;
+  TimeStamp_s start, stop;
  
-  uint16_t mac_start = TIM_getMACTicks();
-  uint16_t mac_stop = TIM_getMACTicks();
-  passed = TIM_MAC_NS(mac_start, mac_stop);
-  umsg("delays", "TIM_passedTimeNs calib to zero", passed == 0);
- 
-  mac_start = TIM_getMACTicks();
-  mac_stop = TIM_getMACTicks();
-  passed = TIM_MAC_NS(mac_start, mac_stop);
-  umsg("delays", "TIM_passedTimeNs calib to zero", passed == 0);
-  
-  
-  volatile uint8_t tmp = 0;
-  mac_start = TIM_getMACTicks();
-  tmp++;
-  mac_stop = TIM_getMACTicks();
-  passed = TIM_MAC_NS(mac_start, mac_stop);
-  umsg("delays", "TIM_passedTimeNs meas add op ", passed == 0);
+  TIM_TimeStamp(&start);
+  TIM_TimeStamp(&stop);
+  passed = TIM_passedTime(&start, &stop);
+  umsg("delays", "TIM_passedTimeNs meas add op ", passed  < 10);
+
+// Это ручная проверка работы модуля
+//  TIM_TimeStamp(&start);
+//  TIM_delay(500);
+//  TIM_TimeStamp(&stop);
+//  passed = TIM_passedTime(&start, &stop);
+//  umsg("delays", "TIM_passedTimeNs meas add op ", passed  < 10);
+//  
+//  TIM_TimeStamp(&start);
+//  TIM_delay(60*Tsec);
+//  TIM_TimeStamp(&stop);
+//  passed = TIM_passedTime(&start, &stop);
+//  umsg("delays", "TIM_passedTimeNs meas add op ", passed  < 10);
+
 }
 
 void suite_delays_HW(void)

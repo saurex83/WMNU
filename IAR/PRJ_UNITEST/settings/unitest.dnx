@@ -12,7 +12,7 @@
         <ByteLimit>50</ByteLimit>
     </Stack>
     <DebugChecksum>
-        <Checksum>3324115192</Checksum>
+        <Checksum>3244029394</Checksum>
     </DebugChecksum>
     <CodeCoverage>
         <Enabled>_ 0</Enabled>
@@ -81,10 +81,12 @@
     <watch_formats>
         <Fmt0>{W}1:CLKCONCMD	1	0</Fmt0>
         <Fmt1>{W}1:CLKCONSTA	1	0</Fmt1>
-        <Fmt2>{W}1:U0CSR	1	0</Fmt2>
-        <Fmt3>{W}1:op	1	0</Fmt3>
-        <Fmt4>{W}1:rnd_core	1	0</Fmt4>
-        <Fmt5>{W}1:value	1	0</Fmt5>
+        <Fmt2>{W}1:ENCCS	1	0</Fmt2>
+        <Fmt3>{W}1:U0CSR	1	0</Fmt3>
+        <Fmt4>{W}1:i	3	0</Fmt4>
+        <Fmt5>{W}1:op	1	0</Fmt5>
+        <Fmt6>{W}1:rnd_core	1	0</Fmt6>
+        <Fmt7>{W}1:value	1	0</Fmt7>
     </watch_formats>
     <LogFile>
         <LoggingEnabled>_ 0</LoggingEnabled>
@@ -98,10 +100,7 @@
     <Breakpoints>
         <Bp0>_ "STD_CODE" "{$PROJ_DIR$\src\utest_NTMR.c}.93.1" 0 0 0 0 "" 0 ""</Bp0>
         <Bp1>_ "STD_CODE" "{$PROJ_DIR$\src\utest_TIC.c}.217.14" 0 0 0 0 "" 0 ""</Bp1>
-        <Bp2>_ "STD_CODE" "{$PROJ_DIR$\src\utest_delays.c}.37.3" 1 0 0 0 "" 0 ""</Bp2>
-        <Bp3>_ "STD_CODE" "{$PROJ_DIR$\src\utest_delays.c}.24.3" 1 0 0 0 "" 0 ""</Bp3>
-        <Bp4>_ "STD_CODE" "{$PROJ_DIR$\src\utest_delays.c}.29.3" 1 0 0 0 "" 0 ""</Bp4>
-        <Count>5</Count>
+        <Count>2</Count>
     </Breakpoints>
     <ChipconEmu>
         <StopTimersOnHalt>0</StopTimersOnHalt>

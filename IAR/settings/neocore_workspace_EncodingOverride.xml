@@ -61,6 +61,10 @@
         <encoding>UTF-8</encoding>
     </override>
     <override>
+        <path>\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c</path>
+        <encoding>UTF-8</encoding>
+    </override>
+    <override>
         <path>\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\delays.c</path>
         <encoding>UTF-8</encoding>
     </override>

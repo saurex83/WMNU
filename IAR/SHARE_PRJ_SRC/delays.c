@@ -4,112 +4,119 @@
 */
 
 #include "ioCC2530.h"
-#include "stdint.h"
+#include "delays.h"
 
-#define KHZ_250 0x38 // Делитель до 250кгц
-#define DIV_128 0xE0 // Прескалер на 128
-#define TIM_START 0x10 // Запуск таймера
-#define TICK_US (uint32_t)512 // Один такт в микросекундах (1/250кГц)*128
-#define TIMER_MAX (uint32_t)255 // Максимальное значение счетчика
-#define TIME_MAX (TICK_US*TIMER_MAX) // Максимальное время
-#define TICK_NS  32.25 // Количество нс в одном такте TIM2
-#define TIM2_MAX 2047968.75 // 65535 * TICK_NS
+#define TICK_NS  31.25 // Количество нс в одном такте TIM2
+#define TICK_US  0.03125 // Количество мкс в одном такте TIM2
+#define TICK_PER_US 32 // Количество тактов в одной микросекунде
+
+// Максимальное кол-во тактов таймера. Константа 40 бит, 5 байт
+static const uint32_t MAC_TIMER_MAX = 0xFFFFFFFFUL; 
+static uint32_t DELAY_CALIBRATE_TICS; // Колибровка функции задержки
 
 // Публичные методы
 void TIM_init(void);
-uint32_t TIM_getTime();
-uint32_t TIM_passedTime(uint32_t time);
-void TIM_delayUs(uint32_t delay);
+void TIM_TimeStamp(TimeStamp_s* timestamp);
+void TIM_delay(uint32_t delay);
+uint32_t TIM_passedTime(TimeStamp_s* start, TimeStamp_s* stop);
 
-// Таймер MAC
-uint16_t TIM_getMACTicks();
-static uint16_t getMACTimeDelta(uint16_t start, uint16_t stop);
-uint32_t TIM_MAC_NS(uint16_t start, uint16_t stop);
-
-static uint16_t TIM2_CALIB;
+// Приватные
+static inline uint32_t Interval(TimeStamp_s* start, TimeStamp_s* stop);
+static void DelayCalibrate(void);
 
 /**
 @brief Иницилизация таймера
 */
 void TIM_init(void)
 {
-  CLKCONCMD |= KHZ_250; 
-  T4CTL |= DIV_128 | TIM_START;
-  T2CTRL = 0x01; // ЗАпускаем MAC таймер без синхронизации с осцилятором
+  // Запускаем таймер, LATCH MODE = 1
+  // Latch mode фиксирует значение таймера переполнения при чтении T2M0
+  // ЗАпускаем MAC таймер без синхронизации с кварцем 32.768к
+  T2CTRL = (1<<0) | (1<<3); 
+  // Калибровка функции задержки
+  DelayCalibrate();
+}
+
+/**
+@brief Возвращает временую метку.
+@params[out] timestamp указатель на временную метку 
+*/
+void TIM_TimeStamp(TimeStamp_s* timestamp)
+{
+  timestamp->byte[0] = T2M0;
+  timestamp->byte[1] = T2M1;
+  timestamp->byte[2] = T2MOVF0;
+  timestamp->byte[3] = T2MOVF1;
+}
+
+/**
+@brief Калибровка функции задержки TIM_delay
+*/
+static void DelayCalibrate(void)
+{
+  #define ACCURATE_VAL_US 500 
+  DELAY_CALIBRATE_TICS = 0;
+  TimeStamp_s start, stop;
+  uint32_t passed, cal;
   
-  uint16_t start = TIM_getMACTicks();
-  uint16_t stop  = TIM_getMACTicks();
-  TIM2_CALIB = getMACTimeDelta(start, stop);
-}
-
-/**
-@brief Возвращает время в мкс. Максимальное значение 130560 мкс 
-*/
-uint32_t TIM_getTimeUs()
-{
-  return T4CNT * TICK_US;
-}
-
-/**
-@brief Возвращает такты таймера. 
-*/
-uint16_t TIM_getMACTicks()
-{
-  uint16_t low = T2M0;
-  uint16_t high = T2M1 << 8;
-  uint16_t val = 0;
-  val = low;
-  val |= high;
-  return val;
-}
-
-/**
-@brief Возвращает количество прошедших тактов таймера между start и stop.
-*/
-static uint16_t getMACTimeDelta(uint16_t start, uint16_t stop)
-{
-  uint32_t passed;
- 
-  if (stop >= start)
-    passed = stop - start;
-  else
-    passed = start - stop;
+  TIM_TimeStamp(&start);
+  TIM_delay(ACCURATE_VAL_US);
+  TIM_TimeStamp(&stop);
+  passed = TIM_passedTime(&start, &stop);
   
-  passed -= TIM2_CALIB;
-  return passed;
-}
+  cal = passed - ACCURATE_VAL_US;
+  DELAY_CALIBRATE_TICS = cal * TICK_PER_US; 
+};
 
 /**
-@brief Возвращает прошедшее время в нс. Максимальное значение 2047937 нс
-@param[in] time отметка времени в мкс. Не более 2047968 нс
-@return Время в нс прошедшее с момента time
+@brief Вычисляет количество тактов между двумя времеными метками
+@return Количество тактов
 */
-uint32_t TIM_MAC_NS(uint16_t start, uint16_t stop)
+static inline uint32_t Interval(TimeStamp_s* start, TimeStamp_s* stop)
 {
-  uint32_t passed = getMACTimeDelta(start, stop);
-  passed = (uint32_t)((float)passed * (float)TICK_NS);
-  return passed;
-}
+  uint32_t ret;
 
-/**
-@brief Возвращает прошедшее время в мкс. Максимальное значение 130048 мкс
-@param[in] time отметка времени в мкс. Не более 130560 мкс
-@return Время в мкс прошедшее с момента time
-*/
-uint32_t TIM_passedTimeUs(uint32_t time)
-{
-  uint32_t now = TIM_getTimeUs();
-  if (now >= time)
-    return (now-time);
+  if (stop->timer >= start->timer)
+    ret = stop->timer - start->timer;
   else
-    return (TIME_MAX - time) + now;
+  { 
+    ret = (MAC_TIMER_MAX - start->timer) + stop->timer;
+  }
+  return ret;
 }
 
 /**
-@brief Временая задержка не более чем на 130048 мкс
+@brief Вычисляет прошедшее время между двумя времеными метками
+@return Время в мкс.
 */
-void TIM_delayUs(uint32_t delay)
+uint32_t TIM_passedTime(TimeStamp_s* start, TimeStamp_s* stop)
 {
-  uint32_t start = TIM_getTimeUs();
-  while ( TIM_passedTimeUs(start) < delay);
+  uint32_t ret = Interval(start, stop);
+  
+  ret = (uint32_t)((float)ret * TICK_US);
+  return ret;
+}
+
+/**
+@brief Задержка на заданное количество мкс. 
+@details Погрешность около 20 мкс при значениях выше 150 мкс.
+ Рекомендуется использовать для организации задержек не менее 200 мкс.
+@params[in] delay количество микросекунд. Не более 134217727 мкс (134.2 сек)
+*/
+void TIM_delay(uint32_t delay)
+{
+  uint32_t passed = 0;
+  TimeStamp_s start, now;
+  TIM_TimeStamp(&start);
+  
+  // Конвертируем мкс в такты и вносим поправку
+  delay = delay * TICK_PER_US; 
+  if (delay > DELAY_CALIBRATE_TICS)
+    delay -= DELAY_CALIBRATE_TICS;
+  
+  do
+  {
+    TIM_TimeStamp(&now);
+    passed = Interval(&start, &now);
+  } while (passed < delay);
 }
