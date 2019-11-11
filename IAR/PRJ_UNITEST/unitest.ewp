@@ -2226,6 +2226,12 @@
     <group>
         <name>share src</name>
         <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\delays.c</name>
         </file>
         <file>
@@ -2325,12 +2331,6 @@
             <name>$PROJ_DIR$\src\utest_TIC.c</name>
         </file>
     </group>
-    <file>
-        <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.c</name>
-    </file>
-    <file>
-        <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.h</name>
-    </file>
     <file>
         <name>$PROJ_DIR$\src\utest.c</name>
     </file>

@@ -27,7 +27,6 @@ static bool SendWithCallback(FChain_s *fc);
 
 // Приватные методы
 static void random_core_init(void);
-static inline void OP_EXE(uint8_t op);
 
 // TODO можно добавть простой алгоритм перестановки для сокрытия данных 
 // при передаче RAW формата. Алгоритм должен быть достаточно простой и 
