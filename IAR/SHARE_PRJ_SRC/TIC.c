@@ -1,6 +1,7 @@
 #include "TIC.h"
 #include "stdlib.h"
 #include "nwdebuger.h"
+#include "delays.h"
 
 /**
 @file 
@@ -27,6 +28,7 @@ static uint32_t TIC_GetRTC(void);
 static bool TIC_SetRTC(uint32_t RTC);
 static void TIC_SetNonce(uint32_t nonce);
 static uint32_t TIC_GetNonce(void);
+static uint32_t TIC_TimeUsFromTS0();
  
 // Приватные методы
 static uint8_t TIC_getCurrentTS(uint16_t ticks);
@@ -64,6 +66,8 @@ static void (*SECallback)(uint8_t TS);
 static bool TIC_CREATED = false;
 static NT_s* TIC_nt;
 static uint8_t TSStateTable[MAX_TS];
+static TimeStamp_s TimeStampTS0;
+
 
 TIC_s* TIC_Create(NT_s* nt)
 {
@@ -96,13 +100,24 @@ TIC_s* TIC_Create(NT_s* nt)
   tic->TIC_SetRTC = TIC_SetRTC;
   tic->TIC_SetNonce = TIC_SetNonce;
   tic->TIC_GetNonce = TIC_GetNonce;
+  tic->TIC_TimeUsFromTS0 = TIC_TimeUsFromTS0;
   
   // Устанавливаем обработчик прерываний таймера
   nt->NT_SetEventCallback(TIC_HW_Timer_IRQ);
   // Запускаем процесс планировщика
   nt->NT_SetCompare(0); 
   TIC_CREATED = true;
+  TIM_TimeStamp(&TimeStampTS0);
   return tic;
+}
+
+static uint32_t TIC_TimeUsFromTS0()
+{
+  uint32_t passed;
+  TimeStamp_s now;
+  TIM_TimeStamp(&now);
+  passed = TIM_passedTime(&TimeStampTS0, &now);
+  return passed;
 }
 
 bool TIC_Delete(TIC_s *tic)
@@ -283,8 +298,10 @@ static void TIC_HW_Timer_IRQ(uint16_t ticks)
   
   // Обновляем часы NODE_RTC и NODE_UPTIME
   if (c_TS == 0)
+  {
+    TIM_TimeStamp(&TimeStampTS0); // Первым делом обновим отметку точного времени
     clocks_update();
-  
+  }
   // Если что то пошло не так и мы промахнулись мимо слота
   // запускаем планировщик заново
   if (c_TS == NO_TIME_SLOT)

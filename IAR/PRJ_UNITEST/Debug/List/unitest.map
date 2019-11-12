@@ -1,8 +1,28 @@
+Warning[w6]: Type conflict for external/entry "TIC_Create", in module utest_TIC against external/entry in module TIC; function return types are different; class/struct/union types have different sizes
+  /* In module utest_TIC: */
+  /* Function, args 1, attr 0 */
+  TIC_s * (__xdata_reentrant TIC_Create)(NT_s *);
+    typedef struct __Unnamed_5_165 TIC_s;
+    typedef struct __Unnamed_7_128 NT_s;
+  /* In module TIC: */
+  /* Function, args 1, attr 0 */
+  TIC_s * (__xdata_reentrant TIC_Create)(NT_s *);
+    typedef struct __Unnamed_10_140 TIC_s;
+    typedef struct __Unnamed_7_128 NT_s;
+Warning[w6]: Type conflict for external/entry "TIC_Delete", in module utest_TIC against external/entry in module TIC; function types differ in parameter 1; class/struct/union types have different sizes
+  /* In module utest_TIC: */
+  /* Function, args 1, attr 0 */
+  bool (__xdata_reentrant TIC_Delete)(TIC_s *);
+    typedef struct __Unnamed_5_165 TIC_s;
+  /* In module TIC: */
+  /* Function, args 1, attr 0 */
+  bool (__xdata_reentrant TIC_Delete)(TIC_s *);
+    typedef struct __Unnamed_10_140 TIC_s;
 ################################################################################
 #                                                                              #
 #      IAR Universal Linker V6.4.6.89                                          #
 #                                                                              #
-#           Link time     =  12/Nov/2019  02:42:04                             #
+#           Link time     =  12/Nov/2019  20:34:34                             #
 #           Target CPU    =  x51                                               #
 #           List file     =  "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
 #                            RJ_UNITEST\Debug\List\unitest.map"                #
@@ -12,7 +32,7 @@
 #                            UBROF version 10.0.6                              #
 #                            Using library modules for C-SPY (-rt)             #
 #           Command line  =  -f                                                #
-#                            C:\Users\08A4~1\AppData\Local\Temp\EW9CBE.tmp     #
+#                            C:\Users\08A4~1\AppData\Local\Temp\EWE3FC.tmp     #
 #                            ("\\vmware-host\Shared Folders\Projects\WMNU\IAR\ #
 #                            PRJ_UNITEST\Debug\Obj\coder.r51"                  #
 #                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
@@ -362,7 +382,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002A9A - 00002B88 (0xef bytes), align: 0
-  Segment part 15.            Intra module refs:   AES_init::?relay
+  Segment part 17.            Intra module refs:   AES_init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            AES_init                00002A9A 
@@ -370,7 +390,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002B89 - 00002DC8 (0x240 bytes), align: 0
-  Segment part 17.            Intra module refs:   AES_StreamCoder::?relay
+  Segment part 19.            Intra module refs:   AES_StreamCoder::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            AES_StreamCoder         00002B89 
@@ -379,14 +399,14 @@ XDATA_Z
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000213 - 00000218 (0x6 bytes), align: 0
-  Segment part 16.
+  Segment part 18.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            AES_init::?relay        00000213        aes_test (utest_coder)
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000219 - 0000021E (0x6 bytes), align: 0
-  Segment part 18.
+  Segment part 20.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            AES_StreamCoder::?relay
@@ -3805,5 +3825,5 @@ ISTACK               IDATA         000000C0 - 000000FF          40   rel    0
       8 bits  of BIT   memory
 
 Errors: none
-Warnings: none
+Warnings: 2
 

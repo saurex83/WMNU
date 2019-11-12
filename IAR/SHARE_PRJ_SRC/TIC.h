@@ -16,6 +16,7 @@ typedef struct
  void (*TIC_SetSECallback)(void (*fn)(uint8_t TS));
  uint32_t (*TIC_GetUptime)(void);
  uint32_t (*TIC_GetRTC)(void);
+ uint32_t (*TIC_TimeUsFromTS0)(void);
  bool (*TIC_SetRTC)(uint32_t RTC);
  void (*TIC_SetNonce)(uint32_t nonce);
  uint32_t (*TIC_GetNonce)(void); 
