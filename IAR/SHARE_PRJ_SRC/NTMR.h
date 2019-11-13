@@ -2,15 +2,9 @@
 #include "stdbool.h"
 #include "stdint.h"
 
-typedef struct
-{
-  bool (*NT_SetTime)(uint16_t ticks);
-  void (*NT_SetCompare)(uint16_t ticks);
-  void (*NT_SetEventCallback)(void (*fn)(uint16_t ticks));
-  uint16_t (*NT_GetTime)(void);
-} NT_s;
 
-#define NT_S_SIZE sizeof(NT_s)
-
-NT_s* NT_Create(void);
-bool NT_Delete(NT_s *nt);
+void NT_Init(void);
+bool NT_SetTime(uint16_t ticks);
+void NT_SetCompare(uint16_t ticks);
+void NT_SetEventCallback(void (*fn)(uint16_t ticks));
+uint16_t NT_GetTime(void);

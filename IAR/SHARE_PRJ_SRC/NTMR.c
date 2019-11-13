@@ -46,11 +46,7 @@
 
 //#define USE_OSC32K // Использовать внешний квац 32.768 кГц
 
-// Публичные методы
-NT_s* NT_Create(void);
-bool NT_Delete(NT_s *nt);
-
-// Методы класса
+// Методы модуля
 bool NT_SetTime(uint16_t ticks);
 void NT_SetCompare(uint16_t ticks);
 void NT_SetEventCallback(void (*fn)(uint16_t ticks));
@@ -62,8 +58,8 @@ static void loadTimerCompare(uint32_t ticks);
 static inline bool isIRQEnable(void);
 static inline void NT_IRQEnable(bool state);
 
-// Переменные класса
-void (*EventCallback)(uint16_t ticks);
+// Переменные модуля
+static void (*EventCallback)(uint16_t ticks);
 static uint32_t COMPARE_TIME; //!< Значение загруженное в регистр compare
 
 /**
@@ -72,26 +68,11 @@ static uint32_t COMPARE_TIME; //!< Значение загруженное в р
 */
 uint16_t TOFFSET; 
 
-bool NT_CREATED; //!< Показывает что обьект уже создан
-
 /**
-@brief Создание структуры NT_s
-@return Указатель на структуру NT_s или NULL
+@brief Инизиализация таймера
 */
-NT_s* NT_Create(void)
+void NT_Init(void)
 {
-  if (NT_CREATED)
-  {
-    ASSERT_HALT(NT_CREATED == false, "NT already created");
-    return NULL;
-  }
-  NT_CREATED = true;
-  // Заполняем структуру указателей
-  NT_s* nt = (NT_s*)malloc(NT_S_SIZE);
-  nt->NT_SetTime = NT_SetTime;
-  nt->NT_SetCompare = NT_SetCompare;
-  nt->NT_SetEventCallback = NT_SetEventCallback;
-  nt->NT_GetTime = NT_GetTime;
   TOFFSET = 0;
   COMPARE_TIME = 0;
   EventCallback = NULL;
@@ -102,20 +83,6 @@ NT_s* NT_Create(void)
   #endif
 
   NT_IRQEnable(false);
-  return nt;
-}
-
-/**
-@brief Удаление обьекта
-*/
-bool NT_Delete(NT_s *nt)
-{
-  NT_IRQEnable(false);
-  EventCallback = NULL;
-  TOFFSET = 0;
-  NT_CREATED = false;
-  free(nt);
-  return true;
 }
 
 /**

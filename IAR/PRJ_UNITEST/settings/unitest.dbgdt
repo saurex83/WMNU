@@ -979,7 +979,7 @@
                     <item>fb3</item>
                     <item>fr</item>
                     <item>fb</item>
-                    <item></item>
+                    <item />
                 </expressions>
                 <col-names>
                     <item>Expression</item>

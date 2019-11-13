@@ -2,7 +2,7 @@
 #                                                                              #
 #      IAR Universal Linker V6.4.6.89                                          #
 #                                                                              #
-#           Link time     =  13/Nov/2019  15:15:01                             #
+#           Link time     =  13/Nov/2019  16:16:23                             #
 #           Target CPU    =  x51                                               #
 #           List file     =  "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
 #                            RJ_UNITEST\Debug\List\unitest.map"                #
@@ -12,7 +12,7 @@
 #                            UBROF version 10.0.6                              #
 #                            Using library modules for C-SPY (-rt)             #
 #           Command line  =  -f                                                #
-#                            C:\Users\08A4~1\AppData\Local\Temp\EWB61E.tmp     #
+#                            C:\Users\08A4~1\AppData\Local\Temp\EWC146.tmp     #
 #                            ("\\vmware-host\Shared Folders\Projects\WMNU\IAR\ #
 #                            PRJ_UNITEST\Debug\Obj\coder.r51"                  #
 #                            "\\vmware-host\Shared Folders\Projects\WMNU\IAR\P #
@@ -751,21 +751,21 @@ SFR_AN
     -------------------------------------------------------------------------
 XDATA_Z
   Relative segment, address: XDATA 00000F00 - 00000F01 (0x2 bytes), align: 0
-  Segment part 26.            Intra module refs:   TimerCompareInterrupt
-           ENTRY                   ADDRESS         REF BY
-           =====                   =======         ======
+  Segment part 24.            Intra module refs:   TimerCompareInterrupt
+           LOCAL                   ADDRESS         
+           =====                   =======         
            EventCallback           00000F00 
     -------------------------------------------------------------------------
 XDATA_Z
   Relative segment, address: XDATA 00000F02 - 00000F03 (0x2 bytes), align: 0
-  Segment part 28.            Intra module refs:   NT_GetTime
+  Segment part 26.            Intra module refs:   NT_GetTime
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TOFFSET                 00000F02 
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003F51 - 00003F63 (0x13 bytes), align: 0
-  Segment part 52.            Intra module refs:   NT_IRQEnable::?relay
+  Segment part 43.            Intra module refs:   NT_IRQEnable::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            NT_IRQEnable            00003F51 
@@ -773,16 +773,16 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003F64 - 00003F9A (0x37 bytes), align: 0
-  Segment part 58.            Intra module refs:   NT_GetTime::?relay
+  Segment part 49.            Intra module refs:   NT_GetTime::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            NT_GetTime              00003F64 
-               calls direct, is indirectly called
+               calls direct
                XSTACK = 0000000F ( 00000010 )
     -------------------------------------------------------------------------
 NEAR_CODE
   Relative segment, address: CODE 000012C1 - 000012FC (0x3c bytes), align: 0
-  Segment part 64.            Intra module refs:   TimerCompareInterrupt::??INTVEC 43
+  Segment part 55.            Intra module refs:   TimerCompareInterrupt::??INTVEC 43
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TimerCompareInterrupt   000012C1 
@@ -792,7 +792,7 @@ NEAR_CODE
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003F9B - 00003FF8 (0x5e bytes), align: 0
-  Segment part 60.            Intra module refs:   ReadTimer::?relay
+  Segment part 51.            Intra module refs:   ReadTimer::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            ReadTimer               00003F9B 
@@ -809,32 +809,32 @@ INTVEC
     -------------------------------------------------------------------------
 XDATA_ID
   Relative segment, address: CODE 00000108 - 0000010B (0x4 bytes), align: 0
-  Segment part 37.            Intra module refs:   __Constant_7fff
+  Segment part 34.            Intra module refs:   __Constant_7fff
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000502 - 00000507 (0x6 bytes), align: 0
-  Segment part 53.            Intra module refs:   TimerCompareInterrupt
+  Segment part 44.            Intra module refs:   TimerCompareInterrupt
            LOCAL                   ADDRESS         
            =====                   =======         
            NT_IRQEnable::?relay    00000502 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000508 - 0000050D (0x6 bytes), align: 0
-  Segment part 59.            Intra module refs:   TimerCompareInterrupt
+  Segment part 50.            Intra module refs:   TimerCompareInterrupt
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            NT_GetTime::?relay      00000508 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000050E - 00000513 (0x6 bytes), align: 0
-  Segment part 61.            Intra module refs:   NT_GetTime
+  Segment part 52.            Intra module refs:   NT_GetTime
            LOCAL                   ADDRESS         
            =====                   =======         
            ReadTimer::?relay       0000050E 
     -------------------------------------------------------------------------
 XDATA_I
   Relative segment, address: XDATA 00000F61 - 00000F64 (0x4 bytes), align: 0
-  Segment part 36.            Intra module refs:   NT_GetTime
+  Segment part 33.            Intra module refs:   NT_GetTime
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            __Constant_7fff         00000F61 
@@ -1723,18 +1723,6 @@ XDATA_I
 
   SEGMENTS IN THE MODULE
   ======================
-XDATA_ID
-  Relative segment, address: CODE 00000483 - 00000486 (0x4 bytes), align: 0
-  Segment part 65.            Intra module refs:   __Constant_0
-    -------------------------------------------------------------------------
-XDATA_I
-  Relative segment, address: XDATA 000012DC - 000012DF (0x4 bytes), align: 0
-  Segment part 64.            Intra module refs:   _LdtobLarge (?xprintflarge)
-                                                   _LitobLarge (?xprintflarge)
-                                                   _PrintfLarge (?xprintflarge)
-           ENTRY                   ADDRESS         REF BY
-           =====                   =======         ======
-           __Constant_0            000012DC 
 
     *************************************************************************
 
@@ -1929,7 +1917,7 @@ CSTART
                                                    Segment part 8 (utest_fbuf)
                                                    Segment part 8 (utest_frame)
                                                    Segment part 8 (utest_suite)
-                                                   __Constant_0 (utest_TIC)
+                                                   __Constant_0 (?xprintflarge)
                                                    __Constant_186a0 (?xprintflarge)
                                                    __Constant_3f800000 (?xprintflarge)
                                                    __Constant_4cbebc20 (?xprintflarge)
@@ -4161,32 +4149,36 @@ BANK_RELAYS
                                                    _PutcharsLarge
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 00000487 - 0000048D (0x7 bytes), align: 0
+  Relative segment, address: CODE 00000483 - 00000489 (0x7 bytes), align: 0
   Segment part 7.             Intra module refs:   Segment part 6
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 0000048E - 00000491 (0x4 bytes), align: 0
+  Relative segment, address: CODE 0000048A - 0000048D (0x4 bytes), align: 0
   Segment part 9.             Intra module refs:   Segment part 8
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 00000492 - 00000495 (0x4 bytes), align: 0
+  Relative segment, address: CODE 0000048E - 00000491 (0x4 bytes), align: 0
   Segment part 11.            Intra module refs:   Segment part 10
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 00000496 - 00000499 (0x4 bytes), align: 0
+  Relative segment, address: CODE 00000492 - 00000495 (0x4 bytes), align: 0
   Segment part 13.            Intra module refs:   Segment part 12
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 0000049A - 0000049D (0x4 bytes), align: 0
+  Relative segment, address: CODE 00000496 - 00000499 (0x4 bytes), align: 0
   Segment part 15.            Intra module refs:   Segment part 14
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 0000049E - 0000049F (0x2 bytes), align: 0
+  Relative segment, address: CODE 0000049A - 0000049B (0x2 bytes), align: 0
   Segment part 17.            Intra module refs:   Segment part 16
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 000004A0 - 000004A3 (0x4 bytes), align: 0
+  Relative segment, address: CODE 0000049C - 0000049F (0x4 bytes), align: 0
   Segment part 19.            Intra module refs:   __Constant_ffff
+    -------------------------------------------------------------------------
+XDATA_ID
+  Relative segment, address: CODE 000004A0 - 000004A3 (0x4 bytes), align: 0
+  Segment part 21.            Intra module refs:   __Constant_0
     -------------------------------------------------------------------------
 XDATA_ID
   Relative segment, address: CODE 000004A4 - 000004A7 (0x4 bytes), align: 0
@@ -4264,35 +4256,44 @@ BANK_RELAYS
                                    000005FE 
     -------------------------------------------------------------------------
 XDATA_I
-  Relative segment, address: XDATA 000012E0 - 000012E6 (0x7 bytes), align: 0
+  Relative segment, address: XDATA 000012DC - 000012E2 (0x7 bytes), align: 0
   Segment part 6.             Intra module refs:   _PrintfLarge
     -------------------------------------------------------------------------
 XDATA_I
-  Relative segment, address: XDATA 000012E7 - 000012EA (0x4 bytes), align: 0
+  Relative segment, address: XDATA 000012E3 - 000012E6 (0x4 bytes), align: 0
   Segment part 8.             Intra module refs:   _LdtobLarge
     -------------------------------------------------------------------------
 XDATA_I
-  Relative segment, address: XDATA 000012EB - 000012EE (0x4 bytes), align: 0
+  Relative segment, address: XDATA 000012E7 - 000012EA (0x4 bytes), align: 0
   Segment part 10.            Intra module refs:   _LdtobLarge
     -------------------------------------------------------------------------
 XDATA_I
-  Relative segment, address: XDATA 000012EF - 000012F2 (0x4 bytes), align: 0
+  Relative segment, address: XDATA 000012EB - 000012EE (0x4 bytes), align: 0
   Segment part 12.            Intra module refs:   _LdtobLarge
     -------------------------------------------------------------------------
 XDATA_I
-  Relative segment, address: XDATA 000012F3 - 000012F6 (0x4 bytes), align: 0
+  Relative segment, address: XDATA 000012EF - 000012F2 (0x4 bytes), align: 0
   Segment part 14.            Intra module refs:   _LdtobLarge
     -------------------------------------------------------------------------
 XDATA_I
-  Relative segment, address: XDATA 000012F7 - 000012F8 (0x2 bytes), align: 0
+  Relative segment, address: XDATA 000012F3 - 000012F4 (0x2 bytes), align: 0
   Segment part 16.            Intra module refs:   _GenldLarge
     -------------------------------------------------------------------------
 XDATA_I
-  Relative segment, address: XDATA 000012F9 - 000012FC (0x4 bytes), align: 0
+  Relative segment, address: XDATA 000012F5 - 000012F8 (0x4 bytes), align: 0
   Segment part 18.            Intra module refs:   _PrintfLarge
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           __Constant_ffff         000012F9 
+           __Constant_ffff         000012F5 
+    -------------------------------------------------------------------------
+XDATA_I
+  Relative segment, address: XDATA 000012F9 - 000012FC (0x4 bytes), align: 0
+  Segment part 20.            Intra module refs:   _LdtobLarge
+                                                   _LitobLarge
+                                                   _PrintfLarge
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __Constant_0            000012F9 
     -------------------------------------------------------------------------
 XDATA_I
   Relative segment, address: XDATA 000012FD - 00001300 (0x4 bytes), align: 0

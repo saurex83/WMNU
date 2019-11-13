@@ -4,19 +4,20 @@
 */
 
 #include "LLC.h"
+#include "MAC.h"
+#include "TIC.h"
 #include "stdlib.h"
 #include "nwdebuger.h"
 
 // Публичные методы
-LLC_s* LLC_Create(MAC_s *mac, TIC_s *tic);
-bool LLC_Delete(LLC_s *llc);
+void LLC_Init(void);
 
-// Методы класса
-static void LLC_SetRXCallback(void (*fn)(frame_s *fr));
-static void LLC_TimeAlloc(void (*fn)(void)); 
-static void LLC_AddTask(frame_s* fr);
+// Методы модуля
+void LLC_SetRXCallback(void (*fn)(frame_s *fr));
+void LLC_TimeAlloc(void (*fn)(void)); 
+void LLC_AddTask(frame_s* fr);
 
-// Приватные методы
+// Закрытые методы
 static void LLC_SE_HNDL(uint8_t TS); //!< Обработчик завешения слота TIC
 static void LLC_Shelduler(uint8_t TS);
 static void LLC_RX_HNDL(frame_s *fr); //!< Обработчик примема пакета
@@ -27,6 +28,7 @@ static void LLC_RunTimeAlloc(void);
 
 typedef struct LLCTask LLCTask;
 typedef struct TimeAllocFunc TimeAllocFunc;
+
 /**
 @brief Описание задачи модуля LLC
 */
@@ -65,46 +67,19 @@ static void (*RXCallback)(frame_s *fr);
 и добавляются к HeadAllocFunc.
 */
 static TimeAllocFunc HeadAllocFunc;
-static MAC_s *MAC;
-
 
 /**
-@brief Создание структуры LLC_s
-@param[in] mac Указатель на структуру mac
-@return Указатель на структуру LLC_s или NULL
+@brief Инициализация модуля
 */
-LLC_s* LLC_Create(MAC_s *mac, TIC_s *tic)
-{
-  LLC_s* llc = malloc(LLC_S_SIZE);
-  ASSERT_HALT(llc != NULL, "Memory allocation fails");
-  
-  if (llc == NULL)
-    return NULL;
-  
-  // Привязываем указатели на функции
-  llc->LLC_SetRXCallback = LLC_SetRXCallback;
-  llc->LLC_TimeAlloc = LLC_TimeAlloc;
-  llc->LLC_AddTask = LLC_AddTask;
-  
+void LLC_Init(void)
+{  
   // Регистрируем обработчики
-  tic->TIC_SetSECallback(LLC_SE_HNDL); // Завершение временного слота
-  mac->MAC_SetRXCallback(LLC_RX_HNDL); // Принято сообщение
-  MAC = mac;
-  return llc;
+  TIC_SetSECallback(LLC_SE_HNDL); // Завершение временного слота
+  MAC_SetRXCallback(LLC_RX_HNDL); // Принято сообщение
 }
 
-/**
-@brief Удаляет обьект
-@param[in] llc указатель на структуру LLC_s
-@todo Нужно удалить ранее созданные задачи в HeadTask, HeadAllocFunc
-*/
-bool LLC_Delete(LLC_s *llc)
-{
-  free(llc);
-  return true;
-}
 
-static void LLC_SetRXCallback(void (*fn)(frame_s *fr))
+void LLC_SetRXCallback(void (*fn)(frame_s *fr))
 {
   ASSERT_HALT(fn != NULL, "NULL pointer not allow");
   RXCallback = fn;
@@ -113,7 +88,7 @@ static void LLC_SetRXCallback(void (*fn)(frame_s *fr))
 /**
 @brief Добавляет обработчик заверешния временого слота в список
 */
-static void LLC_TimeAlloc(void (*fn)(void))
+void LLC_TimeAlloc(void (*fn)(void))
 {
   TimeAllocFunc *ta = malloc(sizeof(TimeAllocFunc));
   ASSERT_HALT(ta != NULL, "Memory allocation fails");
@@ -132,7 +107,7 @@ static void LLC_TimeAlloc(void (*fn)(void))
 /**
 @brief Добавляем задачу в очередь
 */
-static void LLC_AddTask(frame_s* fr)
+void LLC_AddTask(frame_s* fr)
 {
 }
 
@@ -154,10 +129,10 @@ static void LLC_Shelduler(uint8_t TS)
   {
     last = task;
     task = task->next;
-    if (MAC->MAC_GetTXState(task->TS)) // Занят ли временой слот
+    if (MAC_GetTXState(task->TS)) // Занят ли временой слот
       continue; // Если слот занят переходим к следующему
     
-    MAC->MAC_Send(task->fr, SEND_ATEMPTS);
+    MAC_Send(task->fr, SEND_ATEMPTS);
     
     // Удаляем из списка
     last->next = task->next;

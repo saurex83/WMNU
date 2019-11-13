@@ -1,4 +1,5 @@
 #include "TIC.h"
+#include "NTMR.h"
 #include "stdlib.h"
 #include "nwdebuger.h"
 #include "delays.h"
@@ -10,25 +11,24 @@
 */
 
 // Публичные методы
-TIC_s* TIC_Create(NT_s* nt);
-bool TIC_Delete(TIC_s *tic);
+void TIC_Init(void);
 
 // Методы класса
-static bool TIC_SetTimer(uint16_t ticks);
-static uint16_t TIC_GetTimer(void);
-static bool TIC_SetTXState(uint8_t TS, bool state);
-static bool TIC_SetRXState(uint8_t TS, bool state);
-static bool TIC_GetTXState(uint8_t TS);
-static bool TIC_GetRXState(uint8_t TS);
-static void TIC_SetRXCallback(void (*fn)(uint8_t TS));
-static void TIC_SetTXCallback(void (*fn)(uint8_t TS));
-static void TIC_SetSECallback(void (*fn)(uint8_t TS));
-static uint32_t TIC_GetUptime(void);
-static uint32_t TIC_GetRTC(void);
-static bool TIC_SetRTC(uint32_t RTC);
-static void TIC_SetNonce(uint32_t nonce);
-static uint32_t TIC_GetNonce(void);
-static uint32_t TIC_TimeUsFromTS0();
+bool TIC_SetTimer(uint16_t ticks);
+uint16_t TIC_GetTimer(void);
+bool TIC_SetTXState(uint8_t TS, bool state);
+bool TIC_SetRXState(uint8_t TS, bool state);
+bool TIC_GetTXState(uint8_t TS);
+bool TIC_GetRXState(uint8_t TS);
+void TIC_SetRXCallback(void (*fn)(uint8_t TS));
+void TIC_SetTXCallback(void (*fn)(uint8_t TS));
+void TIC_SetSECallback(void (*fn)(uint8_t TS));
+uint32_t TIC_GetUptime(void);
+uint32_t TIC_GetRTC(void);
+bool TIC_SetRTC(uint32_t RTC);
+void TIC_SetNonce(uint32_t nonce);
+uint32_t TIC_GetNonce(void);
+uint32_t TIC_TimeUsFromTS0();
  
 // Приватные методы
 static uint8_t TIC_getCurrentTS(uint16_t ticks);
@@ -63,55 +63,20 @@ static uint32_t NODE_NONCE = 0;
 static void (*RXCallback)(uint8_t TS);
 static void (*TXCallback)(uint8_t TS);
 static void (*SECallback)(uint8_t TS);
-static bool TIC_CREATED = false;
-static NT_s* TIC_nt;
 static uint8_t TSStateTable[MAX_TS];
 static TimeStamp_s TimeStampTS0;
 
 
-TIC_s* TIC_Create(NT_s* nt)
-{
-  if (TIC_CREATED)
-  {
-    ASSERT_HALT(TIC_CREATED == false, "TIC already created");
-    return NULL;
-  }
-  
-  ASSERT_HALT(nt != NULL, "NT must be set");
-  TIC_nt = nt;
-  
-  TIC_s* tic = malloc(TIC_S_SIZE);
-  ASSERT_HALT(tic != NULL, "Memory allocation fails");
-  if (tic == NULL)
-    return NULL;
-  
-  // Заполняем структуру указателей
-  tic->TIC_SetTimer = TIC_SetTimer;
-  tic->TIC_GetTimer = TIC_GetTimer;
-  tic->TIC_SetTXState = TIC_SetTXState;
-  tic->TIC_SetRXState = TIC_SetRXState;
-  tic->TIC_GetTXState = TIC_GetTXState;
-  tic->TIC_GetRXState = TIC_GetRXState;
-  tic->TIC_SetRXCallback = TIC_SetRXCallback;
-  tic->TIC_SetTXCallback = TIC_SetTXCallback;
-  tic->TIC_SetSECallback = TIC_SetSECallback;
-  tic->TIC_GetUptime = TIC_GetUptime;
-  tic->TIC_GetRTC = TIC_GetRTC;
-  tic->TIC_SetRTC = TIC_SetRTC;
-  tic->TIC_SetNonce = TIC_SetNonce;
-  tic->TIC_GetNonce = TIC_GetNonce;
-  tic->TIC_TimeUsFromTS0 = TIC_TimeUsFromTS0;
-  
+void TIC_Create(void)
+{    
   // Устанавливаем обработчик прерываний таймера
-  nt->NT_SetEventCallback(TIC_HW_Timer_IRQ);
+  NT_SetEventCallback(TIC_HW_Timer_IRQ);
   // Запускаем процесс планировщика
-  nt->NT_SetCompare(0); 
-  TIC_CREATED = true;
+  NT_SetCompare(0); 
   TIM_TimeStamp(&TimeStampTS0);
-  return tic;
 }
 
-static uint32_t TIC_TimeUsFromTS0()
+uint32_t TIC_TimeUsFromTS0()
 {
   uint32_t passed;
   TimeStamp_s now;
@@ -120,33 +85,22 @@ static uint32_t TIC_TimeUsFromTS0()
   return passed;
 }
 
-bool TIC_Delete(TIC_s *tic)
-{
-  ASSERT_HALT(tic != NULL, "Cant free NULL TIC");
-  if (tic == NULL)
-    return false;
-  
-  free(tic);
-  TIC_CREATED = false;
-  return true;
-}
-
-static bool TIC_SetTimer(uint16_t ticks)
+bool TIC_SetTimer(uint16_t ticks)
 {
   ASSERT_HALT(ticks < MAX_TICKS, "Ticks not in range");
   if (ticks >= MAX_TICKS)
     return false;
   
-  TIC_nt->NT_SetTime(ticks);
+  NT_SetTime(ticks);
   return true;
 }
 
-static uint16_t TIC_GetTimer(void)
+uint16_t TIC_GetTimer(void)
 {
-  return TIC_nt->NT_GetTime();
+  return NT_GetTime();
 }
 
-static bool TIC_SetTXState(uint8_t TS, bool state)
+bool TIC_SetTXState(uint8_t TS, bool state)
 {
   if (TS>=MAX_TS)
   {
@@ -162,7 +116,7 @@ static bool TIC_SetTXState(uint8_t TS, bool state)
   return true;
 }
 
-static bool TIC_SetRXState(uint8_t TS, bool state)
+bool TIC_SetRXState(uint8_t TS, bool state)
 {
   if (TS>=MAX_TS)
   {
@@ -178,7 +132,7 @@ static bool TIC_SetRXState(uint8_t TS, bool state)
   return true;
 }
 
-static bool TIC_GetTXState(uint8_t TS)
+bool TIC_GetTXState(uint8_t TS)
 {
     if (TS>=MAX_TS)
   {
@@ -189,7 +143,7 @@ static bool TIC_GetTXState(uint8_t TS)
   return (TSStateTable[TS] & TS_TX) ;
 }
 
-static bool TIC_GetRXState(uint8_t TS)
+bool TIC_GetRXState(uint8_t TS)
 {
     if (TS>=MAX_TS)
   {
@@ -200,35 +154,35 @@ static bool TIC_GetRXState(uint8_t TS)
   return (TSStateTable[TS] & TS_RX) ;
 }
 
-static void TIC_SetRXCallback(void (*fn)(uint8_t TS))
+void TIC_SetRXCallback(void (*fn)(uint8_t TS))
 {
   ASSERT_HALT(fn != NULL, "Fn is NULL");
   RXCallback = fn;
 }
 
-static void TIC_SetTXCallback(void (*fn)(uint8_t TS))
+void TIC_SetTXCallback(void (*fn)(uint8_t TS))
 {
   ASSERT_HALT(fn != NULL, "Fn is NULL");
   TXCallback = fn;
 }
 
-static void TIC_SetSECallback(void (*fn)(uint8_t TS))
+void TIC_SetSECallback(void (*fn)(uint8_t TS))
 {
   ASSERT_HALT(fn != NULL, "Fn is NULL");
   SECallback = fn;
 }
 
-static uint32_t TIC_GetUptime(void)
+uint32_t TIC_GetUptime(void)
 {
   return NODE_UPTIME;
 }
 
-static uint32_t TIC_GetRTC(void)
+uint32_t TIC_GetRTC(void)
 {
   return NODE_RTC;
 }
 
-static bool TIC_SetRTC(uint32_t RTC)
+bool TIC_SetRTC(uint32_t RTC)
 {
   if (RTC >= DAILY_SEC)
     return false;
@@ -264,7 +218,7 @@ static inline void incrementTS(uint8_t *TS)
 static inline void set_capture_time(uint8_t TS)
 {
   // Установка прерывания на нужный слот
-    TIC_nt->NT_SetCompare(FULL_SLOT*(uint16_t)TS);
+  NT_SetCompare(FULL_SLOT*(uint16_t)TS);
 }
 
 static void TIC_TDMAShelduler(uint8_t TS)
@@ -334,12 +288,12 @@ static void clocks_update(void)
     NODE_RTC = 0;
 }
 
-static void TIC_SetNonce(uint32_t nonce)
+void TIC_SetNonce(uint32_t nonce)
 {
   NODE_NONCE = nonce;
 }
 
-static uint32_t TIC_GetNonce(void)
+uint32_t TIC_GetNonce(void)
 {
   return NODE_NONCE;
 }

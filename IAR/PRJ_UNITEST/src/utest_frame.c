@@ -139,9 +139,6 @@ static void tot_len_test(void)
   frame_delete(fr);
 }
 
-static void create_test(void)
-{
-}
 
 void suite_frame(void)
 {
