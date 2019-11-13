@@ -3,13 +3,13 @@
 #include "stdint.h"
 #include "MAC.h"
 #include "TIC.h"
-#include "FChain.h"
+#include "frame.h"
 
 typedef struct
 {
-  void (*LLC_SetRXCallback)(void (*fn)(FChain_s *fc));
+  void (*LLC_SetRXCallback)(void (*fn)(frame_s *fr));
   void (*LLC_TimeAlloc)(void (*fn)(void));
-  void (*LLC_AddTask)(FChain_s* fc); 
+  void (*LLC_AddTask)(frame_s* fr); 
 } LLC_s;
 
 #define LLC_S_SIZE sizeof(LLC_s)

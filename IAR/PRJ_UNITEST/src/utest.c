@@ -1,8 +1,7 @@
 #include "utest_suite.h"
 #include "nwdebuger.h"
 
-extern void suite_FItem(void);
-extern void suite_FChain(void);
+extern void suite_fbuf(void);
 extern void suite_TIC(void);
 extern void suite_TIC_HW(void);
 extern void suite_MAC(void);
@@ -13,7 +12,7 @@ extern void suite_RADIO_HW(void);
 extern void suite_delays_HW(void);
 extern void suite_delays(void);
 extern void suite_coder(void);
-
+extern void suite_frame(void);
 int main()
 {
   nwDebugerInit();
@@ -28,10 +27,10 @@ int main()
    //suite_RADIO_HW();
  // suite_delays();
  // suite_delays_HW();
-  suite_coder();
+ // suite_coder();
  // suite_Frames();
- // suite_FItem();
- // suite_FChain();
+  suite_fbuf();
+  suite_frame();
  // suite_LLC();
  // suite_NT_HW(); // Это аппаратный тест
 	//run_utest_framepart();

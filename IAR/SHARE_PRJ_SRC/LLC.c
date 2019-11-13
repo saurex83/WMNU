@@ -12,14 +12,14 @@ LLC_s* LLC_Create(MAC_s *mac, TIC_s *tic);
 bool LLC_Delete(LLC_s *llc);
 
 // Методы класса
-static void LLC_SetRXCallback(void (*fn)(FChain_s *fc));
-static void LLC_TimeAlloc(void (*fn)(void));
-static void LLC_AddTask(FChain_s* fc); 
+static void LLC_SetRXCallback(void (*fn)(frame_s *fr));
+static void LLC_TimeAlloc(void (*fn)(void)); 
+static void LLC_AddTask(frame_s* fr);
 
 // Приватные методы
 static void LLC_SE_HNDL(uint8_t TS); //!< Обработчик завешения слота TIC
 static void LLC_Shelduler(uint8_t TS);
-static void LLC_RX_HNDL(FChain_s *fc); //!< Обработчик примема пакета
+static void LLC_RX_HNDL(frame_s *fr); //!< Обработчик примема пакета
 static void LLC_RunTimeAlloc(void);
 
 // Переменные модуля
@@ -35,7 +35,7 @@ struct LLCTask
   LLCTask *next; //!< Указатель на следующую задачу. NULL - конец очереди
   uint8_t TS; //!< Номер временого канала для передачи сообщения
   uint8_t CH; //!< Номера радиоканала для передачи сообщения
-  FChain_s *fc; //!< Указатель на данные для передачи
+  frame_s *fr; //!< Указатель на данные для передачи
 };
 
 /**
@@ -57,7 +57,7 @@ static LLCTask HeadTask;
 /**
 @brief Обратный вызов при приеме пакета данных
 */
-static void (*RXCallback)(FChain_s *fc);
+static void (*RXCallback)(frame_s *fr);
 
 /**
 @brief Первый элемент обработчика конца временного слота
@@ -104,7 +104,7 @@ bool LLC_Delete(LLC_s *llc)
   return true;
 }
 
-static void LLC_SetRXCallback(void (*fn)(FChain_s *fc))
+static void LLC_SetRXCallback(void (*fn)(frame_s *fr))
 {
   ASSERT_HALT(fn != NULL, "NULL pointer not allow");
   RXCallback = fn;
@@ -132,7 +132,7 @@ static void LLC_TimeAlloc(void (*fn)(void))
 /**
 @brief Добавляем задачу в очередь
 */
-static void LLC_AddTask(FChain_s* fc)
+static void LLC_AddTask(frame_s* fr)
 {
 }
 
@@ -157,7 +157,7 @@ static void LLC_Shelduler(uint8_t TS)
     if (MAC->MAC_GetTXState(task->TS)) // Занят ли временой слот
       continue; // Если слот занят переходим к следующему
     
-    MAC->MAC_Send(task->fc, SEND_ATEMPTS);
+    MAC->MAC_Send(task->fr, SEND_ATEMPTS);
     
     // Удаляем из списка
     last->next = task->next;
@@ -177,10 +177,10 @@ static void LLC_SE_HNDL(uint8_t TS)
   LLC_RunTimeAlloc();
 }
 
-static void LLC_RX_HNDL(FChain_s *fc)
+static void LLC_RX_HNDL(frame_s *fr)
 {
   if (RXCallback != NULL)
-    RXCallback(fc);
+    RXCallback(fr);
 }
 
 /**

@@ -37,6 +37,10 @@
         <encoding>UTF-8</encoding>
     </override>
     <override>
+        <path>\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_frame.c</path>
+        <encoding>UTF-8</encoding>
+    </override>
+    <override>
         <path>\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\FChain.h</path>
         <encoding>UTF-8</encoding>
     </override>
@@ -74,6 +78,22 @@
     </override>
     <override>
         <path>\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\delays.h</path>
+        <encoding>UTF-8</encoding>
+    </override>
+    <override>
+        <path>\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\fbuf.c</path>
+        <encoding>UTF-8</encoding>
+    </override>
+    <override>
+        <path>\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\fbuf.h</path>
+        <encoding>UTF-8</encoding>
+    </override>
+    <override>
+        <path>\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\frame.c</path>
+        <encoding>UTF-8</encoding>
+    </override>
+    <override>
+        <path>\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\frame.h</path>
         <encoding>UTF-8</encoding>
     </override>
 </userOverrides>

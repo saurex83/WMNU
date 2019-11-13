@@ -38,9 +38,9 @@ typedef struct
   uint16_t NSRC;
   uint32_t NONCE;
   uint8_t LENGTH;
-} __attribute__((packed)) ETH_H_t;
+} __attribute__((packed)) ETH_LAY;
 
-#define ETH_H_T_SIZE sizeof(ETH_H_t) 
+#define ETH_LAY_SIZE sizeof(ETH_LAY) 
 
 typedef struct //TODO Посмотреть в описании биты CRC, RSSI
 {
@@ -72,9 +72,9 @@ typedef struct
   uint16_t FSRC;
   uint8_t IPP;
   uint8_t LENGTH;
-} __attribute__((packed)) IP_HEADER_t;
+} __attribute__((packed)) IP_LAY;
 
-#define IP_HEADER_T_SIZE sizeof(IP_HEADER_t)
+#define IP_LAY_SIZE sizeof(IP_LAY)
 
 typedef struct
 {
@@ -83,6 +83,6 @@ typedef struct
   uint8_t MIN;
   uint8_t SEC;
   uint16_t TIMER32K;
-} __attribute__((packed)) SYNC_t;
+} __attribute__((packed)) SYNC_LAY;
 
-#define SYNC_T_SIZE sizeof(SYNC_t)
+#define SYNC_LAY_SIZE sizeof(SYNC_LAY)
