@@ -21,18 +21,24 @@ int main()
   ASSERT(false, "Test assert output\n");
 
   // Вызов функций тестирования
+  // Аппаратное тестирование
+  {
+    //suite_RADIO_HW();
+    //suite_delays_HW();    //12.11 Работает
+    //suite_TIC_HW();       //12.11 Работает
+    //suite_NT_HW();        // 12.11 Работает
+  };
+  // Юнит тестирование
+  {
+    //suite_delays();
+    suite_coder();
+    //suite_fbuf();
+    //suite_frame();
+  }
+  
 
- // suite_TIC();
- //  suite_TIC_HW();
-   //suite_RADIO_HW();
- // suite_delays();
- // suite_delays_HW();
- // suite_coder();
- // suite_Frames();
-  suite_fbuf();
-  suite_frame();
- // suite_LLC();
- // suite_NT_HW(); // Это аппаратный тест
+  
+
 	//run_utest_framepart();
 
 // Добавляем результаты тестов

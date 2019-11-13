@@ -14,7 +14,7 @@
 void TIC_Init(void);
 
 // Методы класса
-bool TIC_SetTimer(uint16_t ticks);
+void TIC_SetTimer(uint16_t ticks);
 uint16_t TIC_GetTimer(void);
 bool TIC_SetTXState(uint8_t TS, bool state);
 bool TIC_SetRXState(uint8_t TS, bool state);
@@ -66,8 +66,7 @@ static void (*SECallback)(uint8_t TS);
 static uint8_t TSStateTable[MAX_TS];
 static TimeStamp_s TimeStampTS0;
 
-
-void TIC_Create(void)
+void TIC_Init(void)
 {    
   // Устанавливаем обработчик прерываний таймера
   NT_SetEventCallback(TIC_HW_Timer_IRQ);
@@ -85,14 +84,13 @@ uint32_t TIC_TimeUsFromTS0()
   return passed;
 }
 
-bool TIC_SetTimer(uint16_t ticks)
+void TIC_SetTimer(uint16_t ticks)
 {
   ASSERT_HALT(ticks < MAX_TICKS, "Ticks not in range");
   if (ticks >= MAX_TICKS)
-    return false;
+    return ;
   
   NT_SetTime(ticks);
-  return true;
 }
 
 uint16_t TIC_GetTimer(void)

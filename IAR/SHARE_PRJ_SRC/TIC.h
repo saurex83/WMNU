@@ -3,7 +3,7 @@
 #include "stdint.h"
 
 void TIC_Init(void);
-bool TIC_SetTimer(uint16_t ticks);
+void TIC_SetTimer(uint16_t ticks);
 uint16_t TIC_GetTimer(void);
 bool TIC_SetTXState(uint8_t TS, bool state);
 bool TIC_SetRXState(uint8_t TS, bool state);

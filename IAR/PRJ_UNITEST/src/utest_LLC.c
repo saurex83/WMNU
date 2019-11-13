@@ -1,16 +1,16 @@
 #include "utest_suite.h"
 #include "LLC.h"
+#include "NTMR.h"
 
 static void test_create()
 {
-  //MAC_s mac;
-  //TIC_s tic;
+  NT_Init();
+  LLC_Init();
   
-  //LLC_s* LLC_Create(MAC_s *mac, TIC_s *tic);
   umsg("LLC", "Need program dep MAC ", true);
 }
 
-void suite_LLC(void)
+void suite_LLC_HW(void)
 {
   umsg_line("LLC module");
   
