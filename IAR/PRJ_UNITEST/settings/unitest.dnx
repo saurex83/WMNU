@@ -12,7 +12,7 @@
         <ByteLimit>50</ByteLimit>
     </Stack>
     <DebugChecksum>
-        <Checksum>273275970</Checksum>
+        <Checksum>661028803</Checksum>
     </DebugChecksum>
     <CodeCoverage>
         <Enabled>_ 0</Enabled>
@@ -81,8 +81,9 @@
         <FreqHi>0</FreqHi>
     </Simulator>
     <array_types>
-        <Fmt0>uint8_t [15]	3	0</Fmt0>
-        <Fmt1>uint8_t [16]	3	0</Fmt1>
+        <Fmt0>uint8_t [128]	4	0</Fmt0>
+        <Fmt1>uint8_t [15]	3	0</Fmt1>
+        <Fmt2>uint8_t [16]	3	0</Fmt2>
     </array_types>
     <watch_formats>
         <Fmt0>{W}1:CLKCONCMD	1	0</Fmt0>
