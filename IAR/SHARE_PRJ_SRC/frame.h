@@ -19,6 +19,7 @@ typedef struct
    int8_t LIQ;  
    uint8_t TS;
    uint8_t CH;
+   bool ACK; // true если необходимо подтвеждение пакета
    uint8_t PID;
    uint16_t NDST;
    uint16_t NSRC;

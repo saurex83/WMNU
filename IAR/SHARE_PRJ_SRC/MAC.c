@@ -46,7 +46,6 @@ typedef struct
 // Таблица состояний слотов приема/передачи
 MACSState_s MACSlotTable[50];
 
-
 void MAC_Init(void)
 {
   TIM_init();
@@ -113,6 +112,7 @@ void MAC_ACK_Send(frame_s *fr)
   RI_SetChannel(fr->meta.CH);
   RI_Send(fr);
   frame_delete(fr);
+  MACSlotTable[fr->meta.TS].TX.enable = false;
 }
 
 /**          *********** TODO ************ прием из Ethernet протокола
@@ -159,6 +159,7 @@ bool MAC_GetRXState(uint8_t TS)
 
 /**
 @brief Обработчик слота приема пакета
+@detail Отправкой подтвеждения приема пакета занимается ethernet протокол
 @param[in] TS номер временного слота
 */
 static void MAC_RX_HNDL(uint8_t TS)
@@ -178,6 +179,7 @@ static void MAC_RX_HNDL(uint8_t TS)
 
 /**
 @brief Обработчик слота пердачи пакета
+@detail После отправки пакета требуется подтверждение приема
 @param[in] TS номер временного слота
 */
 static void MAC_TX_HNDL(uint8_t TS)
@@ -192,12 +194,23 @@ static void MAC_TX_HNDL(uint8_t TS)
     
   // Пробуем передать данные
   bool tx_success = RI_Send(MACSlotTable[TS].TX.fr); 
+  bool send_success = false;   
   
-  if (tx_success) // В случаи успеха удаляем данные и закрываем слоты 
+  // Если отправка была успешна и требуется подтверждение ACK
+  if (tx_success && MACSlotTable[TS].TX.fr->meta.ACK)
   {
-      frame_delete(MACSlotTable[TS].TX.fr);
-      MACSlotTable[TS].TX.enable = false;
-      TIC_SetTXState(TS, false);
+    // TODO ждем пакета ACK
+  }
+ 
+  // Если отправка была успешна и НЕ требуется подтверждение ACK
+  if (tx_success && !MACSlotTable[TS].TX.fr->meta.ACK) 
+    send_success = true;
+  
+  if (send_success) // В случаи успеха удаляем данные и закрываем слоты 
+  { 
+    frame_delete(MACSlotTable[TS].TX.fr);
+    MACSlotTable[TS].TX.enable = false;
+    TIC_SetTXState(TS, false);      
   }
   else // Уменьшаем счетчик попыток передачи и удаляем пакет при достижении 0.
   {
@@ -206,7 +219,8 @@ static void MAC_TX_HNDL(uint8_t TS)
       {
         frame_delete(MACSlotTable[TS].TX.fr);
         MACSlotTable[TS].TX.enable = false;
-        TIC_SetTXState(TS, false);       
+        TIC_SetTXState(TS, false);  
       }
   }
+  
 }
