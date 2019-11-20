@@ -1,6 +1,7 @@
 #pragma once
 #include "stdbool.h"
 #include "stdint.h"
+#include "delays.h"
 
 void TIC_Init(void);
 void TIC_SetTimer(uint16_t ticks);
@@ -18,3 +19,4 @@ bool TIC_SetRTC(uint32_t RTC);
 void TIC_SetNonce(uint32_t nonce);
 uint32_t TIC_GetNonce(void);
 uint32_t TIC_TimeUsFromTS0();
+TimeStamp_s* TIC_GetTimeStampTS0(void);

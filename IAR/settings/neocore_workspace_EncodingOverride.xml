@@ -41,6 +41,10 @@
         <encoding>UTF-8</encoding>
     </override>
     <override>
+        <path>\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_radio.c</path>
+        <encoding>UTF-8</encoding>
+    </override>
+    <override>
         <path>\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\FChain.h</path>
         <encoding>UTF-8</encoding>
     </override>
@@ -58,6 +62,10 @@
     </override>
     <override>
         <path>\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\RADIO.c</path>
+        <encoding>UTF-8</encoding>
+    </override>
+    <override>
+        <path>\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\RADIO.h</path>
         <encoding>UTF-8</encoding>
     </override>
     <override>

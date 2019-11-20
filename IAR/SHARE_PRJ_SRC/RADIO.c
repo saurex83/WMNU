@@ -7,26 +7,29 @@
 #include "stdlib.h"
 #include "nwdebuger.h"
 #include "Radio_defs.h"
+#include "TIC.h"
+#include "delays.h"
+#include "frame.h"
+#include "string.h"
+#include "coder.h"
+#include "NTMR.h"
 
-// Публичные методы
-RI_s* RI_create(void);
-bool RI_delete(RI_s *ri);
 
-// Методы класса
-static void RI_On(void);
-static void RI_Off(void);
-static bool RI_SetChannel(uint8_t CH);
-static bool RI_Send(FChain_s *fc);
-static FChain_s* RI_Receive(uint8_t timeout);
-static uint32_t RI_GetCRCError(void);
-static uint32_t RI_GetCCAReject(void);
-static uint32_t RI_GetUptime(void);
-static void RI_StreamCrypt(bool state);
-static bool SendWithoutCallbalck(FChain_s *fc);
-static bool SendWithCallback(FChain_s *fc);
+// Открытые методы модуля
+void RI_init(void);
+bool RI_SetChannel(uint8_t CH);
+bool RI_Send(frame_s *fr);
+frame_s* RI_Receive(uint16_t timeout);
+uint32_t RI_GetCRCError(void);
+uint32_t RI_GetCCAReject(void);
+float RI_GetUptime(void);
+void RI_StreamCrypt(bool state);
+void RI_setKEY(void* ptr_KEY);
+void RI_setIV(void* ptr_IV);
 
 // Приватные методы
 static void random_core_init(void);
+static void RI_cfg(void);
 
 // TODO можно добавть простой алгоритм перестановки для сокрытия данных 
 // при передаче RAW формата. Алгоритм должен быть достаточно простой и 
@@ -40,12 +43,16 @@ static void RI_BitRawCrypt(uint8_t *src, uint8_t size); // Шифрование 
 static void RI_BitRawDecrypt(uint8_t *src, uint8_t size); // Дешифрока приема
 static inline void setFreq(uint8_t CH); // Установка частоты передатчика
 static void LoadTXData(uint8_t *src, uint8_t len); // Загрузка данных в tx buf
+static void UnLoadRXData(uint8_t *src, uint8_t len);
+static bool SendData(frame_s *fc);
+static bool RecvData(uint32_t timeout_us, uint16_t *SFD_TimeStamp);
 
 // Переменные модуля
-bool RADIO_CREATED = false;
-uint32_t RI_UPTIME = 0; // Время работы радио в мс. 49 дней максимум
-uint32_t RI_CRC_ERROR = 0; // Количество ошибок CRC
-uint32_t RI_CCA_REJECT = 0; // Количество отказов передач из-за CCA
+static float RI_UPTIME = 0; // Время работы радио в мс. 49 дней максимум
+static uint32_t RI_CRC_ERROR = 0; // Количество ошибок CRC
+static uint32_t RI_CCA_REJECT = 0; // Количество отказов передач из-за CCA
+static uint8_t IV[16];  // Вектор иницилизации для кодирования
+static uint8_t KEY[16]; // Ключ для кодирования
 
 /*!
 \brief Константы для установки выходной мощности радиопередатчика.
@@ -88,42 +95,29 @@ struct
   bool STREAM_CRYPT_ENABLE; //!< Шифрование выходного потока данных
 } RADIO_CFG;
 
-typedef struct // Структура двух байт FCS1,FCS2 при APPEND_DATA_MODE = 0
+/**
+@brief Установить вектор иницилизации для шифрования
+@param[in] ptr_IV указатель на 16 байтный вектор иницилизации
+*/
+void RI_setIV(void* ptr_IV)
 {
-  int8_t rssi;
-  int8_t correlation:7;
-  uint8_t CRC_OK:1;
-} __attribute__((packed)) FCS_t;
+  memcpy(IV, ptr_IV, 16);
+}
+
+/**
+@brief Установить ключ шифрования
+@param[in] ptr_KEY указатель на 16 байтный ключ
+*/
+void RI_setKEY(void* ptr_KEY)
+{
+  memcpy(KEY, ptr_KEY, 16);
+}
 
 /*!
-\brief Создает обьект с интерфейсом радио. Можно создать только один обьект.
-\return Возвращает указатель на обьект.
+\brief Иницилизация радио интерфейса
 */
-RI_s* RI_create(void)
+void RI_init(void)
 {
-  if (RADIO_CREATED)
-  {
-    ASSERT_HALT(RADIO_CREATED == false, "RADIO already created");
-    return NULL;
-  }
-  
-  RI_s* ri = malloc(RI_S_SIZE);
-  ASSERT_HALT(ri != NULL, "Memory allocation fails");
-  
-  if (ri == NULL)
-    return NULL;
-  
-  // Заполняем структуру указателей
-  ri->RI_On = RI_On;
-  ri->RI_Off = RI_Off;
-  ri->RI_SetChannel = RI_SetChannel;
-  ri->RI_Send = RI_Send;
-  ri->RI_Receive = RI_Receive;
-  ri->RI_GetCRCError = RI_GetCRCError;
-  ri->RI_GetCCAReject = RI_GetCCAReject;
-  ri->RI_GetUptime = RI_GetUptime;
-  ri->RI_StreamCrypt = RI_StreamCrypt;
-
   // Настройки поумолчанию
   RADIO_CFG.CH = CH11;
   RADIO_CFG.TX_POWER = m0x5;
@@ -131,25 +125,12 @@ RI_s* RI_create(void)
   RADIO_CFG.STREAM_CRYPT_ENABLE = true;
   // Пост действия с радио
   random_core_init();
-  return ri;
-}
-
-/*!
-\brief Удаляеть обьект радио
-\param[in] *ri Указатель на удаляемый обьект
-\return Возвращает true в случаии успешного удаления 
-*/
-bool RI_delete(RI_s *ri)
-{
-  free(ri);
-  RADIO_CREATED = false;
-  return true;
 }
 
 /*!
 \brief Переводит радио в активный режим и устанавливает параметры.
 */
-static void RI_On(void)
+static void RI_cfg(void)
 {
 /*
 APPEND_DATA_MODE = 0. FCS1 = signed rssi, FCS2.7 CRC OK, FCS2.6-0 Correlation
@@ -163,21 +144,14 @@ of ~50 is typically the lowest quality frames detectable by CC2520.
   
   // Устанавливаем мощность выходного сигнала
   TXPOWER = RADIO_CFG.TX_POWER;
+ 
+  FRMFILT0 = 0x00; // Отключаем фильтрацию пакетов
   
   // Устанавливаем режим модуляции
   MDMTEST1_u MDM1;
   MDM1.value = MDMTEST1;
   MDM1.bits.MODULATION_MODE = RADIO_CFG.MODULATION_MODE;
-  MDMTEST1 = MDM1.value;
-}
-
-/*!
-\brief Отключает радиопередатчик
-*/
-static void RI_Off(void)
-{
-  ISRFOFF(); // Останавливаем прием и передачу. отключаем синтезатор
-  // На диаграмме состояния передачтчика это режим idle
+  MDMTEST1 = MDM1.value; 
 }
 
 /*!
@@ -185,7 +159,7 @@ static void RI_Off(void)
 \param[in] CH Номера каналов [11..26]
 \return Возвращает true если аргументы верны
 */
-static bool RI_SetChannel(uint8_t CH)
+bool RI_SetChannel(uint8_t CH)
 {
   if ((CH >=11) && (CH<=26))
   {
@@ -197,57 +171,51 @@ static bool RI_SetChannel(uint8_t CH)
 
 /*!
 \brief Передает данные в эфир
-\details Функция может самостоятельно шифровать поток данных, выполнять
- обратные вызовы при передаче. Увеличивает RI_CCA_REJECT
-\param[in] *fc Указатель на структуру FChain, содержащию данные для передачи
+\details Функция может самостоятельно шифровать поток данных, увеличивает 
+ RI_CCA_REJECT при невозможности отправки сообщения, расчитывает время работы 
+ радио передатчика. Отправка сообщения в заданное сетевое время 
+ fr->meta.SEND_TIME. Если равно 0, то отправка через случайноу время в мкс.
+ Данные автоматически оборачиваются в LEN, CRC1,CRC2
+\param[in] *fr Указатель на структуру frame_s RAW_LAY
 \return Возвращает true в случаи успешной передачи
 */
-static bool RI_Send(FChain_s *fc)
+bool RI_Send(frame_s *fr)
 {
-  ASSERT_HALT(fc != NULL, "fc NULL");
-  
-  // Убедимся, что первый элемент данных это ETH_H
-  FC_iteratorToHead(fc);
-  FItem_s* fi = FC_getIterator(fc);
-  FItem_t ft = FI_getType(fi);
-  ASSERT_HALT(ft != ETH_H , "Incorrect fchain");
+  ASSERT_HALT(fr != NULL, "fr NULL");
   
   // Устанавливаем частоту передачи пакета
-  setFreq(fc->meta.CH);
+  RI_cfg();
   
   bool send_res; // Результат передачи данных
+  TimeStamp_s start,stop; // Измерение времени
   
-  // Отправка данных с обратным вызовом или нет
-  if (fc->meta.SFD_Callback == NULL)
-    send_res = SendWithoutCallbalck(fc);
-  else
-    send_res = SendWithCallback(fc);
+  TIM_TimeStamp(&start); // Начало измерения времени
+  send_res = SendData(fr);
+  TIM_TimeStamp(&stop); // Конец измерения времени
+  
+  uint32_t passed = TIM_passedTime(&start, &stop);
+  RI_UPTIME += (float)passed/1000; // Микросекунды в милисекунды
   
   // В случаи ошибки передачи увеличиваем счетчик RI_CCA_REJECT
   if (!send_res)
     RI_CCA_REJECT++;
-   
-  //TODO Измерением времени которое требуется на передачу данных
-  // Учет времени работы передатчика
-    
+  
   return send_res;
 }
 
 /**
-@brief Отправка сообщения без обратного вызова
+@brief Отправка сообщения
 @return true в случаи успеха
 */
-static bool SendWithoutCallbalck(FChain_s *fc)
+static bool SendData(frame_s *fr)
 {
-  uint8_t *data = malloc(128); // Выделяем область данных под сообщение
-  uint8_t data_size; // Размер данных в буфере
+  uint8_t data_size;
+  uint8_t *data = (uint8_t*)frame_merge(fr, &data_size); 
   
   bool result = true;
   switch(true)
   {
     case true:
-      ASSERT_HALT(data != NULL, "Cant memory allocate");
-      FC_copyChainData(fc, data, &data_size); // Копируем данные в буфер
       // Шифруем данные при необходимости
       RI_BitRawCrypt(data, data_size);
       // Копируем данные в буфер. Очистка буфера автоматическая
@@ -256,9 +224,27 @@ static bool SendWithoutCallbalck(FChain_s *fc)
       ISRXON();
       // Ждем пока статус RSSI_VALID станет true
       while(!RSSISTAT);
-      // Очищаем флаг передачи сообщения
+      // Очищаем флаг завершения передачи сообщения
       RFIRQF1 &= ~RFIRQF1_TXDONE;
+      RFIRQF0 &= ~RFIRQF0_SFD;
+      
+      // Время отправки сообщения измеряется в тактах сетевого времени NTMR
+      // Он работатаеи намного лучше чем MAC таймер(меньше погрешность)
+      // Отправка в обозначенное время или по факту готовности
+      uint16_t timer = 0; // Для отлалки. 
+      if (fr->meta.SEND_TIME != 0)
+        timer = NT_WaitTime(fr->meta.SEND_TIME);
+      else
+      {
+        // Вносим случайную задержку при передаче данных
+        uint8_t send_del = rand() % 10;
+        for (volatile uint8_t i = 0; i < send_del ; i++);  
+      }
       // Начинаем передачу данных
+      // Transmission of preamble begins 192 μs after the STXON or STXONCCA 
+      // command strobe
+      // 192+(4(pream)+1(sfd))*8bit*4us = 352 мкс. Измерил 360мкс
+      // Измерил в тактах NT_GetTimer() получилось 13 тиков. 396 мкс 
       ISTXONCCA();
       // Произошла ошибка передачи если SAMPLED_CCA false
       FSMSTAT1_u fsmstat1;
@@ -268,17 +254,14 @@ static bool SendWithoutCallbalck(FChain_s *fc)
         result = false;
         break;
       }
-      
-      // Ждем пока завершиться передача пакета
-      while (fsmstat1.bits.TX_ACTIVE)
-          fsmstat1.value = FSMSTAT1;
-      
-        // Проверим переданно ли сообщение TX_FRM_DONE
-      if (!(RFIRQF1 & RFIRQF1_TXDONE))
-      {
-        result = false;
-        break;
-      }
+
+      // Ждем завершения отправки SFD
+      while (!(RFIRQF0 & RFIRQF0_SFD));
+      fr->meta.TIMESTAMP = NT_GetTime(); 
+
+      // Проверим переданно ли сообщение TX_FRM_DONE
+      while (!(RFIRQF1 & RFIRQF1_TXDONE));
+      break;
   }
 
   free(data);
@@ -289,91 +272,37 @@ static bool SendWithoutCallbalck(FChain_s *fc)
 }
 
 /**
-@brief Отправка сообщения с обратным вызовом
-@return true в случаи успеха
+@brief Загрузка данных для передачи в буфер. 
+@detail Поля LEN, FCS1, FCS2 добавляются автоматически
+@param[in] src указатель на данные
+@param[in] len размер данных
 */
-static bool SendWithCallback(FChain_s *fc)
-{
-  uint8_t *data = malloc(128); // Выделяем область данных под сообщение
-  uint8_t data_size; // Размер данных в буфере
-  
-  bool result = true;
-  switch (true)
-  {
-    case true:
-      ASSERT_HALT(data != NULL, "Cant memory allocate");
-        
-      // Для начала передачи по команде STXONCCA нужно включить приемник
-      ISRXON();
-      
-      // Ждем пока статус RSSI_VALID станет true
-      while(!RSSISTAT);
-      
-      // Очищаем флаг передачи сообщения и передачи SFD
-      RFIRQF1 &= ~RFIRQF1_TXDONE;
-      RFIRQF0 &= ~RFIRQF0_SFD;  
-      
-      // Начинаем передачу данных
-      ISTXONCCA();
-      
-      // Произошла ошибка передачи если SAMPLED_CCA false
-      FSMSTAT1_u fsmstat1;
-      fsmstat1.value = FSMSTAT1;
-      
-      if (!fsmstat1.bits.SAMPLED_CCA)
-      {
-        result = false;
-        break;
-      }
-      
-      // TODO После SFD начинаются данные. Нужно вызывать callback после 
-      // SAMPLED_CCA и TX_STATE.
-      // Ждем завершения передачи SFD
-     // while (!RFIRQF0 & RFIRQF0_SFD);
-    
-      // Ждем начала передачи преамбалы
-      while (fsmstat1.bits.TX_ACTIVE)
-          fsmstat1.value = FSMSTAT1;
-      
-      // Как только началась передача преамбалы запрашиваем fchain
-      FChain_s *new_fc = fc->meta.SFD_Callback();
-      FC_copyChainData(new_fc, data, &data_size); // Копируем данные в буфер
-      // Шифруем данные при необходимости
-      RI_BitRawCrypt(data, data_size);
-      // Копируем данные в буфер. Очистка буфера автоматическая
-      LoadTXData(data, data_size);  
-      
-      // Ждем пока завершиться передача пакета
-      while (fsmstat1.bits.TX_ACTIVE)
-          fsmstat1.value = FSMSTAT1;
-      
-      // Проверим переданно ли сообщение TX_FRM_DONE
-      if (!(RFIRQF1 & RFIRQF1_TXDONE))
-      {
-        result = false;
-        break;
-      }
-  }
-  free(data);
-  ISRFOFF();
-  if (result)
-    return true;
-  return false; 
-}
-
 static void LoadTXData(uint8_t *src, uint8_t len)
 {
-  uint8_t *src_ptr = src;
   // Очищаем буфер передатчика
   ISFLUSHTX(); 
-
-  while (len)
-  {
-    RFD = *src_ptr;
-    src_ptr++;
-    len--;
-  }
+  // Поле LEN на два байта больше
+  RFD = len + 2;
+  
+  for (uint8_t i = 0 ; i < len; i++)
+    RFD = src[i];
+  
+  // Добавляем CRC1,2
+  RFD = 0x00;
+  RFD = 0x00;
 };
+
+/**
+@brief Выгружаем принятый пакет из радио
+@param[out] src указатель на буфер приемника
+@param[in] len размер выгружаемых данных
+*/
+static void UnLoadRXData(uint8_t *src, uint8_t len)
+{
+  for (uint8_t i = 0 ; i < len; i++)
+    src[i] = RFD;
+};
+
 static inline void setFreq(uint8_t CH)
 {
   ASSERT_HALT( (CH >= 11) && (CH <= 26), "Incorrect radio channel");
@@ -386,21 +315,142 @@ static inline void setFreq(uint8_t CH)
 /*!
 \brief Принимает данные из эфира
 \details Функция принимает данные из эфира. Проводит проверку CRC, увеличивает
-RI_CRC_ERROR. Дешифрует данные при необходимости. Отмечает время прихода SFD.
+RI_CRC_ERROR. Дешифрует данные при необходимости. Отмечает время прихода SFD 
+ в тактах сетевого времени .
 \param[in] timeout Время ожидания данных в милисекундах
 \return Возвращает NULL если данных нет
 */
-static FChain_s* RI_Receive(uint8_t timeout)
+frame_s* RI_Receive(uint16_t timeout)
 {
-  ISRXON();
-  return NULL;
+  // Устанавливаем частоту передачи пакета
+  RI_cfg();
+  uint16_t SFD_TimeStamp;
+  
+  // Принимаем пакет 
+  uint32_t timeout_us = timeout*1000UL; // Переводим мс->мкс
+  TimeStamp_s start,stop; // Измерение времени
+  TIM_TimeStamp(&start); // Начало измерения времени работы радио
+  bool recv_res = RecvData(timeout_us, &SFD_TimeStamp);
+  TIM_TimeStamp(&stop); // Конец измерения времени радио
+  uint32_t passed = TIM_passedTime(&start, &stop);
+  RI_UPTIME += (float)passed/(float)1000; // Микросекунды в милисекунды
+  
+  // Если ничего не приняли возвращаем NULL
+  if (!recv_res)
+    return NULL;
+  
+  uint8_t frame_size = RXFIFOCNT; // Количество принятых данных
+  
+  // Минимальный размер FCS1,FCS2 - 2 байта. LEN не включен в подсчет 
+  if (frame_size <= 2)
+    return NULL;
+  
+  // Выгружаем данные из приемника
+  uint8_t *frame_raw = malloc(frame_size); 
+  UnLoadRXData(frame_raw, frame_size);
+  
+  int8_t  FCS1 = frame_raw[frame_size - 2]; // RSSI
+  uint8_t FCS2 = frame_raw[frame_size - 1]; // bit7 = CRCOK, bit[6..0] Corr_val
+  uint8_t LEN_F = frame_raw[0]; // Поле LEN
+  
+  // Проверим поле LEN. Размер данных в заголовке должен совпадать
+  // с фактической длинной принятых данных
+  if (LEN_F != frame_size - 1)
+  {
+    free(frame_raw);
+    RI_CRC_ERROR ++;
+    return NULL;
+  }
+  
+  // Проверим поле CRCOK
+  if (!(FCS2 && 1<<7))
+  {
+    free(frame_raw);
+    RI_CRC_ERROR ++;
+    return NULL;
+  }
+  
+  // Создаем буфер, последнии два байта FCS1,2 и поле LEN не копируем
+  fbuf_s* fb = fbuf_create(FB_RAW_LAY, &frame_raw[1], frame_size - 2);
+  RI_BitRawDecrypt(fb->payload, fb->len); // Декодируем поток если нужно
+  
+  // Создаем фрейм
+  frame_s *fr = frame_create();
+  frame_insert_head(fr ,fb); // Добавляем буферы
+ 
+  // Копируем метку времени SFD
+  fr->meta.TIMESTAMP = SFD_TimeStamp;
+  
+  // Расчитываем мощность принятого сигнала
+  fr->meta.RSSI_SIG =  FCS1 + RSSI_OFFSET;
+  // Расчитываем качество сигнала
+  uint8_t corr = FCS2 & 0x7F;
+  fr->meta.LIQ = LIQ_CALC(corr); // Значение коэфф. корреляции
+
+  fr->meta.CH = RADIO_CFG.CH;
+
+  free(frame_raw);
+  return fr;
+}
+
+/**
+@brief Прием данных из эфира
+@param[in] timeout_us время ожидания в микросекундах
+@param[out] SFD_TimeStamp отметка времени завершения приема SFD
+*/
+static bool RecvData(uint32_t timeout_us, uint16_t *SFD_TimeStamp)
+{
+  TimeStamp_s start,stop; // Измерение времени  
+  ISFLUSHRX(); // Очищаем буфер приема
+  
+  TIM_TimeStamp(&start);
+  
+  // Очищаем флаг завершения передачи сообщения и приема SFD
+  RFIRQF0 &= ~RFIRQF0_RXPKTDONE;  
+  RFIRQF0 &= ~RFIRQF0_SFD; 
+  ISRXON(); // Включаем радиопередатчик
+
+  bool time_out = false; // Истекло время ожидания пакета
+  bool packet_received = false; // Приняли пакет
+  bool sfd_received = false; // Приняли sfd
+  
+  // Цикл приема пакета
+  while (true)
+  {
+    TIM_TimeStamp(&stop);
+    if (TIM_passedTime(&start, &stop) >= timeout_us)
+    {
+      time_out = true;
+      break;
+    }
+   
+    // Принят сигнал SFD
+    if ((RFIRQF0 & RFIRQF0_SFD))
+    {
+      *SFD_TimeStamp = NT_GetTime(); 
+      sfd_received = true;
+    }
+    
+    //  Завершен ли прием сообщения RX_FRM_DONE (RXPKTDONE)
+    if ((RFIRQF0 & RFIRQF0_RXPKTDONE))
+    {
+      packet_received = true;
+      break;
+    }
+  } // while 
+  
+  ISRFOFF();
+  if (packet_received && sfd_received && !time_out)
+    return true;
+  else
+    return false;
 }
 
 /*!
 \brief Возвращает количество ошибок возникших с момента иницилизации
 \return Количество CRC ошибок
 */
-static uint32_t RI_GetCRCError(void)
+uint32_t RI_GetCRCError(void)
 {
   return RI_CRC_ERROR;
 }
@@ -409,7 +459,7 @@ static uint32_t RI_GetCRCError(void)
 \brief Возвращает количестов отказов передачи пакета из-за занятости канала.
 \return Количество отказов CCA
 */
-static uint32_t RI_GetCCAReject(void)
+uint32_t RI_GetCCAReject(void)
 {
   return RI_CCA_REJECT;
 }
@@ -418,7 +468,7 @@ static uint32_t RI_GetCCAReject(void)
 \brief Возвращает суммарное время работы радио в режиме прием/передача
 \return Вермя в милисекундах
 */
-static uint32_t RI_GetUptime(void)
+float RI_GetUptime(void)
 {
   return RI_UPTIME;
 }
@@ -475,7 +525,7 @@ static void random_core_init(void)
 {
   unsigned int rnd_core = 0;;
      
-  RI_On();
+  RI_cfg();
   FREQCTRL = 0x00; // Выбираем не используемую частоту
 
   // TODO По какой то причине OP_EXE не выполняет команду.
@@ -502,7 +552,7 @@ static void random_core_init(void)
 \brief Установка разрешения шифрования потока данных
 \param[in] true - включить шифрование
 */
-static void RI_StreamCrypt(bool state)
+void RI_StreamCrypt(bool state)
 {
   RADIO_CFG.STREAM_CRYPT_ENABLE = state;
 }
@@ -516,6 +566,8 @@ static void RI_BitRawCrypt(uint8_t *src, uint8_t size)
 {
   if (!RADIO_CFG.STREAM_CRYPT_ENABLE)
     return;
+  
+  AES_StreamCoder(true, src, src, KEY, IV, size);
 }
 
 /*!
@@ -527,4 +579,6 @@ static void RI_BitRawDecrypt(uint8_t *src, uint8_t size)
 {
    if (!RADIO_CFG.STREAM_CRYPT_ENABLE)
     return;
+   
+  AES_StreamCoder(false, src, src, KEY, IV, size);
 }

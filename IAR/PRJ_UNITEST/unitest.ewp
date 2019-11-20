@@ -183,7 +183,7 @@
                 </option>
                 <option>
                     <name>General Xdata Heap Size</name>
-                    <state>0xFF</state>
+                    <state>0x800</state>
                 </option>
                 <option>
                     <name>General Far Heap Size</name>

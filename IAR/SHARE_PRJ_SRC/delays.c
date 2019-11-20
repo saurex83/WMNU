@@ -5,6 +5,7 @@
 
 #include "ioCC2530.h"
 #include "delays.h"
+#include "string.h"
 
 #define TICK_NS  31.25 // Количество нс в одном такте TIM2
 #define TICK_US  0.03125 // Количество мкс в одном такте TIM2
@@ -19,6 +20,7 @@ void TIM_init(void);
 void TIM_TimeStamp(TimeStamp_s* timestamp);
 void TIM_delay(uint32_t delay);
 uint32_t TIM_passedTime(TimeStamp_s* start, TimeStamp_s* stop);
+void TIM_copy(TimeStamp_s *src, TimeStamp_s *dst);
 
 // Приватные
 static inline uint32_t Interval(TimeStamp_s* start, TimeStamp_s* stop);
@@ -119,4 +121,14 @@ void TIM_delay(uint32_t delay)
     TIM_TimeStamp(&now);
     passed = Interval(&start, &now);
   } while (passed < delay);
+}
+
+/**
+@brief Копирование временной метки
+@param[in] src указатель на исходную метку для копирование
+@param[out] dst указатель на метку назначения
+*/
+void TIM_copy(TimeStamp_s *src, TimeStamp_s *dst)
+{
+  memcpy(src, dst, sizeof(TimeStamp_s));
 }

@@ -21,3 +21,4 @@ void TIM_init(void);
 void TIM_TimeStamp(TimeStamp_s* timestamp);
 uint32_t TIM_passedTime(TimeStamp_s* start, TimeStamp_s* stop);
 void TIM_delay(uint32_t delay);
+void TIM_copy(TimeStamp_s *src, TimeStamp_s *dst);

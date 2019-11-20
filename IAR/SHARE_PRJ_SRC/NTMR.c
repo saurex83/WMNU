@@ -51,6 +51,7 @@ bool NT_SetTime(uint16_t ticks);
 void NT_SetCompare(uint16_t ticks);
 void NT_SetEventCallback(void (*fn)(uint16_t ticks));
 uint16_t NT_GetTime(void);
+uint16_t NT_WaitTime(uint16_t ticks);
 
 // Приватные методы
 static uint32_t ReadTimer(void);
@@ -225,12 +226,44 @@ __interrupt void TimerCompareInterrupt(void)
 }
 
 /**
+@breif Ожидание наступления времени сети
+@param[in] ticks время в тактах
+@return фактическое время сети
+*/
+uint16_t NT_WaitTime(uint16_t ticks)
+{
+  static union 
+  {
+    uint32_t val;
+    uint8_t fild[4];
+  } val;
+  
+  val.val = 0;
+  // TOFFSET = NETWORK TIME - TIMER
+  // NETWORK TIME = TIMER + TOFFSET
+  
+  // Ждем синхронизацию таймера после пробуждения
+  while (!(SLEEPSTA & 0x01));
+  
+  do
+  {
+    // Соблюдаем порядок чтения регисторов ST  
+    val.fild[0] = ST0;
+    val.fild[1] = ST1;
+    val.fild[2] = ST2;
+    val.val +=TOFFSET;
+    val.val &= 0x7FFF; // Приводим значения таймера к 0-32767    
+  } while (val.val < ticks);
+  return val.val;
+}
+
+/**
 @brief Возвращает текущее значение таймера
 @return Текущие ticks
 */
 static uint32_t ReadTimer(void)
 {
-  union 
+  static union 
   {
     uint32_t val;
     uint8_t fild[4];
@@ -241,7 +274,7 @@ static uint32_t ReadTimer(void)
   // Ждем синхронизацию таймера после пробуждения
   while (!(SLEEPSTA & 0x01));
   
-  // Соблюдаем порядок чтения регисторов ST
+  // Соблюдаем порядок чтения регисторов ST  
   ret_val.fild[0] = ST0;
   ret_val.fild[1] = ST1;
   ret_val.fild[2] = ST2;

@@ -13,8 +13,9 @@
 
 
 // Флаги прерывания RFIRQF0, RFIRQF1,
-#define RFIRQF1_TXDONE  (1<<1)
-#define RFIRQF0_SFD     (1<<1)
+#define RFIRQF1_TXDONE      (1<<1)
+#define RFIRQF0_RXPKTDONE   (1<<6)
+#define RFIRQF0_SFD         (1<<1)
 
 union MDMCTRL0_u
 {

@@ -2,6 +2,7 @@
 #include "stdbool.h"
 #include "stdint.h"
 #include "fbuf.h"
+#include "delays.h"
 
 /**
 @brief Методики передачи пакета
@@ -10,8 +11,8 @@ enum TX_METHODS {BROADCAST = 0, UNICAST = 1};
 
 typedef struct 
 {
-   uint16_t TIMESTAMP;
-   int8_t RSSI;
+   uint16_t TIMESTAMP; // В тактах сети
+   int8_t RSSI_SIG; // Имя RSSI определено дефайном в ioCC2530.h
 /* link quality. Calculate LQI = (CORR - a)b. Where a and b are found 
    empirically based on PER measurements as a function of the correlation 
    value. PER - packet error rate */
@@ -26,6 +27,7 @@ typedef struct
    uint16_t FSRC;
    uint8_t IPP;
    uint8_t TX_METHOD;
+   uint16_t SEND_TIME; // В тактах сети
 } __attribute__((packed))  meta_s;
 
 #define META_S_SIZE sizeof(meta_s) 

@@ -29,6 +29,7 @@ bool TIC_SetRTC(uint32_t RTC);
 void TIC_SetNonce(uint32_t nonce);
 uint32_t TIC_GetNonce(void);
 uint32_t TIC_TimeUsFromTS0();
+TimeStamp_s* TIC_GetTimeStampTS0(void);
  
 // Приватные методы
 static uint8_t TIC_getCurrentTS(uint16_t ticks);
@@ -66,12 +67,18 @@ static void (*SECallback)(uint8_t TS);
 static uint8_t TSStateTable[MAX_TS];
 static TimeStamp_s TimeStampTS0;
 
+
+TimeStamp_s* TIC_GetTimeStampTS0(void)
+{
+  return &TimeStampTS0;
+}
 void TIC_Init(void)
 {    
   // Устанавливаем обработчик прерываний таймера
   NT_SetEventCallback(TIC_HW_Timer_IRQ);
   // Запускаем процесс планировщика
   NT_SetCompare(0); 
+  TIC_SetTimer(0);
   TIM_TimeStamp(&TimeStampTS0);
 }
 

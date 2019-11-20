@@ -1,22 +1,7 @@
 #pragma once
 #include "stdbool.h"
 #include "stdint.h"
-#include "FChain.h"
-
-typedef struct
-{
-  void (*RI_On)(void);
-  void (*RI_Off)(void);
-  bool (*RI_SetChannel)(uint8_t CH);
-  bool (*RI_Send)(FChain_s *fc);
-  FChain_s* (*RI_Receive)(uint8_t timeout);
-  uint32_t (*RI_GetCRCError)(void);
-  uint32_t (*RI_GetCCAReject)(void);
-  uint32_t (*RI_GetUptime)(void);
-  void (*RI_StreamCrypt)(bool state);
-} RI_s;
-
-#define RI_S_SIZE sizeof(RI_s)
+#include "frame.h"
 
 enum CHANNAL_e
 {
@@ -25,5 +10,13 @@ enum CHANNAL_e
   CH24 = 24, CH25 = 25, CH26 = 26
 };
 
-RI_s* RI_create(void);
-bool RI_delete(RI_s *ri);
+void RI_init(void);
+bool RI_SetChannel(uint8_t CH);
+bool RI_Send(frame_s *fr);
+frame_s* RI_Receive(uint16_t timeout);
+uint32_t RI_GetCRCError(void);
+uint32_t RI_GetCCAReject(void);
+float RI_GetUptime(void);
+void RI_StreamCrypt(bool state);
+void RI_setKEY(void* ptr_KEY);
+void RI_setIV(void* ptr_IV);

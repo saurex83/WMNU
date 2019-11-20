@@ -1,5 +1,31 @@
 #include "stdio.h"
 #include "utest_suite.h"
+#include "ioCC2530.h"
+
+/**
+@brief Иницилизируем выводы светодидов
+*/
+void utestSigTraceInit(void)
+{
+  P1DIR = 0x13; // Включаем светодиоды
+}
+
+void LED(uint8_t led, bool state)
+{
+  switch(led)
+  {
+    case D1:
+      P1_0 = !state;
+      break;
+    case D2:
+      P1_1 = !state;
+      break;
+    case D3:
+      P1_4 = !state;
+      break;
+  }
+}
+
 
 static struct utest_summary_s
 {

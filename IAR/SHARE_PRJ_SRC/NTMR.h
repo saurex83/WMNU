@@ -7,3 +7,4 @@ bool NT_SetTime(uint16_t ticks);
 void NT_SetCompare(uint16_t ticks);
 void NT_SetEventCallback(void (*fn)(uint16_t ticks));
 uint16_t NT_GetTime(void);
+uint16_t NT_WaitTime(uint16_t ticks);
