@@ -205,25 +205,35 @@ bool RI_Send(frame_s *fr)
 
 /**
 @brief Отправка сообщения
+@detail Время отправки с шифрованием 10 байт в мкс. Merge = 155, Crypt = 239,
+ Load TX = 30, RSSI_OK = 328, ISTXON = 11, SFD(192us+5*8*4us) = 400, TX = 370, Full = 1535.
+Время работы радио RSSI_OK+ISTXON+SFD+TX = 1109 us
 @return true в случаи успеха
 */
 static bool SendData(frame_s *fr)
 {
+////TimeStamp_s ts_start, ts_frame_merge, ts_crypt, ts_load_tx, 
+////ts_rssistat, ts_istxon, ts_sfd, ts_stop;
+  
+////TIM_TimeStamp(&ts_start);  
   uint8_t data_size;
   uint8_t *data = (uint8_t*)frame_merge(fr, &data_size); 
-  
+////TIM_TimeStamp(&ts_frame_merge);  
   bool result = true;
   switch(true)
   {
     case true:
       // Шифруем данные при необходимости
       RI_BitRawCrypt(data, data_size);
+////TIM_TimeStamp(&ts_crypt); 
       // Копируем данные в буфер. Очистка буфера автоматическая
       LoadTXData(data, data_size);
+////TIM_TimeStamp(&ts_load_tx); 
       // Для начала передачи по команде STXONCCA нужно включить приемник
       ISRXON();
       // Ждем пока статус RSSI_VALID станет true
       while(!RSSISTAT);
+////TIM_TimeStamp(&ts_rssistat); 
       // Очищаем флаг завершения передачи сообщения
       RFIRQF1 &= ~RFIRQF1_TXDONE;
       RFIRQF0 &= ~RFIRQF0_SFD;
@@ -234,22 +244,16 @@ static bool SendData(frame_s *fr)
       uint16_t timer = 0; // Для отлалки. 
       if (fr->meta.SEND_TIME != 0)
         timer = NT_WaitTime(fr->meta.SEND_TIME);
-      else
-      {
-        // Вносим случайную задержку при передаче данных
-        uint8_t send_del = rand() % 10;
-        for (volatile uint8_t i = 0; i < send_del ; i++);  
-      }
+
       // Начинаем передачу данных
       // Transmission of preamble begins 192 μs after the STXON or STXONCCA 
       // command strobe
       // 192+(4(pream)+1(sfd))*8bit*4us = 352 мкс. Измерил 360мкс
       // Измерил в тактах NT_GetTimer() получилось 13 тиков. 396 мкс 
       ISTXONCCA();
+////TIM_TimeStamp(&ts_istxon); 
       // Произошла ошибка передачи если SAMPLED_CCA false
-      FSMSTAT1_u fsmstat1;
-      fsmstat1.value = FSMSTAT1;
-      if (!fsmstat1.bits.SAMPLED_CCA)
+      if (!(FSMSTAT1 & 1<<3)) //SAMPLED_CCA == 0
       {
         result = false;
         break;
@@ -258,14 +262,27 @@ static bool SendData(frame_s *fr)
       // Ждем завершения отправки SFD
       while (!(RFIRQF0 & RFIRQF0_SFD));
       fr->meta.TIMESTAMP = NT_GetTime(); 
-
+////TIM_TimeStamp(&ts_sfd); 
       // Проверим переданно ли сообщение TX_FRM_DONE
       while (!(RFIRQF1 & RFIRQF1_TXDONE));
       break;
   }
+////TIM_TimeStamp(&ts_stop);
 
   free(data);
   ISRFOFF();
+////  LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
+////"Merge = %lu. Crypt = %lu. Load TX = %lu. RSSI_OK = %lu. ISTXON = %lu. SFD = %lu. TX = %lu. FULL = %lu \n", 
+////      TIM_passedTime(&ts_start, &ts_frame_merge),
+////      TIM_passedTime(&ts_frame_merge, &ts_crypt),
+////      TIM_passedTime(&ts_crypt, &ts_load_tx),
+////      TIM_passedTime(&ts_load_tx, &ts_rssistat),
+////      TIM_passedTime(&ts_rssistat, &ts_istxon),
+////      TIM_passedTime(&ts_istxon, &ts_sfd),
+////      TIM_passedTime(&ts_sfd, &ts_stop),
+////      TIM_passedTime(&ts_start, &ts_stop)
+////      );
+  
   if (result)
     return true;
   return false; 
@@ -546,6 +563,9 @@ static void random_core_init(void)
   
   // Включаем демодулятор
   ISRFOFF();
+  // Первая генерация случайного числа занимает много времени.
+  // Влияло на работу радио, так как использовались случайные посылки
+  rand(); 
 }
 
 /*!

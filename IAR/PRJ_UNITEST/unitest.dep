@@ -148,7 +148,6 @@
             <file>$PROJ_DIR$\Debug\Obj\TIC.r51</file>
             <file>$PROJ_DIR$\Debug\Obj\NTMR.pbi</file>
             <file>$PROJ_DIR$\Debug\Obj\LLC.__cstat.et</file>
-            <file>$TOOLKIT_DIR$\inc\dlib\c\yfuns.h</file>
             <file>$TOOLKIT_DIR$\src\lib\dlib\__dbg_break.c</file>
         </outputs>
         <file>
@@ -300,7 +299,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 74 46 54 92 50 19 94 99 48 72 124 87 10 76 83 63 64 3 85 81 53 96 97</file>
+                    <file> 19 74 46 54 92 50 81 83 99 48 76 87 10 124 63 85 72 64 3 94 53 96 97</file>
                 </tool>
                 <tool>
                     <name>ICC8051</name>
@@ -327,7 +326,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 124 1 94 19 46 47 63 72 74 54 76 83 92 99 48 64 3 53 87 50 81 96 97</file>
+                    <file> 1 94 48 19 46 47 74 72 124 54 76 83 92 99 63 64 3 53 87 50 81 96 97</file>
                 </tool>
                 <tool>
                     <name>ICC8051</name>
@@ -381,11 +380,11 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 54 124 72 19 46 63 64 74 113 143 96 53 48 50 97 92</file>
+                    <file> 74 96 50 19 113 54 53 48 124 92 46 63 72 64 97</file>
                 </tool>
                 <tool>
                     <name>ICC8051</name>
-                    <file> 54 124 74 48 72 64 63 50 46 53 113 19 143</file>
+                    <file> 54 124 74 48 72 64 63 50 46 53 113 19</file>
                 </tool>
             </inputs>
         </file>
@@ -624,11 +623,11 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 63 76 124 64 74 83 92 46 19 72 99 3 81 54 87 49 48 50 94 53 112 96 97</file>
+                    <file> 74 81 49 50 124 76 54 92 94 3 19 83 48 53 87 113 63 72 64 46 99 96 97 112</file>
                 </tool>
                 <tool>
                     <name>ICC8051</name>
-                    <file> 76 19 124 74 48 72 64 63 50 49 46 54 53</file>
+                    <file> 76 19 124 74 48 72 64 63 50 49 46 54 53 113</file>
                 </tool>
             </inputs>
         </file>

@@ -269,7 +269,6 @@ static void TIC_HW_Timer_IRQ(uint16_t ticks)
     return;
   }
     
-  
   // Вызываем один из указанных обработчиков.
   // Передача имеет приоритет над приемом.
   if (TSStateTable[c_TS] & TS_TX) 

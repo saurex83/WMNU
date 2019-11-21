@@ -11,13 +11,12 @@ static void MAC_TX_HNDL(uint8_t TS);
 static void (*RXCallback)(frame_s *fr);
 bool (*isACK_OK)(frame_s *fr, frame_s *fr_ack);
 
-
 // Публичные методы
 void MAC_Init(void);
 void MAC_OpenRXSlot(uint8_t TS, uint8_t CH);
 void MAC_CloseRXSlot(uint8_t TS);
 void MAC_Send(frame_s *fr, uint8_t attempts);
-void MAC_ACK_Send(frame_s *fr);
+bool MAC_ACK_Send(frame_s *fr);
 void MAC_SetRXCallback(void (*fn)(frame_s *fr));
 void MAC_Set_isACK_OK_Callback(bool(*fn)(frame_s *fr, frame_s *fr_ack));
 bool MAC_GetTXState(uint8_t TS);
@@ -27,8 +26,14 @@ bool MAC_GetRXState(uint8_t TS);
 uint8_t KEY[16] = {18,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17};
 uint8_t IV[16] = {18,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17};
   
-#define RECV_TIMEOUT 3000 // Время ожидания приема пакета в мкс
-#define ACK_RECV_TIMEOUT 1000 // Время ожидания приема подтверждения в мкс
+#define RECV_TIMEOUT 3000UL // Время ожидания приема пакета в мкс
+#define ACK_RECV_TIMEOUT 1000UL // Время ожидания приема подтверждения в мкс
+// Задержка перед приемом ACK в мкс если данные шифруются
+#define DELAY_BEFORE_ACK_RECV_CRYPT 2000UL 
+// Задержка перед приемом ACK в мкс если данные не шифруются
+#define DELAY_BEFORE_ACK_RECV_NOCRYPT 1000UL
+
+#define RARIO_STREAM_ENCRYPT true // Шифрование данных включенно 
 
 typedef struct
 {
@@ -46,6 +51,7 @@ typedef struct
   uint8_t CH;
  } __attribute__((packed)) RX;
 } __attribute__((packed)) MACSState_s; 
+
 
 // Таблица состояний слотов приема/передачи
 MACSState_s MACSlotTable[50];
@@ -69,7 +75,7 @@ void MAC_Init(void)
   
   TIC_SetRXCallback(MAC_RX_HNDL);
   TIC_SetTXCallback(MAC_TX_HNDL);
-  RI_StreamCrypt(true);
+  RI_StreamCrypt(RARIO_STREAM_ENCRYPT);
   RI_setKEY(KEY);
   RI_setIV(IV);  
   memset(MACSlotTable, 0x00, 50*sizeof(MACSState_s));
@@ -121,11 +127,12 @@ void MAC_Send(frame_s *fr, uint8_t attempts)
 @brief Посылает подтверждение приема пакета
 @param[in] fr указатель на кадр подтверждения
 */
-void MAC_ACK_Send(frame_s *fr)
+bool MAC_ACK_Send(frame_s *fr)
 {
   RI_SetChannel(fr->meta.CH);
-  RI_Send(fr);
+  bool res = RI_Send(fr);
   frame_delete(fr);
+  return res;
 }
 
 /**          *********** TODO ************ прием из Ethernet протокола
@@ -215,6 +222,22 @@ static void MAC_TX_HNDL(uint8_t TS)
   if (tx_success && MACSlotTable[TS].TX.fr->meta.ACK)
   {
     // TODO ждем пакета ACK
+    // Задержка отправки подтверждения пока что не известна.
+    // Если есть шифрование это на 1 мс дольше чем без него
+    // Можно подумать над тем , что бы пакет ACK был не ETH формата.
+    // К примеру ACK = LEN, FRAME_LEN, FCS1, FCS2 и он существовал
+    // на уровне MAC и не использовал ETH. Отправка ACK без шифрования.
+    // Это увеличит время работы узла. Или вместо FRAME_LEN отправлять
+    // FCS1, FCS2 отправленного пакета что бы его подтвердить или использовать
+    // свой алгоритм расчета CRC
+    
+    // Если включено шифрование, то можно выключать радиоприемник для экономии
+    // Шифрование данных занимает некоторое время (минимум 1 мс)
+    if (RARIO_STREAM_ENCRYPT)
+      TIM_delay(DELAY_BEFORE_ACK_RECV_CRYPT);
+    else
+      TIM_delay(DELAY_BEFORE_ACK_RECV_NOCRYPT);
+    
     frame_s *fr_ACK = RI_Receive(ACK_RECV_TIMEOUT);
   
     if (fr_ACK == NULL) // Не приняли ACK
