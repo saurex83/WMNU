@@ -1,6 +1,7 @@
 #include "utest_suite.h"
 #include "frame.h"
 #include "Net_frames.h"
+#include "stdbool.h"
 
 static void insert1_test(void)
 {
@@ -139,10 +140,25 @@ static void tot_len_test(void)
   frame_delete(fr);
 }
 
+static void test_frame_merge(void)
+{
+  uint8_t data[10] = {0,1,2,3,4,5,6,7,8,9};
+  uint8_t len;
+  
+  fbuf_s *fb = fbuf_create(FB_RAW_LAY, data, sizeof(data));
+  frame_s *fr = frame_create();
+  frame_insert_tail(fr, fb);
+  uint8_t *raw_data = frame_merge(fr, &len);
+  
+  bool test_res;
+  test_res = memory_compare((char*)raw_data, (char*)data, sizeof(data));
+  umsg("frame", "Memory corr", test_res == true);
+}
 
 void suite_frame(void)
 {
   umsg_line("fbuf module");
+  test_frame_merge();
   tot_len_test();
   delete_test();
   insert1_test();

@@ -987,7 +987,7 @@
                     <item>fr</item>
                     <item>timer</item>
                     <item>val</item>
-                    <item></item>
+                    <item />
                 </expressions>
                 <col-names>
                     <item>Expression</item>

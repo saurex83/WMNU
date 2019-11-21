@@ -4,7 +4,7 @@
 #include "stdio.h"
 
 
-//#define UART_DEBUG // Если определено, то вывод в uart
+#define UART_DEBUG // Если определено, то вывод в uart
 
 // Настройка выводов SIG и порта uart для отладки
 

@@ -25,7 +25,7 @@ int main()
   // Вызов функций тестирования
   // Аппаратное тестирование
   {
-    suite_RADIO_HW();
+    //suite_RADIO_HW();
     //suite_delays_HW();    //12.11 Работает
     //suite_TIC_HW();       //12.11 Работает
     //suite_NT_HW();        // 12.11 Работает
@@ -35,8 +35,9 @@ int main()
     //suite_delays();
     //suite_coder();
     //suite_fbuf();
-    //suite_frame();
+   // suite_frame();
     //suite_RADIO();
+    suite_MAC();
   }
 
 	//run_utest_framepart();

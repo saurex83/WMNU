@@ -9,6 +9,8 @@
 static void MAC_RX_HNDL(uint8_t TS);
 static void MAC_TX_HNDL(uint8_t TS);
 static void (*RXCallback)(frame_s *fr);
+bool (*isACK_OK)(frame_s *fr, frame_s *fr_ack);
+
 
 // Публичные методы
 void MAC_Init(void);
@@ -17,6 +19,7 @@ void MAC_CloseRXSlot(uint8_t TS);
 void MAC_Send(frame_s *fr, uint8_t attempts);
 void MAC_ACK_Send(frame_s *fr);
 void MAC_SetRXCallback(void (*fn)(frame_s *fr));
+void MAC_Set_isACK_OK_Callback(bool(*fn)(frame_s *fr, frame_s *fr_ack));
 bool MAC_GetTXState(uint8_t TS);
 bool MAC_GetRXState(uint8_t TS);
 
@@ -25,6 +28,7 @@ uint8_t KEY[16] = {18,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17};
 uint8_t IV[16] = {18,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17};
   
 #define RECV_TIMEOUT 3000 // Время ожидания приема пакета в мкс
+#define ACK_RECV_TIMEOUT 1000 // Время ожидания приема подтверждения в мкс
 
 typedef struct
 {
@@ -45,6 +49,16 @@ typedef struct
 
 // Таблица состояний слотов приема/передачи
 MACSState_s MACSlotTable[50];
+
+
+/**
+@brief Установка обработчика функции  isACK_OK
+@param[in] fn(frame_s *fr, frame_s *fr_ack) указатель на функцию
+*/
+void MAC_Set_isACK_OK_Callback(bool(*fn)(frame_s *fr, frame_s *fr_ack))
+{
+  isACK_OK = fn;
+}
 
 void MAC_Init(void)
 {
@@ -112,7 +126,6 @@ void MAC_ACK_Send(frame_s *fr)
   RI_SetChannel(fr->meta.CH);
   RI_Send(fr);
   frame_delete(fr);
-  MACSlotTable[fr->meta.TS].TX.enable = false;
 }
 
 /**          *********** TODO ************ прием из Ethernet протокола
@@ -179,7 +192,9 @@ static void MAC_RX_HNDL(uint8_t TS)
 
 /**
 @brief Обработчик слота пердачи пакета
-@detail После отправки пакета требуется подтверждение приема
+@detail После отправки пакета требуется подтверждение приема если meta.ACK = 1.
+ После отправки ждем приема ACK. Проверка подлинности ACK происходит с помощью
+ обратного вызова isACK_OK(*fr, *fr_ACK). Результат true или false.
 @param[in] TS номер временного слота
 */
 static void MAC_TX_HNDL(uint8_t TS)
@@ -196,16 +211,37 @@ static void MAC_TX_HNDL(uint8_t TS)
   bool tx_success = RI_Send(MACSlotTable[TS].TX.fr); 
   bool send_success = false;   
   
-  // Если отправка была успешна и требуется подтверждение ACK
+  // Если отправка была успешна и требуется прием подтверждения ACK
   if (tx_success && MACSlotTable[TS].TX.fr->meta.ACK)
   {
     // TODO ждем пакета ACK
+    frame_s *fr_ACK = RI_Receive(ACK_RECV_TIMEOUT);
+  
+    if (fr_ACK == NULL) // Не приняли ACK
+      goto LABEL_MAC_TX_HNDL_END;
+    
+    else // Приняли ACK
+    {
+      ASSERT_HALT(isACK_OK !=NULL, "isACK_OK func NULL");
+     
+      // Проверим является ли принятый пакет ACK подтверждением 
+      // переданного пакета 
+      bool isACK = isACK_OK(MACSlotTable[TS].TX.fr, fr_ACK); 
+     
+      if (isACK) // Пакет подтвержден
+        send_success = true;
+      
+      frame_delete(fr_ACK); // Удаляем принятый пакет ACK
+      goto LABEL_MAC_TX_HNDL_END;
+    }
   }
  
   // Если отправка была успешна и НЕ требуется подтверждение ACK
   if (tx_success && !MACSlotTable[TS].TX.fr->meta.ACK) 
     send_success = true;
   
+  
+LABEL_MAC_TX_HNDL_END:  
   if (send_success) // В случаи успеха удаляем данные и закрываем слоты 
   { 
     frame_delete(MACSlotTable[TS].TX.fr);
@@ -222,5 +258,4 @@ static void MAC_TX_HNDL(uint8_t TS)
         TIC_SetTXState(TS, false);  
       }
   }
-  
 }

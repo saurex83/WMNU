@@ -24,7 +24,7 @@ static void LLC_RX_HNDL(frame_s *fr); //!< Обработчик примема �
 static void LLC_RunTimeAlloc(void);
 
 // Переменные модуля
-#define SEND_ATEMPTS 5 //!< Количество попыток передачи пакета 
+#define UNICAST_SEND_ATEMPTS 5 //!< Количество попыток передачи пакета 
 
 typedef struct LLCTask LLCTask;
 typedef struct TimeAllocFunc TimeAllocFunc;
@@ -86,7 +86,7 @@ void LLC_SetRXCallback(void (*fn)(frame_s *fr))
 }
 
 /**
-@brief Добавляет обработчик заверешния временого слота в список
+@brief Добавляет обработчик заверешения временого слота в список
 */
 void LLC_TimeAlloc(void (*fn)(void))
 {
@@ -109,6 +109,35 @@ void LLC_TimeAlloc(void (*fn)(void))
 */
 void LLC_AddTask(frame_s* fr)
 {
+   ASSERT_HALT(fr !=NULL, "fr NULL");
+   
+   // Создаем новую задачу
+   LLCTask *new_task = (LLCTask*)malloc(sizeof(LLCTask));
+   new_task->TS = fr->meta.TS;
+   new_task->CH = fr->meta.CH;
+   new_task->fr = fr;
+   
+   LLCTask *task = HeadTask.next;
+   // Если в очереди нет задач, добавим первую
+   if (task == NULL) 
+   {
+     new_task->next = NULL;
+     HeadTask.next = new_task;
+   }
+   // Если в очереди были задачи то вставим новую в голову списка
+   else 
+   {
+     new_task->next = task;
+     HeadTask.next = new_task;  
+   }
+   
+//   struct LLCTask
+//{
+//  LLCTask *next; //!< Указатель на следующую задачу. NULL - конец очереди
+//  uint8_t TS; //!< Номер временого канала для передачи сообщения
+//  uint8_t CH; //!< Номера радиоканала для передачи сообщения
+//  frame_s *fr; //!< Указатель на данные для передачи
+//};
 }
 
 /**
@@ -132,7 +161,7 @@ static void LLC_Shelduler(uint8_t TS)
     if (MAC_GetTXState(task->TS)) // Занят ли временой слот
       continue; // Если слот занят переходим к следующему
     
-    MAC_Send(task->fr, SEND_ATEMPTS);
+    MAC_Send(task->fr, UNICAST_SEND_ATEMPTS);
     
     // Удаляем из списка
     last->next = task->next;
@@ -154,8 +183,8 @@ static void LLC_SE_HNDL(uint8_t TS)
 
 static void LLC_RX_HNDL(frame_s *fr)
 {
-  if (RXCallback != NULL)
-    RXCallback(fr);
+  ASSERT_HALT(RXCallback !=NULL, "RXCallback func NULL");
+  RXCallback(fr);
 }
 
 /**

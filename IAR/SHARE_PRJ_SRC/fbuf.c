@@ -52,9 +52,10 @@ fbuf_s* fbuf_create(uint8_t type, void* payload, uint8_t len)
   } 
   
   // Выделяем память под структуру и данные и выравниваем в памяти
-  fbuf_s* fb = (fbuf_s*)malloc(MEM_ALIGN_SIZE(FBUF_S_SIZE) 
-                               + MEM_ALIGN_SIZE(req_len));
-  fb->payload = MEM_ALIGN((mem_ptr_t)fb + FBUF_S_SIZE);
+  // Выравнивание с помощью макросов приводило к пиздецу.
+  fbuf_s* fb = (fbuf_s*)malloc(FBUF_S_SIZE + req_len);
+  memset(fb, 0x77 , FBUF_S_SIZE + req_len);
+  fb->payload = (uint8_t*)fb + FBUF_S_SIZE;
   
   // Заполним структуру
   fb->type = type;

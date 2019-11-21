@@ -17,7 +17,7 @@ typedef struct fbuf_s
   void*  payload;
   uint8_t type;
   uint8_t len;
-} __attribute__((packed))fbuf_s;
+} fbuf_s;
 
 #define FBUF_S_SIZE sizeof(fbuf_s) 
 
