@@ -15,7 +15,8 @@ void LLC_Init(void);
 // Методы модуля
 void LLC_SetRXCallback(void (*fn)(frame_s *fr));
 void LLC_TimeAlloc(void (*fn)(void)); 
-void LLC_AddTask(frame_s* fr);
+bool LLC_AddTask(frame_s* fr);
+uint8_t LLC_GetTaskLen(void);
 
 // Закрытые методы
 static void LLC_SE_HNDL(uint8_t TS); //!< Обработчик завешения слота TIC
@@ -25,6 +26,7 @@ static void LLC_RunTimeAlloc(void);
 
 // Переменные модуля
 #define UNICAST_SEND_ATEMPTS 5 //!< Количество попыток передачи пакета 
+#define MAX_nbrTASKS 20 //!< Максимальное количество задач в очередях
 
 typedef struct LLCTask LLCTask;
 typedef struct TimeAllocFunc TimeAllocFunc;
@@ -49,12 +51,8 @@ struct TimeAllocFunc
   void (*fn)(void); //!< Указатель на функцию. NULL - нет обработчика
 };
 
-/**
-@brief Первый элемент списка задач.
-@details Элемент создается статически, все остальные задачи создаются malloc
-и добавляются к HeadTask.
-*/
-static LLCTask HeadTask;
+static LLCTask *FirstTask; //!< Указатель на первый элемент очереди задач
+static uint8_t nbrTasks; // Количество задач в очереди
 
 /**
 @brief Обратный вызов при приеме пакета данных
@@ -73,11 +71,23 @@ static TimeAllocFunc HeadAllocFunc;
 */
 void LLC_Init(void)
 {  
+  MAC_Init();
+  nbrTasks = 0; 
+  FirstTask = NULL;
+  // TODO Очистить очередь HeadTask
   // Регистрируем обработчики
   TIC_SetSECallback(LLC_SE_HNDL); // Завершение временного слота
   MAC_SetRXCallback(LLC_RX_HNDL); // Принято сообщение
 }
 
+/**
+@brief Количество задач в очереди
+@return количество задач в очереди
+*/
+uint8_t LLC_GetTaskLen(void)
+{
+  return nbrTasks;
+}
 
 void LLC_SetRXCallback(void (*fn)(frame_s *fr))
 {
@@ -106,38 +116,39 @@ void LLC_TimeAlloc(void (*fn)(void))
 
 /**
 @brief Добавляем задачу в очередь
+@brief Взовращает true если задача добавлена в очередь. false, если размер 
+ очереди достиг максимального размера.
 */
-void LLC_AddTask(frame_s* fr)
+bool LLC_AddTask(frame_s* fr)
 {
    ASSERT_HALT(fr !=NULL, "fr NULL");
-   
+ 
+    if (nbrTasks == MAX_nbrTASKS)
+      return false;
+    
    // Создаем новую задачу
    LLCTask *new_task = (LLCTask*)malloc(sizeof(LLCTask));
+   ASSERT_HALT(new_task !=NULL, "LLC malloc for new_task");
+   
    new_task->TS = fr->meta.TS;
    new_task->CH = fr->meta.CH;
    new_task->fr = fr;
    
-   LLCTask *task = HeadTask.next;
    // Если в очереди нет задач, добавим первую
-   if (task == NULL) 
+   if (FirstTask == NULL) 
    {
      new_task->next = NULL;
-     HeadTask.next = new_task;
+     FirstTask = new_task;
    }
    // Если в очереди были задачи то вставим новую в голову списка
    else 
    {
-     new_task->next = task;
-     HeadTask.next = new_task;  
+     new_task->next = FirstTask;
+     FirstTask = new_task;  
    }
    
-//   struct LLCTask
-//{
-//  LLCTask *next; //!< Указатель на следующую задачу. NULL - конец очереди
-//  uint8_t TS; //!< Номер временого канала для передачи сообщения
-//  uint8_t CH; //!< Номера радиоканала для передачи сообщения
-//  frame_s *fr; //!< Указатель на данные для передачи
-//};
+   nbrTasks ++;
+   return true;
 }
 
 /**
@@ -151,21 +162,35 @@ static void LLC_Shelduler(uint8_t TS)
 {
   // Перебираем попорядку весь список на отправку
   // HeadTask только указатель на первый элемент, сам он не подлежит отправке
-  LLCTask *task = &HeadTask;
-  LLCTask *last = NULL;
+  LLCTask *task = FirstTask;
+  LLCTask *last = FirstTask;
+  LLCTask *next = FirstTask;
   
-  while (task->next != NULL)
+  while (task != NULL)
   {
-    last = task;
-    task = task->next;
     if (MAC_GetTXState(task->TS)) // Занят ли временой слот
-      continue; // Если слот занят переходим к следующему
+    {
+      // Если слот занят переходим к следующей задаче
+      last = task;
+      task = task->next;
+      continue; 
+    }
     
     MAC_Send(task->fr, UNICAST_SEND_ATEMPTS);
     
-    // Удаляем из списка
-    last->next = task->next;
+    next = task->next; // Запомним следующую задачу
+    
+    // Удаляем текущую задачу из списка
+    if (last == FirstTask) 
+    // Если предыдущим элементом была голова списка.
+       FirstTask = next;
+    else
+      last->next = next;
+    
     free(task);
+    task = next;
+    
+    nbrTasks--;
   }
 }
 

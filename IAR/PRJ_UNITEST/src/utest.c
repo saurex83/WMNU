@@ -14,6 +14,7 @@ extern void suite_delays_HW(void);
 extern void suite_delays(void);
 extern void suite_coder(void);
 extern void suite_frame(void);
+extern void suite_LLC_HW(void);
 
 int main()
 {
@@ -29,6 +30,7 @@ int main()
     //suite_delays_HW();    //12.11 Работает
     //suite_TIC_HW();       //12.11 Работает
     //suite_NT_HW();        // 12.11 Работает
+    suite_LLC_HW();
   };
   // Юнит тестирование
   {
@@ -37,7 +39,7 @@ int main()
     //suite_fbuf();
    // suite_frame();
     //suite_RADIO();
-    suite_MAC();
+   // suite_MAC();
   }
 
 	//run_utest_framepart();

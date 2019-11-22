@@ -63,6 +63,9 @@ static void test_TS_Send(void)
 
 void suite_MAC(void)
 {
-  test_TS_Send();
+  // test_TS_Send отсылает пакеты по расписанию тайм слотов
+  // Нужно запрограмировать второе устройство RadioRecvTest1
+  // тогда будет гореть светодиод при приеме сигнала
+  test_TS_Send(); 
   test_ACK_SEND();
 }
