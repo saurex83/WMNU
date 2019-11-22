@@ -49,7 +49,7 @@ static void clocks_update(void);
 #define TS_ACTIVE (uint16_t)327 // 9.979 мс
 #define TS_SLEEP (uint16_t)327  // 2.075 мс
 #define TS_UNACCOUNTED 68
-// Целый цикл-это сума времени активного периода и сна
+// Целый цикл-это сумма времени активного периода и сна
 #define FULL_SLOT  (TS_ACTIVE+TS_SLEEP)
 #define NO_TIME_SLOT 0xFF
 

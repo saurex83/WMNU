@@ -189,7 +189,7 @@ static void LLC_Shelduler(uint8_t TS)
     
     free(task);
     task = next;
-    
+
     nbrTasks--;
   }
 }

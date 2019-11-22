@@ -21,7 +21,7 @@ static void test_create()
   LLC_TimeAlloc(timealloc);
   EA = 1;
   uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
-  uint8_t TS = 5;
+  uint8_t TS = 40;
   
   frame_s *fr;
 
@@ -52,5 +52,7 @@ void suite_LLC_HW(void)
 {
  // umsg_line("LLC module");
   
-  test_create();
+  // Устанавливает и поддерживает в очереде 10 пакетов.
+  // Мигает зеленым светодиодом. В TS0 включается, в TS5 выключаеться
+  test_create();  
 }
