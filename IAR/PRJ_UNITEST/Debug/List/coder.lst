@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               25/Nov/2019  22:24:43
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               26/Nov/2019  01:22:54
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,7 +14,7 @@
 #    Source file        =  
 #        \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW6FD7.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW6C8A.tmp
 #        ("\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c" -lc
 #        "\\vmware-host\Shared
@@ -1773,172 +1773,185 @@
     137                cmp_time &=0xFFFFFF;
     138              }
     139              
-    140              return cmp_time;
-    141          }
-    142          
-    143          /**
-    144          @brief Устанавливает время прерывания
-    145          @details Время прерывания устанавливается относительно времени сети
-    146          ,к примеру, что бы проснуться в таймслот номер 0, нужно установить ticks = 0.
-    147          Процедура учитывает текущее значение таймера и перерасчитывает значение ticks. 
-    148          @params[in] ticks время сети в тиках когда нужно проснуться
-    149          */
-    150          void NT_SetCompare(uint16_t ticks)
-    151          {
-    152            ASSERT_HALT(ticks < 32768, "Incorrect ticks");
-    153            
-    154            COMPARE_TIME = ticks; // Сохраняем установленное значение
+    140               LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
+    141                   "Timer = %lu, NT = %d, CMP = %lu \r\n",timer, network_time, cmp_time );
+    142              return cmp_time;
+    143          }
+    144          
+    145          /**
+    146          @brief Устанавливает время прерывания
+    147          @details Время прерывания устанавливается относительно времени сети
+    148          ,к примеру, что бы проснуться в таймслот номер 0, нужно установить ticks = 0.
+    149          Процедура учитывает текущее значение таймера и перерасчитывает значение ticks. 
+    150          @params[in] ticks время сети в тиках когда нужно проснуться
+    151          */
+    152          void NT_SetCompare(uint16_t ticks)
+    153          {
+    154            ASSERT_HALT(ticks < 32768, "Incorrect ticks");
     155            
-    156            uint32_t compare_time = calcCompareTime(ticks);
-    157            loadTimerCompare(compare_time);
-    158            NT_IRQEnable(true);
-    159          }
-    160          
-    161          /**
-    162          @brief Разрешение прерываний таймера сна
-    163          @params[in] state = true - разрешить обработку прерываний
-    164          */
-    165          static inline void NT_IRQEnable(bool state)
-    166          {
-    167            STIF = 0;
-    168            if (state)
-    169            {
-    170              STIE = 1;
-    171            }
-    172            else
-    173            {
-    174              STIE = 0;
-    175            }
-    176          }
-    177          
-    178          /**
-    179          @brief Проверка активности прерывания таймера
-    180          @return true если прерывание установленно
-    181          */
-    182          static inline bool isIRQEnable(void)
-    183          {
-    184            if (STIE)
-    185              return true;
-    186            else 
-    187              return false;
-    188          }
-    189          
-    190          /**
-    191          @brief Устанавливает обработчик прерывания таймера
-    192          @param[in] fn(uint16_t ticks) указатель на функцию-обработчик
-    193          */
-    194          void NT_SetEventCallback(void (*fn)(uint16_t ticks))
-    195          {
-    196            EventCallback = fn;
-    197          }
-    198          
-    199          /**
-    200          @brief Возвращает время сети 
-    201          @return Время сети в тиках
-    202          */
-    203          uint16_t NT_GetTime(void)
-    204          {
-    205            uint32_t val = ReadTimer();
-    206            // TOFFSET = NETWORK TIME - TIMER
-    207            // NETWORK TIME = TIMER + TOFFSET
-    208            val +=TOFFSET;
-    209            val &= 0x7FFF; // Приводим значения таймера к 0-32767
-    210            return val;
-    211          }
-    212          
-    213          /**
-    214          @brief Обработчик прерывания таймера сна
-    215          */
-    216          #pragma vector=ST_VECTOR
-    217          __interrupt void TimerCompareInterrupt(void)
-    218          {  
-    219            uint16_t ticks = NT_GetTime();
-    220            if (EventCallback == NULL)
-    221              return;
-    222            // Отключаем прерывание таймера. Забота пользователя его включить
-    223            NT_IRQEnable(false); 
-    224            EventCallback(ticks); // Вызываем пользовательский обработчик
-    225            STIF = 0; // Очищаем флаг прерывания
-    226          }
-    227          
-    228          /**
-    229          @breif Ожидание наступления времени сети
-    230          @param[in] ticks время в тактах
-    231          @return фактическое время сети
-    232          */
-    233          uint16_t NT_WaitTime(uint16_t ticks)
-    234          {
-    235            static union 
-    236            {
-    237              uint32_t val;
-    238              uint8_t fild[4];
-    239            } val;
-    240            
-    241            val.val = 0;
-    242            // TOFFSET = NETWORK TIME - TIMER
-    243            // NETWORK TIME = TIMER + TOFFSET
-    244            
-    245            // Ждем синхронизацию таймера после пробуждения
-    246            while (!(SLEEPSTA & 0x01));
+    156            COMPARE_TIME = ticks; // Сохраняем установленное значение
+    157           
+    158            uint32_t compare_time = calcCompareTime(ticks);
+    159           
+    160            LOG(MSG_OFF | MSG_INFO | MSG_TRACE, 
+    161                "Ticks = %d, Compare time = %04x \r\n",
+    162                ticks, compare_time);
+                              ^
+Warning[Pe181]: argument is incompatible with corresponding format string
+          conversion
+          detected during compilation of secondary translation unit
+                    "\\vmware-host\Shared
+                    Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\NTMR.c"
+    163            
+    164            loadTimerCompare(compare_time);
+    165            NT_IRQEnable(true);
+    166          }
+    167          
+    168          /**
+    169          @brief Разрешение прерываний таймера сна
+    170          @params[in] state = true - разрешить обработку прерываний
+    171          */
+    172          static inline void NT_IRQEnable(bool state)
+    173          {
+    174            STIF = 0;
+    175            if (state)
+    176            {
+    177              STIE = 1;
+    178            }
+    179            else
+    180            {
+    181              STIE = 0;
+    182            }
+    183          }
+    184          
+    185          /**
+    186          @brief Проверка активности прерывания таймера
+    187          @return true если прерывание установленно
+    188          */
+    189          static inline bool isIRQEnable(void)
+    190          {
+    191            if (STIE)
+    192              return true;
+    193            else 
+    194              return false;
+    195          }
+    196          
+    197          /**
+    198          @brief Устанавливает обработчик прерывания таймера
+    199          @param[in] fn(uint16_t ticks) указатель на функцию-обработчик
+    200          */
+    201          void NT_SetEventCallback(void (*fn)(uint16_t ticks))
+    202          {
+    203            EventCallback = fn;
+    204          }
+    205          
+    206          /**
+    207          @brief Возвращает время сети 
+    208          @return Время сети в тиках
+    209          */
+    210          uint16_t NT_GetTime(void)
+    211          {
+    212            uint32_t val = ReadTimer();
+    213            // TOFFSET = NETWORK TIME - TIMER
+    214            // NETWORK TIME = TIMER + TOFFSET
+    215            val +=TOFFSET;
+    216            val &= 0x7FFF; // Приводим значения таймера к 0-32767
+    217            return val;
+    218          }
+    219          
+    220          /**
+    221          @brief Обработчик прерывания таймера сна
+    222          */
+    223          #pragma vector=ST_VECTOR
+    224          __interrupt void TimerCompareInterrupt(void)
+    225          {  
+    226            uint16_t ticks = NT_GetTime();
+    227            if (EventCallback == NULL)
+    228              return;
+    229            // Отключаем прерывание таймера. Забота пользователя его включить
+    230            NT_IRQEnable(false); 
+    231            EventCallback(ticks); // Вызываем пользовательский обработчик
+    232            STIF = 0; // Очищаем флаг прерывания
+    233          }
+    234          
+    235          /**
+    236          @breif Ожидание наступления времени сети
+    237          @param[in] ticks время в тактах
+    238          @return фактическое время сети
+    239          */
+    240          uint16_t NT_WaitTime(uint16_t ticks)
+    241          {
+    242            static union 
+    243            {
+    244              uint32_t val;
+    245              uint8_t fild[4];
+    246            } val;
     247            
-    248            do
-    249            {
-    250              // Соблюдаем порядок чтения регисторов ST  
-    251              val.fild[0] = ST0;
-    252              val.fild[1] = ST1;
-    253              val.fild[2] = ST2;
-    254              val.val +=TOFFSET;
-    255              val.val &= 0x7FFF; // Приводим значения таймера к 0-32767    
-    256            } while (val.val < ticks);
-    257            return val.val;
-    258          }
-    259          
-    260          /**
-    261          @brief Возвращает текущее значение таймера
-    262          @return Текущие ticks
-    263          */
-    264          static uint32_t ReadTimer(void)
-    265          {
-    266            static union 
-    267            {
-    268              uint32_t val;
-    269              uint8_t fild[4];
-    270            } ret_val;
-    271            
-    272            ret_val.val = 0;
-    273            
-    274            // Ждем синхронизацию таймера после пробуждения
-    275            while (!(SLEEPSTA & 0x01));
-    276            
-    277            // Соблюдаем порядок чтения регисторов ST  
-    278            ret_val.fild[0] = ST0;
-    279            ret_val.fild[1] = ST1;
-    280            ret_val.fild[2] = ST2;
-    281            return ret_val.val;
-    282          }
-    283          
-    284          /**
-    285          @brief Устанавливает время пробуждения микроконтролера
-    286          @params[in] ticks 24 битное значение времени пробуждения в ticks
-    287          */
-    288          static void loadTimerCompare(uint32_t ticks)
-    289          {
-    290            union 
-    291            {
-    292              uint32_t val;
-    293              uint8_t fild[4];
-    294            } value;
-    295            
-    296            value.val = ticks;
-    297            
-    298            // Ждем разрешения на запись нового значения
-    299            while (!(STLOAD & 0x01));
-    300            
-    301            // Регистр ST0 должен быть записан в последнию очередь
-    302            ST2 = value.fild[2];
-    303            ST1 = value.fild[1];
-    304            ST0 = value.fild[0];
-    305          }
+    248            val.val = 0;
+    249            // TOFFSET = NETWORK TIME - TIMER
+    250            // NETWORK TIME = TIMER + TOFFSET
+    251            
+    252            // Ждем синхронизацию таймера после пробуждения
+    253            while (!(SLEEPSTA & 0x01));
+    254            
+    255            do
+    256            {
+    257              // Соблюдаем порядок чтения регисторов ST  
+    258              val.fild[0] = ST0;
+    259              val.fild[1] = ST1;
+    260              val.fild[2] = ST2;
+    261              val.val +=TOFFSET;
+    262              val.val &= 0x7FFF; // Приводим значения таймера к 0-32767    
+    263            } while (val.val < ticks);
+    264            return val.val;
+    265          }
+    266          
+    267          /**
+    268          @brief Возвращает текущее значение таймера
+    269          @return Текущие ticks
+    270          */
+    271          static uint32_t ReadTimer(void)
+    272          {
+    273            static union 
+    274            {
+    275              uint32_t val;
+    276              uint8_t fild[4];
+    277            } ret_val;
+    278            
+    279            ret_val.val = 0;
+    280            
+    281            // Ждем синхронизацию таймера после пробуждения
+    282            while (!(SLEEPSTA & 0x01));
+    283            
+    284            // Соблюдаем порядок чтения регисторов ST  
+    285            ret_val.fild[0] = ST0;
+    286            ret_val.fild[1] = ST1;
+    287            ret_val.fild[2] = ST2;
+    288            return ret_val.val;
+    289          }
+    290          
+    291          /**
+    292          @brief Устанавливает время пробуждения микроконтролера
+    293          @params[in] ticks 24 битное значение времени пробуждения в ticks
+    294          */
+    295          static void loadTimerCompare(uint32_t ticks)
+    296          {
+    297            union 
+    298            {
+    299              uint32_t val;
+    300              uint8_t fild[4];
+    301            } value;
+    302            
+    303            value.val = ticks;
+    304            
+    305            // Ждем разрешения на запись нового значения
+    306            while (!(STLOAD & 0x01));
+    307            
+    308            // Регистр ST0 должен быть записан в последнию очередь
+    309            ST2 = value.fild[2];
+    310            ST1 = value.fild[1];
+    311            ST0 = value.fild[0];
+    312          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\nwdebuger.c
       1          #include "nwdebuger.h"
       2          #include "ioCC2530.h"
@@ -2882,85 +2895,89 @@ Warning[Pe550]: variable "timer" was set but never used
     222          
     223          static inline void set_capture_time(uint8_t TS)
     224          {
-    225            // Установка прерывания на нужный слот
-    226            NT_SetCompare(FULL_SLOT*(uint16_t)TS);
-    227          }
-    228          
-    229          static void TIC_TDMAShelduler(uint8_t TS)
-    230          {
-    231            // Устанавливает прерывание на ближайший активный слот
-    232            // Если слот 0 ближе, то на него. 
-    233            // Cлот - обработка секундных таймеров 
-    234            
-    235            // Ищем следующий активный слот или слот 0
-    236            incrementTS(&TS);
-    237            while ((TS != 0) && !TSStateTable[TS])  
-    238              incrementTS(&TS); 
-    239            
-    240            set_capture_time(TS);
-    241          }
-    242          
-    243          static inline void Callback_execution(void (*fn)(uint8_t TS), uint8_t TS)
-    244          {
-    245            // Помошник вызова функций. Упрощает проверки
-    246            ASSERT_HALT(fn != NULL, "Callback is NULL");
-    247            if (fn == NULL)
-    248              return;
-    249            fn(TS);
-    250          }
-    251          
-    252          static void TIC_HW_Timer_IRQ(uint16_t ticks)
-    253          {
-    254            // TODO Обработка TS=0xFF
-    255            // Номер текущего слота 
-    256            uint8_t c_TS = TIC_getCurrentTS(ticks);
-    257            
-    258            // Обновляем часы NODE_RTC и NODE_UPTIME
-    259            if (c_TS == 0)
-    260            {
-    261              TIM_TimeStamp(&TimeStampTS0); // Первым делом обновим отметку точного времени
-    262              clocks_update();
-    263            }
-    264            // Если что то пошло не так и мы промахнулись мимо слота
-    265            // запускаем планировщик заново
-    266            if (c_TS == NO_TIME_SLOT)
-    267            {
-    268              TIC_TDMAShelduler(c_TS);
-    269              return;
-    270            }
-    271              
-    272            // Вызываем один из указанных обработчиков.
-    273            // Передача имеет приоритет над приемом.
-    274            if (TSStateTable[c_TS] & TS_TX) 
-    275              Callback_execution(TXCallback, c_TS);
-    276            else if (TSStateTable[c_TS] & TS_RX)
-    277              Callback_execution(RXCallback, c_TS);
-    278              
-    279            // Вызываем обработчик завершения слота
-    280            Callback_execution(SECallback, c_TS);
-    281            
-    282            // Запускаем планировщик таймера
-    283            TIC_TDMAShelduler(c_TS);
-    284          }
-    285          
-    286          static void clocks_update(void)
-    287          {
-    288            NODE_UPTIME++;
-    289            NODE_RTC++;
-    290            NODE_NONCE++;
-    291            if (NODE_RTC >= DAILY_SEC)
-    292              NODE_RTC = 0;
-    293          }
-    294          
-    295          void TIC_SetNonce(uint32_t nonce)
-    296          {
-    297            NODE_NONCE = nonce;
-    298          }
-    299          
-    300          uint32_t TIC_GetNonce(void)
-    301          {
-    302            return NODE_NONCE;
-    303          }
+    225            uint16_t ct = FULL_SLOT*(uint16_t)TS;
+    226            
+    227            LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Set compare = %d, TS = %d \r\n", ct, TS);
+    228            // Установка прерывания на нужный слот
+    229            NT_SetCompare(FULL_SLOT*(uint16_t)TS);
+    230          }
+    231          
+    232          static void TIC_TDMAShelduler(uint8_t TS)
+    233          {
+    234            // Устанавливает прерывание на ближайший активный слот
+    235            // Если слот 0 ближе, то на него. 
+    236            // Cлот - обработка секундных таймеров 
+    237            
+    238            // Ищем следующий активный слот или слот 0
+    239            incrementTS(&TS);
+    240            while ((TS != 0) && !TSStateTable[TS])  
+    241              incrementTS(&TS); 
+    242            
+    243            set_capture_time(TS);
+    244          }
+    245          
+    246          static inline void Callback_execution(void (*fn)(uint8_t TS), uint8_t TS)
+    247          {
+    248            // Помошник вызова функций. Упрощает проверки
+    249            ASSERT_HALT(fn != NULL, "Callback is NULL");
+    250            if (fn == NULL)
+    251              return;
+    252            fn(TS);
+    253          }
+    254          
+    255          static void TIC_HW_Timer_IRQ(uint16_t ticks)
+    256          {
+    257            // TODO Обработка TS=0xFF
+    258            // Номер текущего слота 
+    259            uint8_t c_TS = TIC_getCurrentTS(ticks);
+    260            
+    261            // Обновляем часы NODE_RTC и NODE_UPTIME
+    262            if (c_TS == 0)
+    263            {
+    264              TIM_TimeStamp(&TimeStampTS0); // Первым делом обновим отметку точного времени
+    265              clocks_update();
+    266            }
+    267            // Если что то пошло не так и мы промахнулись мимо слота
+    268            // запускаем планировщик заново
+    269            if (c_TS == NO_TIME_SLOT)
+    270            {
+    271              TIC_TDMAShelduler(c_TS);
+    272              LOG(MSG_ON | MSG_INFO | MSG_TRACE, "TS = 255 \r\n");
+    273              return;
+    274            }
+    275              
+    276            // Вызываем один из указанных обработчиков.
+    277            // Передача имеет приоритет над приемом.
+    278            if (TSStateTable[c_TS] & TS_TX) 
+    279              Callback_execution(TXCallback, c_TS);
+    280            else if (TSStateTable[c_TS] & TS_RX)
+    281              Callback_execution(RXCallback, c_TS);
+    282              
+    283            // Вызываем обработчик завершения слота
+    284            Callback_execution(SECallback, c_TS);
+    285            
+    286            // Запускаем планировщик таймера
+    287            TIC_TDMAShelduler(c_TS);
+    288          }
+    289          
+    290          static void clocks_update(void)
+    291          {
+    292            NODE_UPTIME++;
+    293            NODE_RTC++;
+    294            NODE_NONCE++;
+    295            if (NODE_RTC >= DAILY_SEC)
+    296              NODE_RTC = 0;
+    297          }
+    298          
+    299          void TIC_SetNonce(uint32_t nonce)
+    300          {
+    301            NODE_NONCE = nonce;
+    302          }
+    303          
+    304          uint32_t TIC_GetNonce(void)
+    305          {
+    306            return NODE_NONCE;
+    307          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest.c
       1          #include "utest_suite.h"
       2          #include "nwdebuger.h"
@@ -2982,42 +2999,40 @@ Warning[Pe550]: variable "timer" was set but never used
      18          extern void suite_LLC_HW(void);
      19          extern void suite_printf_uart(void);
      20          
-     21          volatile uint8_t tt[0x50];
-     22          int main()
-     23          {
-     24            nwDebugerInit();
-     25            utestSigTraceInit();
-     26            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Test log output\r\n");
-     27            ASSERT(false, "Test assert output\r\n");
-     28            tt[0] = 5;
-     29            
-     30            // Вызов функций тестирования
-     31            // Аппаратное тестирование
-     32            {
-     33              //suite_RADIO_HW();
-     34              //suite_delays_HW();    //12.11 Работает
-     35              //suite_TIC_HW();       //12.11 Работает
-     36              //suite_NT_HW();        // 12.11 Работает
-     37              suite_LLC_HW();
-     38            };
-     39            // Юнит тестирование
-     40            {
-     41              //suite_delays();
-     42              //suite_coder();
-     43              //suite_fbuf();
-     44             // suite_frame();
-     45              //suite_RADIO();
-     46             // suite_MAC();
-     47            // suite_printf_uart();
-     48            }
+     21          int main()
+     22          {
+     23            nwDebugerInit();
+     24            utestSigTraceInit();
+     25            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Test log output\r\n");
+     26            ASSERT(false, "Test assert output\r\n");
+     27            
+     28            // Вызов функций тестирования
+     29            // Аппаратное тестирование
+     30            {
+     31              //suite_RADIO_HW();
+     32              //suite_delays_HW();    //12.11 Работает
+     33              //suite_TIC_HW();       //12.11 Работает
+     34              //suite_NT_HW();        // 12.11 Работает
+     35              suite_LLC_HW();
+     36            };
+     37            // Юнит тестирование
+     38            {
+     39              //suite_delays();
+     40              //suite_coder();
+     41              //suite_fbuf();
+     42             // suite_frame();
+     43              //suite_RADIO();
+     44             // suite_MAC();
+     45            // suite_printf_uart();
+     46            }
+     47          
+     48          	//run_utest_framepart();
      49          
-     50          	//run_utest_framepart();
-     51          
-     52          // Добавляем результаты тестов
-     53          	umsg_summary();
-     54           //     while(1);
-     55          	return 0;
-     56          }
+     50          // Добавляем результаты тестов
+     51          	umsg_summary();
+     52           //     while(1);
+     53          	return 0;
+     54          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_coder.c
       1          #include "utest_suite.h"
       2          #include "coder.h"
@@ -4336,7 +4351,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       0    109   CTR_enc_decrypt
         0     39   -> memcpy
         0     39   -> memset
-      0     25   Callback_execution
+      0     28   Callback_execution
         0     12   -> STACK_FAILURE
         0     12   -> printf
         0     16   -> printf
@@ -4511,7 +4526,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     52   -> TIM_init
         0     52   -> frame_delete
         0     54   -> memory_compare
-      2     24   ReadTimer
+      2     26   ReadTimer
       0     80   RecvData
         0     32   -> NT_GetTime
         0     32   -> TIM_TimeStamp
@@ -4540,12 +4555,14 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       2      0   TIC_GetTimer
         2      0   -> NT_GetTime
       2     12   TIC_GetUptime
-      0      9   TIC_HW_Timer_IRQ
-        0      9   -> Callback_execution
-        0      9   -> TIC_TDMAShelduler
-        0      9   -> TIC_getCurrentTS
-        0      9   -> TIM_TimeStamp
-        0      9   -> clocks_update
+      0     16   TIC_HW_Timer_IRQ
+        0     12   -> Callback_execution
+        0     12   -> TIC_TDMAShelduler
+        0     12   -> TIC_getCurrentTS
+        0     12   -> TIM_TimeStamp
+        0     12   -> clocks_update
+        0     12   -> printf
+        0     16   -> printf
       2    150   TIC_Init
         2      0   -> NT_SetCompare
         2      0   -> NT_SetEventCallback
@@ -4578,13 +4595,13 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     10   -> STACK_FAILURE
         0     10   -> printf
         0     14   -> printf
-      3     10   TIC_TDMAShelduler
+      3     13   TIC_TDMAShelduler
         2      1   -> incrementTS
         2      1   -> set_capture_time
       0     24   TIC_TimeUsFromTS0
         0     24   -> TIM_TimeStamp
         0     24   -> TIM_passedTime
-      0     19   TIC_getCurrentTS
+      0     22   TIC_getCurrentTS
       3     91   TIM_TimeStamp
       0     14   TIM_copy
         0     14   -> memcpy
@@ -4623,9 +4640,11 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     32   -> TIM_passedTime
         0     32   -> umsg
       0      9   bits_count
-      2     36   calcCompareTime
-        0     24   -> ReadTimer
-      0     21   clocks_update
+      2     48   calcCompareTime
+        0     26   -> ReadTimer
+        0     30   -> printf
+        0     36   -> printf
+      0     24   clocks_update
       0     12   delete_test
         0     12   -> fbuf_create
         0     12   -> fbuf_delete
@@ -4940,6 +4959,8 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       19  ?<Constant "*LOGGER* %s:%d -> ">_4
       19  ?<Constant "*LOGGER* %s:%d -> ">_5
       19  ?<Constant "*LOGGER* %s:%d -> ">_6
+      19  ?<Constant "*LOGGER* %s:%d -> ">_7
+      19  ?<Constant "*LOGGER* %s:%d -> ">_8
        9  ?<Constant "*fr null">
       27  ?<Constant ".Program execution ha...">
       27  ?<Constant ".Program execution ha...">_1
@@ -5017,12 +5038,14 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       41  ?<Constant "String 2 len = %d. Pr...">
        6  ?<Constant "TIC.c">
       30  ?<Constant "TIM_passedTimeNs meas...">
+      12  ?<Constant "TS = 255 \r\n">
       16  ?<Constant "TS not in range">
       21  ?<Constant "Test assert output\r\n">
       18  ?<Constant "Test log output\r\n">
       15  ?<Constant "Tests FAILED\r\n">
       15  ?<Constant "Tests PASSED\r\n">
       19  ?<Constant "Ticks not in range">
+      35  ?<Constant "Timer = %lu, NT = %d,...">
       18  ?<Constant "Unit test symmary">
        3  ?<Constant "\r\n">
       13  ?<Constant "attempts = 0">
@@ -5105,6 +5128,8 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_4
       19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_5
       19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_6
+      19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_7
+      19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_8
        9  ?<Initializer for <Constant "*fr null">>
       27  ?<Initializer for <Constant ".Program executio
       27  ?<Initializer for <Constant ".Program executio_1
@@ -5182,12 +5207,14 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       41  ?<Initializer for <Constant "String 2 len = %d
        6  ?<Initializer for <Constant "TIC.c">>
       30  ?<Initializer for <Constant "TIM_passedTimeNs
+      12  ?<Initializer for <Constant "TS = 255 \r\n">>
       16  ?<Initializer for <Constant "TS not in range">
       21  ?<Initializer for <Constant "Test assert outpu
       18  ?<Initializer for <Constant "Test log output\r
       15  ?<Initializer for <Constant "Tests FAILED\r\n"
       15  ?<Initializer for <Constant "Tests PASSED\r\n"
       19  ?<Initializer for <Constant "Ticks not in rang
+      35  ?<Initializer for <Constant "Timer = %lu, NT =
       18  ?<Initializer for <Constant "Unit test symmary
        3  ?<Initializer for <Constant "\r\n">>
       13  ?<Initializer for <Constant "attempts = 0">>
@@ -5464,7 +5491,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  TIC_GetTimer::?relay
       17  TIC_GetUptime
        6  TIC_GetUptime::?relay
-     137  TIC_HW_Timer_IRQ
+     178  TIC_HW_Timer_IRQ
        6  TIC_HW_Timer_IRQ::?relay
       39  TIC_Init
        6  TIC_Init::?relay
@@ -5548,7 +5575,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       34  bits_count
        6  bits_count::?relay
      162  buf
-     282  calcCompareTime
+     353  calcCompareTime
        6  calcCompareTime::?relay
       94  clocks_update
        6  clocks_update::?relay
@@ -5609,7 +5636,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        1  led_stat
       70  loadTimerCompare
        6  loadTimerCompare::?relay
-     114  main
+     108  main
        6  main::?relay
       21  malloc
        6  malloc::?relay
@@ -5633,7 +5660,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        4  ret_val
      121  setFreq
        6  setFreq::?relay
-      40  set_capture_time
+      67  set_capture_time
        6  set_capture_time::?relay
      114  single_enc_dec_test
        6  single_enc_dec_test::?relay
@@ -5688,7 +5715,6 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  timealloc::?relay
      211  tot_len_test
        6  tot_len_test::?relay
-      80  tt
       19  uart_init
        6  uart_init::?relay
      118  umsg
@@ -5703,19 +5729,19 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        4  val
 
  
- 21 796 bytes in segment BANKED_CODE
+ 21 929 bytes in segment BANKED_CODE
   1 008 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
      60 bytes in segment NEAR_CODE
      35 bytes in segment SFR_AN
-  3 197 bytes in segment XDATA_I
-  3 197 bytes in segment XDATA_ID
-    772 bytes in segment XDATA_Z
+  3 282 bytes in segment XDATA_I
+  3 282 bytes in segment XDATA_ID
+    692 bytes in segment XDATA_Z
  
-  4 179 bytes of CODE     memory (+ 89 bytes shared)
+  4 264 bytes of CODE     memory (+ 89 bytes shared)
       0 bytes of DATA     memory (+ 35 bytes shared)
- 21 752 bytes of HUGECODE memory (+ 44 bytes shared)
-  3 901 bytes of XDATA    memory (+ 68 bytes shared)
+ 21 885 bytes of HUGECODE memory (+ 44 bytes shared)
+  3 906 bytes of XDATA    memory (+ 68 bytes shared)
 
 Errors: none
-Warnings: 7
+Warnings: 8

@@ -222,6 +222,9 @@ static inline void incrementTS(uint8_t *TS)
 
 static inline void set_capture_time(uint8_t TS)
 {
+  uint16_t ct = FULL_SLOT*(uint16_t)TS;
+  
+  LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Set compare = %d, TS = %d \r\n", ct, TS);
   // Установка прерывания на нужный слот
   NT_SetCompare(FULL_SLOT*(uint16_t)TS);
 }
@@ -266,6 +269,7 @@ static void TIC_HW_Timer_IRQ(uint16_t ticks)
   if (c_TS == NO_TIME_SLOT)
   {
     TIC_TDMAShelduler(c_TS);
+    LOG(MSG_ON | MSG_INFO | MSG_TRACE, "TS = 255 \r\n");
     return;
   }
     

@@ -137,6 +137,8 @@ static inline uint32_t calcCompareTime(uint16_t ticks)
       cmp_time &=0xFFFFFF;
     }
     
+     LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
+         "Timer = %lu, NT = %d, CMP = %lu \r\n",timer, network_time, cmp_time );
     return cmp_time;
 }
 
@@ -152,8 +154,13 @@ void NT_SetCompare(uint16_t ticks)
   ASSERT_HALT(ticks < 32768, "Incorrect ticks");
   
   COMPARE_TIME = ticks; // Сохраняем установленное значение
-  
+ 
   uint32_t compare_time = calcCompareTime(ticks);
+ 
+  LOG(MSG_OFF | MSG_INFO | MSG_TRACE, 
+      "Ticks = %d, Compare time = %04x \r\n",
+      ticks, compare_time);
+  
   loadTimerCompare(compare_time);
   NT_IRQEnable(true);
 }

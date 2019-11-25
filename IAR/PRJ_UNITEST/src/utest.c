@@ -18,14 +18,12 @@ extern void suite_frame(void);
 extern void suite_LLC_HW(void);
 extern void suite_printf_uart(void);
 
-volatile uint8_t tt[0x50];
 int main()
 {
   nwDebugerInit();
   utestSigTraceInit();
   LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Test log output\r\n");
   ASSERT(false, "Test assert output\r\n");
-  tt[0] = 5;
   
   // Вызов функций тестирования
   // Аппаратное тестирование
