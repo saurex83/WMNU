@@ -19,9 +19,7 @@ enum IPP_e
 } ;
 
 typedef struct
-{
-  uint8_t LEN;
-  
+{  
   union 
   {
     uint8_t value;
@@ -41,29 +39,6 @@ typedef struct
 } __attribute__((packed)) ETH_LAY;
 
 #define ETH_LAY_SIZE sizeof(ETH_LAY) 
-
-typedef struct //TODO Посмотреть в описании биты CRC, RSSI
-{
-  union 
-  {
-    uint8_t value;
-    struct 
-    {
-      uint8_t undef:8; 
-    } bits;
-  } FCS1;
-  
-  union 
-  {
-    uint8_t value;
-    struct 
-    {
-      uint8_t undef:8;
-    } bits;
-  } FCS2;
-} __attribute__((packed)) ETH_F_t;
-
-#define ETH_F_T_SIZE sizeof(ETH_F_t) 
 
 typedef struct 
 {

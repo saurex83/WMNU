@@ -1,10 +1,10 @@
 /*!
-\file 
+\file Модуль шифрования данных
 \brief Функции кодирования данных
 */
 
 #include "coder.h"
-#include "Radio_defs.h"
+#include "ioCC2530.h"
 #include "string.h"
 #include "delays.h" // Для профилирования, Отладка
 
@@ -16,8 +16,8 @@
 #define ST_DEF(STRUCT, FILD, VAL)  STRUCT.FILD = VAL
 #define HADDR(ADDR) ((uint16_t)ADDR >> 8)
 #define LADDR(ADDR) ((uint16_t)ADDR)
-#define BV(n)                    (1 << (n))
-#define MIC_2_MICLEN(m)         ( BV((m&3)+1) & ~3 )
+#define BV(n)                   (1 << (n))
+#define MIC_2_MICLEN(m)         (BV((m&3)+1) & ~3)
 
 // Режимы шифрования
 #define AES_MODE_CBC            0x00
@@ -52,8 +52,6 @@ static void CBCMAC_buf_encrypt(uint8_t len, uint8_t *key, uint8_t *mac);
 @detail 128 длина сообщения. 18 длинна блока B0 и строки состояния.
  16 длина дополнения нулями
 */
-// Локальный буфер. 128 длина сообщения. 18 блок B0 и строка авторизации
-// 16 
 static uint8_t buf[128+18+16]; 
 
 
@@ -109,6 +107,11 @@ typedef struct //!< Структура с настройками DMA
 DMA_AES_s DMA_AES_DW; //!< DMA на запись
 DMA_AES_s DMA_AES_UP; //!< DMA на чтение
 
+
+/**
+@brief Иницилизация модуля
+@detail Модуль использует DMA каналы 0 и 1
+*/
 void AES_init(void)
 {
   // Настроим канал 0 DMA для загрузки данных в AES
@@ -366,8 +369,8 @@ static void CTR_enc_decrypt(bool enc_mode, uint8_t *src, uint8_t *dst, uint8_t *
 
 /**
 @brief Зашифровывает buf в режиме CBC-MAC с IV = 0
-@param[in] len Длинна последовательности для вычисления MAC
-@param[out] mac Указатель на 16 байт куда будет записан mac
+@param[in] len улинна последовательности для вычисления MAC
+@param[out] mac указатель на память куда будет записан mac (до 16 байт)
 */
 static void CBCMAC_buf_encrypt(uint8_t len, uint8_t *key, uint8_t *mac)
 {

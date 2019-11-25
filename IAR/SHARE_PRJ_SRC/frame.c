@@ -1,5 +1,5 @@
 /**
-@file
+@file Модуль описывает сетевой кадр и связанные с ним буферы данных
 @brief Типы frame
 */
 
@@ -25,6 +25,8 @@ uint8_t frame_len(frame_s *fr);
 frame_s* frame_create(void)
 {
     frame_s* fr= (frame_s*)malloc(FRAME_S_SIZE);
+    ASSERT_HALT(fr != NULL, "No memory");
+    
     fr->head = NULL;
     fr->tail = NULL;
     memset(&fr->meta, 0x00, META_S_SIZE);
@@ -77,6 +79,9 @@ void frame_insert_head(frame_s *fr , fbuf_s *fb)
 */
 void frame_insert_tail(frame_s *fr , fbuf_s *fb)
 {
+  ASSERT_HALT(fr != NULL, "No fr");
+  ASSERT_HALT(fb != NULL, "No fb");
+  
   if (fr->tail == NULL)
   {
     fr->head = fb;
@@ -117,6 +122,8 @@ fbuf_s* frame_get_fbuf_tail(frame_s *fr)
 */
 void* frame_merge(frame_s *fr, uint8_t *len)
 {
+  ASSERT_HALT(fr != NULL, "No fr");
+  
   uint8_t tot_len = frame_len(fr); // Общая длинна данных
   *len = tot_len;
   
@@ -126,6 +133,8 @@ void* frame_merge(frame_s *fr, uint8_t *len)
   
   // Выделяем память
   void* mem = malloc(tot_len);
+  ASSERT_HALT(mem != NULL, "No memory");
+  
   uint8_t *ptr = (uint8_t*)mem;
   
   // Копируем данные

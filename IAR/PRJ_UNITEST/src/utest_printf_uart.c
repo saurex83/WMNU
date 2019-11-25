@@ -29,7 +29,6 @@ void test_1(void)
   LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
       "String 2 len = %d. Print time = %lu us.\n",
       sizeof(test_string2), passed);  
-
 }
 
 void suite_printf_uart(void)

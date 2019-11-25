@@ -30,6 +30,7 @@ static void LLC_RunTimeAlloc(void);
 
 typedef struct LLCTask LLCTask;
 typedef struct TimeAllocFunc TimeAllocFunc;
+static bool tasksBLOCK; //!< блокировка доступа к LLCTask
 
 /**
 @brief Описание задачи модуля LLC
@@ -68,11 +69,13 @@ static TimeAllocFunc HeadAllocFunc;
 
 /**
 @brief Инициализация модуля
+@detail Иницилизирует MAC
 */
 void LLC_Init(void)
 {  
   MAC_Init();
   nbrTasks = 0; 
+  tasksBLOCK = false;
   FirstTask = NULL;
   // TODO Очистить очередь HeadTask
   // Регистрируем обработчики
@@ -121,18 +124,24 @@ void LLC_TimeAlloc(void (*fn)(void))
 */
 bool LLC_AddTask(frame_s* fr)
 {
-   ASSERT_HALT(fr !=NULL, "fr NULL");
+   ASSERT_HALT(fr != NULL, "fr NULL");
  
     if (nbrTasks == MAX_nbrTASKS)
       return false;
-    
+   
+   // Ждем пока разбокируется доступ.
+   while (tasksBLOCK);
+   
    // Создаем новую задачу
    LLCTask *new_task = (LLCTask*)malloc(sizeof(LLCTask));
-   ASSERT_HALT(new_task !=NULL, "LLC malloc for new_task");
+   ASSERT_HALT(new_task !=NULL, "LLC malloc for new_task"); 
    
    new_task->TS = fr->meta.TS;
    new_task->CH = fr->meta.CH;
    new_task->fr = fr;
+   
+  LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Add task = %u, CH = %d, TS = %d\r\n",
+      (uint16_t)new_task,new_task->CH, new_task->TS);
    
    // Если в очереди нет задач, добавим первую
    if (FirstTask == NULL) 
@@ -160,6 +169,7 @@ bool LLC_AddTask(frame_s* fr)
 */
 static void LLC_Shelduler(uint8_t TS)
 {
+  tasksBLOCK = true;
   // Перебираем попорядку весь список на отправку
   // HeadTask только указатель на первый элемент, сам он не подлежит отправке
   LLCTask *task = FirstTask;
@@ -181,16 +191,21 @@ static void LLC_Shelduler(uint8_t TS)
     next = task->next; // Запомним следующую задачу
     
     // Удаляем текущую задачу из списка
-    if (last == FirstTask) 
+    if (last == FirstTask)
+    {
     // Если предыдущим элементом была голова списка.
        FirstTask = next;
+       last = next;
+    }
     else
       last->next = next;
-    
-    free(task);
-    task = next;
 
     nbrTasks--;
+    LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Free task = %u, nbrTasks = %d\r\n",
+        (uint16_t)task, nbrTasks); 
+    free(task);
+    task = next;
+    tasksBLOCK = false;
   }
 }
 

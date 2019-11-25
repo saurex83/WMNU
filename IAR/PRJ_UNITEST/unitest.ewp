@@ -2286,12 +2286,6 @@
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\Radio_defs.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\sig_trace.h</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\sig_trace_defs.h</name>
-        </file>
-        <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\TIC.c</name>
         </file>
         <file>

@@ -1,6 +1,6 @@
 /*!
-\file 
-\brief Функции измерения времени и задержки
+\file Модуль реализует связанные буфера данных
+\brief 
 */
 
 
@@ -11,11 +11,14 @@
 #include "nwdebuger.h"
 
 // Макросы для выравнивания памяти
+// На текущий момент выравниевание не используется, так как были ошибки
+// в работе макросов.
 typedef uint16_t mem_ptr_t;
 #define MEM_ALIGNMENT 2 //!< Кратность в байтах для выравнивания памяти
 #define MEM_ALIGN_SIZE(size) (((size) + MEM_ALIGNMENT - 1) & ~(MEM_ALIGNMENT-1))
 #define MEM_ALIGN(addr) ((void *)(((mem_ptr_t)(addr) + MEM_ALIGNMENT - 1) & ~(mem_ptr_t)(MEM_ALIGNMENT-1)))
 
+// Доступные методы
 fbuf_s* fbuf_create(uint8_t type, void* payload, uint8_t len);
 void fbuf_delete(fbuf_s *fb);
 void fbuf_chain(fbuf_s *h, fbuf_s *t);
@@ -54,6 +57,8 @@ fbuf_s* fbuf_create(uint8_t type, void* payload, uint8_t len)
   // Выделяем память под структуру и данные и выравниваем в памяти
   // Выравнивание с помощью макросов приводило к пиздецу.
   fbuf_s* fb = (fbuf_s*)malloc(FBUF_S_SIZE + req_len);
+  ASSERT_HALT(fb != NULL, "No memory");
+  
   memset(fb, 0x77 , FBUF_S_SIZE + req_len);
   fb->payload = (uint8_t*)fb + FBUF_S_SIZE;
   

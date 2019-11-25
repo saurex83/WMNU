@@ -14,7 +14,6 @@
 #include "coder.h"
 #include "NTMR.h"
 
-
 // Открытые методы модуля
 void RI_init(void);
 bool RI_SetChannel(uint8_t CH);

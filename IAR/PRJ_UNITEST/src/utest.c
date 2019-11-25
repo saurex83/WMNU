@@ -32,7 +32,7 @@ int main()
     //suite_delays_HW();    //12.11 Работает
     //suite_TIC_HW();       //12.11 Работает
     //suite_NT_HW();        // 12.11 Работает
-  //  suite_LLC_HW();
+    suite_LLC_HW();
   };
   // Юнит тестирование
   {
@@ -42,7 +42,7 @@ int main()
    // suite_frame();
     //suite_RADIO();
    // suite_MAC();
-   suite_printf_uart();
+  // suite_printf_uart();
   }
 
 	//run_utest_framepart();

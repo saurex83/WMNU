@@ -66,6 +66,10 @@ void MAC_Set_isACK_OK_Callback(bool(*fn)(frame_s *fr, frame_s *fr_ack))
   isACK_OK = fn;
 }
 
+/**
+@brief Иницилизация MAC
+@detail Инизилизирует TIM, TIC, RI, AES
+*/
 void MAC_Init(void)
 {
   TIM_init();
@@ -216,8 +220,11 @@ static void MAC_TX_HNDL(uint8_t TS)
     
   // Пробуем передать данные
   bool tx_success = RI_Send(MACSlotTable[TS].TX.fr); 
-  bool send_success = false;   
+  bool send_success = false;  
   
+  LOG(MSG_ON | MSG_INFO | MSG_TRACE, "RI_Send = %d, CH = %d, TS = %d\r\n",
+      tx_success, MACSlotTable[TS].TX.CH, TS);
+    
   // Если отправка была успешна и требуется прием подтверждения ACK
   if (tx_success && MACSlotTable[TS].TX.fr->meta.ACK)
   {
