@@ -175,7 +175,7 @@
                 </option>
                 <option>
                     <name>General Xdata Stack Size</name>
-                    <state>0xEFF</state>
+                    <state>0x400</state>
                 </option>
                 <option>
                     <name>General Ext Stack Size</name>
@@ -183,15 +183,15 @@
                 </option>
                 <option>
                     <name>General Xdata Heap Size</name>
-                    <state>0x800</state>
+                    <state>0x1300</state>
                 </option>
                 <option>
                     <name>General Far Heap Size</name>
-                    <state>0xFFF</state>
+                    <state>0x0FF</state>
                 </option>
                 <option>
                     <name>General Huge Heap Size</name>
-                    <state>0xFFF</state>
+                    <state>0x0FF</state>
                 </option>
                 <option>
                     <name>CodeBankNrOfs</name>
@@ -216,7 +216,7 @@
                 </option>
                 <option>
                     <name>General Far22 Heap Size</name>
-                    <state>0xFFF</state>
+                    <state>0x0FF</state>
                 </option>
                 <option>
                     <name>GeneralMisraVer</name>
@@ -312,7 +312,7 @@
                 </option>
                 <option>
                     <name>CCListCFile</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CCListCMnemonics</name>
@@ -320,7 +320,7 @@
                 </option>
                 <option>
                     <name>CCListCMessages</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CCListAssFile</name>
@@ -913,7 +913,7 @@
                 </option>
                 <option>
                     <name>ModuleSummary</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>xcProgramEntryLabel</name>
@@ -975,7 +975,7 @@
                 </option>
                 <option>
                     <name>OverlaySystemMap</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>RawBinaryFile</name>
@@ -2223,6 +2223,9 @@
             <data />
         </settings>
     </configuration>
+    <mfc>
+        <configuration>Debug</configuration>
+    </mfc>
     <group>
         <name>share src</name>
         <file>

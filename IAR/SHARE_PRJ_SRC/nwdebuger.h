@@ -75,6 +75,7 @@ __attribute__((weak)) void STACK_FAILURE(char* msg);
 		if (!(condition)) {\
 			printf("*ASSERT* %s:%d -> ",__FILE__, __LINE__);\
 			printf(__VA_ARGS__);\
+            printf("\r\n");\
 		}\
 	}
 

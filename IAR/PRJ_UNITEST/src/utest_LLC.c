@@ -33,23 +33,29 @@ static void test_create()
   EA = 1;
   uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
   
-  frame_s *fr1, *fr2, *fr3;
+  frame_s *fr;
   
-  uint16_t added = 0;
+  uint16_t TS = 0;
+  
+  fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
+  uint16_t fr_size = sizeof(frame_s);
+  uint16_t bf_size = frame_len(fr);
+  
+  LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
+      "Frame_s size = %d. Fbuf data = %d. Full =%d\r\n",
+      fr_size, bf_size, bf_size+fr_size );
+  frame_delete(fr);
   
   while(true)
   {  
-    if (LLC_GetTaskLen() < 2)
+    if (LLC_GetTaskLen() < 5)
     {
-      fr1 = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, 1);
-     // fr2 = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, 3);
-      fr3 = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, 20);
-     
-      LLC_AddTask(fr1);
-     // LLC_AddTask(fr2);
-      LLC_AddTask(fr3);
-      added ++;
-    }
+          fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
+          LLC_AddTask(fr);
+          TS ++;
+          if (TS == 49)
+            TS = 0;
+    }              
   }
   
 }

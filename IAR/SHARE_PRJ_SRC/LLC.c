@@ -191,22 +191,26 @@ static void LLC_Shelduler(uint8_t TS)
     next = task->next; // Запомним следующую задачу
     
     // Удаляем текущую задачу из списка
-    if (last == FirstTask)
+    if (task == FirstTask)
     {
-    // Если предыдущим элементом была голова списка.
+    // Удаляемым элементом является указателем на голову
        FirstTask = next;
-       last = next;
+       last = FirstTask;
     }
     else
+    {
+      // Удаляемым элементом является промежуточный элемент
       last->next = next;
-
+    }
+    
     nbrTasks--;
-    LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Free task = %u, nbrTasks = %d\r\n",
+    LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Free task = %u, nbrTasks = %d\r\n",
         (uint16_t)task, nbrTasks); 
     free(task);
     task = next;
-    tasksBLOCK = false;
   }
+  
+  tasksBLOCK = false;
 }
 
 /**
