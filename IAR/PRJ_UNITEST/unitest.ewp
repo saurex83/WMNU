@@ -2325,6 +2325,9 @@
             <name>$PROJ_DIR$\src\utest_NTMR.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\src\utest_printf_uart.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\src\utest_radio.c</name>
         </file>
         <file>

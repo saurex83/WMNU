@@ -7,7 +7,6 @@
 #include "RADIO.h"
 #include "TIC.h"
 
-
 static void timealloc(void)
 {
   static bool led_stat = false;
@@ -21,11 +20,9 @@ static void test_create()
   LLC_TimeAlloc(timealloc);
   EA = 1;
   uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
-  uint8_t TS = 40;
+  uint8_t TS = 47;
   
   frame_s *fr;
-
-  
   
   uint16_t added = 0;
   

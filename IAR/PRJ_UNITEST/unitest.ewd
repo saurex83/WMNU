@@ -700,7 +700,7 @@
             </plugin>
             <plugin>
                 <file>$EW_DIR$\common\plugins\TargetAccessServer\TargetAccessServer.ENU.ewplugin</file>
-                <loadFlag>1</loadFlag>
+                <loadFlag>0</loadFlag>
             </plugin>
             <plugin>
                 <file>$EW_DIR$\common\plugins\uCProbe\uCProbePlugin.ENU.ewplugin</file>

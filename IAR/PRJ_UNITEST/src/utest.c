@@ -1,5 +1,6 @@
 #include "utest_suite.h"
 #include "nwdebuger.h"
+#include "assert.h"
 
 extern void suite_fbuf(void);
 extern void suite_TIC(void);
@@ -15,6 +16,7 @@ extern void suite_delays(void);
 extern void suite_coder(void);
 extern void suite_frame(void);
 extern void suite_LLC_HW(void);
+extern void suite_printf_uart(void);
 
 int main()
 {
@@ -30,7 +32,7 @@ int main()
     //suite_delays_HW();    //12.11 Работает
     //suite_TIC_HW();       //12.11 Работает
     //suite_NT_HW();        // 12.11 Работает
-    suite_LLC_HW();
+  //  suite_LLC_HW();
   };
   // Юнит тестирование
   {
@@ -40,6 +42,7 @@ int main()
    // suite_frame();
     //suite_RADIO();
    // suite_MAC();
+   suite_printf_uart();
   }
 
 	//run_utest_framepart();
