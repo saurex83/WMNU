@@ -2340,4 +2340,7 @@
     <file>
         <name>$PROJ_DIR$\src\utest_suite.h</name>
     </file>
+    <mfc>
+        <configuration>Debug</configuration>
+    </mfc>
 </project>

@@ -121,9 +121,11 @@ static inline uint32_t calcCompareTime(uint16_t ticks)
     uint16_t ticks_offset;
     
     uint32_t timer = ReadTimer(); // Текущее значение счетчика
+    uint32_t real_timer = timer;
     uint16_t network_time = (timer + TOFFSET) & 0x7FFF; // Текущее время сети
     //NETWORK TIME = TIMER + TOFFSET
     
+    // Приводим такты к тактам таймера
     ticks_offset = (ticks - TOFFSET) & 0x7FFF;
     
     timer &=~0x7FFF; // Убираем младшие 15 бит
@@ -137,8 +139,12 @@ static inline uint32_t calcCompareTime(uint16_t ticks)
       cmp_time &=0xFFFFFF;
     }
     
-     LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-         "Timer = %lu, NT = %d, CMP = %lu \r\n",timer, network_time, cmp_time );
+    if (cmp_time <= real_timer)
+        LOG(MSG_ON | MSG_INFO | MSG_TRACE,"Fault. Timer = %lu, CMP = %lu\r\n",
+            real_timer, cmp_time);
+      
+     LOG(MSG_OFF | MSG_INFO | MSG_TRACE, 
+         "Timer = %lu,Ticks = %d, NT = %d, CMP = %lu \r\n",real_timer,ticks, network_time, cmp_time );
     return cmp_time;
 }
 
