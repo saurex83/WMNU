@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               26/Nov/2019  19:33:22
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               28/Nov/2019  01:52:55
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,7 +14,7 @@
 #    Source file        =  
 #        \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW2A26.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW7F8B.tmp
 #        ("\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c" -lc
 #        "\\vmware-host\Shared
@@ -54,6 +54,8 @@
 #        Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
 #        "\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_MAC.c"
+#        "\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_malloc.c"
 #        "\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_NTMR.c"
 #        "\\vmware-host\Shared
@@ -825,106 +827,121 @@
       3          \brief 
       4          */
       5          
-      6          
-      7          #include "fbuf.h"
-      8          #include "string.h"
-      9          #include "stdlib.h"
-     10          #include "Net_frames.h"
-     11          #include "nwdebuger.h"
-     12          
-     13          // Макросы для выравнивания памяти
-     14          // На текущий момент выравниевание не используется, так как были ошибки
-     15          // в работе макросов.
-     16          typedef uint16_t mem_ptr_t;
-     17          #define MEM_ALIGNMENT 2 //!< Кратность в байтах для выравнивания памяти
-     18          #define MEM_ALIGN_SIZE(size) (((size) + MEM_ALIGNMENT - 1) & ~(MEM_ALIGNMENT-1))
-     19          #define MEM_ALIGN(addr) ((void *)(((mem_ptr_t)(addr) + MEM_ALIGNMENT - 1) & ~(mem_ptr_t)(MEM_ALIGNMENT-1)))
-     20          
-     21          // Доступные методы
-     22          fbuf_s* fbuf_create(uint8_t type, void* payload, uint8_t len);
-     23          void fbuf_delete(fbuf_s *fb);
-     24          void fbuf_chain(fbuf_s *h, fbuf_s *t);
-     25          fbuf_s* fbuf_next(fbuf_s *fb);
+      6          #include "fbuf.h"
+      7          #include "string.h"
+      8          #include "stdlib.h"
+      9          #include "Net_frames.h"
+     10          #include "nwdebuger.h"
+     11          
+     12          // Макросы для выравнивания памяти
+     13          // На текущий момент выравниевание не используется, так как были ошибки
+     14          // в работе макросов.
+     15          typedef uint16_t mem_ptr_t;
+     16          #define MEM_ALIGNMENT 2 //!< Кратность в байтах для выравнивания памяти
+     17          #define MEM_ALIGN_SIZE(size) (((size) + MEM_ALIGNMENT - 1) & ~(MEM_ALIGNMENT-1))
+     18          #define MEM_ALIGN(addr) ((void *)(((mem_ptr_t)(addr) + MEM_ALIGNMENT - 1) & ~(mem_ptr_t)(MEM_ALIGNMENT-1)))
+     19          
+     20          // Доступные методы
+     21          fbuf_s* fbuf_create(uint8_t type, void* payload, uint8_t len);
+     22          void fbuf_delete(fbuf_s *fb);
+     23          void fbuf_chain(fbuf_s *h, fbuf_s *t);
+     24          fbuf_s* fbuf_next(fbuf_s *fb);
+     25          uint8_t fbuf_getCount(void);
      26          
-     27          /**
-     28          @brief Создает fbuf указанного типа
-     29          @details 
-     30          @param type
-     31          @param payload
-     32          @param len
-     33          */
-     34          fbuf_s* fbuf_create(uint8_t type, void* payload, uint8_t len)
-     35          {
-     36            uint8_t req_len;
-     37            // Определим длинну данных fbuf
-     38            switch (type)
-     39            {
-     40              case FB_ETH_LAY:
-     41                req_len = ETH_LAY_SIZE;
-     42                break;
-     43              case FB_IP_LAY:
-     44                req_len = IP_LAY_SIZE;
-     45                break;
-     46              case FB_SYNC_LAY:
-     47                req_len = SYNC_LAY_SIZE;
-     48                break;
-     49              case FB_TRANSPORT_LAY:
-     50              case FB_RAW_LAY:
-     51                req_len = len;
+     27          // Локальные переменные модуля
+     28          static uint8_t NBR_BUF = 0; //!< Количество буферов в памяти
+     29          
+     30          
+     31          /**
+     32          @brief Создает fbuf указанного типа
+     33          @details 
+     34          @param type
+     35          @param payload
+     36          @param len
+     37          */
+     38          fbuf_s* fbuf_create(uint8_t type, void* payload, uint8_t len)
+     39          {
+     40            uint8_t req_len;
+     41            // Определим длинну данных fbuf
+     42            switch (type)
+     43            {
+     44              case FB_ETH_LAY:
+     45                req_len = ETH_LAY_SIZE;
+     46                break;
+     47              case FB_IP_LAY:
+     48                req_len = IP_LAY_SIZE;
+     49                break;
+     50              case FB_SYNC_LAY:
+     51                req_len = SYNC_LAY_SIZE;
      52                break;
-     53            default:
-     54              ASSERT_HALT(false, "Incorrect fbuf type");
-     55            } 
-     56            
-     57            // Выделяем память под структуру и данные и выравниваем в памяти
-     58            // Выравнивание с помощью макросов приводило к пиздецу.
-     59            fbuf_s* fb = (fbuf_s*)malloc(FBUF_S_SIZE + req_len);
-     60            ASSERT_HALT(fb != NULL, "No memory");
-     61            
-     62            memset(fb, 0x77 , FBUF_S_SIZE + req_len);
-     63            fb->payload = (uint8_t*)fb + FBUF_S_SIZE;
-     64            
-     65            // Заполним структуру
-     66            fb->type = type;
-     67            fb->next = NULL;
-     68            fb->len = req_len;
-     69            
-     70            // Если пользователю нужно разместить сырые данные или транспортный
-     71            // уровень, то скопируем данные
-     72            if ((type == FB_TRANSPORT_LAY) || (type == FB_RAW_LAY))
-     73              memcpy(fb->payload, payload, req_len);
-     74            
-     75            return fb;
-     76          }
-     77          
-     78          /**
-     79          @brief Удаляем буфер
-     80          */
-     81          void fbuf_delete(fbuf_s *fb)
-     82          {
-     83            free(fb);
-     84          }
-     85          
-     86          /**
-     87          @brief Переход к следующему буферу
-     88          @return Указатель на следующий буфер или NULL
-     89          */
-     90          fbuf_s* fbuf_next(fbuf_s *fb)
-     91          {
-     92            if (fb->next == NULL)
-     93              return NULL;
-     94            return  fb->next;
-     95          }
-     96          
-     97          /**
-     98          @brief Связывает два буфера. Head->Tail
-     99          @param[in,out] h head
-    100          @param[in] t tail
-    101          */
-    102          void fbuf_chain(fbuf_s *h, fbuf_s *t)
-    103          {
-    104            h->next = t;
-    105          }
+     53              case FB_TRANSPORT_LAY:
+     54              case FB_RAW_LAY:
+     55                req_len = len;
+     56                break;
+     57            default:
+     58              ASSERT_HALT(false, "Incorrect fbuf type");
+     59            } 
+     60            
+     61            // Выделяем память под структуру и данные и выравниваем в памяти
+     62            // Выравнивание с помощью макросов приводило к пиздецу.
+     63            fbuf_s* fb = (fbuf_s*)malloc(FBUF_S_SIZE + req_len);
+     64            ASSERT_HALT(fb != NULL, "No memory");
+     65            
+     66            memset(fb, 0x77 , FBUF_S_SIZE + req_len);
+     67            fb->payload = (uint8_t*)fb + FBUF_S_SIZE;
+     68            
+     69            // Заполним структуру
+     70            fb->type = type;
+     71            fb->next = NULL;
+     72            fb->len = req_len;
+     73            
+     74            // Если пользователю нужно разместить сырые данные или транспортный
+     75            // уровень, то скопируем данные
+     76            if ((type == FB_TRANSPORT_LAY) || (type == FB_RAW_LAY))
+     77              memcpy(fb->payload, payload, req_len);
+     78            
+     79            NBR_BUF++;
+     80            return fb;
+     81          }
+     82          
+     83          /**
+     84          @brief Получить количество буферов в памяти
+     85          @return Возвращает количество буферов
+     86          */
+     87          uint8_t fbuf_getCount(void)
+     88          {
+     89            return NBR_BUF;
+     90          }
+     91          
+     92          /**
+     93          @brief Удаляем буфер
+     94          */
+     95          void fbuf_delete(fbuf_s *fb)
+     96          {
+     97            free(fb);
+     98            NBR_BUF--;
+     99          }
+    100          
+    101          /**
+    102          @brief Переход к следующему буферу
+    103          @return Указатель на следующий буфер или NULL
+    104          */
+    105          fbuf_s* fbuf_next(fbuf_s *fb)
+    106          {
+    107            if (fb->next == NULL)
+    108              return NULL;
+    109            return  fb->next;
+    110          }
+    111          
+    112          /**
+    113          @brief Связывает два буфера. Head->Tail
+    114          @param[in,out] h head
+    115          @param[in] t tail
+    116          */
+    117          void fbuf_chain(fbuf_s *h, fbuf_s *t)
+    118          {
+    119            h->next = t;
+    120          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\frame.c
       1          /**
       2          @file Модуль описывает сетевой кадр и связанные с ним буферы данных
@@ -945,154 +962,168 @@
      17          fbuf_s* frame_get_fbuf_tail(frame_s *fr);
      18          void* frame_merge(frame_s *fr, uint8_t *len);
      19          uint8_t frame_len(frame_s *fr);
-     20          
-     21          /**
-     22          @brief Создание структуры frame
-     23          @return Указатель на структуру frame
-     24          */
-     25          frame_s* frame_create(void)
-     26          {
-     27              frame_s* fr= (frame_s*)malloc(FRAME_S_SIZE);
-     28              ASSERT_HALT(fr != NULL, "No memory");
-     29              
-     30              fr->head = NULL;
-     31              fr->tail = NULL;
-     32              memset(&fr->meta, 0x00, META_S_SIZE);
-     33              return fr;
-     34          };
-     35          
-     36          /**
-     37          @brief Удаление frame
-     38          @detail Проуедура так же удаляет все связанные с ней буфера fbuf
-     39          @param[in] fr указатель на структуру frame
-     40          */
-     41          void frame_delete(frame_s *fr)
-     42          {
-     43            fbuf_s *fb = fr->head;
-     44            fbuf_s *next = fb;
-     45            
-     46            // Удаляем все связанные буфера
-     47            while (fb != NULL)
-     48            {
-     49                next = fb->next;
-     50                free(fb);
-     51                fb = next;
-     52            };
-     53            
-     54            free(fr);
-     55          }
-     56          
-     57          /**
-     58          @brief Вставить буфер в начало цепочки
-     59          @param[in,out] fr указатель на структуру frame
-     60          @param[in] fb указатель на буфер для вставки
-     61          */
-     62          void frame_insert_head(frame_s *fr , fbuf_s *fb)
-     63          {
-     64            if (fr->head == NULL)
-     65            {
-     66              fr->head = fb;
-     67              fr->tail = fb;
-     68              return;
-     69            }
-     70            
-     71            fb->next = fr->head; 
-     72            fr->head = fb;
-     73          }
-     74          
-     75          /**
-     76          @brief Вставить буфер в конец цепочки
-     77          @param[in,out] fr указатель на структуру frame
-     78          @param[in] fb указатель на буфер для вставки
-     79          */
-     80          void frame_insert_tail(frame_s *fr , fbuf_s *fb)
-     81          {
-     82            ASSERT_HALT(fr != NULL, "No fr");
-     83            ASSERT_HALT(fb != NULL, "No fb");
+     20          uint8_t frame_getCount(void);
+     21          
+     22          static uint8_t NBR_FRAME = 0; //!< Количество фреймов в памяти
+     23          
+     24          /**
+     25          @brief Получить количество буферов в памяти
+     26          @return Возвращает количество буферов
+     27          */
+     28          uint8_t frame_getCount(void)
+     29          {
+     30            return NBR_FRAME;
+     31          }
+     32          
+     33          /**
+     34          @brief Создание структуры frame
+     35          @return Указатель на структуру frame
+     36          */
+     37          frame_s* frame_create(void)
+     38          {
+     39              frame_s* fr= (frame_s*)malloc(FRAME_S_SIZE);
+     40              ASSERT_HALT(fr != NULL, "No memory");
+     41              
+     42              fr->head = NULL;
+     43              fr->tail = NULL;
+     44              memset(&fr->meta, 0x00, META_S_SIZE);
+     45              NBR_FRAME++;
+     46              return fr;
+     47          };
+     48          
+     49          /**
+     50          @brief Удаление frame
+     51          @detail Проуедура так же удаляет все связанные с ней буфера fbuf
+     52          @param[in] fr указатель на структуру frame
+     53          */
+     54          void frame_delete(frame_s *fr)
+     55          {
+     56            fbuf_s *fb = fr->head;
+     57            fbuf_s *next = fb;
+     58            
+     59            // Удаляем все связанные буфера
+     60            while (fb != NULL)
+     61            {
+     62                next = fb->next;
+     63                fbuf_delete(fb);
+     64                fb = next;
+     65            };
+     66            
+     67            NBR_FRAME--;
+     68            free(fr);
+     69          }
+     70          
+     71          /**
+     72          @brief Вставить буфер в начало цепочки
+     73          @param[in,out] fr указатель на структуру frame
+     74          @param[in] fb указатель на буфер для вставки
+     75          */
+     76          void frame_insert_head(frame_s *fr , fbuf_s *fb)
+     77          {
+     78            if (fr->head == NULL)
+     79            {
+     80              fr->head = fb;
+     81              fr->tail = fb;
+     82              return;
+     83            }
      84            
-     85            if (fr->tail == NULL)
-     86            {
-     87              fr->head = fb;
-     88              fr->tail = fb;
-     89              return;
-     90            }
-     91            
-     92            fr->tail->next = fb;
-     93            fr->tail = fb;
-     94          }
-     95          
-     96          /**
-     97          @brief Получить указатель на первый элемент в цепочке
-     98          @param[in] fr указатель на структуру frame
-     99          @return указатель на первый буфер или NULL
-    100          */
-    101          fbuf_s* frame_get_fbuf_head(frame_s *fr)
-    102          {
-    103            return fr->head;
-    104          }
-    105          
-    106          /**
-    107          @brief Получить указатель на последний элемент в цепочке
-    108          @param[in] fr указатель на структуру frame
-    109          @return указатель на последний буфер или NULL
-    110          */
-    111          fbuf_s* frame_get_fbuf_tail(frame_s *fr)
-    112          {
-    113            return fr->tail;
-    114          }
-    115          
-    116          /**
-    117          @brief Производит слияние всех данных в один массив
-    118          @details Данные требуют удаления после использования free(..)
-    119          @param[in] fr указатель на frame
-    120          @param[out] len длинна результирующего массива данных
-    121          @return Указатель на начало данных
-    122          */
-    123          void* frame_merge(frame_s *fr, uint8_t *len)
-    124          {
-    125            ASSERT_HALT(fr != NULL, "No fr");
-    126            
-    127            uint8_t tot_len = frame_len(fr); // Общая длинна данных
-    128            *len = tot_len;
-    129            
-    130            // Выходим если данных нет
-    131            if (!tot_len) 
-    132              return NULL;
-    133            
-    134            // Выделяем память
-    135            void* mem = malloc(tot_len);
-    136            ASSERT_HALT(mem != NULL, "No memory");
-    137            
-    138            uint8_t *ptr = (uint8_t*)mem;
-    139            
-    140            // Копируем данные
-    141            fbuf_s *fb = fr->head;
-    142            while (fb!= NULL)
-    143            {
-    144              memcpy(ptr, fb->payload, fb->len);
-    145              ptr += fb->len;
-    146              fb = fb->next;
-    147            }
-    148            return mem;
-    149          }
-    150          
-    151          /**
-    152          @brief Вычисляет размер цепочки fbuf
-    153          @param[in] fr указатель на framr
-    154          @return Количество байт в цепочке буферов
-    155          */
-    156          uint8_t frame_len(frame_s *fr)
-    157          {
-    158            uint8_t tot_len = 0;
-    159            fbuf_s *fb = fr->head;
-    160           
-    161            while (fb != NULL)
-    162            {
-    163              tot_len += fb->len;
-    164              fb = fb->next;
-    165            }
-    166            return tot_len;
-    167          }
+     85            fb->next = fr->head; 
+     86            fr->head = fb;
+     87          }
+     88          
+     89          /**
+     90          @brief Вставить буфер в конец цепочки
+     91          @param[in,out] fr указатель на структуру frame
+     92          @param[in] fb указатель на буфер для вставки
+     93          */
+     94          void frame_insert_tail(frame_s *fr , fbuf_s *fb)
+     95          {
+     96            ASSERT_HALT(fr != NULL, "No fr");
+     97            ASSERT_HALT(fb != NULL, "No fb");
+     98            
+     99            if (fr->tail == NULL)
+    100            {
+    101              fr->head = fb;
+    102              fr->tail = fb;
+    103              return;
+    104            }
+    105            
+    106            fr->tail->next = fb;
+    107            fr->tail = fb;
+    108          }
+    109          
+    110          /**
+    111          @brief Получить указатель на первый элемент в цепочке
+    112          @param[in] fr указатель на структуру frame
+    113          @return указатель на первый буфер или NULL
+    114          */
+    115          fbuf_s* frame_get_fbuf_head(frame_s *fr)
+    116          {
+    117            return fr->head;
+    118          }
+    119          
+    120          /**
+    121          @brief Получить указатель на последний элемент в цепочке
+    122          @param[in] fr указатель на структуру frame
+    123          @return указатель на последний буфер или NULL
+    124          */
+    125          fbuf_s* frame_get_fbuf_tail(frame_s *fr)
+    126          {
+    127            return fr->tail;
+    128          }
+    129          
+    130          /**
+    131          @brief Производит слияние всех данных в один массив
+    132          @details Данные требуют удаления после использования free(..)
+    133          @param[in] fr указатель на frame
+    134          @param[out] len длинна результирующего массива данных
+    135          @return Указатель на начало данных
+    136          */
+    137          void* frame_merge(frame_s *fr, uint8_t *len)
+    138          {
+    139            ASSERT_HALT(fr != NULL, "No fr");
+    140            
+    141            uint8_t tot_len = frame_len(fr); // Общая длинна данных
+    142            *len = tot_len;
+    143            
+    144            // Выходим если данных нет
+    145            if (!tot_len) 
+    146              return NULL;
+    147            
+    148            // Выделяем память
+    149            void* mem = malloc(tot_len);
+    150            ASSERT_HALT(mem != NULL, "No memory");
+    151            
+    152            uint8_t *ptr = (uint8_t*)mem;
+    153            
+    154            // Копируем данные
+    155            fbuf_s *fb = fr->head;
+    156            while (fb!= NULL)
+    157            {
+    158              memcpy(ptr, fb->payload, fb->len);
+    159              ptr += fb->len;
+    160              fb = fb->next;
+    161            }
+    162            return mem;
+    163          }
+    164          
+    165          /**
+    166          @brief Вычисляет размер цепочки fbuf
+    167          @param[in] fr указатель на frame_s
+    168          @return Количество байт в цепочке буферов
+    169          */
+    170          uint8_t frame_len(frame_s *fr)
+    171          {
+    172            uint8_t tot_len = 0;
+    173            fbuf_s *fb = fr->head;
+    174           
+    175            while (fb != NULL)
+    176            {
+    177              tot_len += fb->len;
+    178              fb = fb->next;
+    179            }
+    180            return tot_len;
+    181          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\LLC.c
       1          /**
       2          @file 
@@ -1104,243 +1135,254 @@
       8          #include "TIC.h"
       9          #include "stdlib.h"
      10          #include "nwdebuger.h"
-     11          
-     12          // Публичные методы
-     13          void LLC_Init(void);
-     14          
-     15          // Методы модуля
-     16          void LLC_SetRXCallback(void (*fn)(frame_s *fr));
-     17          void LLC_TimeAlloc(void (*fn)(void)); 
-     18          bool LLC_AddTask(frame_s* fr);
-     19          uint8_t LLC_GetTaskLen(void);
-     20          
-     21          // Закрытые методы
-     22          static void LLC_SE_HNDL(uint8_t TS); //!< Обработчик завешения слота TIC
-     23          static void LLC_Shelduler(uint8_t TS);
-     24          static void LLC_RX_HNDL(frame_s *fr); //!< Обработчик примема пакета
-     25          static void LLC_RunTimeAlloc(void);
-     26          
-     27          // Переменные модуля
-     28          #define UNICAST_SEND_ATEMPTS 5 //!< Количество попыток передачи пакета 
-     29          #define MAX_nbrTASKS 20 //!< Максимальное количество задач в очередях
-     30          
-     31          typedef struct LLCTask LLCTask;
-     32          typedef struct TimeAllocFunc TimeAllocFunc;
-     33          static bool tasksBLOCK; //!< блокировка доступа к LLCTask
-     34          
-     35          /**
-     36          @brief Описание задачи модуля LLC
-     37          */
-     38          struct LLCTask
-     39          {
-     40            LLCTask *next; //!< Указатель на следующую задачу. NULL - конец очереди
-     41            uint8_t TS; //!< Номер временого канала для передачи сообщения
-     42            uint8_t CH; //!< Номера радиоканала для передачи сообщения
-     43            frame_s *fr; //!< Указатель на данные для передачи
-     44          };
-     45          
-     46          /**
-     47          @brief Список функций вызываемых по завешению временного слота
-     48          */
-     49          struct TimeAllocFunc
-     50          {
-     51            TimeAllocFunc *next; //!< Указатель на следующую функцию. NULL - конец списка
-     52            void (*fn)(void); //!< Указатель на функцию. NULL - нет обработчика
-     53          };
-     54          
-     55          static LLCTask *FirstTask; //!< Указатель на первый элемент очереди задач
-     56          static uint8_t nbrTasks; // Количество задач в очереди
-     57          
-     58          /**
-     59          @brief Обратный вызов при приеме пакета данных
-     60          */
-     61          static void (*RXCallback)(frame_s *fr);
-     62          
-     63          /**
-     64          @brief Первый элемент обработчика конца временного слота
-     65          @details Элемент создается статически, все остальные задачи создаются malloc
-     66          и добавляются к HeadAllocFunc.
-     67          */
-     68          static TimeAllocFunc HeadAllocFunc;
-     69          
-     70          /**
-     71          @brief Инициализация модуля
-     72          @detail Иницилизирует MAC
-     73          */
-     74          void LLC_Init(void)
-     75          {  
-     76            MAC_Init();
-     77            nbrTasks = 0; 
-     78            tasksBLOCK = false;
-     79            FirstTask = NULL;
-     80            // TODO Очистить очередь HeadTask
-     81            // Регистрируем обработчики
-     82            TIC_SetSECallback(LLC_SE_HNDL); // Завершение временного слота
-     83            MAC_SetRXCallback(LLC_RX_HNDL); // Принято сообщение
-     84          }
-     85          
-     86          /**
-     87          @brief Количество задач в очереди
-     88          @return количество задач в очереди
-     89          */
-     90          uint8_t LLC_GetTaskLen(void)
-     91          {
-     92            return nbrTasks;
-     93          }
-     94          
-     95          void LLC_SetRXCallback(void (*fn)(frame_s *fr))
-     96          {
-     97            ASSERT_HALT(fn != NULL, "NULL pointer not allow");
-     98            RXCallback = fn;
-     99          }
-    100          
-    101          /**
-    102          @brief Добавляет обработчик заверешения временого слота в список
-    103          */
-    104          void LLC_TimeAlloc(void (*fn)(void))
-    105          {
-    106            TimeAllocFunc *ta = malloc(sizeof(TimeAllocFunc));
-    107            ASSERT_HALT(ta != NULL, "Memory allocation fails");
-    108            ta->next = NULL;
-    109            ta->fn = fn;
-    110          
-    111            // Перебираемся в конец списка
-    112            TimeAllocFunc *next = &HeadAllocFunc;
-    113            while (next->next != NULL)
-    114              next = next->next;
-    115            
-    116            // Добавляем новый элемент
-    117            next->next = ta;
-    118          };
-    119          
-    120          /**
-    121          @brief Добавляем задачу в очередь
-    122          @brief Взовращает true если задача добавлена в очередь. false, если размер 
-    123           очереди достиг максимального размера.
-    124          */
-    125          bool LLC_AddTask(frame_s* fr)
-    126          {
-    127             ASSERT_HALT(fr != NULL, "fr NULL");
-    128           
-    129              if (nbrTasks == MAX_nbrTASKS)
-    130                return false;
-    131             
-    132             // Ждем пока разбокируется доступ.
-    133             while (tasksBLOCK);
-    134             
-    135             // Создаем новую задачу
-    136             LLCTask *new_task = (LLCTask*)malloc(sizeof(LLCTask));
-    137             ASSERT_HALT(new_task !=NULL, "LLC malloc for new_task"); 
-    138             
-    139             new_task->TS = fr->meta.TS;
-    140             new_task->CH = fr->meta.CH;
-    141             new_task->fr = fr;
-    142             
-    143            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Add task = %u, CH = %d, TS = %d\r\n",
-    144                (uint16_t)new_task,new_task->CH, new_task->TS);
-    145             
-    146             // Если в очереди нет задач, добавим первую
-    147             if (FirstTask == NULL) 
-    148             {
-    149               new_task->next = NULL;
-    150               FirstTask = new_task;
-    151             }
-    152             // Если в очереди были задачи то вставим новую в голову списка
-    153             else 
-    154             {
-    155               new_task->next = FirstTask;
-    156               FirstTask = new_task;  
-    157             }
-    158             
-    159             nbrTasks ++;
-    160             return true;
-    161          }
-    162          
-    163          /**
-    164          @brief Планировщик задач
-    165          @details Соотносит задачи в очереди и свободные временные слоты MAC уровня.
-    166          При освобождении временных слотов, планировщик устанавливает данные для 
-    167          передачи в MAC.
-    168          @param[in] TS номер текущего временого слота
-    169          */
-    170          static void LLC_Shelduler(uint8_t TS)
-    171          {
-    172            tasksBLOCK = true;
-    173            // Перебираем попорядку весь список на отправку
-    174            // HeadTask только указатель на первый элемент, сам он не подлежит отправке
-    175            LLCTask *task = FirstTask;
-    176            LLCTask *last = FirstTask;
-    177            LLCTask *next = FirstTask;
-    178            
-    179            while (task != NULL)
-    180            {
-    181              if (MAC_GetTXState(task->TS)) // Занят ли временой слот
-    182              {
-    183                // Если слот занят переходим к следующей задаче
-    184                last = task;
-    185                task = task->next;
-    186                continue; 
-    187              }
-    188              
-    189              MAC_Send(task->fr, UNICAST_SEND_ATEMPTS);
-    190              
-    191              next = task->next; // Запомним следующую задачу
-    192              
-    193              // Удаляем текущую задачу из списка
-    194              if (task == FirstTask)
-    195              {
-    196              // Удаляемым элементом является указателем на голову
-    197                 FirstTask = next;
-    198                 last = FirstTask;
-    199              }
-    200              else
-    201              {
-    202                // Удаляемым элементом является промежуточный элемент
-    203                last->next = next;
-    204              }
-    205              
-    206              nbrTasks--;
-    207              LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Free task = %u, nbrTasks = %d\r\n",
-    208                  (uint16_t)task, nbrTasks); 
-    209              free(task);
-    210              task = next;
-    211            }
-    212            
-    213            tasksBLOCK = false;
-    214          }
-    215          
-    216          /**
-    217          @brief Обработчик заверешния временого слота
-    218          @details Обратный вызов из TIC. Обработчик вызывает планировщик задач очереди
-    219          и передает управление зарегистрированым функциям с помощью LLC_TimeAlloc.
-    220          @param[in] TS номер завершенного временого слота
-    221          */
-    222          static void LLC_SE_HNDL(uint8_t TS)
-    223          {
-    224            LLC_Shelduler(TS);
-    225            LLC_RunTimeAlloc();
-    226          }
-    227          
-    228          static void LLC_RX_HNDL(frame_s *fr)
-    229          {
-    230            ASSERT_HALT(RXCallback !=NULL, "RXCallback func NULL");
-    231            RXCallback(fr);
-    232          }
-    233          
-    234          /**
-    235          @brief Передаем управление зарегистрированным функциям
-    236          */
-    237          static void LLC_RunTimeAlloc(void)
-    238          {
-    239              TimeAllocFunc *next = &HeadAllocFunc;
-    240            // HeadAllocFunc служит только для указания на первый элемент в очереди
-    241            // так что его нужно пропустить и переходить сразу к next
-    242            while (next->next != NULL)
-    243            {
-    244              next->next->fn();
-    245              next = next->next;
-    246            }
-    247          }
+     11          #include "ioCC2530.h"
+     12          
+     13          // Публичные методы
+     14          void LLC_Init(void);
+     15          
+     16          // Методы модуля
+     17          void LLC_SetRXCallback(void (*fn)(frame_s *fr));
+     18          void LLC_TimeAlloc(void (*fn)(void)); 
+     19          bool LLC_AddTask(frame_s* fr);
+     20          uint8_t LLC_GetTaskLen(void);
+     21          
+     22          // Закрытые методы
+     23          static void LLC_SE_HNDL(uint8_t TS); //!< Обработчик завешения слота TIC
+     24          static void LLC_Shelduler(uint8_t TS);
+     25          static void LLC_RX_HNDL(frame_s *fr); //!< Обработчик примема пакета
+     26          static void LLC_RunTimeAlloc(void);
+     27          
+     28          // Переменные модуля
+     29          #define UNICAST_SEND_ATEMPTS 5 //!< Количество попыток передачи пакета 
+     30          #define MAX_nbrTASKS 20 //!< Максимальное количество задач в очередях
+     31          
+     32          typedef struct LLCTask LLCTask;
+     33          typedef struct TimeAllocFunc TimeAllocFunc;
+     34          static bool tasksBLOCK; //!< блокировка доступа к LLCTask
+     35          
+     36          /**
+     37          @brief Описание задачи модуля LLC
+     38          */
+     39          struct LLCTask
+     40          {
+     41            LLCTask *next; //!< Указатель на следующую задачу. NULL - конец очереди
+     42            uint8_t TS; //!< Номер временого канала для передачи сообщения
+     43            uint8_t CH; //!< Номера радиоканала для передачи сообщения
+     44            frame_s *fr; //!< Указатель на данные для передачи
+     45          };
+     46          
+     47          /**
+     48          @brief Список функций вызываемых по завешению временного слота
+     49          */
+     50          struct TimeAllocFunc
+     51          {
+     52            TimeAllocFunc *next; //!< Указатель на следующую функцию. NULL - конец списка
+     53            void (*fn)(void); //!< Указатель на функцию. NULL - нет обработчика
+     54          };
+     55          
+     56          static LLCTask *FirstTask; //!< Указатель на первый элемент очереди задач
+     57          static uint8_t nbrTasks; // Количество задач в очереди
+     58          
+     59          /**
+     60          @brief Обратный вызов при приеме пакета данных
+     61          */
+     62          static void (*RXCallback)(frame_s *fr);
+     63          
+     64          /**
+     65          @brief Первый элемент обработчика конца временного слота
+     66          @details Элемент создается статически, все остальные задачи создаются malloc
+     67          и добавляются к HeadAllocFunc.
+     68          */
+     69          static TimeAllocFunc HeadAllocFunc;
+     70          
+     71          /**
+     72          @brief Инициализация модуля
+     73          @detail Иницилизирует MAC
+     74          */
+     75          void LLC_Init(void)
+     76          {  
+     77            MAC_Init();
+     78            nbrTasks = 0; 
+     79            tasksBLOCK = false;
+     80            FirstTask = NULL;
+     81            // TODO Очистить очередь HeadTask
+     82            // Регистрируем обработчики
+     83            TIC_SetSECallback(LLC_SE_HNDL); // Завершение временного слота
+     84            MAC_SetRXCallback(LLC_RX_HNDL); // Принято сообщение
+     85          }
+     86          
+     87          /**
+     88          @brief Количество задач в очереди
+     89          @return количество задач в очереди
+     90          */
+     91          uint8_t LLC_GetTaskLen(void)
+     92          {
+     93            return nbrTasks;
+     94          }
+     95          
+     96          void LLC_SetRXCallback(void (*fn)(frame_s *fr))
+     97          {
+     98            ASSERT_HALT(fn != NULL, "NULL pointer not allow");
+     99            RXCallback = fn;
+    100          }
+    101          
+    102          /**
+    103          @brief Добавляет обработчик заверешения временого слота в список
+    104          */
+    105          void LLC_TimeAlloc(void (*fn)(void))
+    106          {
+    107            TimeAllocFunc *ta = malloc(sizeof(TimeAllocFunc));
+    108            ASSERT_HALT(ta != NULL, "Memory allocation fails");
+    109            ta->next = NULL;
+    110            ta->fn = fn;
+    111          
+    112            // Перебираемся в конец списка
+    113            TimeAllocFunc *next = &HeadAllocFunc;
+    114            while (next->next != NULL)
+    115              next = next->next;
+    116            
+    117            // Добавляем новый элемент
+    118            next->next = ta;
+    119          };
+    120          
+    121          /**
+    122          @brief Добавляем задачу в очередь
+    123          @brief Взовращает true если задача добавлена в очередь. false, если размер 
+    124           очереди достиг максимального размера.
+    125          */
+    126          bool LLC_AddTask(frame_s* fr)
+    127          {
+    128             ASSERT_HALT(fr != NULL, "fr NULL");
+    129           
+    130              if (nbrTasks == MAX_nbrTASKS)
+    131                return false;
+    132              
+    133             // Ждем пока разбокируется доступ.
+    134             while (tasksBLOCK);
+    135             tasksBLOCK = true;
+    136             
+    137             // Создаем новую задачу
+    138             EA=0;
+    139             LLCTask *new_task = (LLCTask*)malloc(sizeof(LLCTask));
+    140             EA=1;
+    141             ASSERT_HALT(new_task !=NULL, "LLC malloc for new_task"); 
+    142                
+    143             new_task->TS = fr->meta.TS;
+    144             new_task->CH = fr->meta.CH;
+    145             new_task->fr = fr;
+    146             
+    147            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Add task = %u, CH = %d, TS = %d, OTS = %d. fr = %d\r\n",
+    148                (uint16_t)new_task,new_task->CH, new_task->TS, fr->meta.TS, (uint16_t)fr);
+    149            
+    150             // Если в очереди нет задач, добавим первую
+    151             if (FirstTask == NULL) 
+    152             {
+    153               new_task->next = NULL;
+    154               FirstTask = new_task;
+    155             }
+    156             // Если в очереди были задачи то вставим новую в голову списка
+    157             else 
+    158             {
+    159               new_task->next = FirstTask;
+    160               FirstTask = new_task;  
+    161             }
+    162             
+    163             nbrTasks ++;
+    164             tasksBLOCK = false;
+    165             return true;
+    166          }
+    167          
+    168          /**
+    169          @brief Планировщик задач
+    170          @details Соотносит задачи в очереди и свободные временные слоты MAC уровня.
+    171          При освобождении временных слотов, планировщик устанавливает данные для 
+    172          передачи в MAC.
+    173          @param[in] TS номер текущего временого слота
+    174          */
+    175          static void LLC_Shelduler(uint8_t TS)
+    176          {
+    177            // Если работает функция добавления задачи, то обслуживание очереди не
+    178            // производится. Это может привести к необычным последствиям
+    179            if (tasksBLOCK)
+    180              return;
+    181            
+    182            tasksBLOCK = true;
+    183            // Перебираем попорядку весь список на отправку
+    184            // HeadTask только указатель на первый элемент, сам он не подлежит отправке
+    185            LLCTask *task = FirstTask;
+    186            LLCTask *last = FirstTask;
+    187            LLCTask *next = FirstTask;
+    188            
+    189            while (task != NULL)
+    190            {    
+    191              
+    192              if (MAC_GetTXState(task->TS)) // Занят ли временой слот
+    193              {
+    194                // Если слот занят переходим к следующей задаче
+    195                last = task;
+    196                task = task->next;
+    197                continue; 
+    198              }
+    199              
+    200              MAC_Send(task->fr, UNICAST_SEND_ATEMPTS);
+    201              
+    202              next = task->next; // Запомним следующую задачу
+    203              
+    204              // Удаляем текущую задачу из списка
+    205              if (task == FirstTask)
+    206              {
+    207              // Удаляемым элементом является указателем на голову
+    208                 FirstTask = next;
+    209                 last = FirstTask;
+    210              }
+    211              else
+    212              {
+    213                // Удаляемым элементом является промежуточный элемент
+    214                last->next = next;
+    215              }
+    216              
+    217              nbrTasks--;
+    218              LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Free task = %u, nbrTasks = %d\r\n",
+    219                  (uint16_t)task, nbrTasks); 
+    220              free(task);
+    221              task = next;
+    222            }
+    223            
+    224            tasksBLOCK = false;
+    225          }
+    226          
+    227          /**
+    228          @brief Обработчик заверешния временого слота
+    229          @details Обратный вызов из TIC. Обработчик вызывает планировщик задач очереди
+    230          и передает управление зарегистрированым функциям с помощью LLC_TimeAlloc.
+    231          @param[in] TS номер завершенного временого слота
+    232          */
+    233          static void LLC_SE_HNDL(uint8_t TS)
+    234          {
+    235            LLC_Shelduler(TS);
+    236            LLC_RunTimeAlloc();
+    237          }
+    238          
+    239          static void LLC_RX_HNDL(frame_s *fr)
+    240          {
+    241            ASSERT_HALT(RXCallback !=NULL, "RXCallback func NULL");
+    242            RXCallback(fr);
+    243          }
+    244          
+    245          /**
+    246          @brief Передаем управление зарегистрированным функциям
+    247          */
+    248          static void LLC_RunTimeAlloc(void)
+    249          {
+    250              TimeAllocFunc *next = &HeadAllocFunc;
+    251            // HeadAllocFunc служит только для указания на первый элемент в очереди
+    252            // так что его нужно пропустить и переходить сразу к next
+    253            while (next->next != NULL)
+    254            {
+    255              next->next->fn();
+    256              next = next->next;
+    257            }
+    258          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\MAC.c
       1          #include "MAC.h"
       2          #include "frame.h"
@@ -1377,7 +1419,7 @@
      33          // Задержка перед приемом ACK в мкс если данные не шифруются
      34          #define DELAY_BEFORE_ACK_RECV_NOCRYPT 1000UL
      35          
-     36          #define RARIO_STREAM_ENCRYPT true // Шифрование данных включенно 
+     36          #define RARIO_STREAM_ENCRYPT false // Шифрование данных включенно 
      37          
      38          typedef struct
      39          {
@@ -1559,9 +1601,9 @@
     215            // По ошибки вызвали. Такого быть не должно, но подстрахуемся.
     216            if ((!MACSlotTable[TS].TX.enable) || (MACSlotTable[TS].TX.attempts == 0)) 
     217              TIC_SetTXState(TS, false);
-    218            
+    218             
     219            RI_SetChannel(MACSlotTable[TS].TX.CH); // Устанавливаем канал передачи
-    220              
+    220          
     221            // Пробуем передать данные
     222            bool tx_success = RI_Send(MACSlotTable[TS].TX.fr); 
     223            bool send_success = false;  
@@ -1752,212 +1794,192 @@
     116          @params[in] ticks время сети в тикак
     117          */
     118          static inline uint32_t calcCompareTime(uint16_t ticks)
-    119          {
-    120              uint32_t cmp_time;
-    121              uint16_t ticks_offset;
-    122              
-    123              uint32_t timer = ReadTimer(); // Текущее значение счетчика
-    124              uint32_t real_timer = timer;
-    125              uint16_t network_time = (timer + TOFFSET) & 0x7FFF; // Текущее время сети
-    126              //NETWORK TIME = TIMER + TOFFSET
-    127              
-    128              // Приводим такты к тактам таймера
-    129              ticks_offset = (ticks - TOFFSET) & 0x7FFF;
-    130              
-    131              timer &=~0x7FFF; // Убираем младшие 15 бит
-    132              if (ticks > network_time)
-    133              {
-    134                cmp_time = timer + ticks_offset;
-    135              }
-    136              else
-    137              {
-    138                cmp_time = timer + ticks_offset + 0x8000;
-    139                cmp_time &=0xFFFFFF;
-    140              }
-    141              
-    142              if (cmp_time <= real_timer)
-    143                  LOG(MSG_ON | MSG_INFO | MSG_TRACE,"Fault. Timer = %lu, CMP = %lu\r\n",
-    144                      real_timer, cmp_time);
-    145                
-    146               LOG(MSG_OFF | MSG_INFO | MSG_TRACE, 
-    147                   "Timer = %lu,Ticks = %d, NT = %d, CMP = %lu \r\n",real_timer,ticks, network_time, cmp_time );
-    148              return cmp_time;
-    149          }
-    150          
-    151          /**
-    152          @brief Устанавливает время прерывания
-    153          @details Время прерывания устанавливается относительно времени сети
-    154          ,к примеру, что бы проснуться в таймслот номер 0, нужно установить ticks = 0.
-    155          Процедура учитывает текущее значение таймера и перерасчитывает значение ticks. 
-    156          @params[in] ticks время сети в тиках когда нужно проснуться
-    157          */
-    158          void NT_SetCompare(uint16_t ticks)
-    159          {
-    160            ASSERT_HALT(ticks < 32768, "Incorrect ticks");
-    161            
-    162            COMPARE_TIME = ticks; // Сохраняем установленное значение
-    163           
-    164            uint32_t compare_time = calcCompareTime(ticks);
-    165           
-    166            LOG(MSG_OFF | MSG_INFO | MSG_TRACE, 
-    167                "Ticks = %d, Compare time = %04x \r\n",
-    168                ticks, compare_time);
-                              ^
-Warning[Pe181]: argument is incompatible with corresponding format string
-          conversion
-          detected during compilation of secondary translation unit
-                    "\\vmware-host\Shared
-                    Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\NTMR.c"
-    169            
-    170            loadTimerCompare(compare_time);
-    171            NT_IRQEnable(true);
-    172          }
-    173          
-    174          /**
-    175          @brief Разрешение прерываний таймера сна
-    176          @params[in] state = true - разрешить обработку прерываний
-    177          */
-    178          static inline void NT_IRQEnable(bool state)
-    179          {
-    180            STIF = 0;
-    181            if (state)
-    182            {
-    183              STIE = 1;
-    184            }
-    185            else
-    186            {
-    187              STIE = 0;
-    188            }
-    189          }
-    190          
-    191          /**
-    192          @brief Проверка активности прерывания таймера
-    193          @return true если прерывание установленно
-    194          */
-    195          static inline bool isIRQEnable(void)
-    196          {
-    197            if (STIE)
-    198              return true;
-    199            else 
-    200              return false;
-    201          }
-    202          
-    203          /**
-    204          @brief Устанавливает обработчик прерывания таймера
-    205          @param[in] fn(uint16_t ticks) указатель на функцию-обработчик
-    206          */
-    207          void NT_SetEventCallback(void (*fn)(uint16_t ticks))
-    208          {
-    209            EventCallback = fn;
+    119          {   
+    120              uint32_t timer = ReadTimer(); // Текущее значение счетчика
+    121              
+    122              //NETWORK TIME = TIMER + TOFFSET  
+    123              // Приводим такты к тактам таймера
+    124              uint16_t ticks_offset = (ticks - TOFFSET) & 0x7FFF;
+    125              
+    126              uint32_t cmp_time = timer & ~0x7FFF; // Убираем младшие 15 бит
+    127              cmp_time |= ticks_offset; // Вычисляем новое время
+    128              
+    129              if (cmp_time <= timer)
+    130              {
+    131                cmp_time += 0x8000;
+    132                cmp_time &=0xFFFFFF;
+    133              }
+    134                
+    135               LOG(MSG_OFF | MSG_INFO | MSG_TRACE, 
+    136                   "Timer = %lu, Ticks = %d,CMP = %lu \r\n",
+    137                    timer, ticks, cmp_time );
+    138              return cmp_time;
+    139          }
+    140          
+    141          /**
+    142          @brief Устанавливает время прерывания
+    143          @details Время прерывания устанавливается относительно времени сети
+    144          ,к примеру, что бы проснуться в таймслот номер 0, нужно установить ticks = 0.
+    145          Процедура учитывает текущее значение таймера и перерасчитывает значение ticks. 
+    146          @params[in] ticks время сети в тиках когда нужно проснуться
+    147          */
+    148          void NT_SetCompare(uint16_t ticks)
+    149          {
+    150            ASSERT_HALT(ticks < 32768, "Incorrect ticks");
+    151            
+    152            COMPARE_TIME = ticks; // Сохраняем установленное значение
+    153           
+    154            uint32_t compare_time = calcCompareTime(ticks);
+    155           
+    156            loadTimerCompare(compare_time);
+    157            NT_IRQEnable(true);
+    158          }
+    159          
+    160          /**
+    161          @brief Разрешение прерываний таймера сна
+    162          @params[in] state = true - разрешить обработку прерываний
+    163          */
+    164          static inline void NT_IRQEnable(bool state)
+    165          {
+    166            STIF = 0;
+    167            if (state)
+    168            {
+    169              STIE = 1;
+    170            }
+    171            else
+    172            {
+    173              STIE = 0;
+    174            }
+    175          }
+    176          
+    177          /**
+    178          @brief Проверка активности прерывания таймера
+    179          @return true если прерывание установленно
+    180          */
+    181          static inline bool isIRQEnable(void)
+    182          {
+    183            if (STIE)
+    184              return true;
+    185            else 
+    186              return false;
+    187          }
+    188          
+    189          /**
+    190          @brief Устанавливает обработчик прерывания таймера
+    191          @param[in] fn(uint16_t ticks) указатель на функцию-обработчик
+    192          */
+    193          void NT_SetEventCallback(void (*fn)(uint16_t ticks))
+    194          {
+    195            EventCallback = fn;
+    196          }
+    197          
+    198          /**
+    199          @brief Возвращает время сети 
+    200          @return Время сети в тиках
+    201          */
+    202          uint16_t NT_GetTime(void)
+    203          {
+    204            uint32_t val = ReadTimer();
+    205            // TOFFSET = NETWORK TIME - TIMER
+    206            // NETWORK TIME = TIMER + TOFFSET
+    207            val +=TOFFSET;
+    208            val &= 0x7FFF; // Приводим значения таймера к 0-32767
+    209            return val;
     210          }
     211          
     212          /**
-    213          @brief Возвращает время сети 
-    214          @return Время сети в тиках
-    215          */
-    216          uint16_t NT_GetTime(void)
-    217          {
-    218            uint32_t val = ReadTimer();
-    219            // TOFFSET = NETWORK TIME - TIMER
-    220            // NETWORK TIME = TIMER + TOFFSET
-    221            val +=TOFFSET;
-    222            val &= 0x7FFF; // Приводим значения таймера к 0-32767
-    223            return val;
-    224          }
-    225          
-    226          /**
-    227          @brief Обработчик прерывания таймера сна
-    228          */
-    229          #pragma vector=ST_VECTOR
-    230          __interrupt void TimerCompareInterrupt(void)
-    231          {  
-    232            uint16_t ticks = NT_GetTime();
-    233            if (EventCallback == NULL)
-    234              return;
-    235            // Отключаем прерывание таймера. Забота пользователя его включить
-    236            NT_IRQEnable(false); 
-    237            EventCallback(ticks); // Вызываем пользовательский обработчик
-    238            STIF = 0; // Очищаем флаг прерывания
-    239          }
-    240          
-    241          /**
-    242          @breif Ожидание наступления времени сети
-    243          @param[in] ticks время в тактах
-    244          @return фактическое время сети
-    245          */
-    246          uint16_t NT_WaitTime(uint16_t ticks)
-    247          {
-    248            static union 
-    249            {
-    250              uint32_t val;
-    251              uint8_t fild[4];
-    252            } val;
-    253            
-    254            val.val = 0;
-    255            // TOFFSET = NETWORK TIME - TIMER
-    256            // NETWORK TIME = TIMER + TOFFSET
-    257            
-    258            // Ждем синхронизацию таймера после пробуждения
-    259            while (!(SLEEPSTA & 0x01));
-    260            
-    261            do
-    262            {
-    263              // Соблюдаем порядок чтения регисторов ST  
-    264              val.fild[0] = ST0;
-    265              val.fild[1] = ST1;
-    266              val.fild[2] = ST2;
-    267              val.val +=TOFFSET;
-    268              val.val &= 0x7FFF; // Приводим значения таймера к 0-32767    
-    269            } while (val.val < ticks);
-    270            return val.val;
-    271          }
-    272          
-    273          /**
-    274          @brief Возвращает текущее значение таймера
-    275          @return Текущие ticks
-    276          */
-    277          static uint32_t ReadTimer(void)
-    278          {
-    279            static union 
-    280            {
-    281              uint32_t val;
-    282              uint8_t fild[4];
-    283            } ret_val;
-    284            
-    285            ret_val.val = 0;
-    286            
-    287            // Ждем синхронизацию таймера после пробуждения
-    288            while (!(SLEEPSTA & 0x01));
-    289            
-    290            // Соблюдаем порядок чтения регисторов ST  
-    291            ret_val.fild[0] = ST0;
-    292            ret_val.fild[1] = ST1;
-    293            ret_val.fild[2] = ST2;
-    294            return ret_val.val;
-    295          }
-    296          
-    297          /**
-    298          @brief Устанавливает время пробуждения микроконтролера
-    299          @params[in] ticks 24 битное значение времени пробуждения в ticks
-    300          */
-    301          static void loadTimerCompare(uint32_t ticks)
-    302          {
-    303            union 
-    304            {
-    305              uint32_t val;
-    306              uint8_t fild[4];
-    307            } value;
-    308            
-    309            value.val = ticks;
-    310            
-    311            // Ждем разрешения на запись нового значения
-    312            while (!(STLOAD & 0x01));
-    313            
-    314            // Регистр ST0 должен быть записан в последнию очередь
-    315            ST2 = value.fild[2];
-    316            ST1 = value.fild[1];
-    317            ST0 = value.fild[0];
-    318          }
+    213          @brief Обработчик прерывания таймера сна
+    214          */
+    215          #pragma vector=ST_VECTOR
+    216          __interrupt void TimerCompareInterrupt(void)
+    217          {  
+    218            uint16_t ticks = NT_GetTime();
+    219            if (EventCallback == NULL)
+    220              return;
+    221            // Отключаем прерывание таймера. Забота пользователя его включить
+    222            NT_IRQEnable(false); 
+    223            EventCallback(ticks); // Вызываем пользовательский обработчик
+    224            STIF = 0; // Очищаем флаг прерывания
+    225          }
+    226          
+    227          /**
+    228          @breif Ожидание наступления времени сети
+    229          @param[in] ticks время в тактах
+    230          @return фактическое время сети
+    231          */
+    232          uint16_t NT_WaitTime(uint16_t ticks)
+    233          {
+    234            static union 
+    235            {
+    236              uint32_t val;
+    237              uint8_t fild[4];
+    238            } val;
+    239            
+    240            val.val = 0;
+    241            // TOFFSET = NETWORK TIME - TIMER
+    242            // NETWORK TIME = TIMER + TOFFSET
+    243            
+    244            // Ждем синхронизацию таймера после пробуждения
+    245            while (!(SLEEPSTA & 0x01));
+    246            
+    247            do
+    248            {
+    249              // Соблюдаем порядок чтения регисторов ST  
+    250              val.fild[0] = ST0;
+    251              val.fild[1] = ST1;
+    252              val.fild[2] = ST2;
+    253              val.val +=TOFFSET;
+    254              val.val &= 0x7FFF; // Приводим значения таймера к 0-32767    
+    255            } while (val.val < ticks);
+    256            return val.val;
+    257          }
+    258          
+    259          /**
+    260          @brief Возвращает текущее значение таймера
+    261          @return Текущие ticks
+    262          */
+    263          static uint32_t ReadTimer(void)
+    264          {
+    265            static union 
+    266            {
+    267              uint32_t val;
+    268              uint8_t fild[4];
+    269            } ret_val;
+    270            
+    271            ret_val.val = 0;
+    272            
+    273            // Ждем синхронизацию таймера после пробуждения
+    274            while (!(SLEEPSTA & 0x01));
+    275            
+    276            // Соблюдаем порядок чтения регисторов ST  
+    277            ret_val.fild[0] = ST0;
+    278            ret_val.fild[1] = ST1;
+    279            ret_val.fild[2] = ST2;
+    280            return ret_val.val;
+    281          }
+    282          
+    283          /**
+    284          @brief Устанавливает время пробуждения микроконтролера
+    285          @params[in] ticks 24 битное значение времени пробуждения в ticks
+    286          */
+    287          static void loadTimerCompare(uint32_t ticks)
+    288          {
+    289            union 
+    290            {
+    291              uint32_t val;
+    292              uint8_t fild[4];
+    293            } value;
+    294            
+    295            value.val = ticks;
+    296            
+    297            // Ждем разрешения на запись нового значения
+    298            while (!(STLOAD & 0x01));
+    299            
+    300            // Регистр ST0 должен быть записан в последнию очередь
+    301            ST2 = value.fild[2];
+    302            ST1 = value.fild[1];
+    303            ST0 = value.fild[0];
+    304          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\nwdebuger.c
       1          #include "nwdebuger.h"
       2          #include "ioCC2530.h"
@@ -3004,41 +3026,43 @@ Warning[Pe550]: variable "timer" was set but never used
      17          extern void suite_frame(void);
      18          extern void suite_LLC_HW(void);
      19          extern void suite_printf_uart(void);
-     20          
-     21          int main()
-     22          {
-     23            nwDebugerInit();
-     24            utestSigTraceInit();
-     25            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Test log output\r\n");
-     26            ASSERT(false, "Test assert output\r\n");
-     27            
-     28            // Вызов функций тестирования
-     29            // Аппаратное тестирование
-     30            {
-     31              //suite_RADIO_HW();
-     32              //suite_delays_HW();    //12.11 Работает
-     33              //suite_TIC_HW();       //12.11 Работает
-     34              //suite_NT_HW();        // 12.11 Работает
-     35              suite_LLC_HW();
-     36            };
-     37            // Юнит тестирование
-     38            {
-     39              //suite_delays();
-     40              //suite_coder();
-     41              //suite_fbuf();
-     42             // suite_frame();
-     43              //suite_RADIO();
-     44             // suite_MAC();
-     45            // suite_printf_uart();
-     46            }
-     47          
-     48          	//run_utest_framepart();
+     20          extern void suite_malloc(void);
+     21          
+     22          int main()
+     23          {
+     24            nwDebugerInit();
+     25            utestSigTraceInit();
+     26            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Test log output\r\n");
+     27            ASSERT(false, "Test assert output\r\n");
+     28            
+     29            // Вызов функций тестирования
+     30            // Аппаратное тестирование
+     31            {
+     32              //suite_RADIO_HW();
+     33              //suite_delays_HW();    //12.11 Работает
+     34              //suite_TIC_HW();       //12.11 Работает
+     35              //suite_NT_HW();        // 12.11 Работает
+     36              suite_LLC_HW();
+     37            };
+     38            // Юнит тестирование
+     39            {
+     40              //suite_delays();
+     41              //suite_coder();
+     42              //suite_fbuf();
+     43             // suite_frame();
+     44              //suite_RADIO();
+     45             // suite_MAC();
+     46            // suite_printf_uart();
+     47              //suite_malloc();
+     48            }
      49          
-     50          // Добавляем результаты тестов
-     51          	umsg_summary();
-     52           //     while(1);
-     53          	return 0;
-     54          }
+     50          	//run_utest_framepart();
+     51          
+     52          // Добавляем результаты тестов
+     53          	umsg_summary();
+     54           //     while(1);
+     55          	return 0;
+     56          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_coder.c
       1          #include "utest_suite.h"
       2          #include "coder.h"
@@ -3647,68 +3671,179 @@ Warning[Pe550]: variable "timer" was set but never used
       6          #include "frame.h"
       7          #include "RADIO.h"
       8          #include "TIC.h"
-      9          
-     10          static void timealloc(void)
-     11          {
-     12            static bool led_stat = false;
-     13              LED(D1, led_stat);
-     14              led_stat = !led_stat;
-     15          }
-     16          
-     17          static frame_s* getFrame(uint8_t *src, uint8_t len, uint8_t CH, uint8_t TS)
-     18          {
-     19            frame_s *fr;
-     20            fr = frame_create();
-     21            fbuf_s *fb = fbuf_create(FB_RAW_LAY, src, len);
-     22            fr->meta.SEND_TIME = 0;
-     23            fr->meta.TS = TS;
-     24            fr->meta.CH = CH;
-     25            frame_insert_head(fr, fb);
-     26            return fr;
-     27          }
-     28          
-     29          static void test_create()
-     30          {
-     31            LLC_Init();
-     32            LLC_TimeAlloc(timealloc);
-     33            EA = 1;
-     34            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
-     35            
-     36            frame_s *fr;
-     37            
-     38            uint16_t TS = 0;
-     39            
-     40            fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
-     41            uint16_t fr_size = sizeof(frame_s);
-     42            uint16_t bf_size = frame_len(fr);
-     43            
-     44            LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-     45                "Frame_s size = %d. Fbuf data = %d. Full =%d\r\n",
-     46                fr_size, bf_size, bf_size+fr_size );
-     47            frame_delete(fr);
-     48            
-     49            while(true)
-     50            {  
-     51              if (LLC_GetTaskLen() < 5)
-     52              {
-     53                    fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
-     54                    LLC_AddTask(fr);
-     55                    TS ++;
-     56                    if (TS == 49)
-     57                      TS = 0;
-     58              }              
-     59            }
-     60            
-     61          }
-     62          
-     63          void suite_LLC_HW(void)
-     64          {
-     65           // umsg_line("LLC module");
-     66            
-     67            // Устанавливает и поддерживает в очереде 10 пакетов.
-     68            // Мигает зеленым светодиодом. В TS0 включается, в TS5 выключаеться
-     69            test_create();  
-     70          }
+      9          #include "stdlib.h"
+     10          
+     11          static void timealloc(void)
+     12          {
+     13            static bool led_stat = false;
+     14              LED(D1, led_stat);
+     15              led_stat = !led_stat;
+     16          }
+     17          
+     18          static frame_s* getFrame(uint8_t *src, uint8_t len, uint8_t CH, uint8_t TS)
+     19          {
+     20            frame_s *fr;
+     21            EA=0;
+     22            fr = frame_create();
+     23            
+     24            fbuf_s *fb = fbuf_create(FB_RAW_LAY, src, len);
+     25            EA=1;
+     26            fr->meta.SEND_TIME = 0;
+     27            fr->meta.TS = TS;
+     28            fr->meta.CH = CH;
+     29            frame_insert_head(fr, fb);
+     30            return fr;
+     31          }
+     32          
+     33          static void show_heap_ptr(void)
+     34          { 
+     35            uint16_t *heap_ptr;
+     36            heap_ptr = (uint16_t*)malloc(1);
+     37            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "HEAP_PTR = %d\r\n", (uint16_t)heap_ptr ); 
+     38            free(heap_ptr);
+     39          }
+     40          
+     41          static void test_create()
+     42          {
+     43            LLC_Init();
+     44            LLC_TimeAlloc(timealloc);
+     45            EA = 1;
+     46            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
+     47            
+     48            frame_s *fr;
+     49            
+     50            uint16_t TS = 0;
+     51            uint8_t *ptr_stack = (uint8_t*)0x100;
+     52            
+     53            fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
+     54            uint16_t fr_size = sizeof(frame_s);
+     55            uint16_t bf_size = frame_len(fr);
+     56            uint16_t HEAP_PTR_MAX = 0;
+     57            uint16_t *heap_ptr;
+     58            uint8_t nbr_bufs, nbr_frames;
+                           ^
+Warning[Pe550]: variable "nbr_bufs" was set but never used
+          detected during compilation of secondary translation unit
+                    "\\vmware-host\Shared
+                    Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
+
+    uint8_t nbr_bufs, nbr_frames;
+                      ^
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",58  Warning[Pe550]: 
+          variable "nbr_frames" was set but never used
+          detected during compilation of secondary translation unit
+                    "\\vmware-host\Shared
+                    Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
+     59            
+     60            LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
+     61                "Frame_s size = %d. Fbuf data = %d. Full =%d\r\n",
+     62                fr_size, bf_size, bf_size+fr_size );
+     63            frame_delete(fr);
+     64            
+     65            while(true)
+     66            {  
+     67              nbr_bufs = fbuf_getCount();
+     68              nbr_frames = frame_getCount();
+     69              if (LLC_GetTaskLen() < 20)
+     70              {
+     71                    fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
+     72                  LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Create frame = %d.\r\n", (uint16_t)fr);    
+     73                    LLC_AddTask(fr);
+     74                    TS ++;
+     75                    if (TS == 49)
+     76                      TS = 0;
+     77              }   
+     78              if (*ptr_stack != 0xcd) // Контроль переполнения стека
+     79                while(1);
+     80              EA=0;
+     81              heap_ptr = (uint16_t*)malloc(1);
+     82              EA=1;
+     83              if ((uint16_t)heap_ptr > HEAP_PTR_MAX)
+     84              {
+     85                HEAP_PTR_MAX = (uint16_t)heap_ptr;
+     86                LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
+     87                "HEAP_PTR = %d\r\n", HEAP_PTR_MAX );
+     88              }
+     89              EA=0;
+     90              free(heap_ptr);
+     91              EA=1;
+     92            }
+     93            
+     94          }
+     95          
+     96          static void find_mem_problem(void)
+     97          {
+     98            LLC_Init();
+     99            LLC_TimeAlloc(timealloc);
+    100            EA = 1;
+    101            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
+    102            
+    103            frame_s *fr;
+    104            
+    105            uint16_t TS = 0;
+    106            uint8_t *ptr_stack = (uint8_t*)0x100;
+    107            
+    108            uint16_t HEAP_PTR_MAX = 0;
+                            ^
+Warning[Pe177]: variable "HEAP_PTR_MAX" was declared but never referenced
+          detected during compilation of secondary translation unit
+                    "\\vmware-host\Shared
+                    Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
+    109            uint16_t *heap_ptr;
+                             ^
+Warning[Pe177]: variable "heap_ptr" was declared but never referenced
+          detected during compilation of secondary translation unit
+                    "\\vmware-host\Shared
+                    Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
+    110            
+    111            while(true)
+    112            {  
+    113              if (fbuf_getCount() == 0)
+    114              {
+    115                show_heap_ptr();
+    116                for (uint8_t i = 0; i < 20 ; i++)
+    117                {
+    118                    fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
+    119                    TS++;
+    120                    if (TS == 49)
+    121                      TS = 0;
+    122                    LLC_AddTask(fr);
+    123                }
+    124              }   
+    125              
+    126              if (*ptr_stack != 0xcd) // Контроль переполнения стека
+    127                while(1);
+    128            }
+    129            
+    130            
+    131          }
+    132          
+    133          // Тест на максимальное количество фреймов 
+    134          static void test_mem(void)
+    135          {
+    136            frame_s *FR[150];
+                            ^
+Warning[Pe550]: variable "FR" was set but never used
+          detected during compilation of secondary translation unit
+                    "\\vmware-host\Shared
+                    Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
+    137            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9}; 
+    138            
+    139            for (uint8_t i = 0; i < 105; i++) 
+    140              FR[i] = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, 5);
+    141          }
+    142          
+    143          
+    144          void suite_LLC_HW(void)
+    145          {
+    146           // umsg_line("LLC module");
+    147            
+    148            // Устанавливает и поддерживает в очереде 10 пакетов.
+    149            // Мигает зеленым светодиодом. В TS0 включается, в TS5 выключаеться
+    150           // test_mem();
+    151           // find_mem_problem();
+    152            test_create();  
+    153          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_MAC.c
       1          #include "utest_suite.h"
       2          #include "MAC.h"
@@ -3781,6 +3916,35 @@ Warning[Pe550]: variable "timer" was set but never used
      69            test_TS_Send(); 
      70            test_ACK_SEND();
      71          }
+\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_malloc.c
+      1          #include "utest_suite.h"
+      2          #include "stdlib.h"
+      3          
+      4          static  uint16_t getMallocSize(void *ptr)
+      5          {
+      6            uint16_t *size = (uint16_t*)ptr - 1;
+      7            return *size-2;
+      8          }
+      9          
+     10          
+     11          static void test_1(void)
+     12          {
+     13            // Проверка как хранит размер памяти фун-я маллок
+     14            // Перед указатель выделяется 2 байта и длинна на 2 байта увеличиается
+     15            void *ptr_1 = malloc(0x32);
+     16            void *ptr_2 = malloc(0x78);
+     17            uint16_t size_1 = getMallocSize(ptr_1);
+     18            uint16_t size_2 = getMallocSize(ptr_2);
+     19          }
+     20          
+     21          void suite_malloc(void)
+     22          {
+     23           // umsg_line("LLC module");
+     24            
+     25            // Устанавливает и поддерживает в очереде 10 пакетов.
+     26            // Мигает зеленым светодиодом. В TS0 включается, в TS5 выключаеться
+     27            test_1();  
+     28          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_NTMR.c
       1          #include "utest_suite.h"
       2          #include "NTMR.h"
@@ -4039,6 +4203,22 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_coder.c"
+
+  static void find_mem_problem(void)
+              ^
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",96  Warning[Pe177]: 
+          function "find_mem_problem" was declared but never referenced
+          detected during compilation of secondary translation unit
+                    "\\vmware-host\Shared
+                    Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
+
+  static void test_mem(void)
+              ^
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",134  Warning[Pe177]: 
+          function "test_mem" was declared but never referenced
+          detected during compilation of secondary translation unit
+                    "\\vmware-host\Shared
+                    Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
 
   static void RadioSendTest1(void)
               ^
@@ -4367,14 +4547,14 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     40   -> TIM_passedTime
       0     54   Interval
       0     52   LED
-      1     44   LLC_AddTask
-        0     12   -> STACK_FAILURE
-        0     12   -> malloc
-        0     12   -> printf
-        0     16   -> printf
+      1     58   LLC_AddTask
+        0     14   -> STACK_FAILURE
+        0     14   -> malloc
+        0     14   -> printf
         0     18   -> printf
-      2     26   LLC_GetTaskLen
-      2     26   LLC_Init
+        0     24   -> printf
+      2     34   LLC_GetTaskLen
+      2     34   LLC_Init
         2      0   -> MAC_Init
         2      0   -> MAC_SetRXCallback
         2      0   -> TIC_SetSECallback
@@ -4394,7 +4574,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     13   -> MAC_GetTXState
         0     13   -> MAC_Send
         0     13   -> free
-      0     42   LLC_TimeAlloc
+      0     50   LLC_TimeAlloc
         0     12   -> STACK_FAILURE
         0     12   -> malloc
         0     12   -> printf
@@ -4532,7 +4712,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     52   -> TIM_init
         0     52   -> frame_delete
         0     54   -> memory_compare
-      2     28   ReadTimer
+      2     22   ReadTimer
       0     80   RecvData
         0     32   -> NT_GetTime
         0     32   -> TIM_TimeStamp
@@ -4636,20 +4816,18 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     84   -> TIM_passedTime
         0     86   -> memset
         0     88   -> printf
-      0      9   alg_test
-        0      9   -> NT_Init
-        0      9   -> NT_SetCompare
-        0      9   -> NT_SetEventCallback
       0     32   alg_test
         0     32   -> TIM_TimeStamp
         0     32   -> TIM_init
         0     32   -> TIM_passedTime
         0     32   -> umsg
+      0      9   alg_test
+        0      9   -> NT_Init
+        0      9   -> NT_SetCompare
+        0      9   -> NT_SetEventCallback
       0      9   bits_count
-      2     48   calcCompareTime
-        0     28   -> ReadTimer
-        0     32   -> printf
-        0     36   -> printf
+      2     34   calcCompareTime
+        0     22   -> ReadTimer
       0     24   clocks_update
       0     12   delete_test
         0     12   -> fbuf_create
@@ -4672,6 +4850,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     20   -> printf
       0    119   fbuf_delete
         0      9   -> free
+      2     34   fbuf_getCount
       2     20   fbuf_next
       0    164   frame_create
         0     10   -> STACK_FAILURE
@@ -4680,7 +4859,9 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     10   -> printf
         0     14   -> printf
       0    162   frame_delete
+        0     12   -> fbuf_delete
         0     12   -> free
+      2     34   frame_getCount
       2     20   frame_get_fbuf_head
       2     20   frame_get_fbuf_tail
       0    159   frame_insert_head
@@ -4688,7 +4869,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     12   -> STACK_FAILURE
         0     12   -> printf
         0     16   -> printf
-      2     28   frame_len
+      2     34   frame_len
       1     49   frame_merge
         0     20   -> STACK_FAILURE
         0     20   -> frame_len
@@ -4700,10 +4881,11 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0      9   -> __xdata_free
       0     86   generateAuthData
         0     18   -> memcpy
-      1     44   getFrame
+      1     52   getFrame
         0     18   -> fbuf_create
         0     18   -> frame_create
         0     18   -> frame_insert_head
+      2     14   getMallocSize
       2      9   getRNDByte
       0      0   heap_size
       2      1   incrementTS
@@ -4852,9 +5034,14 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         2      0   -> test_frame_merge
         2      0   -> tot_len_test
         2      0   -> umsg_line
+      2      0   suite_malloc
+        2      0   -> test_1
       2      0   suite_printf_uart
         2      0   -> test_1
         2      0   -> umsg_line
+      0     14   test_1
+        0     14   -> getMallocSize
+        0     14   -> malloc
       0     97   test_1
         0     91   -> TIM_TimeStamp
         0     91   -> TIM_init
@@ -4886,16 +5073,21 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     10   -> fbuf_create
         0     10   -> fbuf_delete
         0     10   -> umsg
-      0     32   test_create
-        0     26   -> LLC_AddTask
-        0     26   -> LLC_GetTaskLen
-        0     26   -> LLC_Init
-        0     26   -> LLC_TimeAlloc
-        0     26   -> frame_delete
-        0     26   -> frame_len
-        0     26   -> getFrame
-        0     30   -> printf
-        0     32   -> printf
+      1     40   test_create
+        0     34   -> LLC_AddTask
+        0     34   -> LLC_GetTaskLen
+        0     34   -> LLC_Init
+        0     34   -> LLC_TimeAlloc
+        0     34   -> fbuf_getCount
+        0     34   -> frame_delete
+        0     34   -> frame_getCount
+        0     34   -> frame_len
+        0     34   -> free
+        0     34   -> getFrame
+        0     34   -> malloc
+        0     36   -> printf
+        0     38   -> printf
+        0     40   -> printf
       0     27   test_frame_merge
         0     25   -> fbuf_create
         0     25   -> frame_create
@@ -4966,7 +5158,6 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       19  ?<Constant "*LOGGER* %s:%d -> ">_5
       19  ?<Constant "*LOGGER* %s:%d -> ">_6
       19  ?<Constant "*LOGGER* %s:%d -> ">_7
-      19  ?<Constant "*LOGGER* %s:%d -> ">_8
        9  ?<Constant "*fr null">
       27  ?<Constant ".Program execution ha...">
       27  ?<Constant ".Program execution ha...">_1
@@ -4976,7 +5167,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       27  ?<Constant ".Program execution ha...">_5
       27  ?<Constant ".Program execution ha...">_6
       10  ?<Constant "0123456789">
-      34  ?<Constant "Add task = %u, CH = %...">
+      53  ?<Constant "Add task = %u, CH = %...">
       13  ?<Constant "Assert fails">
       13  ?<Constant "Assert fails">_1
       13  ?<Constant "Assert fails">_2
@@ -5005,11 +5196,11 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       24  ?<Constant "FB_RAW_LAY len is equal">
       24  ?<Constant "FB_RAW_LAY mem is equal">
       27  ?<Constant "FB_RAW_LAY mem is not...">
-      32  ?<Constant "Fault. Timer = %lu, C...">
       11  ?<Constant "Fn is NULL">
       37  ?<Constant "Frame puted to MAC la...">
       46  ?<Constant "Frame_s size = %d. Fb...">
       14  ?<Constant "Frames module">
+      16  ?<Constant "HEAP_PTR = %d\r\n">
       46  ?<Constant "Hello worldHello worl...">
       13  ?<Constant "Hello world\n">
       13  ?<Constant "Incorrect TS">
@@ -5135,7 +5326,6 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_5
       19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_6
       19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_7
-      19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_8
        9  ?<Initializer for <Constant "*fr null">>
       27  ?<Initializer for <Constant ".Program executio
       27  ?<Initializer for <Constant ".Program executio_1
@@ -5145,7 +5335,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       27  ?<Initializer for <Constant ".Program executio_5
       27  ?<Initializer for <Constant ".Program executio_6
       10  ?<Initializer for <Constant "0123456789">>
-      34  ?<Initializer for <Constant "Add task = %u, CH
+      53  ?<Initializer for <Constant "Add task = %u, CH
       13  ?<Initializer for <Constant "Assert fails">>
       13  ?<Initializer for <Constant "Assert fails">>_1
       13  ?<Initializer for <Constant "Assert fails">>_2
@@ -5174,11 +5364,11 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       24  ?<Initializer for <Constant "FB_RAW_LAY len is
       24  ?<Initializer for <Constant "FB_RAW_LAY mem is
       27  ?<Initializer for <Constant "FB_RAW_LAY mem is_1
-      32  ?<Initializer for <Constant "Fault. Timer = %l
       11  ?<Initializer for <Constant "Fn is NULL">>
       37  ?<Initializer for <Constant "Frame puted to MA
       46  ?<Initializer for <Constant "Frame_s size = %d
       14  ?<Initializer for <Constant "Frames module">>
+      16  ?<Initializer for <Constant "HEAP_PTR = %d\r\n
       46  ?<Initializer for <Constant "Hello worldHello
       13  ?<Initializer for <Constant "Hello world\n">>
       13  ?<Initializer for <Constant "Incorrect TS">>
@@ -5299,7 +5489,6 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        4  ?<Initializer for __Constant_3d000000>
        4  ?<Initializer for __Constant_3e8>
        4  ?<Initializer for __Constant_447a0000>
-       4  ?<Initializer for __Constant_7d0>
        4  ?<Initializer for __Constant_7fff>
        4  ?<Initializer for __Constant_8000>
        4  ?<Initializer for __Constant_a>
@@ -5350,7 +5539,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       16  KEY
       37  LED
        6  LED::?relay
-     402  LLC_AddTask
+     456  LLC_AddTask
        6  LLC_AddTask::?relay
       16  LLC_GetTaskLen
        6  LLC_GetTaskLen::?relay
@@ -5364,7 +5553,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  LLC_SE_HNDL::?relay
       81  LLC_SetRXCallback
        6  LLC_SetRXCallback::?relay
-     192  LLC_Shelduler
+     201  LLC_Shelduler
        6  LLC_Shelduler::?relay
      149  LLC_TimeAlloc
        6  LLC_TimeAlloc::?relay
@@ -5398,6 +5587,8 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  MAC_TX_HNDL::?relay
       12  MyLowLevelPutchar
        6  MyLowLevelPutchar::?relay
+       1  NBR_BUF
+       1  NBR_FRAME
        4  NODE_NONCE
        4  NODE_RTC
        4  NODE_UPTIME
@@ -5563,7 +5754,6 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        4  __Constant_3d000000
        4  __Constant_3e8
        4  __Constant_447a0000
-       4  __Constant_7d0
        4  __Constant_7fff
        4  __Constant_8000
        4  __Constant_a
@@ -5581,7 +5771,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       34  bits_count
        6  bits_count::?relay
      162  buf
-     382  calcCompareTime
+     189  calcCompareTime
        6  calcCompareTime::?relay
       94  clocks_update
        6  clocks_update::?relay
@@ -5591,17 +5781,21 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  delete_test::?relay
       20  fbuf_chain
        6  fbuf_chain::?relay
-     339  fbuf_create
+     346  fbuf_create
        6  fbuf_create::?relay
-      21  fbuf_delete
+      28  fbuf_delete
        6  fbuf_delete::?relay
+      16  fbuf_getCount
+       6  fbuf_getCount::?relay
       43  fbuf_next
        6  fbuf_next::?relay
        1  finised
-     142  frame_create
+     149  frame_create
        6  frame_create::?relay
-      66  frame_delete
+      73  frame_delete
        6  frame_delete::?relay
+      16  frame_getCount
+       6  frame_getCount::?relay
       20  frame_get_fbuf_head
        6  frame_get_fbuf_head::?relay
       22  frame_get_fbuf_tail
@@ -5618,8 +5812,10 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  free::?relay
      241  generateAuthData
        6  generateAuthData::?relay
-     146  getFrame
+     150  getFrame
        6  getFrame::?relay
+      34  getMallocSize
+       6  getMallocSize::?relay
       53  getRNDByte
        6  getRNDByte::?relay
        7  heap_size
@@ -5698,17 +5894,21 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  suite_fbuf::?relay
       39  suite_frame
        6  suite_frame::?relay
+      14  suite_malloc
+       6  suite_malloc::?relay
       21  suite_printf_uart
        6  suite_printf_uart::?relay
        1  tasksBLOCK
+      74  test_1
      271  test_1
+       6  test_1::?relay
        6  test_1::?relay
      214  test_ACK_SEND
        6  test_ACK_SEND::?relay
      215  test_TS_Send
        6  test_TS_Send::?relay
-     229  test_create
      244  test_create
+     442  test_create
        6  test_create::?relay
        6  test_create::?relay
      143  test_frame_merge
@@ -5735,19 +5935,19 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        4  val
 
  
- 21 958 bytes in segment BANKED_CODE
-  1 008 bytes in segment BANK_RELAYS
+ 22 227 bytes in segment BANKED_CODE
+  1 038 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
      60 bytes in segment NEAR_CODE
      35 bytes in segment SFR_AN
-  3 279 bytes in segment XDATA_I
-  3 279 bytes in segment XDATA_ID
-    692 bytes in segment XDATA_Z
+  3 259 bytes in segment XDATA_I
+  3 259 bytes in segment XDATA_ID
+    694 bytes in segment XDATA_Z
  
-  4 261 bytes of CODE     memory (+ 89 bytes shared)
+  4 275 bytes of CODE     memory (+ 85 bytes shared)
       0 bytes of DATA     memory (+ 35 bytes shared)
- 21 914 bytes of HUGECODE memory (+ 44 bytes shared)
-  3 903 bytes of XDATA    memory (+ 68 bytes shared)
+ 22 183 bytes of HUGECODE memory (+ 44 bytes shared)
+  3 889 bytes of XDATA    memory (+ 64 bytes shared)
 
 Errors: none
-Warnings: 8
+Warnings: 14

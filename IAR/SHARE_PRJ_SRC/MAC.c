@@ -33,7 +33,7 @@ uint8_t IV[16] = {18,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17};
 // Задержка перед приемом ACK в мкс если данные не шифруются
 #define DELAY_BEFORE_ACK_RECV_NOCRYPT 1000UL
 
-#define RARIO_STREAM_ENCRYPT true // Шифрование данных включенно 
+#define RARIO_STREAM_ENCRYPT false // Шифрование данных включенно 
 
 typedef struct
 {
@@ -215,9 +215,9 @@ static void MAC_TX_HNDL(uint8_t TS)
   // По ошибки вызвали. Такого быть не должно, но подстрахуемся.
   if ((!MACSlotTable[TS].TX.enable) || (MACSlotTable[TS].TX.attempts == 0)) 
     TIC_SetTXState(TS, false);
-  
+   
   RI_SetChannel(MACSlotTable[TS].TX.CH); // Устанавливаем канал передачи
-    
+
   // Пробуем передать данные
   bool tx_success = RI_Send(MACSlotTable[TS].TX.fr); 
   bool send_success = false;  

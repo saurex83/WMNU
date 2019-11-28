@@ -2190,6 +2190,9 @@
             <name>$PROJ_DIR$\src\utest_MAC.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\src\utest_malloc.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\src\utest_NTMR.c</name>
         </file>
         <file>

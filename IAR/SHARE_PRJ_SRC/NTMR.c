@@ -116,35 +116,25 @@ bool NT_SetTime(uint16_t ticks)
 @params[in] ticks время сети в тикак
 */
 static inline uint32_t calcCompareTime(uint16_t ticks)
-{
-    uint32_t cmp_time;
-    uint16_t ticks_offset;
-    
+{   
     uint32_t timer = ReadTimer(); // Текущее значение счетчика
-    uint32_t real_timer = timer;
-    uint16_t network_time = (timer + TOFFSET) & 0x7FFF; // Текущее время сети
-    //NETWORK TIME = TIMER + TOFFSET
     
+    //NETWORK TIME = TIMER + TOFFSET  
     // Приводим такты к тактам таймера
-    ticks_offset = (ticks - TOFFSET) & 0x7FFF;
+    uint16_t ticks_offset = (ticks - TOFFSET) & 0x7FFF;
     
-    timer &=~0x7FFF; // Убираем младшие 15 бит
-    if (ticks > network_time)
+    uint32_t cmp_time = timer & ~0x7FFF; // Убираем младшие 15 бит
+    cmp_time |= ticks_offset; // Вычисляем новое время
+    
+    if (cmp_time <= timer)
     {
-      cmp_time = timer + ticks_offset;
-    }
-    else
-    {
-      cmp_time = timer + ticks_offset + 0x8000;
+      cmp_time += 0x8000;
       cmp_time &=0xFFFFFF;
     }
-    
-    if (cmp_time <= real_timer)
-        LOG(MSG_ON | MSG_INFO | MSG_TRACE,"Fault. Timer = %lu, CMP = %lu\r\n",
-            real_timer, cmp_time);
       
      LOG(MSG_OFF | MSG_INFO | MSG_TRACE, 
-         "Timer = %lu,Ticks = %d, NT = %d, CMP = %lu \r\n",real_timer,ticks, network_time, cmp_time );
+         "Timer = %lu, Ticks = %d,CMP = %lu \r\n",
+          timer, ticks, cmp_time );
     return cmp_time;
 }
 
@@ -163,10 +153,6 @@ void NT_SetCompare(uint16_t ticks)
  
   uint32_t compare_time = calcCompareTime(ticks);
  
-  LOG(MSG_OFF | MSG_INFO | MSG_TRACE, 
-      "Ticks = %d, Compare time = %04x \r\n",
-      ticks, compare_time);
-  
   loadTimerCompare(compare_time);
   NT_IRQEnable(true);
 }

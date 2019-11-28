@@ -17,6 +17,7 @@ extern void suite_coder(void);
 extern void suite_frame(void);
 extern void suite_LLC_HW(void);
 extern void suite_printf_uart(void);
+extern void suite_malloc(void);
 
 int main()
 {
@@ -43,6 +44,7 @@ int main()
     //suite_RADIO();
    // suite_MAC();
   // suite_printf_uart();
+    //suite_malloc();
   }
 
 	//run_utest_framepart();

@@ -8,6 +8,7 @@
 #include "TIC.h"
 #include "stdlib.h"
 #include "nwdebuger.h"
+#include "ioCC2530.h"
 
 // Публичные методы
 void LLC_Init(void);
@@ -128,21 +129,24 @@ bool LLC_AddTask(frame_s* fr)
  
     if (nbrTasks == MAX_nbrTASKS)
       return false;
-   
+    
    // Ждем пока разбокируется доступ.
    while (tasksBLOCK);
+   tasksBLOCK = true;
    
    // Создаем новую задачу
+   EA=0;
    LLCTask *new_task = (LLCTask*)malloc(sizeof(LLCTask));
+   EA=1;
    ASSERT_HALT(new_task !=NULL, "LLC malloc for new_task"); 
-   
+      
    new_task->TS = fr->meta.TS;
    new_task->CH = fr->meta.CH;
    new_task->fr = fr;
    
-  LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Add task = %u, CH = %d, TS = %d\r\n",
-      (uint16_t)new_task,new_task->CH, new_task->TS);
-   
+  LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Add task = %u, CH = %d, TS = %d, OTS = %d. fr = %d\r\n",
+      (uint16_t)new_task,new_task->CH, new_task->TS, fr->meta.TS, (uint16_t)fr);
+  
    // Если в очереди нет задач, добавим первую
    if (FirstTask == NULL) 
    {
@@ -157,6 +161,7 @@ bool LLC_AddTask(frame_s* fr)
    }
    
    nbrTasks ++;
+   tasksBLOCK = false;
    return true;
 }
 
@@ -169,6 +174,11 @@ bool LLC_AddTask(frame_s* fr)
 */
 static void LLC_Shelduler(uint8_t TS)
 {
+  // Если работает функция добавления задачи, то обслуживание очереди не
+  // производится. Это может привести к необычным последствиям
+  if (tasksBLOCK)
+    return;
+  
   tasksBLOCK = true;
   // Перебираем попорядку весь список на отправку
   // HeadTask только указатель на первый элемент, сам он не подлежит отправке
@@ -177,7 +187,8 @@ static void LLC_Shelduler(uint8_t TS)
   LLCTask *next = FirstTask;
   
   while (task != NULL)
-  {
+  {    
+    
     if (MAC_GetTXState(task->TS)) // Занят ли временой слот
     {
       // Если слот занят переходим к следующей задаче

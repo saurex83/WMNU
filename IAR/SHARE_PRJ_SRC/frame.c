@@ -17,6 +17,18 @@ fbuf_s* frame_get_fbuf_head(frame_s *fr);
 fbuf_s* frame_get_fbuf_tail(frame_s *fr);
 void* frame_merge(frame_s *fr, uint8_t *len);
 uint8_t frame_len(frame_s *fr);
+uint8_t frame_getCount(void);
+
+static uint8_t NBR_FRAME = 0; //!< Количество фреймов в памяти
+
+/**
+@brief Получить количество буферов в памяти
+@return Возвращает количество буферов
+*/
+uint8_t frame_getCount(void)
+{
+  return NBR_FRAME;
+}
 
 /**
 @brief Создание структуры frame
@@ -30,6 +42,7 @@ frame_s* frame_create(void)
     fr->head = NULL;
     fr->tail = NULL;
     memset(&fr->meta, 0x00, META_S_SIZE);
+    NBR_FRAME++;
     return fr;
 };
 
@@ -47,10 +60,11 @@ void frame_delete(frame_s *fr)
   while (fb != NULL)
   {
       next = fb->next;
-      free(fb);
+      fbuf_delete(fb);
       fb = next;
   };
   
+  NBR_FRAME--;
   free(fr);
 }
 
@@ -150,7 +164,7 @@ void* frame_merge(frame_s *fr, uint8_t *len)
 
 /**
 @brief Вычисляет размер цепочки fbuf
-@param[in] fr указатель на framr
+@param[in] fr указатель на frame_s
 @return Количество байт в цепочке буферов
 */
 uint8_t frame_len(frame_s *fr)

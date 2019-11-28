@@ -50,3 +50,4 @@ fbuf_s* frame_get_fbuf_head(frame_s *fr);
 fbuf_s* frame_get_fbuf_tail(frame_s *fr);
 void* frame_merge(frame_s *fr, uint8_t *len);
 uint8_t frame_len(frame_s *fr);
+uint8_t frame_getCount(void);

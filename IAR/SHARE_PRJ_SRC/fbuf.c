@@ -3,7 +3,6 @@
 \brief 
 */
 
-
 #include "fbuf.h"
 #include "string.h"
 #include "stdlib.h"
@@ -23,6 +22,11 @@ fbuf_s* fbuf_create(uint8_t type, void* payload, uint8_t len);
 void fbuf_delete(fbuf_s *fb);
 void fbuf_chain(fbuf_s *h, fbuf_s *t);
 fbuf_s* fbuf_next(fbuf_s *fb);
+uint8_t fbuf_getCount(void);
+
+// Локальные переменные модуля
+static uint8_t NBR_BUF = 0; //!< Количество буферов в памяти
+
 
 /**
 @brief Создает fbuf указанного типа
@@ -72,7 +76,17 @@ fbuf_s* fbuf_create(uint8_t type, void* payload, uint8_t len)
   if ((type == FB_TRANSPORT_LAY) || (type == FB_RAW_LAY))
     memcpy(fb->payload, payload, req_len);
   
+  NBR_BUF++;
   return fb;
+}
+
+/**
+@brief Получить количество буферов в памяти
+@return Возвращает количество буферов
+*/
+uint8_t fbuf_getCount(void)
+{
+  return NBR_BUF;
 }
 
 /**
@@ -81,6 +95,7 @@ fbuf_s* fbuf_create(uint8_t type, void* payload, uint8_t len)
 void fbuf_delete(fbuf_s *fb)
 {
   free(fb);
+  NBR_BUF--;
 }
 
 /**

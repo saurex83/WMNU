@@ -175,7 +175,7 @@
                 </option>
                 <option>
                     <name>General Xdata Stack Size</name>
-                    <state>0x400</state>
+                    <state>0x300</state>
                 </option>
                 <option>
                     <name>General Ext Stack Size</name>
@@ -1031,7 +1031,7 @@
                 </option>
                 <option>
                     <name>Linker Extra Options Check</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>Linker Extra Options Edit</name>
@@ -2317,6 +2317,9 @@
         </file>
         <file>
             <name>$PROJ_DIR$\src\utest_MAC.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_malloc.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\src\utest_NTMR.c</name>
