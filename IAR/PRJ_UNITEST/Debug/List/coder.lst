@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               28/Nov/2019  01:52:55
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               29/Nov/2019  13:30:24
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,7 +14,7 @@
 #    Source file        =  
 #        \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW7F8B.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW3C1A.tmp
 #        ("\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c" -lc
 #        "\\vmware-host\Shared
@@ -33,6 +33,7 @@
 #        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\frame.c"
 #        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\LLC.c"
 #        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\MAC.c"
+#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\mem.c"
 #        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\NTMR.c"
 #        "\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\nwdebuger.c"
@@ -829,7 +830,7 @@
       5          
       6          #include "fbuf.h"
       7          #include "string.h"
-      8          #include "stdlib.h"
+      8          #include "mem.h"
       9          #include "Net_frames.h"
      10          #include "nwdebuger.h"
      11          
@@ -884,7 +885,7 @@
      60            
      61            // Выделяем память под структуру и данные и выравниваем в памяти
      62            // Выравнивание с помощью макросов приводило к пиздецу.
-     63            fbuf_s* fb = (fbuf_s*)malloc(FBUF_S_SIZE + req_len);
+     63            fbuf_s* fb = (fbuf_s*)re_malloc(FBUF_S_SIZE + req_len);
      64            ASSERT_HALT(fb != NULL, "No memory");
      65            
      66            memset(fb, 0x77 , FBUF_S_SIZE + req_len);
@@ -918,7 +919,7 @@
      94          */
      95          void fbuf_delete(fbuf_s *fb)
      96          {
-     97            free(fb);
+     97            re_free(fb);
      98            NBR_BUF--;
      99          }
     100          
@@ -950,7 +951,7 @@
       5          
       6          #include "frame.h"
       7          #include "string.h"
-      8          #include "stdlib.h"
+      8          #include "mem.h"
       9          #include "Net_frames.h"
      10          #include "nwdebuger.h"
      11          
@@ -981,7 +982,7 @@
      36          */
      37          frame_s* frame_create(void)
      38          {
-     39              frame_s* fr= (frame_s*)malloc(FRAME_S_SIZE);
+     39              frame_s* fr= (frame_s*)re_malloc(FRAME_S_SIZE);
      40              ASSERT_HALT(fr != NULL, "No memory");
      41              
      42              fr->head = NULL;
@@ -1010,7 +1011,7 @@
      65            };
      66            
      67            NBR_FRAME--;
-     68            free(fr);
+     68            re_free(fr);
      69          }
      70          
      71          /**
@@ -1074,7 +1075,7 @@
     129          
     130          /**
     131          @brief Производит слияние всех данных в один массив
-    132          @details Данные требуют удаления после использования free(..)
+    132          @details Данные требуют удаления после использования re_free(..)
     133          @param[in] fr указатель на frame
     134          @param[out] len длинна результирующего массива данных
     135          @return Указатель на начало данных
@@ -1091,7 +1092,7 @@
     146              return NULL;
     147            
     148            // Выделяем память
-    149            void* mem = malloc(tot_len);
+    149            void* mem = re_malloc(tot_len);
     150            ASSERT_HALT(mem != NULL, "No memory");
     151            
     152            uint8_t *ptr = (uint8_t*)mem;
@@ -1133,7 +1134,7 @@
       6          #include "LLC.h"
       7          #include "MAC.h"
       8          #include "TIC.h"
-      9          #include "stdlib.h"
+      9          #include "mem.h"
      10          #include "nwdebuger.h"
      11          #include "ioCC2530.h"
      12          
@@ -1190,7 +1191,7 @@
      63          
      64          /**
      65          @brief Первый элемент обработчика конца временного слота
-     66          @details Элемент создается статически, все остальные задачи создаются malloc
+     66          @details Элемент создается статически, все остальные задачи создаются re_malloc
      67          и добавляются к HeadAllocFunc.
      68          */
      69          static TimeAllocFunc HeadAllocFunc;
@@ -1231,7 +1232,7 @@
     104          */
     105          void LLC_TimeAlloc(void (*fn)(void))
     106          {
-    107            TimeAllocFunc *ta = malloc(sizeof(TimeAllocFunc));
+    107            TimeAllocFunc *ta = re_malloc(sizeof(TimeAllocFunc));
     108            ASSERT_HALT(ta != NULL, "Memory allocation fails");
     109            ta->next = NULL;
     110            ta->fn = fn;
@@ -1263,9 +1264,9 @@
     136             
     137             // Создаем новую задачу
     138             EA=0;
-    139             LLCTask *new_task = (LLCTask*)malloc(sizeof(LLCTask));
+    139             LLCTask *new_task = (LLCTask*)re_malloc(sizeof(LLCTask));
     140             EA=1;
-    141             ASSERT_HALT(new_task !=NULL, "LLC malloc for new_task"); 
+    141             ASSERT_HALT(new_task !=NULL, "LLC re_malloc for new_task"); 
     142                
     143             new_task->TS = fr->meta.TS;
     144             new_task->CH = fr->meta.CH;
@@ -1344,7 +1345,7 @@
     217              nbrTasks--;
     218              LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Free task = %u, nbrTasks = %d\r\n",
     219                  (uint16_t)task, nbrTasks); 
-    220              free(task);
+    220              re_free(task);
     221              task = next;
     222            }
     223            
@@ -1675,6 +1676,55 @@
     289                }
     290            }
     291          }
+\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\mem.c
+      1          #include "ioCC2530.h"
+      2          #include "stdlib.h"
+      3          #include "stdint.h"
+      4          
+      5          void re_free(void* ptr);
+      6          void* re_malloc(size_t size);
+      7          uint16_t heap_ptr(size_t size);
+      8          
+      9          /**
+     10          @brief Возвращает адрес следующего свободного участка памяти
+     11          @detail Функция нужна для оценки использования стека
+     12          @param[in] size размер запрашиваемой области
+     13          @return если памяти нету возвращает 0, иначе адрес свободного участка.
+     14          */
+     15          uint16_t heap_ptr(size_t size)
+     16          {
+     17            uint16_t *heap_ptr;
+     18            heap_ptr = (uint16_t*)re_malloc(size);
+     19            re_free(heap_ptr);
+     20            return (uint16_t)heap_ptr;
+     21          }
+     22          
+     23          /**
+     24          @brief Реентерабельное выделение памяти
+     25          */
+     26          void* re_malloc(size_t size)
+     27          {
+     28            void* ptr;
+     29            unsigned short EA_save = EA;
+     30            
+     31            EA = 0;
+     32            ptr = malloc(size);
+     33            EA = EA_save;
+     34            
+     35            return ptr;
+     36          }
+     37          
+     38          /**
+     39          @brief Реентерабельное освобождение памяти
+     40          */
+     41          void re_free(void* ptr)
+     42          {
+     43            unsigned short EA_save = EA;
+     44            
+     45            EA = 0;
+     46            free(ptr);
+     47            EA = EA_save;
+     48          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\NTMR.c
       1          #include "NTMR.h"
       2          #include "stdlib.h"
@@ -2096,7 +2146,7 @@
       4          */
       5          
       6          #include "RADIO.h"
-      7          #include "stdlib.h"
+      7          #include "mem.h"
       8          #include "nwdebuger.h"
       9          #include "Radio_defs.h"
      10          #include "TIC.h"
@@ -2365,7 +2415,7 @@ Warning[Pe550]: variable "timer" was set but never used
     268            }
     269          ////TIM_TimeStamp(&ts_stop);
     270          
-    271            free(data);
+    271            re_free(data);
     272            ISRFOFF();
     273          ////  LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
     274          ////"Merge = %lu. Crypt = %lu. Load TX = %lu. RSSI_OK = %lu. ISTXON = %lu. SFD = %lu. TX = %lu. FULL = %lu \n", 
@@ -2459,7 +2509,7 @@ Warning[Pe550]: variable "timer" was set but never used
     362              return NULL;
     363            
     364            // Выгружаем данные из приемника
-    365            uint8_t *frame_raw = malloc(frame_size); 
+    365            uint8_t *frame_raw = re_malloc(frame_size); 
     366            UnLoadRXData(frame_raw, frame_size);
     367            
     368            int8_t  FCS1 = frame_raw[frame_size - 2]; // RSSI
@@ -2470,7 +2520,7 @@ Warning[Pe550]: variable "timer" was set but never used
     373            // с фактической длинной принятых данных
     374            if (LEN_F != frame_size - 1)
     375            {
-    376              free(frame_raw);
+    376              re_free(frame_raw);
     377              RI_CRC_ERROR ++;
     378              return NULL;
     379            }
@@ -2478,7 +2528,7 @@ Warning[Pe550]: variable "timer" was set but never used
     381            // Проверим поле CRCOK
     382            if (!(FCS2 && 1<<7))
     383            {
-    384              free(frame_raw);
+    384              re_free(frame_raw);
     385              RI_CRC_ERROR ++;
     386              return NULL;
     387            }
@@ -2502,7 +2552,7 @@ Warning[Pe550]: variable "timer" was set but never used
     405          
     406            fr->meta.CH = RADIO_CFG.CH;
     407          
-    408            free(frame_raw);
+    408            re_free(frame_raw);
     409            return fr;
     410          }
     411          
@@ -3671,7 +3721,7 @@ Warning[Pe550]: variable "timer" was set but never used
       6          #include "frame.h"
       7          #include "RADIO.h"
       8          #include "TIC.h"
-      9          #include "stdlib.h"
+      9          #include "mem.h"
      10          
      11          static void timealloc(void)
      12          {
@@ -3698,9 +3748,9 @@ Warning[Pe550]: variable "timer" was set but never used
      33          static void show_heap_ptr(void)
      34          { 
      35            uint16_t *heap_ptr;
-     36            heap_ptr = (uint16_t*)malloc(1);
+     36            heap_ptr = (uint16_t*)re_malloc(1);
      37            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "HEAP_PTR = %d\r\n", (uint16_t)heap_ptr ); 
-     38            free(heap_ptr);
+     38            re_free(heap_ptr);
      39          }
      40          
      41          static void test_create()
@@ -3755,95 +3805,91 @@ Warning[Pe550]: variable "nbr_bufs" was set but never used
      77              }   
      78              if (*ptr_stack != 0xcd) // Контроль переполнения стека
      79                while(1);
-     80              EA=0;
-     81              heap_ptr = (uint16_t*)malloc(1);
-     82              EA=1;
-     83              if ((uint16_t)heap_ptr > HEAP_PTR_MAX)
-     84              {
-     85                HEAP_PTR_MAX = (uint16_t)heap_ptr;
-     86                LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-     87                "HEAP_PTR = %d\r\n", HEAP_PTR_MAX );
-     88              }
-     89              EA=0;
-     90              free(heap_ptr);
-     91              EA=1;
-     92            }
-     93            
-     94          }
-     95          
-     96          static void find_mem_problem(void)
-     97          {
-     98            LLC_Init();
-     99            LLC_TimeAlloc(timealloc);
-    100            EA = 1;
-    101            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
-    102            
-    103            frame_s *fr;
-    104            
-    105            uint16_t TS = 0;
-    106            uint8_t *ptr_stack = (uint8_t*)0x100;
-    107            
-    108            uint16_t HEAP_PTR_MAX = 0;
+     80              heap_ptr = (uint16_t*)re_malloc(1);
+     81              if ((uint16_t)heap_ptr > HEAP_PTR_MAX)
+     82              {
+     83                HEAP_PTR_MAX = (uint16_t)heap_ptr;
+     84                LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
+     85                "HEAP_PTR = %d\r\n", HEAP_PTR_MAX );
+     86              }
+     87              re_free(heap_ptr);
+     88            }
+     89            
+     90          }
+     91          
+     92          static void find_mem_problem(void)
+     93          {
+     94            LLC_Init();
+     95            LLC_TimeAlloc(timealloc);
+     96            EA = 1;
+     97            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
+     98            
+     99            frame_s *fr;
+    100            
+    101            uint16_t TS = 0;
+    102            uint8_t *ptr_stack = (uint8_t*)0x100;
+    103            
+    104            uint16_t HEAP_PTR_MAX = 0;
                             ^
 Warning[Pe177]: variable "HEAP_PTR_MAX" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
-    109            uint16_t *heap_ptr;
+    105            uint16_t *heap_ptr;
                              ^
 Warning[Pe177]: variable "heap_ptr" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
-    110            
-    111            while(true)
-    112            {  
-    113              if (fbuf_getCount() == 0)
-    114              {
-    115                show_heap_ptr();
-    116                for (uint8_t i = 0; i < 20 ; i++)
-    117                {
-    118                    fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
-    119                    TS++;
-    120                    if (TS == 49)
-    121                      TS = 0;
-    122                    LLC_AddTask(fr);
-    123                }
-    124              }   
-    125              
-    126              if (*ptr_stack != 0xcd) // Контроль переполнения стека
-    127                while(1);
-    128            }
-    129            
-    130            
-    131          }
-    132          
-    133          // Тест на максимальное количество фреймов 
-    134          static void test_mem(void)
-    135          {
-    136            frame_s *FR[150];
+    106            
+    107            while(true)
+    108            {  
+    109              if (fbuf_getCount() == 0)
+    110              {
+    111                show_heap_ptr();
+    112                for (uint8_t i = 0; i < 20 ; i++)
+    113                {
+    114                    fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
+    115                    TS++;
+    116                    if (TS == 49)
+    117                      TS = 0;
+    118                    LLC_AddTask(fr);
+    119                }
+    120              }   
+    121              
+    122              if (*ptr_stack != 0xcd) // Контроль переполнения стека
+    123                while(1);
+    124            }
+    125            
+    126            
+    127          }
+    128          
+    129          // Тест на максимальное количество фреймов 
+    130          static void test_mem(void)
+    131          {
+    132            frame_s *FR[150];
                             ^
 Warning[Pe550]: variable "FR" was set but never used
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
-    137            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9}; 
-    138            
-    139            for (uint8_t i = 0; i < 105; i++) 
-    140              FR[i] = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, 5);
-    141          }
-    142          
-    143          
-    144          void suite_LLC_HW(void)
-    145          {
-    146           // umsg_line("LLC module");
-    147            
-    148            // Устанавливает и поддерживает в очереде 10 пакетов.
-    149            // Мигает зеленым светодиодом. В TS0 включается, в TS5 выключаеться
-    150           // test_mem();
-    151           // find_mem_problem();
-    152            test_create();  
-    153          }
+    133            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9}; 
+    134            
+    135            for (uint8_t i = 0; i < 105; i++) 
+    136              FR[i] = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, 5);
+    137          }
+    138          
+    139          
+    140          void suite_LLC_HW(void)
+    141          {
+    142           // umsg_line("LLC module");
+    143            
+    144            // Устанавливает и поддерживает в очереде 10 пакетов.
+    145            // Мигает зеленым светодиодом. В TS0 включается, в TS5 выключаеться
+    146           // test_mem();
+    147           // find_mem_problem();
+    148            test_create();  
+    149          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_MAC.c
       1          #include "utest_suite.h"
       2          #include "MAC.h"
@@ -4206,7 +4252,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
 
   static void find_mem_problem(void)
               ^
-"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",96  Warning[Pe177]: 
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",92  Warning[Pe177]: 
           function "find_mem_problem" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
@@ -4214,7 +4260,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
 
   static void test_mem(void)
               ^
-"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",134  Warning[Pe177]: 
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",130  Warning[Pe177]: 
           function "test_mem" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
@@ -4549,10 +4595,10 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       0     52   LED
       1     58   LLC_AddTask
         0     14   -> STACK_FAILURE
-        0     14   -> malloc
         0     14   -> printf
         0     18   -> printf
         0     24   -> printf
+        0     14   -> re_malloc
       2     34   LLC_GetTaskLen
       2     34   LLC_Init
         2      0   -> MAC_Init
@@ -4573,12 +4619,12 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       0     22   LLC_Shelduler
         0     13   -> MAC_GetTXState
         0     13   -> MAC_Send
-        0     13   -> free
+        0     13   -> re_free
       0     50   LLC_TimeAlloc
         0     12   -> STACK_FAILURE
-        0     12   -> malloc
         0     12   -> printf
         0     16   -> printf
+        0     12   -> re_malloc
       2     15   LoadTXData
       0      0   MAC_ACK_Recv
       0     51   MAC_ACK_Send
@@ -4677,8 +4723,8 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     46   -> fbuf_create
         0     46   -> frame_create
         0     46   -> frame_insert_head
-        0     46   -> free
-        0     46   -> malloc
+        0     46   -> re_free
+        0     46   -> re_malloc
       0     72   RI_Send
         0     36   -> RI_cfg
         0     36   -> STACK_FAILURE
@@ -4725,7 +4771,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     15   -> NT_WaitTime
         0     15   -> RI_BitRawCrypt
         0     15   -> frame_merge
-        0     15   -> free
+        0     15   -> re_free
       0      0   SetCPU32M
       2     12   TIC_GetNonce
       2     26   TIC_GetRTC
@@ -4816,23 +4862,19 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     84   -> TIM_passedTime
         0     86   -> memset
         0     88   -> printf
+      0      9   alg_test
+        0      9   -> NT_Init
+        0      9   -> NT_SetCompare
+        0      9   -> NT_SetEventCallback
       0     32   alg_test
         0     32   -> TIM_TimeStamp
         0     32   -> TIM_init
         0     32   -> TIM_passedTime
         0     32   -> umsg
-      0      9   alg_test
-        0      9   -> NT_Init
-        0      9   -> NT_SetCompare
-        0      9   -> NT_SetEventCallback
       0      9   bits_count
       2     34   calcCompareTime
         0     22   -> ReadTimer
       0     24   clocks_update
-      0     12   delete_test
-        0     12   -> fbuf_create
-        0     12   -> fbuf_delete
-        0     12   -> umsg
       0     26   delete_test
         0     26   -> fbuf_create
         0     26   -> fbuf_delete
@@ -4840,27 +4882,31 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     26   -> frame_delete
         0     26   -> frame_insert_head
         0     26   -> umsg
+      0     12   delete_test
+        0     12   -> fbuf_create
+        0     12   -> fbuf_delete
+        0     12   -> umsg
       2     16   fbuf_chain
       1    170   fbuf_create
         0     16   -> STACK_FAILURE
-        0     16   -> malloc
         0     18   -> memcpy
         0     18   -> memset
         0     16   -> printf
         0     20   -> printf
+        0     16   -> re_malloc
       0    119   fbuf_delete
-        0      9   -> free
+        0      9   -> re_free
       2     34   fbuf_getCount
       2     20   fbuf_next
       0    164   frame_create
         0     10   -> STACK_FAILURE
-        0     10   -> malloc
         0     12   -> memset
         0     10   -> printf
         0     14   -> printf
+        0     10   -> re_malloc
       0    162   frame_delete
         0     12   -> fbuf_delete
-        0     12   -> free
+        0     12   -> re_free
       2     34   frame_getCount
       2     20   frame_get_fbuf_head
       2     20   frame_get_fbuf_tail
@@ -4873,11 +4919,11 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       1     49   frame_merge
         0     20   -> STACK_FAILURE
         0     20   -> frame_len
-        0     20   -> malloc
         0     22   -> memcpy
         0     20   -> printf
         0     24   -> printf
-      0     55   free
+        0     20   -> re_malloc
+      0     19   free
         0      9   -> __xdata_free
       0     86   generateAuthData
         0     18   -> memcpy
@@ -4887,6 +4933,9 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     18   -> frame_insert_head
       2     14   getMallocSize
       2      9   getRNDByte
+      0     12   heap_ptr
+        0     12   -> re_free
+        0     12   -> re_malloc
       0      0   heap_size
       2      1   incrementTS
       0     12   insert1_test
@@ -4928,7 +4977,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0      0   -> suite_LLC_HW
         0      0   -> umsg_summary
         0      0   -> utestSigTraceInit
-      0     55   malloc
+      0     23   malloc
         0      9   -> __xdata_malloc
       0     32   manual
         0     32   -> TIM_TimeStamp
@@ -4963,6 +5012,10 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0    110   -> fbuf_delete
         0    112   -> memory_compare
         0    110   -> umsg
+      0     56   re_free
+        0     10   -> free
+      0     60   re_malloc
+        0     14   -> malloc
       0     18   readRandom
         0      9   -> bits_count
         0      9   -> getRNDByte
@@ -5069,10 +5122,6 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     26   -> frame_create
         0     26   -> frame_insert_head
         0     30   -> printf
-      0     10   test_create
-        0     10   -> fbuf_create
-        0     10   -> fbuf_delete
-        0     10   -> umsg
       1     40   test_create
         0     34   -> LLC_AddTask
         0     34   -> LLC_GetTaskLen
@@ -5082,12 +5131,16 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     34   -> frame_delete
         0     34   -> frame_getCount
         0     34   -> frame_len
-        0     34   -> free
         0     34   -> getFrame
-        0     34   -> malloc
         0     36   -> printf
         0     38   -> printf
         0     40   -> printf
+        0     34   -> re_free
+        0     34   -> re_malloc
+      0     10   test_create
+        0     10   -> fbuf_create
+        0     10   -> fbuf_delete
+        0     10   -> umsg
       0     27   test_frame_merge
         0     25   -> fbuf_create
         0     25   -> frame_create
@@ -5211,7 +5264,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       24  ?<Constant "Insert head. tail = fb1">
       24  ?<Constant "Insert tail. head = fb1">
       24  ?<Constant "Insert tail. tail = fb1">
-      24  ?<Constant "LLC malloc for new_task">
+      27  ?<Constant "LLC re_malloc for new...">
        6  ?<Constant "LLC.c">
        6  ?<Constant "MAC.c">
       38  ?<Constant "MAC_ACK_Send time = %...">
@@ -5379,7 +5432,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       24  ?<Initializer for <Constant "Insert head. tail
       24  ?<Initializer for <Constant "Insert tail. head
       24  ?<Initializer for <Constant "Insert tail. tail
-      24  ?<Initializer for <Constant "LLC malloc for ne
+      27  ?<Initializer for <Constant "LLC re_malloc for
        6  ?<Initializer for <Constant "LLC.c">>
        6  ?<Initializer for <Constant "MAC.c">>
       38  ?<Initializer for <Constant "MAC_ACK_Send time
@@ -5818,6 +5871,8 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  getMallocSize::?relay
       53  getRNDByte
        6  getRNDByte::?relay
+      40  heap_ptr
+       6  heap_ptr::?relay
        7  heap_size
        6  heap_size::?relay
       36  incrementTS
@@ -5857,6 +5912,10 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  random_core_init::?relay
      242  raw_data_test
        6  raw_data_test::?relay
+      35  re_free
+       6  re_free::?relay
+      49  re_malloc
+       6  re_malloc::?relay
       54  readRandom
        6  readRandom::?relay
        4  ret_val
@@ -5908,7 +5967,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
      215  test_TS_Send
        6  test_TS_Send::?relay
      244  test_create
-     442  test_create
+     434  test_create
        6  test_create::?relay
        6  test_create::?relay
      143  test_frame_merge
@@ -5935,19 +5994,19 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        4  val
 
  
- 22 227 bytes in segment BANKED_CODE
-  1 038 bytes in segment BANK_RELAYS
+ 22 343 bytes in segment BANKED_CODE
+  1 056 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
      60 bytes in segment NEAR_CODE
      35 bytes in segment SFR_AN
-  3 259 bytes in segment XDATA_I
-  3 259 bytes in segment XDATA_ID
+  3 262 bytes in segment XDATA_I
+  3 262 bytes in segment XDATA_ID
     694 bytes in segment XDATA_Z
  
-  4 275 bytes of CODE     memory (+ 85 bytes shared)
+  4 296 bytes of CODE     memory (+ 85 bytes shared)
       0 bytes of DATA     memory (+ 35 bytes shared)
- 22 183 bytes of HUGECODE memory (+ 44 bytes shared)
-  3 889 bytes of XDATA    memory (+ 64 bytes shared)
+ 22 299 bytes of HUGECODE memory (+ 44 bytes shared)
+  3 892 bytes of XDATA    memory (+ 64 bytes shared)
 
 Errors: none
 Warnings: 14

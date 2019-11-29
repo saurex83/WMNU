@@ -6,7 +6,7 @@
 #include "frame.h"
 #include "RADIO.h"
 #include "TIC.h"
-#include "stdlib.h"
+#include "mem.h"
 
 static void timealloc(void)
 {
@@ -33,9 +33,9 @@ static frame_s* getFrame(uint8_t *src, uint8_t len, uint8_t CH, uint8_t TS)
 static void show_heap_ptr(void)
 { 
   uint16_t *heap_ptr;
-  heap_ptr = (uint16_t*)malloc(1);
+  heap_ptr = (uint16_t*)re_malloc(1);
   LOG(MSG_ON | MSG_INFO | MSG_TRACE, "HEAP_PTR = %d\r\n", (uint16_t)heap_ptr ); 
-  free(heap_ptr);
+  re_free(heap_ptr);
 }
 
 static void test_create()
@@ -77,18 +77,14 @@ static void test_create()
     }   
     if (*ptr_stack != 0xcd) // Контроль переполнения стека
       while(1);
-    EA=0;
-    heap_ptr = (uint16_t*)malloc(1);
-    EA=1;
+    heap_ptr = (uint16_t*)re_malloc(1);
     if ((uint16_t)heap_ptr > HEAP_PTR_MAX)
     {
       HEAP_PTR_MAX = (uint16_t)heap_ptr;
       LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
       "HEAP_PTR = %d\r\n", HEAP_PTR_MAX );
     }
-    EA=0;
-    free(heap_ptr);
-    EA=1;
+    re_free(heap_ptr);
   }
   
 }

@@ -2265,6 +2265,12 @@
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\MAC.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\mem.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\mem.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\Net_frames.h</name>
         </file>
         <file>

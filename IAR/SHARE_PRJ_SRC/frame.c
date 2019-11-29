@@ -5,7 +5,7 @@
 
 #include "frame.h"
 #include "string.h"
-#include "stdlib.h"
+#include "mem.h"
 #include "Net_frames.h"
 #include "nwdebuger.h"
 
@@ -36,7 +36,7 @@ uint8_t frame_getCount(void)
 */
 frame_s* frame_create(void)
 {
-    frame_s* fr= (frame_s*)malloc(FRAME_S_SIZE);
+    frame_s* fr= (frame_s*)re_malloc(FRAME_S_SIZE);
     ASSERT_HALT(fr != NULL, "No memory");
     
     fr->head = NULL;
@@ -65,7 +65,7 @@ void frame_delete(frame_s *fr)
   };
   
   NBR_FRAME--;
-  free(fr);
+  re_free(fr);
 }
 
 /**
@@ -129,7 +129,7 @@ fbuf_s* frame_get_fbuf_tail(frame_s *fr)
 
 /**
 @brief Производит слияние всех данных в один массив
-@details Данные требуют удаления после использования free(..)
+@details Данные требуют удаления после использования re_free(..)
 @param[in] fr указатель на frame
 @param[out] len длинна результирующего массива данных
 @return Указатель на начало данных
@@ -146,7 +146,7 @@ void* frame_merge(frame_s *fr, uint8_t *len)
     return NULL;
   
   // Выделяем память
-  void* mem = malloc(tot_len);
+  void* mem = re_malloc(tot_len);
   ASSERT_HALT(mem != NULL, "No memory");
   
   uint8_t *ptr = (uint8_t*)mem;

@@ -5,7 +5,7 @@
 
 #include "fbuf.h"
 #include "string.h"
-#include "stdlib.h"
+#include "mem.h"
 #include "Net_frames.h"
 #include "nwdebuger.h"
 
@@ -60,7 +60,7 @@ fbuf_s* fbuf_create(uint8_t type, void* payload, uint8_t len)
   
   // Выделяем память под структуру и данные и выравниваем в памяти
   // Выравнивание с помощью макросов приводило к пиздецу.
-  fbuf_s* fb = (fbuf_s*)malloc(FBUF_S_SIZE + req_len);
+  fbuf_s* fb = (fbuf_s*)re_malloc(FBUF_S_SIZE + req_len);
   ASSERT_HALT(fb != NULL, "No memory");
   
   memset(fb, 0x77 , FBUF_S_SIZE + req_len);
@@ -94,7 +94,7 @@ uint8_t fbuf_getCount(void)
 */
 void fbuf_delete(fbuf_s *fb)
 {
-  free(fb);
+  re_free(fb);
   NBR_BUF--;
 }
 

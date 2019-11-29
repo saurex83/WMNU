@@ -4,7 +4,7 @@
 */
 
 #include "RADIO.h"
-#include "stdlib.h"
+#include "mem.h"
 #include "nwdebuger.h"
 #include "Radio_defs.h"
 #include "TIC.h"
@@ -268,7 +268,7 @@ static bool SendData(frame_s *fr)
   }
 ////TIM_TimeStamp(&ts_stop);
 
-  free(data);
+  re_free(data);
   ISRFOFF();
 ////  LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
 ////"Merge = %lu. Crypt = %lu. Load TX = %lu. RSSI_OK = %lu. ISTXON = %lu. SFD = %lu. TX = %lu. FULL = %lu \n", 
@@ -362,7 +362,7 @@ frame_s* RI_Receive(uint16_t timeout)
     return NULL;
   
   // Выгружаем данные из приемника
-  uint8_t *frame_raw = malloc(frame_size); 
+  uint8_t *frame_raw = re_malloc(frame_size); 
   UnLoadRXData(frame_raw, frame_size);
   
   int8_t  FCS1 = frame_raw[frame_size - 2]; // RSSI
@@ -373,7 +373,7 @@ frame_s* RI_Receive(uint16_t timeout)
   // с фактической длинной принятых данных
   if (LEN_F != frame_size - 1)
   {
-    free(frame_raw);
+    re_free(frame_raw);
     RI_CRC_ERROR ++;
     return NULL;
   }
@@ -381,7 +381,7 @@ frame_s* RI_Receive(uint16_t timeout)
   // Проверим поле CRCOK
   if (!(FCS2 && 1<<7))
   {
-    free(frame_raw);
+    re_free(frame_raw);
     RI_CRC_ERROR ++;
     return NULL;
   }
@@ -405,7 +405,7 @@ frame_s* RI_Receive(uint16_t timeout)
 
   fr->meta.CH = RADIO_CFG.CH;
 
-  free(frame_raw);
+  re_free(frame_raw);
   return fr;
 }
 

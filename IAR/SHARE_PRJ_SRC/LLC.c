@@ -6,7 +6,7 @@
 #include "LLC.h"
 #include "MAC.h"
 #include "TIC.h"
-#include "stdlib.h"
+#include "mem.h"
 #include "nwdebuger.h"
 #include "ioCC2530.h"
 
@@ -63,7 +63,7 @@ static void (*RXCallback)(frame_s *fr);
 
 /**
 @brief Первый элемент обработчика конца временного слота
-@details Элемент создается статически, все остальные задачи создаются malloc
+@details Элемент создается статически, все остальные задачи создаются re_malloc
 и добавляются к HeadAllocFunc.
 */
 static TimeAllocFunc HeadAllocFunc;
@@ -104,7 +104,7 @@ void LLC_SetRXCallback(void (*fn)(frame_s *fr))
 */
 void LLC_TimeAlloc(void (*fn)(void))
 {
-  TimeAllocFunc *ta = malloc(sizeof(TimeAllocFunc));
+  TimeAllocFunc *ta = re_malloc(sizeof(TimeAllocFunc));
   ASSERT_HALT(ta != NULL, "Memory allocation fails");
   ta->next = NULL;
   ta->fn = fn;
@@ -136,9 +136,9 @@ bool LLC_AddTask(frame_s* fr)
    
    // Создаем новую задачу
    EA=0;
-   LLCTask *new_task = (LLCTask*)malloc(sizeof(LLCTask));
+   LLCTask *new_task = (LLCTask*)re_malloc(sizeof(LLCTask));
    EA=1;
-   ASSERT_HALT(new_task !=NULL, "LLC malloc for new_task"); 
+   ASSERT_HALT(new_task !=NULL, "LLC re_malloc for new_task"); 
       
    new_task->TS = fr->meta.TS;
    new_task->CH = fr->meta.CH;
@@ -217,7 +217,7 @@ static void LLC_Shelduler(uint8_t TS)
     nbrTasks--;
     LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Free task = %u, nbrTasks = %d\r\n",
         (uint16_t)task, nbrTasks); 
-    free(task);
+    re_free(task);
     task = next;
   }
   
