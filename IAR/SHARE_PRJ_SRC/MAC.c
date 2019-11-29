@@ -33,7 +33,7 @@ uint8_t IV[16] = {18,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17};
 // Задержка перед приемом ACK в мкс если данные не шифруются
 #define DELAY_BEFORE_ACK_RECV_NOCRYPT 1000UL
 
-#define RARIO_STREAM_ENCRYPT false // Шифрование данных включенно 
+#define RARIO_STREAM_ENCRYPT true // Шифрование данных включенно 
 
 typedef struct
 {

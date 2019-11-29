@@ -172,6 +172,7 @@ void AES_StreamCoder(bool enc_mode, uint8_t *src, uint8_t *dst, uint8_t *key,
   ST_DEF(DMA_AES_DW, SRCADDRH, HADDR(key));
   ST_DEF(DMA_AES_DW, LENL, 16);
   DMAARM |= 0x01;
+  while(!AES_RDY());
   AES_START();
   while (DMAARM);
 
@@ -181,6 +182,7 @@ void AES_StreamCoder(bool enc_mode, uint8_t *src, uint8_t *dst, uint8_t *key,
   ST_DEF(DMA_AES_DW, SRCADDRH, HADDR(iv));
   ST_DEF(DMA_AES_DW, LENL, 16);
   DMAARM |= 0x01;
+  while(!AES_RDY());
   AES_START();
   while (DMAARM);
 
@@ -212,6 +214,7 @@ void AES_StreamCoder(bool enc_mode, uint8_t *src, uint8_t *dst, uint8_t *key,
       for (uint8_t block = 0; block < nbrBlocks; block ++)
       {
         ptr = 16 * block;
+        while(!AES_RDY());
         AES_START();
         for (uint8_t j = 0; j < 4; j++)
         {
@@ -242,6 +245,7 @@ void AES_StreamCoder(bool enc_mode, uint8_t *src, uint8_t *dst, uint8_t *key,
       memset(padding_block, 0x00, sizeof(padding_block)); // Заполняем нулями
       memcpy(padding_block, &src[ptr], block_len); // Копируем данные
       
+      while(!AES_RDY());
       AES_START();
       for (uint8_t j = 0; j < 4; j++)
         {
@@ -287,6 +291,7 @@ static void CTR_enc_decrypt(bool enc_mode, uint8_t *src, uint8_t *dst, uint8_t *
   ST_DEF(DMA_AES_DW, SRCADDRH, HADDR(key));
   ST_DEF(DMA_AES_DW, LENL, 16);
   DMAARM |= 0x01;
+  while(!AES_RDY());
   AES_START();
   while (DMAARM);
 
@@ -296,6 +301,7 @@ static void CTR_enc_decrypt(bool enc_mode, uint8_t *src, uint8_t *dst, uint8_t *
   ST_DEF(DMA_AES_DW, SRCADDRH, HADDR(iv));
   ST_DEF(DMA_AES_DW, LENL, 16);
   DMAARM |= 0x01;
+  while(!AES_RDY());
   AES_START();
   while (DMAARM);
 
@@ -318,6 +324,7 @@ static void CTR_enc_decrypt(bool enc_mode, uint8_t *src, uint8_t *dst, uint8_t *
   for (uint8_t block = 0; block < nbrBlocks; block ++)
     {
       ptr = 16 * block;
+      while(!AES_RDY());
       AES_START();
       for (uint8_t j = 0; j < 4; j++)
         {
@@ -347,7 +354,8 @@ static void CTR_enc_decrypt(bool enc_mode, uint8_t *src, uint8_t *dst, uint8_t *
     ptr = 16*nbrBlocks; // Смещение на первый байт последнего блока в src
     memset(padding_block, 0x00, sizeof(padding_block)); // Заполняем нулями
     memcpy(padding_block, &src[ptr], block_len); // Копируем данные
-      
+    
+    while(!AES_RDY());
     AES_START();
     for (uint8_t j = 0; j < 4; j++)
       {
@@ -389,6 +397,7 @@ static void CBCMAC_buf_encrypt(uint8_t len, uint8_t *key, uint8_t *mac)
   ST_DEF(DMA_AES_DW, SRCADDRH, HADDR(key));
   ST_DEF(DMA_AES_DW, LENL, 16);
   DMAARM |= 0x01;
+  while(!AES_RDY());
   AES_START();
   while (DMAARM);
 
@@ -398,6 +407,7 @@ static void CBCMAC_buf_encrypt(uint8_t len, uint8_t *key, uint8_t *mac)
   ST_DEF(DMA_AES_DW, SRCADDRH, HADDR(IV));
   ST_DEF(DMA_AES_DW, LENL, 16);
   DMAARM |= 0x01;
+  while(!AES_RDY());
   AES_START();
   while (DMAARM);
   };
