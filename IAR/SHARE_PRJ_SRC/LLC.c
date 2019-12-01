@@ -135,16 +135,14 @@ bool LLC_AddTask(frame_s* fr)
    tasksBLOCK = true;
    
    // Создаем новую задачу
-   EA=0;
    LLCTask *new_task = (LLCTask*)re_malloc(sizeof(LLCTask));
-   EA=1;
    ASSERT_HALT(new_task !=NULL, "LLC re_malloc for new_task"); 
       
    new_task->TS = fr->meta.TS;
    new_task->CH = fr->meta.CH;
    new_task->fr = fr;
    
-  LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Add task = %u, CH = %d, TS = %d, OTS = %d. fr = %d\r\n",
+  LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Add task = %u, CH = %d, TS = %d, OTS = %d. fr = %d\r\n",
       (uint16_t)new_task,new_task->CH, new_task->TS, fr->meta.TS, (uint16_t)fr);
   
    // Если в очереди нет задач, добавим первую

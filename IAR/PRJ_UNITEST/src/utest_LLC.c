@@ -54,7 +54,7 @@ static void test_create()
   uint16_t fr_size = sizeof(frame_s);
   uint16_t bf_size = frame_len(fr);
   uint16_t HEAP_PTR_MAX = 0;
-  uint16_t *heap_ptr;
+  uint16_t heap;
   uint8_t nbr_bufs, nbr_frames;
   
   LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
@@ -68,25 +68,24 @@ static void test_create()
     nbr_frames = frame_getCount();
     if (LLC_GetTaskLen() < 20)
     {
-          fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
-        LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Create frame = %d.\r\n", (uint16_t)fr);    
-          LLC_AddTask(fr);
-          TS ++;
-          if (TS == 49)
-            TS = 0;
+      fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
+      LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Create frame = %d.\r\n", (uint16_t)fr);    
+      LLC_AddTask(fr);
+      TS ++;
+      if (TS == 49)
+      TS = 0;
     }   
     if (*ptr_stack != 0xcd) // Контроль переполнения стека
       while(1);
-    heap_ptr = (uint16_t*)re_malloc(1);
-    if ((uint16_t)heap_ptr > HEAP_PTR_MAX)
+   
+    heap =  heap_ptr(10);
+    if (heap > HEAP_PTR_MAX)
     {
-      HEAP_PTR_MAX = (uint16_t)heap_ptr;
+      HEAP_PTR_MAX = heap;
       LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
       "HEAP_PTR = %d\r\n", HEAP_PTR_MAX );
     }
-    re_free(heap_ptr);
   }
-  
 }
 
 static void find_mem_problem(void)
@@ -141,9 +140,10 @@ void suite_LLC_HW(void)
 {
  // umsg_line("LLC module");
   
-  // Устанавливает и поддерживает в очереде 10 пакетов.
-  // Мигает зеленым светодиодом. В TS0 включается, в TS5 выключаеться
+  // Устанавливает и поддерживает в очереди 20 пакетов.
+  // Для приема пакетов испольуеться второй модуль с прошивкой RadioRecvTest1
+  test_create(); 
  // test_mem();
  // find_mem_problem();
-  test_create();  
+   
 }

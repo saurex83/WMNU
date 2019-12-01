@@ -101,6 +101,10 @@
         <encoding>UTF-8</encoding>
     </override>
     <override>
+        <path>\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\ethernet.c</path>
+        <encoding>UTF-8</encoding>
+    </override>
+    <override>
         <path>\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\fbuf.c</path>
         <encoding>UTF-8</encoding>
     </override>

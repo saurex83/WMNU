@@ -1,10 +1,12 @@
 #include "ioCC2530.h"
 #include "stdlib.h"
 #include "stdint.h"
+#include "string.h"
 
 void re_free(void* ptr);
 void* re_malloc(size_t size);
 uint16_t heap_ptr(size_t size);
+void re_memcpy(void *dst, const void *src, size_t n);
 
 /**
 @brief Возвращает адрес следующего свободного участка памяти
@@ -18,6 +20,18 @@ uint16_t heap_ptr(size_t size)
   heap_ptr = (uint16_t*)re_malloc(size);
   re_free(heap_ptr);
   return (uint16_t)heap_ptr;
+}
+
+/**
+@brief Реентерабельное копирование памяти
+*/
+void re_memcpy(void *dst, const void *src, size_t n)
+{
+  unsigned short EA_save = EA;
+  
+  EA = 0;
+  memcpy(dst, src, n);
+  EA = EA_save;  
 }
 
 /**

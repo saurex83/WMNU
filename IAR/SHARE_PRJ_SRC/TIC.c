@@ -72,6 +72,7 @@ TimeStamp_s* TIC_GetTimeStampTS0(void)
 {
   return &TimeStampTS0;
 }
+
 void TIC_Init(void)
 {    
   // Устанавливаем обработчик прерываний таймера

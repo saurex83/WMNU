@@ -198,7 +198,7 @@ static void MAC_RX_HNDL(uint8_t TS)
     return;
   
   RXCallback(fr);   // Передаем пакет на дальнейшую обработку
-  frame_delete(fr); // Удаляем пакет
+  // Удаление пакета не наша забота
 }
 
 /**

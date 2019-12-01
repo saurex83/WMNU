@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               29/Nov/2019  14:06:48
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               01/Dec/2019  21:26:08
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,8 +14,7 @@
 #    Source file        =  
 #        \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW8B7F.tmp
-#        ("\\vmware-host\Shared
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW888.tmp ("\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c" -lc
 #        "\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\PRJ_UNITEST\Debug\List" -o
@@ -29,6 +28,8 @@
 #        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
 #        --no_cross_call --mfc "\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\delays.c"
+#        "\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\ethernet.c"
 #        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\fbuf.c"
 #        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\frame.c"
 #        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\LLC.c"
@@ -832,6 +833,126 @@
     133          {
     134            memcpy(src, dst, sizeof(TimeStamp_s));
     135          }
+\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\ethernet.c
+      1          #include "frame.h"
+      2          #include "Net_frames.h"
+      3          #include "stdint.h"
+      4          #include "nwdebuger.h"
+      5          #include "LLC.h"
+      6          #include "mem.h"
+      7          
+      8          void ETH_Send(frame_s *fr);
+      9          
+     10          static void ETH_RX_HNDL(frame_s *fr);
+     11          static void (*RXCallback)(frame_s *fr); //frame_s RAW_LAY, wthout ETH_LAY
+     12          static bool validate(ETH_LAY *eth);
+     13          static ETH_LAY* extract_header(frame_s *fr);
+     14          static void send_ack(ETH_LAY *eth);
+     15          static frame_s* strip_header(frame_s *fr);
+     16          
+     17          /**
+     18          @brief Иницилизация модуля
+     19          */
+     20          void ETH_Init(void)
+     21          {
+     22            RXCallback = NULL; 
+     23            LLC_SetRXCallback(ETH_RX_HNDL);
+     24          }
+     25          
+     26          /**
+     27          @brief Установка обработчика приема пакета ETH
+     28          */
+     29          void ETH_Set_RXCallback(void (*fn)(frame_s *fr))
+     30          {
+     31            ASSERT_HALT(fn != NULL, "NULL pointer not allow");
+     32            RXCallback = fn;
+     33          }
+     34          
+     35          /**
+     36          @brief Обработка принятого пакет сети.
+     37          @detail После валидации пакета, уничтожается заголовок ETH и пакет передается
+     38           на дальнейшую обработку вверх по стеку с помощью обратного вызова RXCallback
+     39          */
+     40          static void ETH_RX_HNDL(frame_s *fr)
+     41          {
+     42            ASSERT_HALT(fr != NULL, "fr is NULL");
+     43            
+     44            bool valid;
+     45            frame_s *striped_frame;
+     46            
+     47            ETH_LAY* eth_h = extract_header(fr);
+     48            
+     49            // Извлечь заголовок не удалось
+     50            if (eth_h == NULL)
+     51              goto ERR_FRAME;
+     52            
+     53            valid = validate(eth_h);
+     54           
+     55            // Заголовок не верный
+     56            if (!valid)
+     57              goto ERR_FRAME;
+     58           
+     59            // Требуется отправить подтверждение приема пакета
+     60            if (eth_h->ETH_T.bits.ACK)
+     61              send_ack(eth_h);
+     62            
+     63            // Создаем новый пакет без заголовка и удаляем исходный
+     64            striped_frame = strip_header(fr);
+     65            frame_delete(fr);
+     66            ASSERT_HALT(striped_frame != NULL, "Striped_frame is NULL");
+     67            
+     68            // Передаем обработчику выше по стеку
+     69            ASSERT_HALT(RXCallback != NULL, "RXCallback is NULL");
+     70            RXCallback(striped_frame);
+     71            
+     72            re_free(eth_h);
+     73            return;
+     74            
+     75          ERR_FRAME:
+     76            frame_delete(fr);
+     77            re_free(eth_h);
+     78            return;
+     79          }
+     80          
+     81          /**
+     82          @brief Создает новый пакет без заголовка ETH_H
+     83          @return указатель на новый frame_s*. NULL - не удалось создать пакет
+     84          */
+     85          static frame_s* strip_header(frame_s *fr)
+     86          {
+     87          }
+                 ^
+Warning[Pe940]: missing return statement at end of non-void function
+          "strip_header"
+          detected during compilation of secondary translation unit
+                    "\\vmware-host\Shared
+                    Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\ethernet.c"
+     88          
+     89          /**
+     90          @brief Подготавливает и отпправляет подтверждение приема пакета
+     91          */
+     92          static void send_ack(ETH_LAY *eth)
+     93          {
+     94           
+     95          }
+     96          
+     97          static bool validate(ETH_LAY *eth)
+     98          {
+     99            return true;
+    100          }
+    101          
+    102          static ETH_LAY* extract_header(frame_s *fr)
+    103          {
+    104            ETH_LAY* eth_h = (ETH_LAY*)re_malloc(ETH_LAY_SIZE);
+    105            ASSERT_HALT(eth_h != NULL, "No memory");
+    106            
+    107            uint8_t len = frame_len(fr);
+    108            ASSERT_HALT(len >= ETH_LAY_SIZE, "Incorrect eth size");
+    109            
+    110            fbuf_s *fb = frame_get_fbuf_head(fr);
+    111            re_memcpy(eth_h, fb->payload, ETH_LAY_SIZE);
+    112            return eth_h;
+    113          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\fbuf.c
       1          /*!
       2          \file Модуль реализует связанные буфера данных
@@ -1273,127 +1394,125 @@
     135             tasksBLOCK = true;
     136             
     137             // Создаем новую задачу
-    138             EA=0;
-    139             LLCTask *new_task = (LLCTask*)re_malloc(sizeof(LLCTask));
-    140             EA=1;
-    141             ASSERT_HALT(new_task !=NULL, "LLC re_malloc for new_task"); 
-    142                
-    143             new_task->TS = fr->meta.TS;
-    144             new_task->CH = fr->meta.CH;
-    145             new_task->fr = fr;
-    146             
-    147            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Add task = %u, CH = %d, TS = %d, OTS = %d. fr = %d\r\n",
-    148                (uint16_t)new_task,new_task->CH, new_task->TS, fr->meta.TS, (uint16_t)fr);
-    149            
-    150             // Если в очереди нет задач, добавим первую
-    151             if (FirstTask == NULL) 
-    152             {
-    153               new_task->next = NULL;
-    154               FirstTask = new_task;
-    155             }
-    156             // Если в очереди были задачи то вставим новую в голову списка
-    157             else 
-    158             {
-    159               new_task->next = FirstTask;
-    160               FirstTask = new_task;  
-    161             }
-    162             
-    163             nbrTasks ++;
-    164             tasksBLOCK = false;
-    165             return true;
-    166          }
-    167          
-    168          /**
-    169          @brief Планировщик задач
-    170          @details Соотносит задачи в очереди и свободные временные слоты MAC уровня.
-    171          При освобождении временных слотов, планировщик устанавливает данные для 
-    172          передачи в MAC.
-    173          @param[in] TS номер текущего временого слота
-    174          */
-    175          static void LLC_Shelduler(uint8_t TS)
-    176          {
-    177            // Если работает функция добавления задачи, то обслуживание очереди не
-    178            // производится. Это может привести к необычным последствиям
-    179            if (tasksBLOCK)
-    180              return;
-    181            
-    182            tasksBLOCK = true;
-    183            // Перебираем попорядку весь список на отправку
-    184            // HeadTask только указатель на первый элемент, сам он не подлежит отправке
-    185            LLCTask *task = FirstTask;
-    186            LLCTask *last = FirstTask;
-    187            LLCTask *next = FirstTask;
-    188            
-    189            while (task != NULL)
-    190            {    
-    191              
-    192              if (MAC_GetTXState(task->TS)) // Занят ли временой слот
-    193              {
-    194                // Если слот занят переходим к следующей задаче
-    195                last = task;
-    196                task = task->next;
-    197                continue; 
-    198              }
+    138             LLCTask *new_task = (LLCTask*)re_malloc(sizeof(LLCTask));
+    139             ASSERT_HALT(new_task !=NULL, "LLC re_malloc for new_task"); 
+    140                
+    141             new_task->TS = fr->meta.TS;
+    142             new_task->CH = fr->meta.CH;
+    143             new_task->fr = fr;
+    144             
+    145            LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Add task = %u, CH = %d, TS = %d, OTS = %d. fr = %d\r\n",
+    146                (uint16_t)new_task,new_task->CH, new_task->TS, fr->meta.TS, (uint16_t)fr);
+    147            
+    148             // Если в очереди нет задач, добавим первую
+    149             if (FirstTask == NULL) 
+    150             {
+    151               new_task->next = NULL;
+    152               FirstTask = new_task;
+    153             }
+    154             // Если в очереди были задачи то вставим новую в голову списка
+    155             else 
+    156             {
+    157               new_task->next = FirstTask;
+    158               FirstTask = new_task;  
+    159             }
+    160             
+    161             nbrTasks ++;
+    162             tasksBLOCK = false;
+    163             return true;
+    164          }
+    165          
+    166          /**
+    167          @brief Планировщик задач
+    168          @details Соотносит задачи в очереди и свободные временные слоты MAC уровня.
+    169          При освобождении временных слотов, планировщик устанавливает данные для 
+    170          передачи в MAC.
+    171          @param[in] TS номер текущего временого слота
+    172          */
+    173          static void LLC_Shelduler(uint8_t TS)
+    174          {
+    175            // Если работает функция добавления задачи, то обслуживание очереди не
+    176            // производится. Это может привести к необычным последствиям
+    177            if (tasksBLOCK)
+    178              return;
+    179            
+    180            tasksBLOCK = true;
+    181            // Перебираем попорядку весь список на отправку
+    182            // HeadTask только указатель на первый элемент, сам он не подлежит отправке
+    183            LLCTask *task = FirstTask;
+    184            LLCTask *last = FirstTask;
+    185            LLCTask *next = FirstTask;
+    186            
+    187            while (task != NULL)
+    188            {    
+    189              
+    190              if (MAC_GetTXState(task->TS)) // Занят ли временой слот
+    191              {
+    192                // Если слот занят переходим к следующей задаче
+    193                last = task;
+    194                task = task->next;
+    195                continue; 
+    196              }
+    197              
+    198              MAC_Send(task->fr, UNICAST_SEND_ATEMPTS);
     199              
-    200              MAC_Send(task->fr, UNICAST_SEND_ATEMPTS);
+    200              next = task->next; // Запомним следующую задачу
     201              
-    202              next = task->next; // Запомним следующую задачу
-    203              
-    204              // Удаляем текущую задачу из списка
-    205              if (task == FirstTask)
-    206              {
-    207              // Удаляемым элементом является указателем на голову
-    208                 FirstTask = next;
-    209                 last = FirstTask;
-    210              }
-    211              else
-    212              {
-    213                // Удаляемым элементом является промежуточный элемент
-    214                last->next = next;
-    215              }
-    216              
-    217              nbrTasks--;
-    218              LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Free task = %u, nbrTasks = %d\r\n",
-    219                  (uint16_t)task, nbrTasks); 
-    220              re_free(task);
-    221              task = next;
-    222            }
-    223            
-    224            tasksBLOCK = false;
-    225          }
-    226          
-    227          /**
-    228          @brief Обработчик заверешния временого слота
-    229          @details Обратный вызов из TIC. Обработчик вызывает планировщик задач очереди
-    230          и передает управление зарегистрированым функциям с помощью LLC_TimeAlloc.
-    231          @param[in] TS номер завершенного временого слота
-    232          */
-    233          static void LLC_SE_HNDL(uint8_t TS)
-    234          {
-    235            LLC_Shelduler(TS);
-    236            LLC_RunTimeAlloc();
-    237          }
-    238          
-    239          static void LLC_RX_HNDL(frame_s *fr)
-    240          {
-    241            ASSERT_HALT(RXCallback !=NULL, "RXCallback func NULL");
-    242            RXCallback(fr);
-    243          }
-    244          
-    245          /**
-    246          @brief Передаем управление зарегистрированным функциям
-    247          */
-    248          static void LLC_RunTimeAlloc(void)
-    249          {
-    250              TimeAllocFunc *next = &HeadAllocFunc;
-    251            // HeadAllocFunc служит только для указания на первый элемент в очереди
-    252            // так что его нужно пропустить и переходить сразу к next
-    253            while (next->next != NULL)
-    254            {
-    255              next->next->fn();
-    256              next = next->next;
-    257            }
-    258          }
+    202              // Удаляем текущую задачу из списка
+    203              if (task == FirstTask)
+    204              {
+    205              // Удаляемым элементом является указателем на голову
+    206                 FirstTask = next;
+    207                 last = FirstTask;
+    208              }
+    209              else
+    210              {
+    211                // Удаляемым элементом является промежуточный элемент
+    212                last->next = next;
+    213              }
+    214              
+    215              nbrTasks--;
+    216              LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Free task = %u, nbrTasks = %d\r\n",
+    217                  (uint16_t)task, nbrTasks); 
+    218              re_free(task);
+    219              task = next;
+    220            }
+    221            
+    222            tasksBLOCK = false;
+    223          }
+    224          
+    225          /**
+    226          @brief Обработчик заверешния временого слота
+    227          @details Обратный вызов из TIC. Обработчик вызывает планировщик задач очереди
+    228          и передает управление зарегистрированым функциям с помощью LLC_TimeAlloc.
+    229          @param[in] TS номер завершенного временого слота
+    230          */
+    231          static void LLC_SE_HNDL(uint8_t TS)
+    232          {
+    233            LLC_Shelduler(TS);
+    234            LLC_RunTimeAlloc();
+    235          }
+    236          
+    237          static void LLC_RX_HNDL(frame_s *fr)
+    238          {
+    239            ASSERT_HALT(RXCallback !=NULL, "RXCallback func NULL");
+    240            RXCallback(fr);
+    241          }
+    242          
+    243          /**
+    244          @brief Передаем управление зарегистрированным функциям
+    245          */
+    246          static void LLC_RunTimeAlloc(void)
+    247          {
+    248              TimeAllocFunc *next = &HeadAllocFunc;
+    249            // HeadAllocFunc служит только для указания на первый элемент в очереди
+    250            // так что его нужно пропустить и переходить сразу к next
+    251            while (next->next != NULL)
+    252            {
+    253              next->next->fn();
+    254              next = next->next;
+    255            }
+    256          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\MAC.c
       1          #include "MAC.h"
       2          #include "frame.h"
@@ -1595,7 +1714,7 @@
     198              return;
     199            
     200            RXCallback(fr);   // Передаем пакет на дальнейшую обработку
-    201            frame_delete(fr); // Удаляем пакет
+    201            // Удаление пакета не наша забота
     202          }
     203          
     204          /**
@@ -1690,51 +1809,65 @@
       1          #include "ioCC2530.h"
       2          #include "stdlib.h"
       3          #include "stdint.h"
-      4          
-      5          void re_free(void* ptr);
-      6          void* re_malloc(size_t size);
-      7          uint16_t heap_ptr(size_t size);
-      8          
-      9          /**
-     10          @brief Возвращает адрес следующего свободного участка памяти
-     11          @detail Функция нужна для оценки использования стека
-     12          @param[in] size размер запрашиваемой области
-     13          @return если памяти нету возвращает 0, иначе адрес свободного участка.
-     14          */
-     15          uint16_t heap_ptr(size_t size)
-     16          {
-     17            uint16_t *heap_ptr;
-     18            heap_ptr = (uint16_t*)re_malloc(size);
-     19            re_free(heap_ptr);
-     20            return (uint16_t)heap_ptr;
-     21          }
-     22          
-     23          /**
-     24          @brief Реентерабельное выделение памяти
-     25          */
-     26          void* re_malloc(size_t size)
-     27          {
-     28            void* ptr;
-     29            unsigned short EA_save = EA;
-     30            
-     31            EA = 0;
-     32            ptr = malloc(size);
-     33            EA = EA_save;
-     34            
-     35            return ptr;
-     36          }
-     37          
-     38          /**
-     39          @brief Реентерабельное освобождение памяти
-     40          */
-     41          void re_free(void* ptr)
-     42          {
+      4          #include "string.h"
+      5          
+      6          void re_free(void* ptr);
+      7          void* re_malloc(size_t size);
+      8          uint16_t heap_ptr(size_t size);
+      9          void re_memcpy(void *dst, const void *src, size_t n);
+     10          
+     11          /**
+     12          @brief Возвращает адрес следующего свободного участка памяти
+     13          @detail Функция нужна для оценки использования стека
+     14          @param[in] size размер запрашиваемой области
+     15          @return если памяти нету возвращает 0, иначе адрес свободного участка.
+     16          */
+     17          uint16_t heap_ptr(size_t size)
+     18          {
+     19            uint16_t *heap_ptr;
+     20            heap_ptr = (uint16_t*)re_malloc(size);
+     21            re_free(heap_ptr);
+     22            return (uint16_t)heap_ptr;
+     23          }
+     24          
+     25          /**
+     26          @brief Реентерабельное копирование памяти
+     27          */
+     28          void re_memcpy(void *dst, const void *src, size_t n)
+     29          {
+     30            unsigned short EA_save = EA;
+     31            
+     32            EA = 0;
+     33            memcpy(dst, src, n);
+     34            EA = EA_save;  
+     35          }
+     36          
+     37          /**
+     38          @brief Реентерабельное выделение памяти
+     39          */
+     40          void* re_malloc(size_t size)
+     41          {
+     42            void* ptr;
      43            unsigned short EA_save = EA;
      44            
      45            EA = 0;
-     46            free(ptr);
+     46            ptr = malloc(size);
      47            EA = EA_save;
-     48          }
+     48            
+     49            return ptr;
+     50          }
+     51          
+     52          /**
+     53          @brief Реентерабельное освобождение памяти
+     54          */
+     55          void re_free(void* ptr)
+     56          {
+     57            unsigned short EA_save = EA;
+     58            
+     59            EA = 0;
+     60            free(ptr);
+     61            EA = EA_save;
+     62          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\NTMR.c
       1          #include "NTMR.h"
       2          #include "stdlib.h"
@@ -2833,239 +2966,240 @@ Warning[Pe550]: variable "timer" was set but never used
      72          {
      73            return &TimeStampTS0;
      74          }
-     75          void TIC_Init(void)
-     76          {    
-     77            // Устанавливаем обработчик прерываний таймера
-     78            NT_SetEventCallback(TIC_HW_Timer_IRQ);
-     79            // Запускаем процесс планировщика
-     80            NT_SetCompare(0); 
-     81            TIC_SetTimer(0);
-     82            TIM_TimeStamp(&TimeStampTS0);
-     83          }
-     84          
-     85          uint32_t TIC_TimeUsFromTS0()
-     86          {
-     87            uint32_t passed;
-     88            TimeStamp_s now;
-     89            TIM_TimeStamp(&now);
-     90            passed = TIM_passedTime(&TimeStampTS0, &now);
-     91            return passed;
-     92          }
-     93          
-     94          void TIC_SetTimer(uint16_t ticks)
-     95          {
-     96            ASSERT_HALT(ticks < MAX_TICKS, "Ticks not in range");
-     97            if (ticks >= MAX_TICKS)
-     98              return ;
-     99            
-    100            NT_SetTime(ticks);
-    101          }
-    102          
-    103          uint16_t TIC_GetTimer(void)
-    104          {
-    105            return NT_GetTime();
-    106          }
-    107          
-    108          bool TIC_SetTXState(uint8_t TS, bool state)
-    109          {
-    110            if (TS>=MAX_TS)
-    111            {
-    112              return false;
-    113            }
-    114            ASSERT_HALT(TS<MAX_TS, "TS not in range");
-    115            
-    116            if (state)
-    117              TSStateTable[TS] |= TS_TX;
-    118            else
-    119              TSStateTable[TS] &= ~TS_TX;
-    120            
-    121            return true;
-    122          }
-    123          
-    124          bool TIC_SetRXState(uint8_t TS, bool state)
-    125          {
-    126            if (TS>=MAX_TS)
-    127            {
-    128              return false;
-    129            }
-    130            ASSERT_HALT(TS<MAX_TS, "TS not in range");
-    131            
-    132            if (state)
-    133              TSStateTable[TS] |= TS_RX;
-    134            else
-    135              TSStateTable[TS] &= ~TS_RX;
-    136            
-    137            return true;
-    138          }
-    139          
-    140          bool TIC_GetTXState(uint8_t TS)
-    141          {
-    142              if (TS>=MAX_TS)
-    143            {
-    144              return false;
-    145            }
-    146            ASSERT_HALT(TS<MAX_TS, "TS not in range");
-    147            
-    148            return (TSStateTable[TS] & TS_TX) ;
-    149          }
-    150          
-    151          bool TIC_GetRXState(uint8_t TS)
-    152          {
-    153              if (TS>=MAX_TS)
-    154            {
-    155              return false;
-    156            }
-    157            ASSERT_HALT(TS<MAX_TS, "TS not in range");
-    158            
-    159            return (TSStateTable[TS] & TS_RX) ;
-    160          }
-    161          
-    162          void TIC_SetRXCallback(void (*fn)(uint8_t TS))
-    163          {
-    164            ASSERT_HALT(fn != NULL, "Fn is NULL");
-    165            RXCallback = fn;
-    166          }
-    167          
-    168          void TIC_SetTXCallback(void (*fn)(uint8_t TS))
-    169          {
-    170            ASSERT_HALT(fn != NULL, "Fn is NULL");
-    171            TXCallback = fn;
-    172          }
-    173          
-    174          void TIC_SetSECallback(void (*fn)(uint8_t TS))
-    175          {
-    176            ASSERT_HALT(fn != NULL, "Fn is NULL");
-    177            SECallback = fn;
-    178          }
-    179          
-    180          uint32_t TIC_GetUptime(void)
-    181          {
-    182            return NODE_UPTIME;
-    183          }
-    184          
-    185          uint32_t TIC_GetRTC(void)
-    186          {
-    187            return NODE_RTC;
-    188          }
-    189          
-    190          bool TIC_SetRTC(uint32_t RTC)
-    191          {
-    192            if (RTC >= DAILY_SEC)
-    193              return false;
-    194            
-    195            NODE_RTC = RTC;
-    196            return true;
-    197          }
-    198          
-    199          static uint8_t TIC_getCurrentTS(uint16_t ticks)
-    200          {
-    201            //uint16_t ticks = nt->NT_GetTime();
-    202            // Вычисляем количество целых циклов
-    203            uint8_t full_slot_num = ticks/FULL_SLOT;
-    204            
-    205            // Вычисляем остаток от деления. Остаток - смещение внутри
-    206            // временного слота.
-    207            uint16_t time_remainder = ticks % FULL_SLOT; 
-    208            // Если значение внутри интервала 0..TS_ACTIVE. 
-    209            if (time_remainder < TS_ACTIVE)
-    210              return full_slot_num;
-    211            
-    212            return NO_TIME_SLOT;
-    213          }
-    214          
-    215          static inline void incrementTS(uint8_t *TS)
-    216          {
-    217            // Выбираем следующий тайм слот
-    218            (*TS)++;
-    219            if (*TS >= MAX_TS)
-    220              *TS = 0;
-    221          }
-    222          
-    223          static inline void set_capture_time(uint8_t TS)
-    224          {
-    225            uint16_t ct = FULL_SLOT*(uint16_t)TS;
-    226            
-    227            LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Set compare = %d, TS = %d \r\n", ct, TS);
-    228            // Установка прерывания на нужный слот
-    229            NT_SetCompare(FULL_SLOT*(uint16_t)TS);
-    230          }
-    231          
-    232          static void TIC_TDMAShelduler(uint8_t TS)
-    233          {
-    234            // Устанавливает прерывание на ближайший активный слот
-    235            // Если слот 0 ближе, то на него. 
-    236            // Cлот - обработка секундных таймеров 
-    237            
-    238            // Ищем следующий активный слот или слот 0
-    239            incrementTS(&TS);
-    240            while ((TS != 0) && !TSStateTable[TS])  
-    241              incrementTS(&TS); 
-    242            
-    243            set_capture_time(TS);
-    244          }
-    245          
-    246          static inline void Callback_execution(void (*fn)(uint8_t TS), uint8_t TS)
-    247          {
-    248            // Помошник вызова функций. Упрощает проверки
-    249            ASSERT_HALT(fn != NULL, "Callback is NULL");
-    250            if (fn == NULL)
-    251              return;
-    252            fn(TS);
-    253          }
-    254          
-    255          static void TIC_HW_Timer_IRQ(uint16_t ticks)
-    256          {
-    257            // TODO Обработка TS=0xFF
-    258            // Номер текущего слота 
-    259            uint8_t c_TS = TIC_getCurrentTS(ticks);
-    260            
-    261            // Обновляем часы NODE_RTC и NODE_UPTIME
-    262            if (c_TS == 0)
-    263            {
-    264              TIM_TimeStamp(&TimeStampTS0); // Первым делом обновим отметку точного времени
-    265              clocks_update();
-    266            }
-    267            // Если что то пошло не так и мы промахнулись мимо слота
-    268            // запускаем планировщик заново
-    269            if (c_TS == NO_TIME_SLOT)
-    270            {
-    271              TIC_TDMAShelduler(c_TS);
-    272              LOG(MSG_ON | MSG_INFO | MSG_TRACE, "TS = 255 \r\n");
-    273              return;
-    274            }
-    275              
-    276            // Вызываем один из указанных обработчиков.
-    277            // Передача имеет приоритет над приемом.
-    278            if (TSStateTable[c_TS] & TS_TX) 
-    279              Callback_execution(TXCallback, c_TS);
-    280            else if (TSStateTable[c_TS] & TS_RX)
-    281              Callback_execution(RXCallback, c_TS);
-    282              
-    283            // Вызываем обработчик завершения слота
-    284            Callback_execution(SECallback, c_TS);
-    285            
-    286            // Запускаем планировщик таймера
-    287            TIC_TDMAShelduler(c_TS);
-    288          }
-    289          
-    290          static void clocks_update(void)
-    291          {
-    292            NODE_UPTIME++;
-    293            NODE_RTC++;
-    294            NODE_NONCE++;
-    295            if (NODE_RTC >= DAILY_SEC)
-    296              NODE_RTC = 0;
-    297          }
-    298          
-    299          void TIC_SetNonce(uint32_t nonce)
-    300          {
-    301            NODE_NONCE = nonce;
-    302          }
-    303          
-    304          uint32_t TIC_GetNonce(void)
-    305          {
-    306            return NODE_NONCE;
-    307          }
+     75          
+     76          void TIC_Init(void)
+     77          {    
+     78            // Устанавливаем обработчик прерываний таймера
+     79            NT_SetEventCallback(TIC_HW_Timer_IRQ);
+     80            // Запускаем процесс планировщика
+     81            NT_SetCompare(0); 
+     82            TIC_SetTimer(0);
+     83            TIM_TimeStamp(&TimeStampTS0);
+     84          }
+     85          
+     86          uint32_t TIC_TimeUsFromTS0()
+     87          {
+     88            uint32_t passed;
+     89            TimeStamp_s now;
+     90            TIM_TimeStamp(&now);
+     91            passed = TIM_passedTime(&TimeStampTS0, &now);
+     92            return passed;
+     93          }
+     94          
+     95          void TIC_SetTimer(uint16_t ticks)
+     96          {
+     97            ASSERT_HALT(ticks < MAX_TICKS, "Ticks not in range");
+     98            if (ticks >= MAX_TICKS)
+     99              return ;
+    100            
+    101            NT_SetTime(ticks);
+    102          }
+    103          
+    104          uint16_t TIC_GetTimer(void)
+    105          {
+    106            return NT_GetTime();
+    107          }
+    108          
+    109          bool TIC_SetTXState(uint8_t TS, bool state)
+    110          {
+    111            if (TS>=MAX_TS)
+    112            {
+    113              return false;
+    114            }
+    115            ASSERT_HALT(TS<MAX_TS, "TS not in range");
+    116            
+    117            if (state)
+    118              TSStateTable[TS] |= TS_TX;
+    119            else
+    120              TSStateTable[TS] &= ~TS_TX;
+    121            
+    122            return true;
+    123          }
+    124          
+    125          bool TIC_SetRXState(uint8_t TS, bool state)
+    126          {
+    127            if (TS>=MAX_TS)
+    128            {
+    129              return false;
+    130            }
+    131            ASSERT_HALT(TS<MAX_TS, "TS not in range");
+    132            
+    133            if (state)
+    134              TSStateTable[TS] |= TS_RX;
+    135            else
+    136              TSStateTable[TS] &= ~TS_RX;
+    137            
+    138            return true;
+    139          }
+    140          
+    141          bool TIC_GetTXState(uint8_t TS)
+    142          {
+    143              if (TS>=MAX_TS)
+    144            {
+    145              return false;
+    146            }
+    147            ASSERT_HALT(TS<MAX_TS, "TS not in range");
+    148            
+    149            return (TSStateTable[TS] & TS_TX) ;
+    150          }
+    151          
+    152          bool TIC_GetRXState(uint8_t TS)
+    153          {
+    154              if (TS>=MAX_TS)
+    155            {
+    156              return false;
+    157            }
+    158            ASSERT_HALT(TS<MAX_TS, "TS not in range");
+    159            
+    160            return (TSStateTable[TS] & TS_RX) ;
+    161          }
+    162          
+    163          void TIC_SetRXCallback(void (*fn)(uint8_t TS))
+    164          {
+    165            ASSERT_HALT(fn != NULL, "Fn is NULL");
+    166            RXCallback = fn;
+    167          }
+    168          
+    169          void TIC_SetTXCallback(void (*fn)(uint8_t TS))
+    170          {
+    171            ASSERT_HALT(fn != NULL, "Fn is NULL");
+    172            TXCallback = fn;
+    173          }
+    174          
+    175          void TIC_SetSECallback(void (*fn)(uint8_t TS))
+    176          {
+    177            ASSERT_HALT(fn != NULL, "Fn is NULL");
+    178            SECallback = fn;
+    179          }
+    180          
+    181          uint32_t TIC_GetUptime(void)
+    182          {
+    183            return NODE_UPTIME;
+    184          }
+    185          
+    186          uint32_t TIC_GetRTC(void)
+    187          {
+    188            return NODE_RTC;
+    189          }
+    190          
+    191          bool TIC_SetRTC(uint32_t RTC)
+    192          {
+    193            if (RTC >= DAILY_SEC)
+    194              return false;
+    195            
+    196            NODE_RTC = RTC;
+    197            return true;
+    198          }
+    199          
+    200          static uint8_t TIC_getCurrentTS(uint16_t ticks)
+    201          {
+    202            //uint16_t ticks = nt->NT_GetTime();
+    203            // Вычисляем количество целых циклов
+    204            uint8_t full_slot_num = ticks/FULL_SLOT;
+    205            
+    206            // Вычисляем остаток от деления. Остаток - смещение внутри
+    207            // временного слота.
+    208            uint16_t time_remainder = ticks % FULL_SLOT; 
+    209            // Если значение внутри интервала 0..TS_ACTIVE. 
+    210            if (time_remainder < TS_ACTIVE)
+    211              return full_slot_num;
+    212            
+    213            return NO_TIME_SLOT;
+    214          }
+    215          
+    216          static inline void incrementTS(uint8_t *TS)
+    217          {
+    218            // Выбираем следующий тайм слот
+    219            (*TS)++;
+    220            if (*TS >= MAX_TS)
+    221              *TS = 0;
+    222          }
+    223          
+    224          static inline void set_capture_time(uint8_t TS)
+    225          {
+    226            uint16_t ct = FULL_SLOT*(uint16_t)TS;
+    227            
+    228            LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Set compare = %d, TS = %d \r\n", ct, TS);
+    229            // Установка прерывания на нужный слот
+    230            NT_SetCompare(FULL_SLOT*(uint16_t)TS);
+    231          }
+    232          
+    233          static void TIC_TDMAShelduler(uint8_t TS)
+    234          {
+    235            // Устанавливает прерывание на ближайший активный слот
+    236            // Если слот 0 ближе, то на него. 
+    237            // Cлот - обработка секундных таймеров 
+    238            
+    239            // Ищем следующий активный слот или слот 0
+    240            incrementTS(&TS);
+    241            while ((TS != 0) && !TSStateTable[TS])  
+    242              incrementTS(&TS); 
+    243            
+    244            set_capture_time(TS);
+    245          }
+    246          
+    247          static inline void Callback_execution(void (*fn)(uint8_t TS), uint8_t TS)
+    248          {
+    249            // Помошник вызова функций. Упрощает проверки
+    250            ASSERT_HALT(fn != NULL, "Callback is NULL");
+    251            if (fn == NULL)
+    252              return;
+    253            fn(TS);
+    254          }
+    255          
+    256          static void TIC_HW_Timer_IRQ(uint16_t ticks)
+    257          {
+    258            // TODO Обработка TS=0xFF
+    259            // Номер текущего слота 
+    260            uint8_t c_TS = TIC_getCurrentTS(ticks);
+    261            
+    262            // Обновляем часы NODE_RTC и NODE_UPTIME
+    263            if (c_TS == 0)
+    264            {
+    265              TIM_TimeStamp(&TimeStampTS0); // Первым делом обновим отметку точного времени
+    266              clocks_update();
+    267            }
+    268            // Если что то пошло не так и мы промахнулись мимо слота
+    269            // запускаем планировщик заново
+    270            if (c_TS == NO_TIME_SLOT)
+    271            {
+    272              TIC_TDMAShelduler(c_TS);
+    273              LOG(MSG_ON | MSG_INFO | MSG_TRACE, "TS = 255 \r\n");
+    274              return;
+    275            }
+    276              
+    277            // Вызываем один из указанных обработчиков.
+    278            // Передача имеет приоритет над приемом.
+    279            if (TSStateTable[c_TS] & TS_TX) 
+    280              Callback_execution(TXCallback, c_TS);
+    281            else if (TSStateTable[c_TS] & TS_RX)
+    282              Callback_execution(RXCallback, c_TS);
+    283              
+    284            // Вызываем обработчик завершения слота
+    285            Callback_execution(SECallback, c_TS);
+    286            
+    287            // Запускаем планировщик таймера
+    288            TIC_TDMAShelduler(c_TS);
+    289          }
+    290          
+    291          static void clocks_update(void)
+    292          {
+    293            NODE_UPTIME++;
+    294            NODE_RTC++;
+    295            NODE_NONCE++;
+    296            if (NODE_RTC >= DAILY_SEC)
+    297              NODE_RTC = 0;
+    298          }
+    299          
+    300          void TIC_SetNonce(uint32_t nonce)
+    301          {
+    302            NODE_NONCE = nonce;
+    303          }
+    304          
+    305          uint32_t TIC_GetNonce(void)
+    306          {
+    307            return NODE_NONCE;
+    308          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest.c
       1          #include "utest_suite.h"
       2          #include "nwdebuger.h"
@@ -3779,7 +3913,7 @@ Warning[Pe550]: variable "timer" was set but never used
      54            uint16_t fr_size = sizeof(frame_s);
      55            uint16_t bf_size = frame_len(fr);
      56            uint16_t HEAP_PTR_MAX = 0;
-     57            uint16_t *heap_ptr;
+     57            uint16_t heap;
      58            uint8_t nbr_bufs, nbr_frames;
                            ^
 Warning[Pe550]: variable "nbr_bufs" was set but never used
@@ -3806,99 +3940,99 @@ Warning[Pe550]: variable "nbr_bufs" was set but never used
      68              nbr_frames = frame_getCount();
      69              if (LLC_GetTaskLen() < 20)
      70              {
-     71                    fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
-     72                  LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Create frame = %d.\r\n", (uint16_t)fr);    
-     73                    LLC_AddTask(fr);
-     74                    TS ++;
-     75                    if (TS == 49)
-     76                      TS = 0;
+     71                fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
+     72                LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Create frame = %d.\r\n", (uint16_t)fr);    
+     73                LLC_AddTask(fr);
+     74                TS ++;
+     75                if (TS == 49)
+     76                TS = 0;
      77              }   
      78              if (*ptr_stack != 0xcd) // Контроль переполнения стека
      79                while(1);
-     80              heap_ptr = (uint16_t*)re_malloc(1);
-     81              if ((uint16_t)heap_ptr > HEAP_PTR_MAX)
-     82              {
-     83                HEAP_PTR_MAX = (uint16_t)heap_ptr;
-     84                LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-     85                "HEAP_PTR = %d\r\n", HEAP_PTR_MAX );
-     86              }
-     87              re_free(heap_ptr);
+     80             
+     81              heap =  heap_ptr(10);
+     82              if (heap > HEAP_PTR_MAX)
+     83              {
+     84                HEAP_PTR_MAX = heap;
+     85                LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
+     86                "HEAP_PTR = %d\r\n", HEAP_PTR_MAX );
+     87              }
      88            }
-     89            
-     90          }
-     91          
-     92          static void find_mem_problem(void)
-     93          {
-     94            LLC_Init();
-     95            LLC_TimeAlloc(timealloc);
-     96            EA = 1;
-     97            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
-     98            
-     99            frame_s *fr;
-    100            
-    101            uint16_t TS = 0;
-    102            uint8_t *ptr_stack = (uint8_t*)0x100;
-    103            
-    104            uint16_t HEAP_PTR_MAX = 0;
+     89          }
+     90          
+     91          static void find_mem_problem(void)
+     92          {
+     93            LLC_Init();
+     94            LLC_TimeAlloc(timealloc);
+     95            EA = 1;
+     96            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
+     97            
+     98            frame_s *fr;
+     99            
+    100            uint16_t TS = 0;
+    101            uint8_t *ptr_stack = (uint8_t*)0x100;
+    102            
+    103            uint16_t HEAP_PTR_MAX = 0;
                             ^
 Warning[Pe177]: variable "HEAP_PTR_MAX" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
-    105            uint16_t *heap_ptr;
+    104            uint16_t *heap_ptr;
                              ^
 Warning[Pe177]: variable "heap_ptr" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
-    106            
-    107            while(true)
-    108            {  
-    109              if (fbuf_getCount() == 0)
-    110              {
-    111                show_heap_ptr();
-    112                for (uint8_t i = 0; i < 20 ; i++)
-    113                {
-    114                    fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
-    115                    TS++;
-    116                    if (TS == 49)
-    117                      TS = 0;
-    118                    LLC_AddTask(fr);
-    119                }
-    120              }   
-    121              
-    122              if (*ptr_stack != 0xcd) // Контроль переполнения стека
-    123                while(1);
-    124            }
+    105            
+    106            while(true)
+    107            {  
+    108              if (fbuf_getCount() == 0)
+    109              {
+    110                show_heap_ptr();
+    111                for (uint8_t i = 0; i < 20 ; i++)
+    112                {
+    113                    fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
+    114                    TS++;
+    115                    if (TS == 49)
+    116                      TS = 0;
+    117                    LLC_AddTask(fr);
+    118                }
+    119              }   
+    120              
+    121              if (*ptr_stack != 0xcd) // Контроль переполнения стека
+    122                while(1);
+    123            }
+    124            
     125            
-    126            
-    127          }
-    128          
-    129          // Тест на максимальное количество фреймов 
-    130          static void test_mem(void)
-    131          {
-    132            frame_s *FR[150];
+    126          }
+    127          
+    128          // Тест на максимальное количество фреймов 
+    129          static void test_mem(void)
+    130          {
+    131            frame_s *FR[150];
                             ^
 Warning[Pe550]: variable "FR" was set but never used
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
-    133            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9}; 
-    134            
-    135            for (uint8_t i = 0; i < 105; i++) 
-    136              FR[i] = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, 5);
-    137          }
+    132            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9}; 
+    133            
+    134            for (uint8_t i = 0; i < 105; i++) 
+    135              FR[i] = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, 5);
+    136          }
+    137          
     138          
-    139          
-    140          void suite_LLC_HW(void)
-    141          {
-    142           // umsg_line("LLC module");
-    143            
-    144            // Устанавливает и поддерживает в очереде 10 пакетов.
-    145            // Мигает зеленым светодиодом. В TS0 включается, в TS5 выключаеться
+    139          void suite_LLC_HW(void)
+    140          {
+    141           // umsg_line("LLC module");
+    142            
+    143            // Устанавливает и поддерживает в очереди 20 пакетов.
+    144            // Для приема пакетов испольуеться второй модуль с прошивкой RadioRecvTest1
+    145            test_create(); 
     146           // test_mem();
     147           // find_mem_problem();
-    148            test_create();  
+    148             
     149          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_MAC.c
       1          #include "utest_suite.h"
@@ -4262,7 +4396,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
 
   static void find_mem_problem(void)
               ^
-"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",92  Warning[Pe177]: 
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",91  Warning[Pe177]: 
           function "find_mem_problem" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
@@ -4270,7 +4404,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
 
   static void test_mem(void)
               ^
-"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",130  Warning[Pe177]: 
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",129  Warning[Pe177]: 
           function "test_mem" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
@@ -4601,14 +4735,29 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     40   -> TIM_TimeStamp
         0     40   -> TIM_delay
         0     40   -> TIM_passedTime
-      0     54   Interval
-      0     52   LED
-      1     58   LLC_AddTask
+      2      0   ETH_Init
+        2      0   -> LLC_SetRXCallback
+      0     18   ETH_RX_HNDL
         0     14   -> STACK_FAILURE
+        0     14   -> extract_header
+        0     14   -> frame_delete
         0     14   -> printf
         0     18   -> printf
-        0     24   -> printf
-        0     14   -> re_malloc
+        0     14   -> re_free
+        0     14   -> send_ack
+        0     14   -> strip_header
+        0     14   -> validate
+      0     14   ETH_Set_RXCallback
+        0     10   -> STACK_FAILURE
+        0     10   -> printf
+        0     14   -> printf
+      0     54   Interval
+      0     52   LED
+      1     50   LLC_AddTask
+        0     12   -> STACK_FAILURE
+        0     12   -> printf
+        0     16   -> printf
+        0     12   -> re_malloc
       2     34   LLC_GetTaskLen
       2     34   LLC_Init
         2      0   -> MAC_Init
@@ -4674,7 +4823,6 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     12   -> RI_Receive
         0     12   -> RI_SetChannel
         0     12   -> STACK_FAILURE
-        0     12   -> frame_delete
         0     12   -> printf
         0     16   -> printf
       1     42   MAC_Send
@@ -4885,6 +5033,10 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       2     34   calcCompareTime
         0     22   -> ReadTimer
       0     24   clocks_update
+      0     12   delete_test
+        0     12   -> fbuf_create
+        0     12   -> fbuf_delete
+        0     12   -> umsg
       0     26   delete_test
         0     26   -> fbuf_create
         0     26   -> fbuf_delete
@@ -4892,10 +5044,14 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     26   -> frame_delete
         0     26   -> frame_insert_head
         0     26   -> umsg
-      0     12   delete_test
-        0     12   -> fbuf_create
-        0     12   -> fbuf_delete
-        0     12   -> umsg
+      0     34   extract_header
+        0     16   -> STACK_FAILURE
+        0     16   -> frame_get_fbuf_head
+        0     16   -> frame_len
+        0     16   -> printf
+        0     20   -> printf
+        0     16   -> re_malloc
+        0     18   -> re_memcpy
       2     16   fbuf_chain
       1    170   fbuf_create
         0     16   -> STACK_FAILURE
@@ -4943,7 +5099,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     18   -> frame_insert_head
       2     14   getMallocSize
       2      9   getRNDByte
-      0     12   heap_ptr
+      0     46   heap_ptr
         0     12   -> re_free
         0     12   -> re_malloc
       0      0   heap_size
@@ -5026,9 +5182,12 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     10   -> free
       0     60   re_malloc
         0     14   -> malloc
+      0     34   re_memcpy
+        0     16   -> memcpy
       0     18   readRandom
         0      9   -> bits_count
         0      9   -> getRNDByte
+      0     14   send_ack
       1     16   setFreq
         0     11   -> STACK_FAILURE
         0     11   -> printf
@@ -5054,6 +5213,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0    150   -> one_speed_test
         0    150   -> printf
         0    154   -> printf
+      0     14   strip_header
       0      0   stub_se
       2      0   suite_Frames
         2      0   -> umsg_line
@@ -5132,6 +5292,10 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     26   -> frame_create
         0     26   -> frame_insert_head
         0     30   -> printf
+      0     10   test_create
+        0     10   -> fbuf_create
+        0     10   -> fbuf_delete
+        0     10   -> umsg
       1     40   test_create
         0     34   -> LLC_AddTask
         0     34   -> LLC_GetTaskLen
@@ -5142,15 +5306,10 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     34   -> frame_getCount
         0     34   -> frame_len
         0     34   -> getFrame
+        0     34   -> heap_ptr
         0     36   -> printf
         0     38   -> printf
         0     40   -> printf
-        0     34   -> re_free
-        0     34   -> re_malloc
-      0     10   test_create
-        0     10   -> fbuf_create
-        0     10   -> fbuf_delete
-        0     10   -> umsg
       0     27   test_frame_merge
         0     25   -> fbuf_create
         0     25   -> frame_create
@@ -5197,6 +5356,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         2      2   -> printf
         2      0   -> umsg_line
       0      0   utestSigTraceInit
+      0     14   validate
 
 
    Segment part sizes:
@@ -5213,6 +5373,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       17  ?<Constant "*ASSERT* %s:%d->">_4
       17  ?<Constant "*ASSERT* %s:%d->">_5
       17  ?<Constant "*ASSERT* %s:%d->">_6
+      17  ?<Constant "*ASSERT* %s:%d->">_7
       19  ?<Constant "*LOGGER* %s:%d -> ">
       19  ?<Constant "*LOGGER* %s:%d -> ">_1
       19  ?<Constant "*LOGGER* %s:%d -> ">_2
@@ -5220,7 +5381,6 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       19  ?<Constant "*LOGGER* %s:%d -> ">_4
       19  ?<Constant "*LOGGER* %s:%d -> ">_5
       19  ?<Constant "*LOGGER* %s:%d -> ">_6
-      19  ?<Constant "*LOGGER* %s:%d -> ">_7
        9  ?<Constant "*fr null">
       27  ?<Constant ".Program execution ha...">
       27  ?<Constant ".Program execution ha...">_1
@@ -5229,8 +5389,8 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       27  ?<Constant ".Program execution ha...">_4
       27  ?<Constant ".Program execution ha...">_5
       27  ?<Constant ".Program execution ha...">_6
+      27  ?<Constant ".Program execution ha...">_7
       10  ?<Constant "0123456789">
-      53  ?<Constant "Add task = %u, CH = %...">
       13  ?<Constant "Assert fails">
       13  ?<Constant "Assert fails">_1
       13  ?<Constant "Assert fails">_2
@@ -5238,6 +5398,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       13  ?<Constant "Assert fails">_4
       13  ?<Constant "Assert fails">_5
       13  ?<Constant "Assert fails">_6
+      13  ?<Constant "Assert fails">_7
       30  ?<Constant "CCM coder corrupt dat...">
       29  ?<Constant "CCM coder corrupt key...">
       29  ?<Constant "CCM coder corrupt mic...">
@@ -5267,6 +5428,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       46  ?<Constant "Hello worldHello worl...">
       13  ?<Constant "Hello world\n">
       13  ?<Constant "Incorrect TS">
+      19  ?<Constant "Incorrect eth size">
       20  ?<Constant "Incorrect fbuf type">
       24  ?<Constant "Incorrect radio channel">
       16  ?<Constant "Incorrect ticks">
@@ -5283,20 +5445,24 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       42  ?<Constant "Module: %-15s Name: %...">
        7  ?<Constant "NTMR.c">
       23  ?<Constant "NULL pointer not allow">
+      23  ?<Constant "NULL pointer not allow">_1
        6  ?<Constant "No fb">
        6  ?<Constant "No fr">
       10  ?<Constant "No memory">
       10  ?<Constant "No memory">_1
+      10  ?<Constant "No memory">_2
        7  ?<Constant "PASSED">
       13  ?<Constant "PASSED: %d\r\n">
       13  ?<Constant "RADIO module">
        8  ?<Constant "RADIO.c">
       21  ?<Constant "RXCallback func NULL">
+      19  ?<Constant "RXCallback is NULL">
       40  ?<Constant "SEND IN SEND_TIME 100...">
       34  ?<Constant "SEND SPEED TEST WITH ...">
       37  ?<Constant "SEND SPEED TEST WITHO...">
       40  ?<Constant "String 1 len = %d. Pr...">
       41  ?<Constant "String 2 len = %d. Pr...">
+      22  ?<Constant "Striped_frame is NULL">
        6  ?<Constant "TIC.c">
       30  ?<Constant "TIM_passedTimeNs meas...">
       12  ?<Constant "TS = 255 \r\n">
@@ -5320,6 +5486,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       17  ?<Constant "delete test. fb2">
       17  ?<Constant "delete test. fb3">
       17  ?<Constant "delete test. fb4">
+      11  ?<Constant "ethernet.c">
       24  ?<Constant "fbuf FB_ETH_LAY created">
       23  ?<Constant "fbuf FB_ETH_LAY lenght">
       23  ?<Constant "fbuf FB_IP_LAY created">
@@ -5333,6 +5500,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       12  ?<Constant "fbuf_delete">
        8  ?<Constant "fr NULL">
        8  ?<Constant "fr NULL">_1
+      11  ?<Constant "fr is NULL">
        6  ?<Constant "frame">
        8  ?<Constant "frame.c">
       15  ?<Constant "frame_len calc">
@@ -5381,6 +5549,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       17  ?<Initializer for <Constant "*ASSERT* %s:%d->"_4
       17  ?<Initializer for <Constant "*ASSERT* %s:%d->"_5
       17  ?<Initializer for <Constant "*ASSERT* %s:%d->"_6
+      17  ?<Initializer for <Constant "*ASSERT* %s:%d->"_7
       19  ?<Initializer for <Constant "*LOGGER* %s:%d ->
       19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_1
       19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_2
@@ -5388,7 +5557,6 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_4
       19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_5
       19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_6
-      19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_7
        9  ?<Initializer for <Constant "*fr null">>
       27  ?<Initializer for <Constant ".Program executio
       27  ?<Initializer for <Constant ".Program executio_1
@@ -5397,8 +5565,8 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       27  ?<Initializer for <Constant ".Program executio_4
       27  ?<Initializer for <Constant ".Program executio_5
       27  ?<Initializer for <Constant ".Program executio_6
+      27  ?<Initializer for <Constant ".Program executio_7
       10  ?<Initializer for <Constant "0123456789">>
-      53  ?<Initializer for <Constant "Add task = %u, CH
       13  ?<Initializer for <Constant "Assert fails">>
       13  ?<Initializer for <Constant "Assert fails">>_1
       13  ?<Initializer for <Constant "Assert fails">>_2
@@ -5406,6 +5574,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       13  ?<Initializer for <Constant "Assert fails">>_4
       13  ?<Initializer for <Constant "Assert fails">>_5
       13  ?<Initializer for <Constant "Assert fails">>_6
+      13  ?<Initializer for <Constant "Assert fails">>_7
       30  ?<Initializer for <Constant "CCM coder corrupt
       29  ?<Initializer for <Constant "CCM coder corrupt_1
       31  ?<Initializer for <Constant "CCM coder corrupt_2
@@ -5435,6 +5604,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       46  ?<Initializer for <Constant "Hello worldHello
       13  ?<Initializer for <Constant "Hello world\n">>
       13  ?<Initializer for <Constant "Incorrect TS">>
+      19  ?<Initializer for <Constant "Incorrect eth siz
       20  ?<Initializer for <Constant "Incorrect fbuf ty
       24  ?<Initializer for <Constant "Incorrect radio c
       16  ?<Initializer for <Constant "Incorrect ticks">
@@ -5451,20 +5621,24 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       42  ?<Initializer for <Constant "Module: %-15s Nam
        7  ?<Initializer for <Constant "NTMR.c">>
       23  ?<Initializer for <Constant "NULL pointer not
+      23  ?<Initializer for <Constant "NULL pointer not _1
        6  ?<Initializer for <Constant "No fb">>
        6  ?<Initializer for <Constant "No fr">>
       10  ?<Initializer for <Constant "No memory">>
       10  ?<Initializer for <Constant "No memory">>_1
+      10  ?<Initializer for <Constant "No memory">>_2
        7  ?<Initializer for <Constant "PASSED">>
       13  ?<Initializer for <Constant "PASSED: %d\r\n">>
       13  ?<Initializer for <Constant "RADIO module">>
        8  ?<Initializer for <Constant "RADIO.c">>
       21  ?<Initializer for <Constant "RXCallback func N
+      19  ?<Initializer for <Constant "RXCallback is NUL
       40  ?<Initializer for <Constant "SEND IN SEND_TIME
       34  ?<Initializer for <Constant "SEND SPEED TEST W
       37  ?<Initializer for <Constant "SEND SPEED TEST W_1
       40  ?<Initializer for <Constant "String 1 len = %d
       41  ?<Initializer for <Constant "String 2 len = %d
+      22  ?<Initializer for <Constant "Striped_frame is
        6  ?<Initializer for <Constant "TIC.c">>
       30  ?<Initializer for <Constant "TIM_passedTimeNs
       12  ?<Initializer for <Constant "TS = 255 \r\n">>
@@ -5488,6 +5662,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       17  ?<Initializer for <Constant "delete test. fb2"
       17  ?<Initializer for <Constant "delete test. fb3"
       17  ?<Initializer for <Constant "delete test. fb4"
+      11  ?<Initializer for <Constant "ethernet.c">>
       24  ?<Initializer for <Constant "fbuf FB_ETH_LAY c
       23  ?<Initializer for <Constant "fbuf FB_ETH_LAY l
       23  ?<Initializer for <Constant "fbuf FB_IP_LAY cr
@@ -5501,6 +5676,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       12  ?<Initializer for <Constant "fbuf_delete">>
        8  ?<Initializer for <Constant "fr NULL">>
        8  ?<Initializer for <Constant "fr NULL">>_1
+      11  ?<Initializer for <Constant "fr is NULL">>
        6  ?<Initializer for <Constant "frame">>
        8  ?<Initializer for <Constant "frame.c">>
       15  ?<Initializer for <Constant "frame_len calc">>
@@ -5592,6 +5768,12 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
      147  DelayCalibrate
        6  DelayCalibrate::?relay
        1  ENCCS
+      28  ETH_Init
+       6  ETH_Init::?relay
+     322  ETH_RX_HNDL
+       6  ETH_RX_HNDL::?relay
+      81  ETH_Set_RXCallback
+       6  ETH_Set_RXCallback::?relay
        2  EventCallback
        2  FirstTask
        4  HeadAllocFunc
@@ -5603,7 +5785,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       16  KEY
       37  LED
        6  LED::?relay
-     456  LLC_AddTask
+     314  LLC_AddTask
        6  LLC_AddTask::?relay
       16  LLC_GetTaskLen
        6  LLC_GetTaskLen::?relay
@@ -5638,7 +5820,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  MAC_Init::?relay
      165  MAC_OpenRXSlot
        6  MAC_OpenRXSlot::?relay
-     159  MAC_RX_HNDL
+     152  MAC_RX_HNDL
        6  MAC_RX_HNDL::?relay
      338  MAC_Send
        6  MAC_Send::?relay
@@ -5710,6 +5892,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  RI_setKEY::?relay
        7  RXC
        6  RXC::?relay
+       2  RXCallback
        2  RXCallback
        2  RXCallback
        2  RXCallback
@@ -5844,6 +6027,8 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
      506  delete_test
        6  delete_test::?relay
        6  delete_test::?relay
+     217  extract_header
+       6  extract_header::?relay
       20  fbuf_chain
        6  fbuf_chain::?relay
      346  fbuf_create
@@ -5928,9 +6113,13 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  re_free::?relay
       49  re_malloc
        6  re_malloc::?relay
+      65  re_memcpy
+       6  re_memcpy::?relay
       54  readRandom
        6  readRandom::?relay
        4  ret_val
+       3  send_ack
+       6  send_ack::?relay
      121  setFreq
        6  setFreq::?relay
       67  set_capture_time
@@ -5939,6 +6128,8 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  single_enc_dec_test::?relay
      840  speed_test
        6  speed_test::?relay
+       3  strip_header
+       6  strip_header::?relay
        3  stub_se
        6  stub_se::?relay
       18  suite_Frames
@@ -5979,7 +6170,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
      215  test_TS_Send
        6  test_TS_Send::?relay
      244  test_create
-     434  test_create
+     424  test_create
        6  test_create::?relay
        6  test_create::?relay
      143  test_frame_merge
@@ -6004,21 +6195,23 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  utestSigTraceInit::?relay
        4  utest_summary
        4  val
+       4  validate
+       6  validate::?relay
 
  
- 22 403 bytes in segment BANKED_CODE
-  1 056 bytes in segment BANK_RELAYS
+ 22 967 bytes in segment BANKED_CODE
+  1 104 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
      60 bytes in segment NEAR_CODE
      35 bytes in segment SFR_AN
-  3 266 bytes in segment XDATA_I
-  3 266 bytes in segment XDATA_ID
-    694 bytes in segment XDATA_Z
+  3 366 bytes in segment XDATA_I
+  3 366 bytes in segment XDATA_ID
+    696 bytes in segment XDATA_Z
  
-  4 296 bytes of CODE     memory (+ 89 bytes shared)
+  4 444 bytes of CODE     memory (+ 89 bytes shared)
       0 bytes of DATA     memory (+ 35 bytes shared)
- 22 359 bytes of HUGECODE memory (+ 44 bytes shared)
-  3 892 bytes of XDATA    memory (+ 68 bytes shared)
+ 22 923 bytes of HUGECODE memory (+ 44 bytes shared)
+  3 994 bytes of XDATA    memory (+ 68 bytes shared)
 
 Errors: none
-Warnings: 14
+Warnings: 15
