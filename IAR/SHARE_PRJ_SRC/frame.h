@@ -1,8 +1,6 @@
 #pragma once
 #include "stdbool.h"
 #include "stdint.h"
-#include "fbuf.h"
-#include "delays.h"
 
 /**
 @brief Методики передачи пакета
@@ -35,8 +33,8 @@ typedef struct
 
 typedef struct 
 {
-  fbuf_s *head;
-  fbuf_s *tail;
+  void *payload;
+  uint8_t len;
   meta_s meta;
 } __attribute__((packed)) frame_s;
 
@@ -44,10 +42,7 @@ typedef struct
 
 frame_s* frame_create(void);
 void frame_delete(frame_s *fr);
-void frame_insert_head(frame_s *fr , fbuf_s *fb);
-void frame_insert_tail(frame_s *fr , fbuf_s *fb);
-fbuf_s* frame_get_fbuf_head(frame_s *fr);
-fbuf_s* frame_get_fbuf_tail(frame_s *fr);
-void* frame_merge(frame_s *fr, uint8_t *len);
 uint8_t frame_len(frame_s *fr);
 uint8_t frame_getCount(void);
+void frame_delHeader(frame_s *fr, uint8_t len);
+void frame_addHeader(frame_s *fr, void *src, uint8_t len);

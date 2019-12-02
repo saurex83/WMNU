@@ -1,168 +1,76 @@
 #include "utest_suite.h"
 #include "frame.h"
-#include "Net_frames.h"
 #include "stdbool.h"
+#include "mem.h"
 
-static void insert1_test(void)
+static void test_1(void)
 {
-  fbuf_s *fb1 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-  
-  frame_s* fr = frame_create();
-  frame_insert_head(fr, fb1);
-  umsg("frame", "Insert head. head = fb1", fr->head == fb1);
-  umsg("frame", "Insert head. tail = fb1", fr->tail == fb1);
+  frame_s *fr = frame_create();
+  umsg("frame", "Create", frame_getCount() == 1);
+    
   frame_delete(fr);
+  umsg("frame", "Delete", frame_getCount() == 0);
 }
 
-static void insert2_test(void)
+static void test_2(void)
 {
-  fbuf_s *fb1 = fbuf_create(FB_ETH_LAY, NULL, NULL);
+  uint8_t data[5];
+  uint16_t heap_ptr_before = heap_ptr(1);
   
   frame_s *fr = frame_create();
-  frame_insert_tail(fr, fb1);
-  umsg("frame", "Insert tail. head = fb1", fr->head == fb1);
-  umsg("frame", "Insert tail. tail = fb1", fr->tail == fb1);
-  frame_delete(fr);
-}
-
-static void insert3_test(void)
-{
-  fbuf_s *fb1 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-  fbuf_s *fb2 = fbuf_create(FB_IP_LAY, NULL, NULL);
-  fbuf_s *fb3 = fbuf_create(FB_SYNC_LAY, NULL, NULL);
-
-  frame_s *fr = frame_create();
-  frame_insert_head(fr, fb1);
-  frame_insert_head(fr, fb2);
-  frame_insert_head(fr, fb3);
-  
-  fbuf_s *iterator = frame_get_fbuf_head(fr);
-  umsg("frame", "iterator = fb3", iterator == fb3);
-  
-  iterator = fbuf_next(iterator);
-  umsg("frame", "iterator = fb2", iterator == fb2);
-  
-  iterator = fbuf_next(iterator);
-  umsg("frame", "iterator = fb1", iterator == fb1); 
-  
-  iterator = fbuf_next(iterator);
-  umsg("frame", "iterator = NULL", iterator == NULL);
-  
-  fbuf_s *tail = frame_get_fbuf_tail(fr);
-  umsg("frame", "iterator = fb1", tail == fb1);
-  
-  frame_delete(fr);
-
-}
-
-static void delete_test(void)
-{
-  // Тест основан на том что malloc выделит ранее освобожденные
-  // участки памяти после освобождения памяти. 
-  fbuf_s *fb01 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-  fbuf_s *fb02 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-  fbuf_s *fb03 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-  fbuf_s *fb04 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-  
-  frame_s *fr = frame_create();
-  frame_insert_head(fr, fb01);
-  frame_insert_head(fr, fb02);
-  frame_insert_head(fr, fb03);
-  frame_insert_head(fr, fb04);
+  frame_addHeader(fr, data, sizeof(data));
   frame_delete(fr);
   
-  fbuf_s *fb11 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-  fbuf_s *fb12 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-  fbuf_s *fb13 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-  fbuf_s *fb14 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-  
-  umsg("frame", "delete test. fb1", fb01 == fb11);
-  umsg("frame", "delete test. fb2", fb02 == fb12);
-  umsg("frame", "delete test. fb3", fb03 == fb13);
-  umsg("frame", "delete test. fb4", fb04 == fb14);
-  
-  fbuf_delete(fb11);
-  fbuf_delete(fb12);
-  fbuf_delete(fb13);
-  fbuf_delete(fb14);
-  fbuf_delete(fb01);
-  fbuf_delete(fb02);
-  fbuf_delete(fb03);
-  fbuf_delete(fb04);
+  umsg("frame", "Memmory free test 1", heap_ptr_before == heap_ptr(1));
 }
 
-static void insert4_test(void)
+static void test_3(void)
 {
-  fbuf_s *fb1 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-  fbuf_s *fb2 = fbuf_create(FB_IP_LAY, NULL, NULL);
-  fbuf_s *fb3 = fbuf_create(FB_SYNC_LAY, NULL, NULL);
-
+  uint8_t data1[5] = {0,1,2,3,4};
+  uint8_t data2[5] = {5,6,7,8,9};
+  
   frame_s *fr = frame_create();
-  frame_insert_tail(fr, fb1);
-  frame_insert_tail(fr, fb2);
-  frame_insert_tail(fr, fb3);
+  frame_addHeader(fr, data2, sizeof(data2));
+  frame_addHeader(fr, data1, sizeof(data1));
   
-  fbuf_s *iterator = frame_get_fbuf_head(fr);
-  umsg("frame", "iterator = fb1", iterator == fb1);
+  bool ok = true;
+  uint8_t *beg = (uint8_t*)fr->payload;
+  for (int i = 0 ; i < 10; i++)
+    if (beg[i] != i)
+      ok = false;
   
-  iterator = fbuf_next(iterator);
-  umsg("frame", "iterator = fb2", iterator == fb2);
+  umsg("frame", "Header add", ok == true);
   
-  iterator = fbuf_next(iterator);
-  umsg("frame", "iterator = fb3", iterator == fb3); 
+  frame_delete(fr); 
+}
+
+static void test_4(void)
+{
+  uint8_t data1[] = {0,1,2,3,4,3,87,21,35,73};
+  uint8_t data2[] = {5,6,7,8,9,36,85,98,23,98,42,12};
+  uint8_t data3[] = {10,11,12,13,14,15,17,20};
+  uint8_t data4[] = {5,6,7,8,9,23,56,23,6};
   
-  iterator = fbuf_next(iterator);
-  umsg("frame", "iterator = NULL", iterator == NULL);
+  uint16_t heap_ptr_before = heap_ptr(1);
   
-  fbuf_s *tail = frame_get_fbuf_head(fr);
-  umsg("frame", "iterator = fb1", tail == fb1);
-  
+  frame_s *fr = frame_create();
+  frame_addHeader(fr, data1, sizeof(data1));
+  frame_addHeader(fr, data2, sizeof(data2));
+  frame_addHeader(fr, data3, sizeof(data3));
+  frame_addHeader(fr, data4, sizeof(data4));
+ 
   frame_delete(fr);
-}
-
-static void tot_len_test(void)
-{
-  uint8_t tmp[10];
-  fbuf_s *fb1 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-  fbuf_s *fb2 = fbuf_create(FB_IP_LAY, NULL, NULL);
-  fbuf_s *fb3 = fbuf_create(FB_SYNC_LAY, NULL, NULL);
-  fbuf_s *fb4 = fbuf_create(FB_RAW_LAY, tmp, sizeof(tmp));
   
-  frame_s *fr = frame_create();
-  frame_insert_tail(fr, fb1);
-  frame_insert_tail(fr, fb2);
-  frame_insert_tail(fr, fb3);
-  frame_insert_tail(fr, fb4);
+  umsg("frame", "Memmory free test 2", heap_ptr_before == heap_ptr(1));
   
-  uint8_t data_len = ETH_LAY_SIZE + IP_LAY_SIZE + SYNC_LAY_SIZE + sizeof(tmp);
-  uint8_t tot_len = frame_len(fr);
-  umsg("frame", "frame_len calc", tot_len == data_len);
-  frame_delete(fr);
-}
-
-static void test_frame_merge(void)
-{
-  uint8_t data[10] = {0,1,2,3,4,5,6,7,8,9};
-  uint8_t len;
-  
-  fbuf_s *fb = fbuf_create(FB_RAW_LAY, data, sizeof(data));
-  frame_s *fr = frame_create();
-  frame_insert_tail(fr, fb);
-  uint8_t *raw_data = frame_merge(fr, &len);
-  
-  bool test_res;
-  test_res = memory_compare((char*)raw_data, (char*)data, sizeof(data));
-  umsg("frame", "Memory corr", test_res == true);
+   
 }
 
 void suite_frame(void)
 {
-  umsg_line("fbuf module");
-  test_frame_merge();
-  tot_len_test();
-  delete_test();
-  insert1_test();
-  insert2_test();
-  insert3_test();
-  insert4_test();  
+  umsg_line("frame module");
+  test_1();
+  test_2();
+  test_3();
+  test_4();
 }

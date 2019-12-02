@@ -25,9 +25,8 @@ static void RadioSendTest1(void)
   
   // Подготовим данные к отправке
   frame_s *fr = frame_create();
-  fbuf_s *fb = fbuf_create(FB_RAW_LAY, DATA_SEND, sizeof(DATA_SEND));
+  frame_addHeader(fr, DATA_SEND, sizeof(DATA_SEND));
   fr->meta.SEND_TIME = 3000;
-  frame_insert_head(fr, fb);
   
   // Передача данных
   bool res;
@@ -76,7 +75,7 @@ static void RadioRecvTest1(void)
     if (fr == NULL)
       continue;
     
-    if (memory_compare((char*)DATA_RECV, fr->head->payload, 10))
+    if (memory_compare((char*)DATA_RECV, fr->payload, 10))
       LED(D2, true);
     
     frame_delete(fr);
@@ -100,7 +99,7 @@ static void one_speed_test(frame_s *fr)
   uint16_t passed_sfd = fr->meta.TIMESTAMP;
   LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
       "Data size = %d. Full time = %lu us. SFD time = %d us\n"
-      ,fr->head->len, passed, passed_sfd);
+      ,fr->len, passed, passed_sfd);
  
 }
 static void speed_test(void)
@@ -125,8 +124,7 @@ static void speed_test(void)
   for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
   {
     frame_s *fr = frame_create();
-    fbuf_s *fb = fbuf_create(FB_RAW_LAY, DATA_SEND, size_tests[s]);
-    frame_insert_head(fr, fb);
+    frame_addHeader(fr, DATA_SEND, size_tests[s]);
     one_speed_test(fr);
     frame_delete(fr);
   }
@@ -136,8 +134,7 @@ static void speed_test(void)
   for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
   {
     frame_s *fr = frame_create();
-    fbuf_s *fb = fbuf_create(FB_RAW_LAY, DATA_SEND, size_tests[s]);
-    frame_insert_head(fr, fb);
+    frame_addHeader(fr, DATA_SEND, size_tests[s]);
     one_speed_test(fr);
     frame_delete(fr);
   }
@@ -147,8 +144,7 @@ static void speed_test(void)
   for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
   {
     frame_s *fr = frame_create();
-    fbuf_s *fb = fbuf_create(FB_RAW_LAY, DATA_SEND, size_tests[s]);
-    frame_insert_head(fr, fb);
+    frame_addHeader(fr, DATA_SEND, size_tests[s]);
     fr->meta.SEND_TIME = 1000;
     TIC_Init(); // При иницилизации TS0 отсчитываеться с этого момента
     one_speed_test(fr);
@@ -161,8 +157,7 @@ static void speed_test(void)
   for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
   {
     frame_s *fr = frame_create();
-    fbuf_s *fb = fbuf_create(FB_RAW_LAY, DATA_SEND, size_tests[s]);
-    frame_insert_head(fr, fb);
+    frame_addHeader(fr, DATA_SEND, size_tests[s]);
     fr->meta.SEND_TIME = 1000;
     TIC_Init(); // При иницилизации TS0 отсчитываеться с этого момента
     one_speed_test(fr);
@@ -174,8 +169,7 @@ static void speed_test(void)
   for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
   {
     frame_s *fr = frame_create();
-    fbuf_s *fb = fbuf_create(FB_RAW_LAY, DATA_SEND, size_tests[s]);
-    frame_insert_head(fr, fb);
+    frame_addHeader(fr, DATA_SEND, size_tests[s]);
     fr->meta.SEND_TIME = 1000;
     TIC_Init(); // При иницилизации TS0 отсчитываеться с этого момента
     one_speed_test(fr);

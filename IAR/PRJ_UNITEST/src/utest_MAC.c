@@ -16,10 +16,9 @@ while(1)
 {
   // Подготовим данные к отправке
   frame_s *fr = frame_create();
-  fbuf_s *fb = fbuf_create(FB_RAW_LAY, DATA_SEND, sizeof(DATA_SEND));
+  frame_addHeader(fr, DATA_SEND, sizeof(DATA_SEND));
   fr->meta.SEND_TIME = 0;
   fr->meta.CH = CH11;
-  frame_insert_head(fr, fb);
    
   // Нам не важно что структура не соотетсвует ACK. Важно чтоб пакет ушел
   TIM_TimeStamp(&start);
@@ -50,11 +49,10 @@ static void test_TS_Send(void)
     if (!MAC_GetTXState(TS))
     {
       fr = frame_create();
-      fbuf_s *fb = fbuf_create(FB_RAW_LAY, DATA_SEND, sizeof(DATA_SEND));
+      frame_addHeader(fr, DATA_SEND, sizeof(DATA_SEND));
       fr->meta.SEND_TIME = 0;
       fr->meta.TS = TS;
       fr->meta.CH = CH11;
-      frame_insert_head(fr, fb);
       MAC_Send(fr, attempts);
       LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Frame puted to MAC layer at %lu sec\n", TIC_GetRTC());
     }

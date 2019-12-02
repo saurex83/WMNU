@@ -6,28 +6,84 @@
 #include "frame.h"
 #include "string.h"
 #include "mem.h"
-#include "Net_frames.h"
 #include "nwdebuger.h"
+#include "ioCC2530.h"
 
 frame_s* frame_create(void);
 void frame_delete(frame_s *fr);
-void frame_insert_head(frame_s *fr , fbuf_s *fb);
-void frame_insert_tail(frame_s *fr , fbuf_s *fb);
-fbuf_s* frame_get_fbuf_head(frame_s *fr);
-fbuf_s* frame_get_fbuf_tail(frame_s *fr);
-void* frame_merge(frame_s *fr, uint8_t *len);
 uint8_t frame_len(frame_s *fr);
 uint8_t frame_getCount(void);
 
 static uint8_t NBR_FRAME = 0; //!< Количество фреймов в памяти
 
 /**
-@brief Получить количество буферов в памяти
-@return Возвращает количество буферов
+@brief Получить количество фреймов в памяти
+@return Возвращает количество фреймов
 */
 uint8_t frame_getCount(void)
 {
   return NBR_FRAME;
+}
+
+/**
+@brief Добавить заголовок
+@param[in] fr указатель на фрейм
+@param[in] src данные для добавления
+@param[in] len размер данных
+*/
+void frame_addHeader(frame_s *fr, void *src, uint8_t len)
+{
+  unsigned short EA_save = EA;
+  EA = 0; 
+  // Ранее небыло создано данных 
+  if (fr->payload == NULL)
+    {
+      fr->payload = re_malloc(len);
+      fr->len = len;
+      re_memcpy(fr->payload, src, len);
+      EA = EA_save;
+      return;
+    }
+  
+  uint8_t new_len = fr->len + len; // Новый размер
+  void *new_payload = re_malloc(new_len);
+  ASSERT_HALT(new_payload != NULL, "No memory");
+  
+  // Копируем данные в конец области
+  re_memcpy((char*)new_payload + len, fr->payload, fr->len);
+  // Копируем данные спереди в свободную область
+  re_memcpy(new_payload, src, len);
+  // Уничтожаем старые данные
+  re_free(fr->payload);
+  fr->payload = new_payload;
+  fr->len = new_len;
+  EA = EA_save;
+}
+
+/**
+@brief Удалить заголовок
+@param[in] fr указатель на фрейм
+@param[in] len размер  удаляемых данных
+*/
+void frame_delHeader(frame_s *fr, uint8_t len)
+{
+  if (fr->payload == NULL)
+    return;
+
+  if (fr->len <= len)
+    return;  
+  
+  uint8_t new_len = fr->len - len; // Новый размер
+  void *new_payload = re_malloc(new_len);
+  ASSERT_HALT(new_payload != NULL, "No memory");
+  
+  // Копируем данные с пропуском первых len байт
+  re_memcpy((char*)new_payload, (char*)fr->payload + len, new_len);
+  
+  // Уничтожаем старые данные
+  re_free(fr->payload);
+  fr->payload = new_payload;
+  fr->len = new_len;
 }
 
 /**
@@ -36,13 +92,18 @@ uint8_t frame_getCount(void)
 */
 frame_s* frame_create(void)
 {
+    unsigned short EA_save = EA;
+    EA = 0; 
+    
     frame_s* fr= (frame_s*)re_malloc(FRAME_S_SIZE);
     ASSERT_HALT(fr != NULL, "No memory");
     
-    fr->head = NULL;
-    fr->tail = NULL;
+    fr->payload = NULL;
+    fr->len = 0;
     memset(&fr->meta, 0x00, META_S_SIZE);
     NBR_FRAME++;
+    
+    EA = EA_save;
     return fr;
 };
 
@@ -53,114 +114,17 @@ frame_s* frame_create(void)
 */
 void frame_delete(frame_s *fr)
 {
-  fbuf_s *fb = fr->head;
-  fbuf_s *next = fb;
+  unsigned short EA_save = EA;
+  EA = 0;  
   
-  // Удаляем все связанные буфера
-  while (fb != NULL)
-  {
-      next = fb->next;
-      fbuf_delete(fb);
-      fb = next;
-  };
-  
+  if (fr->payload != NULL)
+    re_free(fr->payload);
+ 
   NBR_FRAME--;
   re_free(fr);
+  EA = EA_save;
 }
 
-/**
-@brief Вставить буфер в начало цепочки
-@param[in,out] fr указатель на структуру frame
-@param[in] fb указатель на буфер для вставки
-*/
-void frame_insert_head(frame_s *fr , fbuf_s *fb)
-{
-  if (fr->head == NULL)
-  {
-    fr->head = fb;
-    fr->tail = fb;
-    return;
-  }
-  
-  fb->next = fr->head; 
-  fr->head = fb;
-}
-
-/**
-@brief Вставить буфер в конец цепочки
-@param[in,out] fr указатель на структуру frame
-@param[in] fb указатель на буфер для вставки
-*/
-void frame_insert_tail(frame_s *fr , fbuf_s *fb)
-{
-  ASSERT_HALT(fr != NULL, "No fr");
-  ASSERT_HALT(fb != NULL, "No fb");
-  
-  if (fr->tail == NULL)
-  {
-    fr->head = fb;
-    fr->tail = fb;
-    return;
-  }
-  
-  fr->tail->next = fb;
-  fr->tail = fb;
-}
-
-/**
-@brief Получить указатель на первый элемент в цепочке
-@param[in] fr указатель на структуру frame
-@return указатель на первый буфер или NULL
-*/
-fbuf_s* frame_get_fbuf_head(frame_s *fr)
-{
-  return fr->head;
-}
-
-/**
-@brief Получить указатель на последний элемент в цепочке
-@param[in] fr указатель на структуру frame
-@return указатель на последний буфер или NULL
-*/
-fbuf_s* frame_get_fbuf_tail(frame_s *fr)
-{
-  return fr->tail;
-}
-
-/**
-@brief Производит слияние всех данных в один массив
-@details Данные требуют удаления после использования re_free(..)
-@param[in] fr указатель на frame
-@param[out] len длинна результирующего массива данных
-@return Указатель на начало данных
-*/
-void* frame_merge(frame_s *fr, uint8_t *len)
-{
-  ASSERT_HALT(fr != NULL, "No fr");
-  
-  uint8_t tot_len = frame_len(fr); // Общая длинна данных
-  *len = tot_len;
-  
-  // Выходим если данных нет
-  if (!tot_len) 
-    return NULL;
-  
-  // Выделяем память
-  void* mem = re_malloc(tot_len);
-  ASSERT_HALT(mem != NULL, "No memory");
-  
-  uint8_t *ptr = (uint8_t*)mem;
-  
-  // Копируем данные
-  fbuf_s *fb = fr->head;
-  while (fb!= NULL)
-  {
-    memcpy(ptr, fb->payload, fb->len);
-    ptr += fb->len;
-    fb = fb->next;
-  }
-  return mem;
-}
 
 /**
 @brief Вычисляет размер цепочки fbuf
@@ -169,13 +133,5 @@ void* frame_merge(frame_s *fr, uint8_t *len)
 */
 uint8_t frame_len(frame_s *fr)
 {
-  uint8_t tot_len = 0;
-  fbuf_s *fb = fr->head;
- 
-  while (fb != NULL)
-  {
-    tot_len += fb->len;
-    fb = fb->next;
-  }
-  return tot_len;
+  return fr->len;
 }

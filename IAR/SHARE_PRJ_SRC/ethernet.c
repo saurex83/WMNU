@@ -107,7 +107,7 @@ static ETH_LAY* extract_header(frame_s *fr)
   uint8_t len = frame_len(fr);
   ASSERT_HALT(len >= ETH_LAY_SIZE, "Incorrect eth size");
   
-  fbuf_s *fb = frame_get_fbuf_head(fr);
-  re_memcpy(eth_h, fb->payload, ETH_LAY_SIZE);
+  //fbuf_s *fb = frame_get_fbuf_head(fr);
+  //re_memcpy(eth_h, fb->payload, ETH_LAY_SIZE);
   return eth_h;
 }

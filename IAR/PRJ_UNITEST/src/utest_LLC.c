@@ -20,13 +20,11 @@ static frame_s* getFrame(uint8_t *src, uint8_t len, uint8_t CH, uint8_t TS)
   frame_s *fr;
   EA=0;
   fr = frame_create();
-  
-  fbuf_s *fb = fbuf_create(FB_RAW_LAY, src, len);
+  frame_addHeader(fr, src, len);
   EA=1;
   fr->meta.SEND_TIME = 0;
   fr->meta.TS = TS;
   fr->meta.CH = CH;
-  frame_insert_head(fr, fb);
   return fr;
 }
 
@@ -64,15 +62,16 @@ static void test_create()
   
   while(true)
   {  
-    nbr_bufs = fbuf_getCount();
     nbr_frames = frame_getCount();
-    if (LLC_GetTaskLen() < 20)
+   // LOG(MSG_ON | MSG_INFO | MSG_TRACE, "nbr_frames = %d \r\n" ,nbr_frames );
+    
+    if (LLC_GetTaskLen() < 5)
     {
       fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
       LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Create frame = %d.\r\n", (uint16_t)fr);    
       LLC_AddTask(fr);
       TS ++;
-      if (TS == 49)
+      if (TS == 5)
       TS = 0;
     }   
     if (*ptr_stack != 0xcd) // Контроль переполнения стека
@@ -105,7 +104,7 @@ static void find_mem_problem(void)
   
   while(true)
   {  
-    if (fbuf_getCount() == 0)
+    if (frame_getCount() == 0)
     {
       show_heap_ptr();
       for (uint8_t i = 0; i < 20 ; i++)

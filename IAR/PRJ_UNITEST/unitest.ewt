@@ -2118,12 +2118,6 @@
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\ethernet.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\fbuf.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\fbuf.h</name>
-        </file>
-        <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\frame.c</name>
         </file>
         <file>
@@ -2185,9 +2179,6 @@
         </file>
         <file>
             <name>$PROJ_DIR$\src\utest_delays.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_fbuf.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\src\utest_frame.c</name>

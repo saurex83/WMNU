@@ -215,8 +215,8 @@ static bool SendData(frame_s *fr)
 ////ts_rssistat, ts_istxon, ts_sfd, ts_stop;
   
 ////TIM_TimeStamp(&ts_start);  
-  uint8_t data_size;
-  uint8_t *data = (uint8_t*)frame_merge(fr, &data_size); 
+  uint8_t data_size = fr->len;
+  uint8_t *data = (uint8_t*)fr->payload; 
 ////TIM_TimeStamp(&ts_frame_merge);  
   bool result = true;
   switch(true)
@@ -387,26 +387,24 @@ frame_s* RI_Receive(uint16_t timeout)
   }
   
   // Создаем буфер, последнии два байта FCS1,2 и поле LEN не копируем
-  fbuf_s* fb = fbuf_create(FB_RAW_LAY, &frame_raw[1], frame_size - 2);
-  RI_BitRawDecrypt(fb->payload, fb->len); // Декодируем поток если нужно
+  frame_s *raw_frame = frame_create();
+  frame_addHeader(raw_frame, &frame_raw[1], frame_size - 2);
+  // Декодируем поток если нужно
+  RI_BitRawDecrypt(raw_frame->payload, raw_frame->len);
   
-  // Создаем фрейм
-  frame_s *fr = frame_create();
-  frame_insert_head(fr ,fb); // Добавляем буферы
- 
   // Копируем метку времени SFD
-  fr->meta.TIMESTAMP = SFD_TimeStamp;
+  raw_frame->meta.TIMESTAMP = SFD_TimeStamp;
   
   // Расчитываем мощность принятого сигнала
-  fr->meta.RSSI_SIG =  FCS1 + RSSI_OFFSET;
+  raw_frame->meta.RSSI_SIG =  FCS1 + RSSI_OFFSET;
   // Расчитываем качество сигнала
   uint8_t corr = FCS2 & 0x7F;
-  fr->meta.LIQ = LIQ_CALC(corr); // Значение коэфф. корреляции
+  raw_frame->meta.LIQ = LIQ_CALC(corr); // Значение коэфф. корреляции
 
-  fr->meta.CH = RADIO_CFG.CH;
+  raw_frame->meta.CH = RADIO_CFG.CH;
 
   re_free(frame_raw);
-  return fr;
+  return raw_frame;
 }
 
 /**

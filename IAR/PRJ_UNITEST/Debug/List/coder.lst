@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               01/Dec/2019  21:26:08
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               02/Dec/2019  12:47:47
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,7 +14,8 @@
 #    Source file        =  
 #        \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW888.tmp ("\\vmware-host\Shared
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW16B8.tmp
+#        ("\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c" -lc
 #        "\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\PRJ_UNITEST\Debug\List" -o
@@ -30,7 +31,6 @@
 #        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\delays.c"
 #        "\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\ethernet.c"
-#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\fbuf.c"
 #        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\frame.c"
 #        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\LLC.c"
 #        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\MAC.c"
@@ -46,8 +46,6 @@
 #        Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_coder.c"
 #        "\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_delays.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_fbuf.c"
 #        "\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_frame.c"
 #        "\\vmware-host\Shared
@@ -949,131 +947,10 @@ Warning[Pe940]: missing return statement at end of non-void function
     107            uint8_t len = frame_len(fr);
     108            ASSERT_HALT(len >= ETH_LAY_SIZE, "Incorrect eth size");
     109            
-    110            fbuf_s *fb = frame_get_fbuf_head(fr);
-    111            re_memcpy(eth_h, fb->payload, ETH_LAY_SIZE);
+    110            //fbuf_s *fb = frame_get_fbuf_head(fr);
+    111            //re_memcpy(eth_h, fb->payload, ETH_LAY_SIZE);
     112            return eth_h;
     113          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\fbuf.c
-      1          /*!
-      2          \file Модуль реализует связанные буфера данных
-      3          \brief 
-      4          */
-      5          
-      6          #include "fbuf.h"
-      7          #include "string.h"
-      8          #include "mem.h"
-      9          #include "Net_frames.h"
-     10          #include "nwdebuger.h"
-     11          
-     12          // Макросы для выравнивания памяти
-     13          // На текущий момент выравниевание не используется, так как были ошибки
-     14          // в работе макросов.
-     15          typedef uint16_t mem_ptr_t;
-     16          #define MEM_ALIGNMENT 2 //!< Кратность в байтах для выравнивания памяти
-     17          #define MEM_ALIGN_SIZE(size) (((size) + MEM_ALIGNMENT - 1) & ~(MEM_ALIGNMENT-1))
-     18          #define MEM_ALIGN(addr) ((void *)(((mem_ptr_t)(addr) + MEM_ALIGNMENT - 1) & ~(mem_ptr_t)(MEM_ALIGNMENT-1)))
-     19          
-     20          // Доступные методы
-     21          fbuf_s* fbuf_create(uint8_t type, void* payload, uint8_t len);
-     22          void fbuf_delete(fbuf_s *fb);
-     23          void fbuf_chain(fbuf_s *h, fbuf_s *t);
-     24          fbuf_s* fbuf_next(fbuf_s *fb);
-     25          uint8_t fbuf_getCount(void);
-     26          
-     27          // Локальные переменные модуля
-     28          static uint8_t NBR_BUF = 0; //!< Количество буферов в памяти
-     29          
-     30          
-     31          /**
-     32          @brief Создает fbuf указанного типа
-     33          @details 
-     34          @param type
-     35          @param payload
-     36          @param len
-     37          */
-     38          fbuf_s* fbuf_create(uint8_t type, void* payload, uint8_t len)
-     39          {
-     40            uint8_t req_len;
-     41            // Определим длинну данных fbuf
-     42            switch (type)
-     43            {
-     44              case FB_ETH_LAY:
-     45                req_len = ETH_LAY_SIZE;
-     46                break;
-     47              case FB_IP_LAY:
-     48                req_len = IP_LAY_SIZE;
-     49                break;
-     50              case FB_SYNC_LAY:
-     51                req_len = SYNC_LAY_SIZE;
-     52                break;
-     53              case FB_TRANSPORT_LAY:
-     54              case FB_RAW_LAY:
-     55                req_len = len;
-     56                break;
-     57            default:
-     58              ASSERT_HALT(false, "Incorrect fbuf type");
-     59            } 
-     60            
-     61            // Выделяем память под структуру и данные и выравниваем в памяти
-     62            // Выравнивание с помощью макросов приводило к пиздецу.
-     63            fbuf_s* fb = (fbuf_s*)re_malloc(FBUF_S_SIZE + req_len);
-     64            ASSERT_HALT(fb != NULL, "No memory");
-     65            
-     66            memset(fb, 0x77 , FBUF_S_SIZE + req_len);
-     67            fb->payload = (uint8_t*)fb + FBUF_S_SIZE;
-     68            
-     69            // Заполним структуру
-     70            fb->type = type;
-     71            fb->next = NULL;
-     72            fb->len = req_len;
-     73            
-     74            // Если пользователю нужно разместить сырые данные или транспортный
-     75            // уровень, то скопируем данные
-     76            if ((type == FB_TRANSPORT_LAY) || (type == FB_RAW_LAY))
-     77              memcpy(fb->payload, payload, req_len);
-     78            
-     79            NBR_BUF++;
-     80            return fb;
-     81          }
-     82          
-     83          /**
-     84          @brief Получить количество буферов в памяти
-     85          @return Возвращает количество буферов
-     86          */
-     87          uint8_t fbuf_getCount(void)
-     88          {
-     89            return NBR_BUF;
-     90          }
-     91          
-     92          /**
-     93          @brief Удаляем буфер
-     94          */
-     95          void fbuf_delete(fbuf_s *fb)
-     96          {
-     97            re_free(fb);
-     98            NBR_BUF--;
-     99          }
-    100          
-    101          /**
-    102          @brief Переход к следующему буферу
-    103          @return Указатель на следующий буфер или NULL
-    104          */
-    105          fbuf_s* fbuf_next(fbuf_s *fb)
-    106          {
-    107            if (fb->next == NULL)
-    108              return NULL;
-    109            return  fb->next;
-    110          }
-    111          
-    112          /**
-    113          @brief Связывает два буфера. Head->Tail
-    114          @param[in,out] h head
-    115          @param[in] t tail
-    116          */
-    117          void fbuf_chain(fbuf_s *h, fbuf_s *t)
-    118          {
-    119            h->next = t;
-    120          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\frame.c
       1          /**
       2          @file Модуль описывает сетевой кадр и связанные с ним буферы данных
@@ -1083,179 +960,135 @@ Warning[Pe940]: missing return statement at end of non-void function
       6          #include "frame.h"
       7          #include "string.h"
       8          #include "mem.h"
-      9          #include "Net_frames.h"
-     10          #include "nwdebuger.h"
+      9          #include "nwdebuger.h"
+     10          #include "ioCC2530.h"
      11          
      12          frame_s* frame_create(void);
      13          void frame_delete(frame_s *fr);
-     14          void frame_insert_head(frame_s *fr , fbuf_s *fb);
-     15          void frame_insert_tail(frame_s *fr , fbuf_s *fb);
-     16          fbuf_s* frame_get_fbuf_head(frame_s *fr);
-     17          fbuf_s* frame_get_fbuf_tail(frame_s *fr);
-     18          void* frame_merge(frame_s *fr, uint8_t *len);
-     19          uint8_t frame_len(frame_s *fr);
-     20          uint8_t frame_getCount(void);
-     21          
-     22          static uint8_t NBR_FRAME = 0; //!< Количество фреймов в памяти
-     23          
-     24          /**
-     25          @brief Получить количество буферов в памяти
-     26          @return Возвращает количество буферов
-     27          */
-     28          uint8_t frame_getCount(void)
-     29          {
-     30            return NBR_FRAME;
-     31          }
-     32          
-     33          /**
-     34          @brief Создание структуры frame
-     35          @return Указатель на структуру frame
-     36          */
-     37          frame_s* frame_create(void)
-     38          {
-     39              frame_s* fr= (frame_s*)re_malloc(FRAME_S_SIZE);
-     40              ASSERT_HALT(fr != NULL, "No memory");
-     41              
-     42              fr->head = NULL;
-     43              fr->tail = NULL;
-     44              memset(&fr->meta, 0x00, META_S_SIZE);
-     45              NBR_FRAME++;
-     46              return fr;
-     47          };
-     48          
-     49          /**
-     50          @brief Удаление frame
-     51          @detail Проуедура так же удаляет все связанные с ней буфера fbuf
-     52          @param[in] fr указатель на структуру frame
-     53          */
-     54          void frame_delete(frame_s *fr)
-     55          {
-     56            fbuf_s *fb = fr->head;
-     57            fbuf_s *next = fb;
-     58            
-     59            // Удаляем все связанные буфера
-     60            while (fb != NULL)
-     61            {
-     62                next = fb->next;
-     63                fbuf_delete(fb);
-     64                fb = next;
-     65            };
-     66            
-     67            NBR_FRAME--;
-     68            re_free(fr);
-     69          }
-     70          
-     71          /**
-     72          @brief Вставить буфер в начало цепочки
-     73          @param[in,out] fr указатель на структуру frame
-     74          @param[in] fb указатель на буфер для вставки
-     75          */
-     76          void frame_insert_head(frame_s *fr , fbuf_s *fb)
-     77          {
-     78            if (fr->head == NULL)
-     79            {
-     80              fr->head = fb;
-     81              fr->tail = fb;
-     82              return;
-     83            }
-     84            
-     85            fb->next = fr->head; 
-     86            fr->head = fb;
+     14          uint8_t frame_len(frame_s *fr);
+     15          uint8_t frame_getCount(void);
+     16          
+     17          static uint8_t NBR_FRAME = 0; //!< Количество фреймов в памяти
+     18          
+     19          /**
+     20          @brief Получить количество фреймов в памяти
+     21          @return Возвращает количество фреймов
+     22          */
+     23          uint8_t frame_getCount(void)
+     24          {
+     25            return NBR_FRAME;
+     26          }
+     27          
+     28          /**
+     29          @brief Добавить заголовок
+     30          @param[in] fr указатель на фрейм
+     31          @param[in] src данные для добавления
+     32          @param[in] len размер данных
+     33          */
+     34          void frame_addHeader(frame_s *fr, void *src, uint8_t len)
+     35          {
+     36            unsigned short EA_save = EA;
+     37            EA = 0; 
+     38            // Ранее небыло создано данных 
+     39            if (fr->payload == NULL)
+     40              {
+     41                fr->payload = re_malloc(len);
+     42                fr->len = len;
+     43                re_memcpy(fr->payload, src, len);
+     44                EA = EA_save;
+     45                return;
+     46              }
+     47            
+     48            uint8_t new_len = fr->len + len; // Новый размер
+     49            void *new_payload = re_malloc(new_len);
+     50            ASSERT_HALT(new_payload != NULL, "No memory");
+     51            
+     52            // Копируем данные в конец области
+     53            re_memcpy((char*)new_payload + len, fr->payload, fr->len);
+     54            // Копируем данные спереди в свободную область
+     55            re_memcpy(new_payload, src, len);
+     56            // Уничтожаем старые данные
+     57            re_free(fr->payload);
+     58            fr->payload = new_payload;
+     59            fr->len = new_len;
+     60            EA = EA_save;
+     61          }
+     62          
+     63          /**
+     64          @brief Удалить заголовок
+     65          @param[in] fr указатель на фрейм
+     66          @param[in] len размер  удаляемых данных
+     67          */
+     68          void frame_delHeader(frame_s *fr, uint8_t len)
+     69          {
+     70            if (fr->payload == NULL)
+     71              return;
+     72          
+     73            if (fr->len <= len)
+     74              return;  
+     75            
+     76            uint8_t new_len = fr->len - len; // Новый размер
+     77            void *new_payload = re_malloc(new_len);
+     78            ASSERT_HALT(new_payload != NULL, "No memory");
+     79            
+     80            // Копируем данные с пропуском первых len байт
+     81            re_memcpy((char*)new_payload, (char*)fr->payload + len, new_len);
+     82            
+     83            // Уничтожаем старые данные
+     84            re_free(fr->payload);
+     85            fr->payload = new_payload;
+     86            fr->len = new_len;
      87          }
      88          
      89          /**
-     90          @brief Вставить буфер в конец цепочки
-     91          @param[in,out] fr указатель на структуру frame
-     92          @param[in] fb указатель на буфер для вставки
-     93          */
-     94          void frame_insert_tail(frame_s *fr , fbuf_s *fb)
-     95          {
-     96            ASSERT_HALT(fr != NULL, "No fr");
-     97            ASSERT_HALT(fb != NULL, "No fb");
-     98            
-     99            if (fr->tail == NULL)
-    100            {
-    101              fr->head = fb;
-    102              fr->tail = fb;
-    103              return;
-    104            }
-    105            
-    106            fr->tail->next = fb;
-    107            fr->tail = fb;
-    108          }
+     90          @brief Создание структуры frame
+     91          @return Указатель на структуру frame
+     92          */
+     93          frame_s* frame_create(void)
+     94          {
+     95              unsigned short EA_save = EA;
+     96              EA = 0; 
+     97              
+     98              frame_s* fr= (frame_s*)re_malloc(FRAME_S_SIZE);
+     99              ASSERT_HALT(fr != NULL, "No memory");
+    100              
+    101              fr->payload = NULL;
+    102              fr->len = 0;
+    103              memset(&fr->meta, 0x00, META_S_SIZE);
+    104              NBR_FRAME++;
+    105              
+    106              EA = EA_save;
+    107              return fr;
+    108          };
     109          
     110          /**
-    111          @brief Получить указатель на первый элемент в цепочке
-    112          @param[in] fr указатель на структуру frame
-    113          @return указатель на первый буфер или NULL
+    111          @brief Удаление frame
+    112          @detail Проуедура так же удаляет все связанные с ней буфера fbuf
+    113          @param[in] fr указатель на структуру frame
     114          */
-    115          fbuf_s* frame_get_fbuf_head(frame_s *fr)
+    115          void frame_delete(frame_s *fr)
     116          {
-    117            return fr->head;
-    118          }
-    119          
-    120          /**
-    121          @brief Получить указатель на последний элемент в цепочке
-    122          @param[in] fr указатель на структуру frame
-    123          @return указатель на последний буфер или NULL
-    124          */
-    125          fbuf_s* frame_get_fbuf_tail(frame_s *fr)
-    126          {
-    127            return fr->tail;
-    128          }
-    129          
-    130          /**
-    131          @brief Производит слияние всех данных в один массив
-    132          @details Данные требуют удаления после использования re_free(..)
-    133          @param[in] fr указатель на frame
-    134          @param[out] len длинна результирующего массива данных
-    135          @return Указатель на начало данных
-    136          */
-    137          void* frame_merge(frame_s *fr, uint8_t *len)
-    138          {
-    139            ASSERT_HALT(fr != NULL, "No fr");
-    140            
-    141            uint8_t tot_len = frame_len(fr); // Общая длинна данных
-    142            *len = tot_len;
-    143            
-    144            // Выходим если данных нет
-    145            if (!tot_len) 
-    146              return NULL;
-    147            
-    148            // Выделяем память
-    149            void* mem = re_malloc(tot_len);
-    150            ASSERT_HALT(mem != NULL, "No memory");
-    151            
-    152            uint8_t *ptr = (uint8_t*)mem;
-    153            
-    154            // Копируем данные
-    155            fbuf_s *fb = fr->head;
-    156            while (fb!= NULL)
-    157            {
-    158              memcpy(ptr, fb->payload, fb->len);
-    159              ptr += fb->len;
-    160              fb = fb->next;
-    161            }
-    162            return mem;
-    163          }
-    164          
-    165          /**
-    166          @brief Вычисляет размер цепочки fbuf
-    167          @param[in] fr указатель на frame_s
-    168          @return Количество байт в цепочке буферов
-    169          */
-    170          uint8_t frame_len(frame_s *fr)
-    171          {
-    172            uint8_t tot_len = 0;
-    173            fbuf_s *fb = fr->head;
-    174           
-    175            while (fb != NULL)
-    176            {
-    177              tot_len += fb->len;
-    178              fb = fb->next;
-    179            }
-    180            return tot_len;
-    181          }
+    117            unsigned short EA_save = EA;
+    118            EA = 0;  
+    119            
+    120            if (fr->payload != NULL)
+    121              re_free(fr->payload);
+    122           
+    123            NBR_FRAME--;
+    124            re_free(fr);
+    125            EA = EA_save;
+    126          }
+    127          
+    128          
+    129          /**
+    130          @brief Вычисляет размер цепочки fbuf
+    131          @param[in] fr указатель на frame_s
+    132          @return Количество байт в цепочке буферов
+    133          */
+    134          uint8_t frame_len(frame_s *fr)
+    135          {
+    136            return fr->len;
+    137          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\LLC.c
       1          /**
       2          @file 
@@ -2500,8 +2333,8 @@ Warning[Pe940]: missing return statement at end of non-void function
     215          ////ts_rssistat, ts_istxon, ts_sfd, ts_stop;
     216            
     217          ////TIM_TimeStamp(&ts_start);  
-    218            uint8_t data_size;
-    219            uint8_t *data = (uint8_t*)frame_merge(fr, &data_size); 
+    218            uint8_t data_size = fr->len;
+    219            uint8_t *data = (uint8_t*)fr->payload; 
     220          ////TIM_TimeStamp(&ts_frame_merge);  
     221            bool result = true;
     222            switch(true)
@@ -2677,220 +2510,218 @@ Warning[Pe550]: variable "timer" was set but never used
     387            }
     388            
     389            // Создаем буфер, последнии два байта FCS1,2 и поле LEN не копируем
-    390            fbuf_s* fb = fbuf_create(FB_RAW_LAY, &frame_raw[1], frame_size - 2);
-    391            RI_BitRawDecrypt(fb->payload, fb->len); // Декодируем поток если нужно
-    392            
-    393            // Создаем фрейм
-    394            frame_s *fr = frame_create();
-    395            frame_insert_head(fr ,fb); // Добавляем буферы
-    396           
-    397            // Копируем метку времени SFD
-    398            fr->meta.TIMESTAMP = SFD_TimeStamp;
-    399            
-    400            // Расчитываем мощность принятого сигнала
-    401            fr->meta.RSSI_SIG =  FCS1 + RSSI_OFFSET;
-    402            // Расчитываем качество сигнала
-    403            uint8_t corr = FCS2 & 0x7F;
-    404            fr->meta.LIQ = LIQ_CALC(corr); // Значение коэфф. корреляции
+    390            frame_s *raw_frame = frame_create();
+    391            frame_addHeader(raw_frame, &frame_raw[1], frame_size - 2);
+    392            // Декодируем поток если нужно
+    393            RI_BitRawDecrypt(raw_frame->payload, raw_frame->len);
+    394            
+    395            // Копируем метку времени SFD
+    396            raw_frame->meta.TIMESTAMP = SFD_TimeStamp;
+    397            
+    398            // Расчитываем мощность принятого сигнала
+    399            raw_frame->meta.RSSI_SIG =  FCS1 + RSSI_OFFSET;
+    400            // Расчитываем качество сигнала
+    401            uint8_t corr = FCS2 & 0x7F;
+    402            raw_frame->meta.LIQ = LIQ_CALC(corr); // Значение коэфф. корреляции
+    403          
+    404            raw_frame->meta.CH = RADIO_CFG.CH;
     405          
-    406            fr->meta.CH = RADIO_CFG.CH;
-    407          
-    408            re_free(frame_raw);
-    409            return fr;
-    410          }
-    411          
-    412          /**
-    413          @brief Прием данных из эфира
-    414          @param[in] timeout_us время ожидания в микросекундах
-    415          @param[out] SFD_TimeStamp отметка времени завершения приема SFD
-    416          */
-    417          static bool RecvData(uint32_t timeout_us, uint16_t *SFD_TimeStamp)
-    418          {
-    419            TimeStamp_s start,stop; // Измерение времени  
-    420            ISFLUSHRX(); // Очищаем буфер приема
+    406            re_free(frame_raw);
+    407            return raw_frame;
+    408          }
+    409          
+    410          /**
+    411          @brief Прием данных из эфира
+    412          @param[in] timeout_us время ожидания в микросекундах
+    413          @param[out] SFD_TimeStamp отметка времени завершения приема SFD
+    414          */
+    415          static bool RecvData(uint32_t timeout_us, uint16_t *SFD_TimeStamp)
+    416          {
+    417            TimeStamp_s start,stop; // Измерение времени  
+    418            ISFLUSHRX(); // Очищаем буфер приема
+    419            
+    420            TIM_TimeStamp(&start);
     421            
-    422            TIM_TimeStamp(&start);
-    423            
-    424            // Очищаем флаг завершения передачи сообщения и приема SFD
-    425            RFIRQF0 &= ~RFIRQF0_RXPKTDONE;  
-    426            RFIRQF0 &= ~RFIRQF0_SFD; 
-    427            ISRXON(); // Включаем радиопередатчик
-    428          
-    429            bool time_out = false; // Истекло время ожидания пакета
-    430            bool packet_received = false; // Приняли пакет
-    431            bool sfd_received = false; // Приняли sfd
-    432            
-    433            // Цикл приема пакета
-    434            while (true)
-    435            {
-    436              TIM_TimeStamp(&stop);
-    437              if (TIM_passedTime(&start, &stop) >= timeout_us)
-    438              {
-    439                time_out = true;
-    440                break;
-    441              }
-    442             
-    443              // Принят сигнал SFD
-    444              if ((RFIRQF0 & RFIRQF0_SFD))
-    445              {
-    446                *SFD_TimeStamp = NT_GetTime(); 
-    447                sfd_received = true;
-    448              }
-    449              
-    450              //  Завершен ли прием сообщения RX_FRM_DONE (RXPKTDONE)
-    451              if ((RFIRQF0 & RFIRQF0_RXPKTDONE))
-    452              {
-    453                packet_received = true;
-    454                break;
-    455              }
-    456            } // while 
-    457            
-    458            ISRFOFF();
-    459            if (packet_received && sfd_received && !time_out)
-    460              return true;
-    461            else
-    462              return false;
-    463          }
-    464          
-    465          /*!
-    466          \brief Возвращает количество ошибок возникших с момента иницилизации
-    467          \return Количество CRC ошибок
-    468          */
-    469          uint32_t RI_GetCRCError(void)
-    470          {
-    471            return RI_CRC_ERROR;
-    472          }
-    473          
-    474          /*!
-    475          \brief Возвращает количестов отказов передачи пакета из-за занятости канала.
-    476          \return Количество отказов CCA
-    477          */
-    478          uint32_t RI_GetCCAReject(void)
-    479          {
-    480            return RI_CCA_REJECT;
-    481          }
-    482          
-    483          /*!
-    484          \brief Возвращает суммарное время работы радио в режиме прием/передача
-    485          \return Вермя в милисекундах
-    486          */
-    487          float RI_GetUptime(void)
-    488          {
-    489            return RI_UPTIME;
-    490          }
-    491          
-    492          /**
-    493          @breif Подссчет количества бит в байте
-    494          @return Возвращает количество бит
-    495          */
-    496          static uint8_t bits_count(uint8_t value) {
-    497            int ret = 0;
-    498            for ( ; value; value = value >> 1 )
-    499              ret += value & 1;
-    500            return ret;
-    501          }
-    502          
-    503          /**
-    504          @brief Возращает 1 байт случайного числа
-    505          @details Радио выдает всего лишь дви бита, нам нужно 8 
-    506          */
-    507          static inline uint8_t getRNDByte(void)
-    508          {
-    509            uint8_t val = 0;
-    510            val |= RFRND << 0;
-    511            val |= RFRND << 2;
-    512            val |= RFRND << 4;
-    513            val |= RFRND << 6;
-    514            return val;
-    515          }
-    516          
-    517          /**
-    518          @brief Возвращает случайное число с числом включеных бит от 2 до 6 включительно
-    519          @details Случайные числа появляются в регистре с частотой 170нс. Функция 
-    520          возвращает гарантированно новое значение. 
-    521          @return возвращает случайное число.
-    522          */
-    523          static inline uint8_t readRandom(void)
-    524          {
-    525            uint8_t rnd_val = 0;
-    526            uint8_t bit_cnt = 0;
-    527            while ( bit_cnt <= 2 || bit_cnt >= 6 )
-    528            {
+    422            // Очищаем флаг завершения передачи сообщения и приема SFD
+    423            RFIRQF0 &= ~RFIRQF0_RXPKTDONE;  
+    424            RFIRQF0 &= ~RFIRQF0_SFD; 
+    425            ISRXON(); // Включаем радиопередатчик
+    426          
+    427            bool time_out = false; // Истекло время ожидания пакета
+    428            bool packet_received = false; // Приняли пакет
+    429            bool sfd_received = false; // Приняли sfd
+    430            
+    431            // Цикл приема пакета
+    432            while (true)
+    433            {
+    434              TIM_TimeStamp(&stop);
+    435              if (TIM_passedTime(&start, &stop) >= timeout_us)
+    436              {
+    437                time_out = true;
+    438                break;
+    439              }
+    440             
+    441              // Принят сигнал SFD
+    442              if ((RFIRQF0 & RFIRQF0_SFD))
+    443              {
+    444                *SFD_TimeStamp = NT_GetTime(); 
+    445                sfd_received = true;
+    446              }
+    447              
+    448              //  Завершен ли прием сообщения RX_FRM_DONE (RXPKTDONE)
+    449              if ((RFIRQF0 & RFIRQF0_RXPKTDONE))
+    450              {
+    451                packet_received = true;
+    452                break;
+    453              }
+    454            } // while 
+    455            
+    456            ISRFOFF();
+    457            if (packet_received && sfd_received && !time_out)
+    458              return true;
+    459            else
+    460              return false;
+    461          }
+    462          
+    463          /*!
+    464          \brief Возвращает количество ошибок возникших с момента иницилизации
+    465          \return Количество CRC ошибок
+    466          */
+    467          uint32_t RI_GetCRCError(void)
+    468          {
+    469            return RI_CRC_ERROR;
+    470          }
+    471          
+    472          /*!
+    473          \brief Возвращает количестов отказов передачи пакета из-за занятости канала.
+    474          \return Количество отказов CCA
+    475          */
+    476          uint32_t RI_GetCCAReject(void)
+    477          {
+    478            return RI_CCA_REJECT;
+    479          }
+    480          
+    481          /*!
+    482          \brief Возвращает суммарное время работы радио в режиме прием/передача
+    483          \return Вермя в милисекундах
+    484          */
+    485          float RI_GetUptime(void)
+    486          {
+    487            return RI_UPTIME;
+    488          }
+    489          
+    490          /**
+    491          @breif Подссчет количества бит в байте
+    492          @return Возвращает количество бит
+    493          */
+    494          static uint8_t bits_count(uint8_t value) {
+    495            int ret = 0;
+    496            for ( ; value; value = value >> 1 )
+    497              ret += value & 1;
+    498            return ret;
+    499          }
+    500          
+    501          /**
+    502          @brief Возращает 1 байт случайного числа
+    503          @details Радио выдает всего лишь дви бита, нам нужно 8 
+    504          */
+    505          static inline uint8_t getRNDByte(void)
+    506          {
+    507            uint8_t val = 0;
+    508            val |= RFRND << 0;
+    509            val |= RFRND << 2;
+    510            val |= RFRND << 4;
+    511            val |= RFRND << 6;
+    512            return val;
+    513          }
+    514          
+    515          /**
+    516          @brief Возвращает случайное число с числом включеных бит от 2 до 6 включительно
+    517          @details Случайные числа появляются в регистре с частотой 170нс. Функция 
+    518          возвращает гарантированно новое значение. 
+    519          @return возвращает случайное число.
+    520          */
+    521          static inline uint8_t readRandom(void)
+    522          {
+    523            uint8_t rnd_val = 0;
+    524            uint8_t bit_cnt = 0;
+    525            while ( bit_cnt <= 2 || bit_cnt >= 6 )
+    526            {
+    527              rnd_val = getRNDByte();
+    528              while (rnd_val == getRNDByte());
     529              rnd_val = getRNDByte();
-    530              while (rnd_val == getRNDByte());
-    531              rnd_val = getRNDByte();
-    532              bit_cnt = bits_count(rnd_val);
-    533            }
-    534            return rnd_val;
-    535          }
-    536          
-    537          /*!
-    538          \brief Иницилизирует ядро генератора случайных чисел данными из эфира
-    539          */
-    540          static void random_core_init(void)  
-    541          {
-    542            unsigned int rnd_core = 0;;
-    543               
-    544            RI_cfg();
-    545            FREQCTRL = 0x00; // Выбираем не используемую частоту
-    546          
-    547            // TODO По какой то причине OP_EXE не выполняет команду.
-    548            // регистра RFST читается как 0xD0. это его состояние при reset
-    549            // Включаем демодулятор
-    550            ISRXON();
-    551            
-    552            // Ждем пока статус RSSI_VALID станет true
-    553            while(!RSSISTAT);
-    554            
-    555            // Ждем случайных чисел
-    556            while (RFRND == 0);
-    557            
-    558            // Настраиваем ядро случайного генератора
-    559            rnd_core = readRandom();
-    560            rnd_core |= (unsigned int)readRandom()<<8;
-    561            srand(rnd_core);
-    562            
-    563            // Включаем демодулятор
-    564            ISRFOFF();
-    565            // Первая генерация случайного числа занимает много времени.
-    566            // Влияло на работу радио, так как использовались случайные посылки
-    567            rand(); 
-    568          }
-    569          
-    570          /*!
-    571          \brief Установка разрешения шифрования потока данных
-    572          \param[in] true - включить шифрование
-    573          */
-    574          void RI_StreamCrypt(bool state)
-    575          {
-    576            RADIO_CFG.STREAM_CRYPT_ENABLE = state;
-    577          }
-    578          
-    579          /*!
-    580          \brief Шифрует область памяти если шифрование разрешено
-    581          \param[in,out] *src Указатель на начало области шифрования
-    582          \param[in] size Размер шифруемых данных
-    583          */
-    584          static void RI_BitRawCrypt(uint8_t *src, uint8_t size)
-    585          {
-    586            if (!RADIO_CFG.STREAM_CRYPT_ENABLE)
-    587              return;
-    588            
-    589            AES_StreamCoder(true, src, src, KEY, IV, size);
-    590          }
-    591          
-    592          /*!
-    593          \brief Расшифровка область памяти если шифрование разрешено
-    594          \param[in,out] *src Указатель на начало области дешифрования
-    595          \param[in] size Размер расшифруемых данных
-    596          */
-    597          static void RI_BitRawDecrypt(uint8_t *src, uint8_t size)
-    598          {
-    599             if (!RADIO_CFG.STREAM_CRYPT_ENABLE)
-    600              return;
-    601             
-    602            AES_StreamCoder(false, src, src, KEY, IV, size);
-    603          }
+    530              bit_cnt = bits_count(rnd_val);
+    531            }
+    532            return rnd_val;
+    533          }
+    534          
+    535          /*!
+    536          \brief Иницилизирует ядро генератора случайных чисел данными из эфира
+    537          */
+    538          static void random_core_init(void)  
+    539          {
+    540            unsigned int rnd_core = 0;;
+    541               
+    542            RI_cfg();
+    543            FREQCTRL = 0x00; // Выбираем не используемую частоту
+    544          
+    545            // TODO По какой то причине OP_EXE не выполняет команду.
+    546            // регистра RFST читается как 0xD0. это его состояние при reset
+    547            // Включаем демодулятор
+    548            ISRXON();
+    549            
+    550            // Ждем пока статус RSSI_VALID станет true
+    551            while(!RSSISTAT);
+    552            
+    553            // Ждем случайных чисел
+    554            while (RFRND == 0);
+    555            
+    556            // Настраиваем ядро случайного генератора
+    557            rnd_core = readRandom();
+    558            rnd_core |= (unsigned int)readRandom()<<8;
+    559            srand(rnd_core);
+    560            
+    561            // Включаем демодулятор
+    562            ISRFOFF();
+    563            // Первая генерация случайного числа занимает много времени.
+    564            // Влияло на работу радио, так как использовались случайные посылки
+    565            rand(); 
+    566          }
+    567          
+    568          /*!
+    569          \brief Установка разрешения шифрования потока данных
+    570          \param[in] true - включить шифрование
+    571          */
+    572          void RI_StreamCrypt(bool state)
+    573          {
+    574            RADIO_CFG.STREAM_CRYPT_ENABLE = state;
+    575          }
+    576          
+    577          /*!
+    578          \brief Шифрует область памяти если шифрование разрешено
+    579          \param[in,out] *src Указатель на начало области шифрования
+    580          \param[in] size Размер шифруемых данных
+    581          */
+    582          static void RI_BitRawCrypt(uint8_t *src, uint8_t size)
+    583          {
+    584            if (!RADIO_CFG.STREAM_CRYPT_ENABLE)
+    585              return;
+    586            
+    587            AES_StreamCoder(true, src, src, KEY, IV, size);
+    588          }
+    589          
+    590          /*!
+    591          \brief Расшифровка область памяти если шифрование разрешено
+    592          \param[in,out] *src Указатель на начало области дешифрования
+    593          \param[in] size Размер расшифруемых данных
+    594          */
+    595          static void RI_BitRawDecrypt(uint8_t *src, uint8_t size)
+    596          {
+    597             if (!RADIO_CFG.STREAM_CRYPT_ENABLE)
+    598              return;
+    599             
+    600            AES_StreamCoder(false, src, src, KEY, IV, size);
+    601          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\TIC.c
       1          #include "TIC.h"
       2          #include "NTMR.h"
@@ -3243,7 +3074,7 @@ Warning[Pe550]: variable "timer" was set but never used
      40              //suite_delays();
      41              //suite_coder();
      42              //suite_fbuf();
-     43             // suite_frame();
+     43              //suite_frame();
      44              //suite_RADIO();
      45             // suite_MAC();
      46            // suite_printf_uart();
@@ -3587,264 +3418,83 @@ Warning[Pe550]: variable "timer" was set but never used
      47            umsg_line("delays module");
      48            alg_test();
      49          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_fbuf.c
-      1          #include "utest_suite.h"
-      2          #include "fbuf.h"
-      3          #include "Net_frames.h"
-      4          
-      5          static void test_create(void)
-      6          { 
-      7            fbuf_s *fb = fbuf_create(FB_ETH_LAY, NULL, NULL);
-      8            umsg("fbuf", "fbuf FB_ETH_LAY created", fb != NULL);
-      9            umsg("fbuf", "fbuf FB_ETH_LAY lenght", fb->len == ETH_LAY_SIZE);
-     10            fbuf_delete(fb);
-     11           
-     12            fb = fbuf_create(FB_IP_LAY, NULL, NULL);
-     13            umsg("fbuf", "fbuf FB_IP_LAY created", fb != NULL);
-     14            umsg("fbuf", "fbuf FB_IP_LAY lenght", fb->len == IP_LAY_SIZE);
-     15            fbuf_delete(fb);
-     16            
-     17            fb = fbuf_create(FB_SYNC_LAY, NULL, NULL);
-     18            umsg("fbuf", "fbuf FB_SYNC_LAY created", fb != NULL);
-     19            umsg("fbuf", "fbuf FB_SYNC_LAY lenght", fb->len == SYNC_LAY_SIZE);
-     20            fbuf_delete(fb);
-     21          }
-     22          
-     23          static void test_logic(void)
-     24          {
-     25            fbuf_s *fb1 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-     26            fbuf_s *fb2 = fbuf_create(FB_IP_LAY, NULL, NULL);
-     27            fbuf_s *fb3 = fbuf_create(FB_SYNC_LAY, NULL, NULL);
-     28            
-     29            fbuf_chain(fb1, fb2);
-     30            fbuf_chain(fb2, fb3);
-     31            
-     32            umsg("fbuf", "chain fb1 -> fb2", fb1->next == fb2);
-     33            umsg("fbuf", "chain fb2 -> fb3", fb2->next == fb3);
-     34            umsg("fbuf", "chain fb3 next NULL", fb3->next == NULL);
-     35            
-     36            fbuf_s *iterator = fb1;
-     37            umsg("fbuf", "iterator = fb1", iterator == fb1);
-     38            
-     39            iterator = fbuf_next(iterator);
-     40            umsg("fbuf", "iterator = fb2", iterator == fb2);
-     41            
-     42            iterator = fbuf_next(iterator);
-     43            umsg("fbuf", "iterator = fb3", iterator == fb3);
-     44            
-     45            iterator = fbuf_next(iterator);
-     46            umsg("fbuf", "iterator = NULL", iterator == NULL);
-     47            
-     48            fbuf_delete(fb1);
-     49            fbuf_delete(fb2);
-     50            fbuf_delete(fb3);
-     51          }
-     52          
-     53          static void raw_data_test(void)
-     54          {
-     55            #define RAW_LEN 100 
-     56            uint8_t data[RAW_LEN];
-     57            
-     58            for (uint8_t i = 0; i < RAW_LEN; i++)
-     59              data[i] = i;
-     60            
-     61            fbuf_s *fb = fbuf_create(FB_RAW_LAY, data, RAW_LEN);
-     62            bool flag = memory_compare((char*)data, fb->payload, RAW_LEN);
-     63            umsg("fbuf", "FB_RAW_LAY mem is equal", flag == true);
-     64            
-     65            ((uint8_t*)fb->payload)[6] = 10;
-     66            flag = memory_compare((char*)data, fb->payload, RAW_LEN);
-     67            umsg("fbuf", "FB_RAW_LAY mem is not qual", flag == false);
-     68            
-     69            umsg("fbuf", "FB_RAW_LAY len is equal", fb->len == RAW_LEN);
-     70            fbuf_delete(fb);
-     71          }
-     72          
-     73          static void delete_test(void)
-     74          {
-     75            fbuf_s *fb = fbuf_create(FB_SYNC_LAY, NULL, NULL);
-     76            fbuf_delete(fb);
-     77            fbuf_s *fb1 = fbuf_create(FB_SYNC_LAY, NULL, NULL);
-     78            umsg("fbuf", "fbuf_delete", fb == fb1);
-     79          }
-     80          
-     81          void suite_fbuf(void)
-     82          {
-     83            umsg_line("fbuf module");
-     84            test_create();
-     85            delete_test();
-     86            raw_data_test();
-     87            test_logic();
-     88          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_frame.c
       1          #include "utest_suite.h"
       2          #include "frame.h"
-      3          #include "Net_frames.h"
-      4          #include "stdbool.h"
+      3          #include "stdbool.h"
+      4          #include "mem.h"
       5          
-      6          static void insert1_test(void)
+      6          static void test_1(void)
       7          {
-      8            fbuf_s *fb1 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-      9            
-     10            frame_s* fr = frame_create();
-     11            frame_insert_head(fr, fb1);
-     12            umsg("frame", "Insert head. head = fb1", fr->head == fb1);
-     13            umsg("frame", "Insert head. tail = fb1", fr->tail == fb1);
-     14            frame_delete(fr);
-     15          }
-     16          
-     17          static void insert2_test(void)
-     18          {
-     19            fbuf_s *fb1 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-     20            
-     21            frame_s *fr = frame_create();
-     22            frame_insert_tail(fr, fb1);
-     23            umsg("frame", "Insert tail. head = fb1", fr->head == fb1);
-     24            umsg("frame", "Insert tail. tail = fb1", fr->tail == fb1);
-     25            frame_delete(fr);
-     26          }
-     27          
-     28          static void insert3_test(void)
-     29          {
-     30            fbuf_s *fb1 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-     31            fbuf_s *fb2 = fbuf_create(FB_IP_LAY, NULL, NULL);
-     32            fbuf_s *fb3 = fbuf_create(FB_SYNC_LAY, NULL, NULL);
-     33          
-     34            frame_s *fr = frame_create();
-     35            frame_insert_head(fr, fb1);
-     36            frame_insert_head(fr, fb2);
-     37            frame_insert_head(fr, fb3);
-     38            
-     39            fbuf_s *iterator = frame_get_fbuf_head(fr);
-     40            umsg("frame", "iterator = fb3", iterator == fb3);
+      8            frame_s *fr = frame_create();
+      9            umsg("frame", "Create", frame_getCount() == 1);
+     10              
+     11            frame_delete(fr);
+     12            umsg("frame", "Delete", frame_getCount() == 0);
+     13          }
+     14          
+     15          static void test_2(void)
+     16          {
+     17            uint8_t data[5];
+     18            uint16_t heap_ptr_before = heap_ptr(1);
+     19            
+     20            frame_s *fr = frame_create();
+     21            frame_addHeader(fr, data, sizeof(data));
+     22            frame_delete(fr);
+     23            
+     24            umsg("frame", "Memmory free test 1", heap_ptr_before == heap_ptr(1));
+     25          }
+     26          
+     27          static void test_3(void)
+     28          {
+     29            uint8_t data1[5] = {0,1,2,3,4};
+     30            uint8_t data2[5] = {5,6,7,8,9};
+     31            
+     32            frame_s *fr = frame_create();
+     33            frame_addHeader(fr, data2, sizeof(data2));
+     34            frame_addHeader(fr, data1, sizeof(data1));
+     35            
+     36            bool ok = true;
+     37            uint8_t *beg = (uint8_t*)fr->payload;
+     38            for (int i = 0 ; i < 10; i++)
+     39              if (beg[i] != i)
+     40                ok = false;
      41            
-     42            iterator = fbuf_next(iterator);
-     43            umsg("frame", "iterator = fb2", iterator == fb2);
-     44            
-     45            iterator = fbuf_next(iterator);
-     46            umsg("frame", "iterator = fb1", iterator == fb1); 
-     47            
-     48            iterator = fbuf_next(iterator);
-     49            umsg("frame", "iterator = NULL", iterator == NULL);
-     50            
-     51            fbuf_s *tail = frame_get_fbuf_tail(fr);
-     52            umsg("frame", "iterator = fb1", tail == fb1);
+     42            umsg("frame", "Header add", ok == true);
+     43            
+     44            frame_delete(fr); 
+     45          }
+     46          
+     47          static void test_4(void)
+     48          {
+     49            uint8_t data1[] = {0,1,2,3,4,3,87,21,35,73};
+     50            uint8_t data2[] = {5,6,7,8,9,36,85,98,23,98,42,12};
+     51            uint8_t data3[] = {10,11,12,13,14,15,17,20};
+     52            uint8_t data4[] = {5,6,7,8,9,23,56,23,6};
      53            
-     54            frame_delete(fr);
-     55          
-     56          }
-     57          
-     58          static void delete_test(void)
-     59          {
-     60            // Тест основан на том что malloc выделит ранее освобожденные
-     61            // участки памяти после освобождения памяти. 
-     62            fbuf_s *fb01 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-     63            fbuf_s *fb02 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-     64            fbuf_s *fb03 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-     65            fbuf_s *fb04 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-     66            
-     67            frame_s *fr = frame_create();
-     68            frame_insert_head(fr, fb01);
-     69            frame_insert_head(fr, fb02);
-     70            frame_insert_head(fr, fb03);
-     71            frame_insert_head(fr, fb04);
-     72            frame_delete(fr);
-     73            
-     74            fbuf_s *fb11 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-     75            fbuf_s *fb12 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-     76            fbuf_s *fb13 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-     77            fbuf_s *fb14 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-     78            
-     79            umsg("frame", "delete test. fb1", fb01 == fb11);
-     80            umsg("frame", "delete test. fb2", fb02 == fb12);
-     81            umsg("frame", "delete test. fb3", fb03 == fb13);
-     82            umsg("frame", "delete test. fb4", fb04 == fb14);
-     83            
-     84            fbuf_delete(fb11);
-     85            fbuf_delete(fb12);
-     86            fbuf_delete(fb13);
-     87            fbuf_delete(fb14);
-     88            fbuf_delete(fb01);
-     89            fbuf_delete(fb02);
-     90            fbuf_delete(fb03);
-     91            fbuf_delete(fb04);
-     92          }
-     93          
-     94          static void insert4_test(void)
-     95          {
-     96            fbuf_s *fb1 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-     97            fbuf_s *fb2 = fbuf_create(FB_IP_LAY, NULL, NULL);
-     98            fbuf_s *fb3 = fbuf_create(FB_SYNC_LAY, NULL, NULL);
-     99          
-    100            frame_s *fr = frame_create();
-    101            frame_insert_tail(fr, fb1);
-    102            frame_insert_tail(fr, fb2);
-    103            frame_insert_tail(fr, fb3);
-    104            
-    105            fbuf_s *iterator = frame_get_fbuf_head(fr);
-    106            umsg("frame", "iterator = fb1", iterator == fb1);
-    107            
-    108            iterator = fbuf_next(iterator);
-    109            umsg("frame", "iterator = fb2", iterator == fb2);
-    110            
-    111            iterator = fbuf_next(iterator);
-    112            umsg("frame", "iterator = fb3", iterator == fb3); 
-    113            
-    114            iterator = fbuf_next(iterator);
-    115            umsg("frame", "iterator = NULL", iterator == NULL);
-    116            
-    117            fbuf_s *tail = frame_get_fbuf_head(fr);
-    118            umsg("frame", "iterator = fb1", tail == fb1);
-    119            
-    120            frame_delete(fr);
-    121          }
-    122          
-    123          static void tot_len_test(void)
-    124          {
-    125            uint8_t tmp[10];
-    126            fbuf_s *fb1 = fbuf_create(FB_ETH_LAY, NULL, NULL);
-    127            fbuf_s *fb2 = fbuf_create(FB_IP_LAY, NULL, NULL);
-    128            fbuf_s *fb3 = fbuf_create(FB_SYNC_LAY, NULL, NULL);
-    129            fbuf_s *fb4 = fbuf_create(FB_RAW_LAY, tmp, sizeof(tmp));
-    130            
-    131            frame_s *fr = frame_create();
-    132            frame_insert_tail(fr, fb1);
-    133            frame_insert_tail(fr, fb2);
-    134            frame_insert_tail(fr, fb3);
-    135            frame_insert_tail(fr, fb4);
-    136            
-    137            uint8_t data_len = ETH_LAY_SIZE + IP_LAY_SIZE + SYNC_LAY_SIZE + sizeof(tmp);
-    138            uint8_t tot_len = frame_len(fr);
-    139            umsg("frame", "frame_len calc", tot_len == data_len);
-    140            frame_delete(fr);
-    141          }
-    142          
-    143          static void test_frame_merge(void)
-    144          {
-    145            uint8_t data[10] = {0,1,2,3,4,5,6,7,8,9};
-    146            uint8_t len;
-    147            
-    148            fbuf_s *fb = fbuf_create(FB_RAW_LAY, data, sizeof(data));
-    149            frame_s *fr = frame_create();
-    150            frame_insert_tail(fr, fb);
-    151            uint8_t *raw_data = frame_merge(fr, &len);
-    152            
-    153            bool test_res;
-    154            test_res = memory_compare((char*)raw_data, (char*)data, sizeof(data));
-    155            umsg("frame", "Memory corr", test_res == true);
-    156          }
-    157          
-    158          void suite_frame(void)
-    159          {
-    160            umsg_line("fbuf module");
-    161            test_frame_merge();
-    162            tot_len_test();
-    163            delete_test();
-    164            insert1_test();
-    165            insert2_test();
-    166            insert3_test();
-    167            insert4_test();  
-    168          }
+     54            uint16_t heap_ptr_before = heap_ptr(1);
+     55            
+     56            frame_s *fr = frame_create();
+     57            frame_addHeader(fr, data1, sizeof(data1));
+     58            frame_addHeader(fr, data2, sizeof(data2));
+     59            frame_addHeader(fr, data3, sizeof(data3));
+     60            frame_addHeader(fr, data4, sizeof(data4));
+     61           
+     62            frame_delete(fr);
+     63            
+     64            umsg("frame", "Memmory free test 2", heap_ptr_before == heap_ptr(1));
+     65            
+     66             
+     67          }
+     68          
+     69          void suite_frame(void)
+     70          {
+     71            umsg_line("frame module");
+     72            test_1();
+     73            test_2();
+     74            test_3();
+     75            test_4();
+     76          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_Frames.c
       1          #include "utest_suite.h"
       2          #include "string.h"
@@ -3879,161 +3529,160 @@ Warning[Pe550]: variable "timer" was set but never used
      20            frame_s *fr;
      21            EA=0;
      22            fr = frame_create();
-     23            
-     24            fbuf_s *fb = fbuf_create(FB_RAW_LAY, src, len);
-     25            EA=1;
-     26            fr->meta.SEND_TIME = 0;
-     27            fr->meta.TS = TS;
-     28            fr->meta.CH = CH;
-     29            frame_insert_head(fr, fb);
-     30            return fr;
-     31          }
-     32          
-     33          static void show_heap_ptr(void)
-     34          { 
-     35            uint16_t *heap_ptr;
-     36            heap_ptr = (uint16_t*)re_malloc(1);
-     37            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "HEAP_PTR = %d\r\n", (uint16_t)heap_ptr ); 
-     38            re_free(heap_ptr);
-     39          }
-     40          
-     41          static void test_create()
-     42          {
-     43            LLC_Init();
-     44            LLC_TimeAlloc(timealloc);
-     45            EA = 1;
-     46            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
+     23            frame_addHeader(fr, src, len);
+     24            EA=1;
+     25            fr->meta.SEND_TIME = 0;
+     26            fr->meta.TS = TS;
+     27            fr->meta.CH = CH;
+     28            return fr;
+     29          }
+     30          
+     31          static void show_heap_ptr(void)
+     32          { 
+     33            uint16_t *heap_ptr;
+     34            heap_ptr = (uint16_t*)re_malloc(1);
+     35            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "HEAP_PTR = %d\r\n", (uint16_t)heap_ptr ); 
+     36            re_free(heap_ptr);
+     37          }
+     38          
+     39          static void test_create()
+     40          {
+     41            LLC_Init();
+     42            LLC_TimeAlloc(timealloc);
+     43            EA = 1;
+     44            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
+     45            
+     46            frame_s *fr;
      47            
-     48            frame_s *fr;
-     49            
-     50            uint16_t TS = 0;
-     51            uint8_t *ptr_stack = (uint8_t*)0x100;
-     52            
-     53            fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
-     54            uint16_t fr_size = sizeof(frame_s);
-     55            uint16_t bf_size = frame_len(fr);
-     56            uint16_t HEAP_PTR_MAX = 0;
-     57            uint16_t heap;
-     58            uint8_t nbr_bufs, nbr_frames;
+     48            uint16_t TS = 0;
+     49            uint8_t *ptr_stack = (uint8_t*)0x100;
+     50            
+     51            fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
+     52            uint16_t fr_size = sizeof(frame_s);
+     53            uint16_t bf_size = frame_len(fr);
+     54            uint16_t HEAP_PTR_MAX = 0;
+     55            uint16_t heap;
+     56            uint8_t nbr_bufs, nbr_frames;
                            ^
-Warning[Pe550]: variable "nbr_bufs" was set but never used
+Warning[Pe177]: variable "nbr_bufs" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
 
     uint8_t nbr_bufs, nbr_frames;
                       ^
-"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",58  Warning[Pe550]: 
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",56  Warning[Pe550]: 
           variable "nbr_frames" was set but never used
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
-     59            
-     60            LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-     61                "Frame_s size = %d. Fbuf data = %d. Full =%d\r\n",
-     62                fr_size, bf_size, bf_size+fr_size );
-     63            frame_delete(fr);
-     64            
-     65            while(true)
-     66            {  
-     67              nbr_bufs = fbuf_getCount();
-     68              nbr_frames = frame_getCount();
-     69              if (LLC_GetTaskLen() < 20)
-     70              {
-     71                fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
-     72                LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Create frame = %d.\r\n", (uint16_t)fr);    
-     73                LLC_AddTask(fr);
-     74                TS ++;
-     75                if (TS == 49)
-     76                TS = 0;
-     77              }   
-     78              if (*ptr_stack != 0xcd) // Контроль переполнения стека
-     79                while(1);
-     80             
-     81              heap =  heap_ptr(10);
-     82              if (heap > HEAP_PTR_MAX)
-     83              {
-     84                HEAP_PTR_MAX = heap;
-     85                LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-     86                "HEAP_PTR = %d\r\n", HEAP_PTR_MAX );
-     87              }
-     88            }
-     89          }
-     90          
-     91          static void find_mem_problem(void)
-     92          {
-     93            LLC_Init();
-     94            LLC_TimeAlloc(timealloc);
-     95            EA = 1;
-     96            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
-     97            
-     98            frame_s *fr;
-     99            
-    100            uint16_t TS = 0;
-    101            uint8_t *ptr_stack = (uint8_t*)0x100;
-    102            
-    103            uint16_t HEAP_PTR_MAX = 0;
+     57            
+     58            LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
+     59                "Frame_s size = %d. Fbuf data = %d. Full =%d\r\n",
+     60                fr_size, bf_size, bf_size+fr_size );
+     61            frame_delete(fr);
+     62            
+     63            while(true)
+     64            {  
+     65              nbr_frames = frame_getCount();
+     66             // LOG(MSG_ON | MSG_INFO | MSG_TRACE, "nbr_frames = %d \r\n" ,nbr_frames );
+     67              
+     68              if (LLC_GetTaskLen() < 5)
+     69              {
+     70                fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
+     71                LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Create frame = %d.\r\n", (uint16_t)fr);    
+     72                LLC_AddTask(fr);
+     73                TS ++;
+     74                if (TS == 5)
+     75                TS = 0;
+     76              }   
+     77              if (*ptr_stack != 0xcd) // Контроль переполнения стека
+     78                while(1);
+     79             
+     80              heap =  heap_ptr(10);
+     81              if (heap > HEAP_PTR_MAX)
+     82              {
+     83                HEAP_PTR_MAX = heap;
+     84                LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
+     85                "HEAP_PTR = %d\r\n", HEAP_PTR_MAX );
+     86              }
+     87            }
+     88          }
+     89          
+     90          static void find_mem_problem(void)
+     91          {
+     92            LLC_Init();
+     93            LLC_TimeAlloc(timealloc);
+     94            EA = 1;
+     95            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
+     96            
+     97            frame_s *fr;
+     98            
+     99            uint16_t TS = 0;
+    100            uint8_t *ptr_stack = (uint8_t*)0x100;
+    101            
+    102            uint16_t HEAP_PTR_MAX = 0;
                             ^
 Warning[Pe177]: variable "HEAP_PTR_MAX" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
-    104            uint16_t *heap_ptr;
+    103            uint16_t *heap_ptr;
                              ^
 Warning[Pe177]: variable "heap_ptr" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
-    105            
-    106            while(true)
-    107            {  
-    108              if (fbuf_getCount() == 0)
-    109              {
-    110                show_heap_ptr();
-    111                for (uint8_t i = 0; i < 20 ; i++)
-    112                {
-    113                    fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
-    114                    TS++;
-    115                    if (TS == 49)
-    116                      TS = 0;
-    117                    LLC_AddTask(fr);
-    118                }
-    119              }   
-    120              
-    121              if (*ptr_stack != 0xcd) // Контроль переполнения стека
-    122                while(1);
-    123            }
+    104            
+    105            while(true)
+    106            {  
+    107              if (frame_getCount() == 0)
+    108              {
+    109                show_heap_ptr();
+    110                for (uint8_t i = 0; i < 20 ; i++)
+    111                {
+    112                    fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
+    113                    TS++;
+    114                    if (TS == 49)
+    115                      TS = 0;
+    116                    LLC_AddTask(fr);
+    117                }
+    118              }   
+    119              
+    120              if (*ptr_stack != 0xcd) // Контроль переполнения стека
+    121                while(1);
+    122            }
+    123            
     124            
-    125            
-    126          }
-    127          
-    128          // Тест на максимальное количество фреймов 
-    129          static void test_mem(void)
-    130          {
-    131            frame_s *FR[150];
+    125          }
+    126          
+    127          // Тест на максимальное количество фреймов 
+    128          static void test_mem(void)
+    129          {
+    130            frame_s *FR[150];
                             ^
 Warning[Pe550]: variable "FR" was set but never used
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
-    132            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9}; 
-    133            
-    134            for (uint8_t i = 0; i < 105; i++) 
-    135              FR[i] = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, 5);
-    136          }
+    131            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9}; 
+    132            
+    133            for (uint8_t i = 0; i < 105; i++) 
+    134              FR[i] = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, 5);
+    135          }
+    136          
     137          
-    138          
-    139          void suite_LLC_HW(void)
-    140          {
-    141           // umsg_line("LLC module");
-    142            
-    143            // Устанавливает и поддерживает в очереди 20 пакетов.
-    144            // Для приема пакетов испольуеться второй модуль с прошивкой RadioRecvTest1
-    145            test_create(); 
-    146           // test_mem();
-    147           // find_mem_problem();
-    148             
-    149          }
+    138          void suite_LLC_HW(void)
+    139          {
+    140           // umsg_line("LLC module");
+    141            
+    142            // Устанавливает и поддерживает в очереди 20 пакетов.
+    143            // Для приема пакетов испольуеться второй модуль с прошивкой RadioRecvTest1
+    144            test_create(); 
+    145           // test_mem();
+    146           // find_mem_problem();
+    147             
+    148          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_MAC.c
       1          #include "utest_suite.h"
       2          #include "MAC.h"
@@ -4053,59 +3702,57 @@ Warning[Pe550]: variable "FR" was set but never used
      16          {
      17            // Подготовим данные к отправке
      18            frame_s *fr = frame_create();
-     19            fbuf_s *fb = fbuf_create(FB_RAW_LAY, DATA_SEND, sizeof(DATA_SEND));
+     19            frame_addHeader(fr, DATA_SEND, sizeof(DATA_SEND));
      20            fr->meta.SEND_TIME = 0;
      21            fr->meta.CH = CH11;
-     22            frame_insert_head(fr, fb);
-     23             
-     24            // Нам не важно что структура не соотетсвует ACK. Важно чтоб пакет ушел
-     25            TIM_TimeStamp(&start);
-     26            res = MAC_ACK_Send(fr);
-     27            TIM_TimeStamp(&stop);
-     28            uint32_t passed = TIM_passedTime(&start, &stop);
-     29            LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-     30                "MAC_ACK_Send time = %lu. Success %d \n", passed, res);
+     22             
+     23            // Нам не важно что структура не соотетсвует ACK. Важно чтоб пакет ушел
+     24            TIM_TimeStamp(&start);
+     25            res = MAC_ACK_Send(fr);
+     26            TIM_TimeStamp(&stop);
+     27            uint32_t passed = TIM_passedTime(&start, &stop);
+     28            LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
+     29                "MAC_ACK_Send time = %lu. Success %d \n", passed, res);
+     30          }
      31          }
-     32          }
-     33          
-     34          static void stub_se(uint8_t ts)
-     35          {
-     36          }
-     37          
-     38          static void test_TS_Send(void)
-     39          {
-     40            MAC_Init();
-     41            TIC_SetSECallback(stub_se);
-     42            EA = 1;
-     43            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
-     44            uint8_t TS = 5, attempts = 3;
-     45            
-     46            frame_s *fr; 
-     47            
-     48            while (true)
-     49            {
-     50              if (!MAC_GetTXState(TS))
-     51              {
-     52                fr = frame_create();
-     53                fbuf_s *fb = fbuf_create(FB_RAW_LAY, DATA_SEND, sizeof(DATA_SEND));
-     54                fr->meta.SEND_TIME = 0;
-     55                fr->meta.TS = TS;
-     56                fr->meta.CH = CH11;
-     57                frame_insert_head(fr, fb);
-     58                MAC_Send(fr, attempts);
-     59                LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Frame puted to MAC layer at %lu sec\n", TIC_GetRTC());
-     60              }
-     61            }
-     62          }
-     63          
-     64          void suite_MAC(void)
-     65          {
-     66            // test_TS_Send отсылает пакеты по расписанию тайм слотов
-     67            // Нужно запрограмировать второе устройство RadioRecvTest1
-     68            // тогда будет гореть светодиод при приеме сигнала
-     69            test_TS_Send(); 
-     70            test_ACK_SEND();
-     71          }
+     32          
+     33          static void stub_se(uint8_t ts)
+     34          {
+     35          }
+     36          
+     37          static void test_TS_Send(void)
+     38          {
+     39            MAC_Init();
+     40            TIC_SetSECallback(stub_se);
+     41            EA = 1;
+     42            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
+     43            uint8_t TS = 5, attempts = 3;
+     44            
+     45            frame_s *fr; 
+     46            
+     47            while (true)
+     48            {
+     49              if (!MAC_GetTXState(TS))
+     50              {
+     51                fr = frame_create();
+     52                frame_addHeader(fr, DATA_SEND, sizeof(DATA_SEND));
+     53                fr->meta.SEND_TIME = 0;
+     54                fr->meta.TS = TS;
+     55                fr->meta.CH = CH11;
+     56                MAC_Send(fr, attempts);
+     57                LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Frame puted to MAC layer at %lu sec\n", TIC_GetRTC());
+     58              }
+     59            }
+     60          }
+     61          
+     62          void suite_MAC(void)
+     63          {
+     64            // test_TS_Send отсылает пакеты по расписанию тайм слотов
+     65            // Нужно запрограмировать второе устройство RadioRecvTest1
+     66            // тогда будет гореть светодиод при приеме сигнала
+     67            test_TS_Send(); 
+     68            test_ACK_SEND();
+     69          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_malloc.c
       1          #include "utest_suite.h"
       2          #include "stdlib.h"
@@ -4298,69 +3945,68 @@ Warning[Pe550]: variable "FR" was set but never used
      25            
      26            // Подготовим данные к отправке
      27            frame_s *fr = frame_create();
-     28            fbuf_s *fb = fbuf_create(FB_RAW_LAY, DATA_SEND, sizeof(DATA_SEND));
+     28            frame_addHeader(fr, DATA_SEND, sizeof(DATA_SEND));
      29            fr->meta.SEND_TIME = 3000;
-     30            frame_insert_head(fr, fb);
-     31            
-     32            // Передача данных
-     33            bool res;
-     34            while(true)
-     35            {
-     36              LED(D1, true);
-     37              TIM_delay(100UL*Tmsec);
-     38              LED(D1, false);
-     39              res = RI_Send(fr);
-     40              if (!res)
-     41                LED(D2, true);
-     42              else
-     43                LED(D2, false);
-     44              TIM_delay(900UL*Tmsec);
-     45            };
-     46            
-     47            frame_delete(fr);
+     30            
+     31            // Передача данных
+     32            bool res;
+     33            while(true)
+     34            {
+     35              LED(D1, true);
+     36              TIM_delay(100UL*Tmsec);
+     37              LED(D1, false);
+     38              res = RI_Send(fr);
+     39              if (!res)
+     40                LED(D2, true);
+     41              else
+     42                LED(D2, false);
+     43              TIM_delay(900UL*Tmsec);
+     44            };
+     45            
+     46            frame_delete(fr);
                    ^
 Warning[Pe111]: statement is unreachable
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_radio.c"
-     48          }
-     49          
-     50          static void RadioRecvTest1(void)
-     51          {
-     52            uint8_t DATA_RECV[10] = {0,1,2,3,4,5,6,7,8,9};
-     53            uint8_t key[16] = {18,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17};
-     54            uint8_t nonce[16] = {18,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17};
-     55            
-     56            NT_Init(); // Управление прериваниями таймера сна
-     57            TIM_init();// Таймер MAC для измерения интервалов времени
-     58            TIC_Init();// Контроллер интервалов времени (зависит от NT)
-     59            RI_init(); // Иницилизация радио ( использует TIM и NT)
-     60            AES_init();// Иницилизация шифровальщика
-     61            
-     62            RI_StreamCrypt(true);
-     63            RI_SetChannel(CH11);
-     64            RI_setKEY(key);
-     65            RI_setIV(nonce);
-     66            
-     67            // Примем данных
-     68            frame_s *fr;
-     69            
-     70            // Прием данных
-     71            bool res;
-     72            while(true)
-     73            {
-     74              fr = RI_Receive(2000);
-     75              LED(D2, false);
-     76              if (fr == NULL)
-     77                continue;
-     78              
-     79              if (memory_compare((char*)DATA_RECV, fr->head->payload, 10))
-     80                LED(D2, true);
-     81              
-     82              frame_delete(fr);
-     83            };
-     84            
-     85            frame_delete(fr);
+     47          }
+     48          
+     49          static void RadioRecvTest1(void)
+     50          {
+     51            uint8_t DATA_RECV[10] = {0,1,2,3,4,5,6,7,8,9};
+     52            uint8_t key[16] = {18,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17};
+     53            uint8_t nonce[16] = {18,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17};
+     54            
+     55            NT_Init(); // Управление прериваниями таймера сна
+     56            TIM_init();// Таймер MAC для измерения интервалов времени
+     57            TIC_Init();// Контроллер интервалов времени (зависит от NT)
+     58            RI_init(); // Иницилизация радио ( использует TIM и NT)
+     59            AES_init();// Иницилизация шифровальщика
+     60            
+     61            RI_StreamCrypt(true);
+     62            RI_SetChannel(CH11);
+     63            RI_setKEY(key);
+     64            RI_setIV(nonce);
+     65            
+     66            // Примем данных
+     67            frame_s *fr;
+     68            
+     69            // Прием данных
+     70            bool res;
+     71            while(true)
+     72            {
+     73              fr = RI_Receive(2000);
+     74              LED(D2, false);
+     75              if (fr == NULL)
+     76                continue;
+     77              
+     78              if (memory_compare((char*)DATA_RECV, fr->payload, 10))
+     79                LED(D2, true);
+     80              
+     81              frame_delete(fr);
+     82            };
+     83            
+     84            frame_delete(fr);
                    ^
 Warning[Pe111]: statement is unreachable
           detected during compilation of secondary translation unit
@@ -4369,17 +4015,17 @@ Warning[Pe111]: statement is unreachable
 
     bool res;
          ^
-"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_radio.c",71  Warning[Pe177]: 
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_radio.c",70  Warning[Pe177]: 
           variable "res" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_radio.c"
-     86          }
-     87          
-     88          static void one_speed_test(frame_s *fr)
-     89          {
-     90            bool res;
-     91            TimeStamp_s start, stop, *ts0;
+     85          }
+     86          
+     87          static void one_speed_test(frame_s *fr)
+     88          {
+     89            bool res;
+     90            TimeStamp_s start, stop, *ts0;
                                              ^
 Warning[Pe177]: variable "ts0" was declared but never referenced
           detected during compilation of secondary translation unit
@@ -4396,7 +4042,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
 
   static void find_mem_problem(void)
               ^
-"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",91  Warning[Pe177]: 
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",90  Warning[Pe177]: 
           function "find_mem_problem" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
@@ -4404,7 +4050,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
 
   static void test_mem(void)
               ^
-"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",129  Warning[Pe177]: 
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",128  Warning[Pe177]: 
           function "test_mem" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
@@ -4417,118 +4063,113 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_radio.c"
-     92            do
-     93            {
-     94              TIM_TimeStamp(&start);
-     95              res = RI_Send(fr);
-     96              TIM_TimeStamp(&stop);
-     97            } while (!res);
-     98            
-     99            uint32_t passed = TIM_passedTime(&start, &stop);
-    100            uint16_t passed_sfd = fr->meta.TIMESTAMP;
-    101            LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-    102                "Data size = %d. Full time = %lu us. SFD time = %d us\n"
-    103                ,fr->head->len, passed, passed_sfd);
-    104           
-    105          }
-    106          static void speed_test(void)
-    107          {
-    108            uint8_t DATA_SEND[100];
-    109            uint8_t key[16] = {18,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17};
-    110            uint8_t nonce[16] = {18,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17};
-    111            uint8_t size_tests[] = {10, 50, 100, 125};
-    112            
-    113            TIM_init();
-    114            RI_init();
-    115            AES_init();
-    116            
-    117            RI_StreamCrypt(true);
-    118            RI_SetChannel(CH11);
-    119            RI_setKEY(key);
-    120            RI_setIV(nonce);
-    121            
-    122            // Подготовим данные к отправке
-    123            
-    124            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "SEND SPEED TEST WITH DATA ENCODE\n");  
-    125            for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
-    126            {
-    127              frame_s *fr = frame_create();
-    128              fbuf_s *fb = fbuf_create(FB_RAW_LAY, DATA_SEND, size_tests[s]);
-    129              frame_insert_head(fr, fb);
-    130              one_speed_test(fr);
-    131              frame_delete(fr);
-    132            }
-    133            
-    134            RI_StreamCrypt(false);
-    135            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "SEND SPEED TEST WITHOUT DATA ENCODE\n"); 
-    136            for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
-    137            {
-    138              frame_s *fr = frame_create();
-    139              fbuf_s *fb = fbuf_create(FB_RAW_LAY, DATA_SEND, size_tests[s]);
-    140              frame_insert_head(fr, fb);
-    141              one_speed_test(fr);
-    142              frame_delete(fr);
-    143            }
-    144            
-    145            RI_StreamCrypt(true);
-    146            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "SEND IN SEND_TIME 1000 ticks AFTER TS0\n"); 
-    147            for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
-    148            {
-    149              frame_s *fr = frame_create();
-    150              fbuf_s *fb = fbuf_create(FB_RAW_LAY, DATA_SEND, size_tests[s]);
-    151              frame_insert_head(fr, fb);
-    152              fr->meta.SEND_TIME = 1000;
-    153              TIC_Init(); // При иницилизации TS0 отсчитываеться с этого момента
-    154              one_speed_test(fr);
-    155              frame_delete(fr);
-    156            }  
-    157            
-    158          
-    159            RI_StreamCrypt(true);
-    160            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "SEND IN SEND_TIME 1000 ticks AFTER TS0\n"); 
-    161            for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
-    162            {
-    163              frame_s *fr = frame_create();
-    164              fbuf_s *fb = fbuf_create(FB_RAW_LAY, DATA_SEND, size_tests[s]);
-    165              frame_insert_head(fr, fb);
-    166              fr->meta.SEND_TIME = 1000;
-    167              TIC_Init(); // При иницилизации TS0 отсчитываеться с этого момента
-    168              one_speed_test(fr);
-    169              frame_delete(fr);
-    170            } 
-    171            
-    172            RI_StreamCrypt(true);
-    173            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "SEND IN SEND_TIME 1000 ticks AFTER TS0\n"); 
-    174            for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
-    175            {
-    176              frame_s *fr = frame_create();
-    177              fbuf_s *fb = fbuf_create(FB_RAW_LAY, DATA_SEND, size_tests[s]);
-    178              frame_insert_head(fr, fb);
-    179              fr->meta.SEND_TIME = 1000;
-    180              TIC_Init(); // При иницилизации TS0 отсчитываеться с этого момента
-    181              one_speed_test(fr);
-    182              frame_delete(fr);
-    183            } 
-    184            
-    185          }
-    186          
-    187          // Тесты скорости
-    188          void suite_RADIO(void)
-    189          {
-    190            umsg_line("RADIO module");
-    191            speed_test();
-    192          }
-    193          // Для тестирования радио запрограмируй два узла. Первый узел RadioSendTest1();
-    194          // Второй узел RadioRecvTest1(); Первый будет раз в секунду передавать
-    195          // шифрованные данные. Второй при приеме и удачном декодировании включит
-    196          // светодиод.
-    197          void suite_RADIO_HW(void)
-    198          {
-    199            //umsg_line("NTMR module");
-    200            //RadioSendTest1();
-    201            //
-    202            RadioRecvTest1();
-    203          }
+     91            do
+     92            {
+     93              TIM_TimeStamp(&start);
+     94              res = RI_Send(fr);
+     95              TIM_TimeStamp(&stop);
+     96            } while (!res);
+     97            
+     98            uint32_t passed = TIM_passedTime(&start, &stop);
+     99            uint16_t passed_sfd = fr->meta.TIMESTAMP;
+    100            LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
+    101                "Data size = %d. Full time = %lu us. SFD time = %d us\n"
+    102                ,fr->len, passed, passed_sfd);
+    103           
+    104          }
+    105          static void speed_test(void)
+    106          {
+    107            uint8_t DATA_SEND[100];
+    108            uint8_t key[16] = {18,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17};
+    109            uint8_t nonce[16] = {18,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17};
+    110            uint8_t size_tests[] = {10, 50, 100, 125};
+    111            
+    112            TIM_init();
+    113            RI_init();
+    114            AES_init();
+    115            
+    116            RI_StreamCrypt(true);
+    117            RI_SetChannel(CH11);
+    118            RI_setKEY(key);
+    119            RI_setIV(nonce);
+    120            
+    121            // Подготовим данные к отправке
+    122            
+    123            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "SEND SPEED TEST WITH DATA ENCODE\n");  
+    124            for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
+    125            {
+    126              frame_s *fr = frame_create();
+    127              frame_addHeader(fr, DATA_SEND, size_tests[s]);
+    128              one_speed_test(fr);
+    129              frame_delete(fr);
+    130            }
+    131            
+    132            RI_StreamCrypt(false);
+    133            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "SEND SPEED TEST WITHOUT DATA ENCODE\n"); 
+    134            for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
+    135            {
+    136              frame_s *fr = frame_create();
+    137              frame_addHeader(fr, DATA_SEND, size_tests[s]);
+    138              one_speed_test(fr);
+    139              frame_delete(fr);
+    140            }
+    141            
+    142            RI_StreamCrypt(true);
+    143            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "SEND IN SEND_TIME 1000 ticks AFTER TS0\n"); 
+    144            for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
+    145            {
+    146              frame_s *fr = frame_create();
+    147              frame_addHeader(fr, DATA_SEND, size_tests[s]);
+    148              fr->meta.SEND_TIME = 1000;
+    149              TIC_Init(); // При иницилизации TS0 отсчитываеться с этого момента
+    150              one_speed_test(fr);
+    151              frame_delete(fr);
+    152            }  
+    153            
+    154          
+    155            RI_StreamCrypt(true);
+    156            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "SEND IN SEND_TIME 1000 ticks AFTER TS0\n"); 
+    157            for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
+    158            {
+    159              frame_s *fr = frame_create();
+    160              frame_addHeader(fr, DATA_SEND, size_tests[s]);
+    161              fr->meta.SEND_TIME = 1000;
+    162              TIC_Init(); // При иницилизации TS0 отсчитываеться с этого момента
+    163              one_speed_test(fr);
+    164              frame_delete(fr);
+    165            } 
+    166            
+    167            RI_StreamCrypt(true);
+    168            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "SEND IN SEND_TIME 1000 ticks AFTER TS0\n"); 
+    169            for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
+    170            {
+    171              frame_s *fr = frame_create();
+    172              frame_addHeader(fr, DATA_SEND, size_tests[s]);
+    173              fr->meta.SEND_TIME = 1000;
+    174              TIC_Init(); // При иницилизации TS0 отсчитываеться с этого момента
+    175              one_speed_test(fr);
+    176              frame_delete(fr);
+    177            } 
+    178            
+    179          }
+    180          
+    181          // Тесты скорости
+    182          void suite_RADIO(void)
+    183          {
+    184            umsg_line("RADIO module");
+    185            speed_test();
+    186          }
+    187          // Для тестирования радио запрограмируй два узла. Первый узел RadioSendTest1();
+    188          // Второй узел RadioRecvTest1(); Первый будет раз в секунду передавать
+    189          // шифрованные данные. Второй при приеме и удачном декодировании включит
+    190          // светодиод.
+    191          void suite_RADIO_HW(void)
+    192          {
+    193            //umsg_line("NTMR module");
+    194            //RadioSendTest1();
+    195            //
+    196            RadioRecvTest1();
+    197          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_suite.c
       1          #include "stdio.h"
       2          #include "utest_suite.h"
@@ -4753,13 +4394,13 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     14   -> printf
       0     54   Interval
       0     52   LED
-      1     50   LLC_AddTask
+      1     49   LLC_AddTask
         0     12   -> STACK_FAILURE
         0     12   -> printf
         0     16   -> printf
         0     12   -> re_malloc
-      2     34   LLC_GetTaskLen
-      2     34   LLC_Init
+      2     33   LLC_GetTaskLen
+      2     33   LLC_Init
         2      0   -> MAC_Init
         2      0   -> MAC_SetRXCallback
         2      0   -> TIC_SetSECallback
@@ -4779,14 +4420,14 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     13   -> MAC_GetTXState
         0     13   -> MAC_Send
         0     13   -> re_free
-      0     50   LLC_TimeAlloc
+      0     49   LLC_TimeAlloc
         0     12   -> STACK_FAILURE
         0     12   -> printf
         0     16   -> printf
         0     12   -> re_malloc
-      2     15   LoadTXData
+      2     16   LoadTXData
       0      0   MAC_ACK_Recv
-      0     51   MAC_ACK_Send
+      0     49   MAC_ACK_Send
         0      9   -> RI_Send
         0      9   -> RI_SetChannel
         0      9   -> frame_delete
@@ -4799,11 +4440,11 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     10   -> STACK_FAILURE
         0     10   -> printf
         0     14   -> printf
-      0     40   MAC_GetTXState
+      0     38   MAC_GetTXState
         0     10   -> STACK_FAILURE
         0     10   -> printf
         0     14   -> printf
-      0     54   MAC_Init
+      0     52   MAC_Init
         0     10   -> AES_init
         0     10   -> RI_StreamCrypt
         0     10   -> RI_init
@@ -4825,7 +4466,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     12   -> STACK_FAILURE
         0     12   -> printf
         0     16   -> printf
-      1     42   MAC_Send
+      1     40   MAC_Send
         0     12   -> STACK_FAILURE
         0     12   -> TIC_SetTXState
         0     12   -> printf
@@ -4863,8 +4504,8 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     14   -> isIRQEnable
         0     14   -> printf
         0     18   -> printf
-      0     27   NT_WaitTime
-      0     31   RI_BitRawCrypt
+      0     28   NT_WaitTime
+      0     32   RI_BitRawCrypt
         0     16   -> AES_StreamCoder
       0     62   RI_BitRawDecrypt
         0     16   -> AES_StreamCoder
@@ -4878,9 +4519,8 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     46   -> TIM_TimeStamp
         0     46   -> TIM_passedTime
         0     46   -> UnLoadRXData
-        0     46   -> fbuf_create
+        0     46   -> frame_addHeader
         0     46   -> frame_create
-        0     46   -> frame_insert_head
         0     46   -> re_free
         0     46   -> re_malloc
       0     72   RI_Send
@@ -4891,15 +4531,15 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     36   -> TIM_passedTime
         0     36   -> printf
         0     40   -> printf
-      2    150   RI_SetChannel
-      2    150   RI_StreamCrypt
+      2    148   RI_SetChannel
+      2    148   RI_StreamCrypt
       3     47   RI_cfg
         2      1   -> setFreq
-      2    150   RI_init
+      2    148   RI_init
         2      0   -> random_core_init
-      0    162   RI_setIV
+      0    160   RI_setIV
         0     12   -> memcpy
-      0    162   RI_setKEY
+      0    160   RI_setKEY
         0     12   -> memcpy
       0      0   RXC
       0     54   RadioRecvTest1
@@ -4923,16 +4563,15 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     32   -> TIM_passedTime
       0      0   SEC
       0     36   STACK_FAILURE
-      0     51   SendData
-        0     15   -> LoadTXData
-        0     15   -> NT_GetTime
-        0     15   -> NT_WaitTime
-        0     15   -> RI_BitRawCrypt
-        0     15   -> frame_merge
-        0     15   -> re_free
+      0     52   SendData
+        0     16   -> LoadTXData
+        0     16   -> NT_GetTime
+        0     16   -> NT_WaitTime
+        0     16   -> RI_BitRawCrypt
+        0     16   -> re_free
       0      0   SetCPU32M
       2     12   TIC_GetNonce
-      2     26   TIC_GetRTC
+      2     24   TIC_GetRTC
       0     14   TIC_GetRXState
         0     10   -> STACK_FAILURE
         0     10   -> printf
@@ -4953,7 +4592,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     12   -> clocks_update
         0     12   -> printf
         0     16   -> printf
-      2    150   TIC_Init
+      2    148   TIC_Init
         2      0   -> NT_SetCompare
         2      0   -> NT_SetEventCallback
         2      0   -> TIC_SetTimer
@@ -4968,7 +4607,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     10   -> STACK_FAILURE
         0     10   -> printf
         0     14   -> printf
-      0     40   TIC_SetSECallback
+      0     38   TIC_SetSECallback
         0     10   -> STACK_FAILURE
         0     10   -> printf
         0     14   -> printf
@@ -5033,106 +4672,50 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       2     34   calcCompareTime
         0     22   -> ReadTimer
       0     24   clocks_update
-      0     12   delete_test
-        0     12   -> fbuf_create
-        0     12   -> fbuf_delete
-        0     12   -> umsg
-      0     26   delete_test
-        0     26   -> fbuf_create
-        0     26   -> fbuf_delete
-        0     26   -> frame_create
-        0     26   -> frame_delete
-        0     26   -> frame_insert_head
-        0     26   -> umsg
-      0     34   extract_header
-        0     16   -> STACK_FAILURE
-        0     16   -> frame_get_fbuf_head
-        0     16   -> frame_len
-        0     16   -> printf
-        0     20   -> printf
-        0     16   -> re_malloc
-        0     18   -> re_memcpy
-      2     16   fbuf_chain
-      1    170   fbuf_create
-        0     16   -> STACK_FAILURE
-        0     18   -> memcpy
-        0     18   -> memset
-        0     16   -> printf
-        0     20   -> printf
-        0     16   -> re_malloc
-      0    119   fbuf_delete
-        0      9   -> re_free
-      2     34   fbuf_getCount
-      2     20   fbuf_next
-      0    164   frame_create
-        0     10   -> STACK_FAILURE
-        0     12   -> memset
-        0     10   -> printf
+      0     32   extract_header
+        0     14   -> STACK_FAILURE
+        0     14   -> frame_len
         0     14   -> printf
-        0     10   -> re_malloc
-      0    162   frame_delete
-        0     12   -> fbuf_delete
-        0     12   -> re_free
-      2     34   frame_getCount
-      2     20   frame_get_fbuf_head
-      2     20   frame_get_fbuf_tail
-      0    159   frame_insert_head
-      0     44   frame_insert_tail
+        0     18   -> printf
+        0     14   -> re_malloc
+      1    170   frame_addHeader
+        0     18   -> STACK_FAILURE
+        0     18   -> printf
+        0     22   -> printf
+        0     18   -> re_free
+        0     18   -> re_malloc
+        0     20   -> re_memcpy
+      0    164   frame_create
         0     12   -> STACK_FAILURE
+        0     14   -> memset
         0     12   -> printf
         0     16   -> printf
-      2     34   frame_len
-      1     49   frame_merge
-        0     20   -> STACK_FAILURE
-        0     20   -> frame_len
-        0     22   -> memcpy
-        0     20   -> printf
-        0     24   -> printf
-        0     20   -> re_malloc
+        0     12   -> re_malloc
+      1     18   frame_delHeader
+        0     14   -> STACK_FAILURE
+        0     14   -> printf
+        0     18   -> printf
+        0     14   -> re_free
+        0     14   -> re_malloc
+        0     16   -> re_memcpy
+      0    158   frame_delete
+        0     10   -> re_free
+      2     33   frame_getCount
+      2     33   frame_len
       0     19   free
         0      9   -> __xdata_free
       0     86   generateAuthData
         0     18   -> memcpy
-      1     52   getFrame
-        0     18   -> fbuf_create
-        0     18   -> frame_create
-        0     18   -> frame_insert_head
+      1     49   getFrame
+        0     16   -> frame_addHeader
+        0     16   -> frame_create
       2     14   getMallocSize
       2      9   getRNDByte
-      0     46   heap_ptr
+      0     63   heap_ptr
         0     12   -> re_free
         0     12   -> re_malloc
       0      0   heap_size
       2      1   incrementTS
-      0     12   insert1_test
-        0     12   -> fbuf_create
-        0     12   -> frame_create
-        0     12   -> frame_delete
-        0     12   -> frame_insert_head
-        0     12   -> umsg
-      0     12   insert2_test
-        0     12   -> fbuf_create
-        0     12   -> frame_create
-        0     12   -> frame_delete
-        0     12   -> frame_insert_tail
-        0     12   -> umsg
-      0     20   insert3_test
-        0     20   -> fbuf_create
-        0     20   -> fbuf_next
-        0     20   -> frame_create
-        0     20   -> frame_delete
-        0     20   -> frame_get_fbuf_head
-        0     20   -> frame_get_fbuf_tail
-        0     20   -> frame_insert_head
-        0     20   -> umsg
-      0     20   insert4_test
-        0     20   -> fbuf_create
-        0     20   -> fbuf_next
-        0     20   -> frame_create
-        0     20   -> frame_delete
-        0     20   -> frame_get_fbuf_head
-        0     20   -> frame_insert_tail
-        0     20   -> umsg
       0     14   isIRQEnable
       2     12   isNear
       0     28   loadTimerCompare
@@ -5158,11 +4741,11 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0    108   -> TIM_init
         0    110   -> memcpy
         0    108   -> umsg
-      0    121   memory_compare
+      0     63   memory_compare
       2      0   nwDebugerInit
         2      0   -> SetCPU32M
         2      0   -> uart_init
-      0    190   one_speed_test
+      0    188   one_speed_test
         0     32   -> RI_Send
         0     32   -> TIM_TimeStamp
         0     32   -> TIM_passedTime
@@ -5173,16 +4756,11 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0      9   -> rand
         0      9   -> readRandom
         0      9   -> srand
-      1    112   raw_data_test
-        0    110   -> fbuf_create
-        0    110   -> fbuf_delete
-        0    112   -> memory_compare
-        0    110   -> umsg
       0     56   re_free
         0     10   -> free
       0     60   re_malloc
         0     14   -> malloc
-      0     34   re_memcpy
+      0     36   re_memcpy
         0     16   -> memcpy
       0     18   readRandom
         0      9   -> bits_count
@@ -5197,22 +4775,21 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       0    214   single_enc_dec_test
         0     20   -> AES_CCMDecrypt
         0     20   -> AES_CCMEncrypt
-      0    154   speed_test
-        0    150   -> AES_init
-        0    150   -> RI_SetChannel
-        0    150   -> RI_StreamCrypt
-        0    150   -> RI_init
-        0    150   -> RI_setIV
-        0    150   -> RI_setKEY
-        0    150   -> TIC_Init
-        0    150   -> TIM_init
-        0    150   -> fbuf_create
-        0    150   -> frame_create
-        0    150   -> frame_delete
-        0    150   -> frame_insert_head
-        0    150   -> one_speed_test
-        0    150   -> printf
-        0    154   -> printf
+      0    152   speed_test
+        0    148   -> AES_init
+        0    148   -> RI_SetChannel
+        0    148   -> RI_StreamCrypt
+        0    148   -> RI_init
+        0    148   -> RI_setIV
+        0    148   -> RI_setKEY
+        0    148   -> TIC_Init
+        0    148   -> TIM_init
+        0    148   -> frame_addHeader
+        0    148   -> frame_create
+        0    148   -> frame_delete
+        0    148   -> one_speed_test
+        0    148   -> printf
+        0    152   -> printf
       0     14   strip_header
       0      0   stub_se
       2      0   suite_Frames
@@ -5242,20 +4819,11 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         2      0   -> umsg_line
       2      0   suite_delays_HW
         2      0   -> manual
-      2      0   suite_fbuf
-        2      0   -> delete_test
-        2      0   -> raw_data_test
-        2      0   -> test_create
-        2      0   -> test_logic
-        2      0   -> umsg_line
       2      0   suite_frame
-        2      0   -> delete_test
-        2      0   -> insert1_test
-        2      0   -> insert2_test
-        2      0   -> insert3_test
-        2      0   -> insert4_test
-        2      0   -> test_frame_merge
-        2      0   -> tot_len_test
+        2      0   -> test_1
+        2      0   -> test_2
+        2      0   -> test_3
+        2      0   -> test_4
         2      0   -> umsg_line
       2      0   suite_malloc
         2      0   -> test_1
@@ -5265,6 +4833,11 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       0     14   test_1
         0     14   -> getMallocSize
         0     14   -> malloc
+      0     10   test_1
+        0     10   -> frame_create
+        0     10   -> frame_delete
+        0     10   -> frame_getCount
+        0     10   -> umsg
       0     97   test_1
         0     91   -> TIM_TimeStamp
         0     91   -> TIM_init
@@ -5272,51 +4845,54 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     91   -> printf
         0     95   -> printf
         0     97   -> printf
-      0     48   test_ACK_SEND
-        0     42   -> MAC_ACK_Send
-        0     42   -> MAC_Init
-        0     42   -> TIM_TimeStamp
-        0     42   -> TIM_passedTime
-        0     42   -> fbuf_create
-        0     42   -> frame_create
-        0     42   -> frame_insert_head
+      0     17   test_2
+        0     17   -> frame_addHeader
+        0     17   -> frame_create
+        0     17   -> frame_delete
+        0     17   -> heap_ptr
+        0     17   -> umsg
+      0     20   test_3
+        0     20   -> frame_addHeader
+        0     20   -> frame_create
+        0     20   -> frame_delete
+        0     20   -> umsg
+      0     51   test_4
+        0     51   -> frame_addHeader
+        0     51   -> frame_create
+        0     51   -> frame_delete
+        0     51   -> heap_ptr
+        0     51   -> umsg
+      0     46   test_ACK_SEND
+        0     40   -> MAC_ACK_Send
+        0     40   -> MAC_Init
+        0     40   -> TIM_TimeStamp
+        0     40   -> TIM_passedTime
+        0     40   -> frame_addHeader
+        0     40   -> frame_create
+        0     44   -> printf
         0     46   -> printf
-        0     48   -> printf
-      1     30   test_TS_Send
-        0     26   -> MAC_GetTXState
-        0     26   -> MAC_Init
-        0     26   -> MAC_Send
-        0     26   -> TIC_GetRTC
-        0     26   -> TIC_SetSECallback
-        0     26   -> fbuf_create
-        0     26   -> frame_create
-        0     26   -> frame_insert_head
-        0     30   -> printf
-      0     10   test_create
-        0     10   -> fbuf_create
-        0     10   -> fbuf_delete
-        0     10   -> umsg
-      1     40   test_create
-        0     34   -> LLC_AddTask
-        0     34   -> LLC_GetTaskLen
-        0     34   -> LLC_Init
-        0     34   -> LLC_TimeAlloc
-        0     34   -> fbuf_getCount
-        0     34   -> frame_delete
-        0     34   -> frame_getCount
-        0     34   -> frame_len
-        0     34   -> getFrame
-        0     34   -> heap_ptr
-        0     36   -> printf
-        0     38   -> printf
-        0     40   -> printf
-      0     27   test_frame_merge
-        0     25   -> fbuf_create
-        0     25   -> frame_create
-        0     25   -> frame_insert_tail
-        0     25   -> frame_merge
-        0     27   -> memory_compare
-        0     25   -> umsg
+      1     28   test_TS_Send
+        0     24   -> MAC_GetTXState
+        0     24   -> MAC_Init
+        0     24   -> MAC_Send
+        0     24   -> TIC_GetRTC
+        0     24   -> TIC_SetSECallback
+        0     24   -> frame_addHeader
+        0     24   -> frame_create
+        0     28   -> printf
+      1     39   test_create
+        0     33   -> LLC_AddTask
+        0     33   -> LLC_GetTaskLen
+        0     33   -> LLC_Init
+        0     33   -> LLC_TimeAlloc
+        0     33   -> frame_delete
+        0     33   -> frame_getCount
+        0     33   -> frame_len
+        0     33   -> getFrame
+        0     33   -> heap_ptr
+        0     35   -> printf
+        0     37   -> printf
+        0     39   -> printf
       2     12   test_hw
         2     12   -> NT_Init
         2     12   -> TIC_GetNonce
@@ -5330,21 +4906,8 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         2     12   -> TIC_SetSECallback
         2     12   -> TIC_SetTXCallback
         2     12   -> TIC_SetTXState
-      0     16   test_logic
-        0     16   -> fbuf_chain
-        0     16   -> fbuf_create
-        0     16   -> fbuf_delete
-        0     16   -> fbuf_next
-        0     16   -> umsg
       2      0   timealloc
         2      0   -> LED
-      0     28   tot_len_test
-        0     28   -> fbuf_create
-        0     28   -> frame_create
-        0     28   -> frame_delete
-        0     28   -> frame_insert_tail
-        0     28   -> frame_len
-        0     28   -> umsg
       0      0   uart_init
       0    208   umsg
         0     20   -> printf
@@ -5373,7 +4936,6 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       17  ?<Constant "*ASSERT* %s:%d->">_4
       17  ?<Constant "*ASSERT* %s:%d->">_5
       17  ?<Constant "*ASSERT* %s:%d->">_6
-      17  ?<Constant "*ASSERT* %s:%d->">_7
       19  ?<Constant "*LOGGER* %s:%d -> ">
       19  ?<Constant "*LOGGER* %s:%d -> ">_1
       19  ?<Constant "*LOGGER* %s:%d -> ">_2
@@ -5389,7 +4951,6 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       27  ?<Constant ".Program execution ha...">_4
       27  ?<Constant ".Program execution ha...">_5
       27  ?<Constant ".Program execution ha...">_6
-      27  ?<Constant ".Program execution ha...">_7
       10  ?<Constant "0123456789">
       13  ?<Constant "Assert fails">
       13  ?<Constant "Assert fails">_1
@@ -5398,7 +4959,6 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       13  ?<Constant "Assert fails">_4
       13  ?<Constant "Assert fails">_5
       13  ?<Constant "Assert fails">_6
-      13  ?<Constant "Assert fails">_7
       30  ?<Constant "CCM coder corrupt dat...">
       29  ?<Constant "CCM coder corrupt key...">
       29  ?<Constant "CCM coder corrupt mic...">
@@ -5414,43 +4974,36 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       23  ?<Constant "CCM nonce data correct">
       17  ?<Constant "Callback is NULL">
       36  ?<Constant "Coder test stub on m=...">
+       7  ?<Constant "Create">
       54  ?<Constant "Data size = %d. Full ...">
+       7  ?<Constant "Delete">
       13  ?<Constant "FAILD : %d\r\n">
       13  ?<Constant "FAILED <----">
-      24  ?<Constant "FB_RAW_LAY len is equal">
-      24  ?<Constant "FB_RAW_LAY mem is equal">
-      27  ?<Constant "FB_RAW_LAY mem is not...">
       11  ?<Constant "Fn is NULL">
       37  ?<Constant "Frame puted to MAC la...">
       46  ?<Constant "Frame_s size = %d. Fb...">
       14  ?<Constant "Frames module">
       16  ?<Constant "HEAP_PTR = %d\r\n">
+      11  ?<Constant "Header add">
       46  ?<Constant "Hello worldHello worl...">
       13  ?<Constant "Hello world\n">
       13  ?<Constant "Incorrect TS">
       19  ?<Constant "Incorrect eth size">
-      20  ?<Constant "Incorrect fbuf type">
       24  ?<Constant "Incorrect radio channel">
       16  ?<Constant "Incorrect ticks">
-      24  ?<Constant "Insert head. head = fb1">
-      24  ?<Constant "Insert head. tail = fb1">
-      24  ?<Constant "Insert tail. head = fb1">
-      24  ?<Constant "Insert tail. tail = fb1">
       27  ?<Constant "LLC re_malloc for new...">
        6  ?<Constant "LLC.c">
        6  ?<Constant "MAC.c">
       38  ?<Constant "MAC_ACK_Send time = %...">
+      20  ?<Constant "Memmory free test 1">
+      20  ?<Constant "Memmory free test 2">
       24  ?<Constant "Memory allocation fails">
-      12  ?<Constant "Memory corr">
       42  ?<Constant "Module: %-15s Name: %...">
        7  ?<Constant "NTMR.c">
       23  ?<Constant "NULL pointer not allow">
       23  ?<Constant "NULL pointer not allow">_1
-       6  ?<Constant "No fb">
-       6  ?<Constant "No fr">
       10  ?<Constant "No memory">
       10  ?<Constant "No memory">_1
-      10  ?<Constant "No memory">_2
        7  ?<Constant "PASSED">
       13  ?<Constant "PASSED: %d\r\n">
       13  ?<Constant "RADIO module">
@@ -5475,44 +5028,18 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       18  ?<Constant "Unit test symmary">
        3  ?<Constant "\r\n">
       13  ?<Constant "attempts = 0">
-      17  ?<Constant "chain fb1 -> fb2">
-      17  ?<Constant "chain fb2 -> fb3">
-      20  ?<Constant "chain fb3 next NULL">
       13  ?<Constant "coder module">
        6  ?<Constant "coder">
       14  ?<Constant "delays module">
        7  ?<Constant "delays">
-      17  ?<Constant "delete test. fb1">
-      17  ?<Constant "delete test. fb2">
-      17  ?<Constant "delete test. fb3">
-      17  ?<Constant "delete test. fb4">
       11  ?<Constant "ethernet.c">
-      24  ?<Constant "fbuf FB_ETH_LAY created">
-      23  ?<Constant "fbuf FB_ETH_LAY lenght">
-      23  ?<Constant "fbuf FB_IP_LAY created">
-      22  ?<Constant "fbuf FB_IP_LAY lenght">
-      25  ?<Constant "fbuf FB_SYNC_LAY created">
-      24  ?<Constant "fbuf FB_SYNC_LAY lenght">
-      12  ?<Constant "fbuf module">
-      12  ?<Constant "fbuf module">_1
-       5  ?<Constant "fbuf">
-       7  ?<Constant "fbuf.c">
-      12  ?<Constant "fbuf_delete">
        8  ?<Constant "fr NULL">
        8  ?<Constant "fr NULL">_1
       11  ?<Constant "fr is NULL">
+      13  ?<Constant "frame module">
        6  ?<Constant "frame">
        8  ?<Constant "frame.c">
-      15  ?<Constant "frame_len calc">
       19  ?<Constant "isACK_OK func NULL">
-      16  ?<Constant "iterator = NULL">
-      16  ?<Constant "iterator = NULL">_1
-      15  ?<Constant "iterator = fb1">
-      15  ?<Constant "iterator = fb1">_1
-      15  ?<Constant "iterator = fb2">
-      15  ?<Constant "iterator = fb2">_1
-      15  ?<Constant "iterator = fb3">
-      15  ?<Constant "iterator = fb3">_1
       14  ?<Constant "passed %lu \r\n">
       18  ?<Constant "printf speed uart">
        8  ?<Constant "utest.c">
@@ -5521,17 +5048,19 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       14  ?<Constant "utest_coder.c">
       20  ?<Constant "utest_printf_uart.c">
       14  ?<Constant "utest_radio.c">
+      10  ?<Constant {0, 1, 2, 3, 4, 3, 87, 21, 35, 73}>
       10  ?<Constant {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}>
       10  ?<Constant {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}>_1
       10  ?<Constant {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}>_2
       10  ?<Constant {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}>_3
-      10  ?<Constant {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}>_4
+       5  ?<Constant {0, 1, 2, 3, 4}>
       16  ?<Constant {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
       16  ?<Constant {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,_1
       16  ?<Constant {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,_2
       16  ?<Constant {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,_3
       16  ?<Constant {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,_4
       16  ?<Constant {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,_5
+       8  ?<Constant {10, 11, 12, 13, 14, 15, 17, 20}>
        4  ?<Constant {10, 50, 100, 125}>
       16  ?<Constant {18, 11, 12, 13, 14, 15, 16, 17, 10
       16  ?<Constant {18, 11, 12, 13, 14, 15, 16, 17, 10_1
@@ -5539,6 +5068,9 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       16  ?<Constant {18, 11, 12, 13, 14, 15, 16, 17, 10_3
       16  ?<Constant {18, 11, 12, 13, 14, 15, 16, 17, 10_4
       16  ?<Constant {18, 11, 12, 13, 14, 15, 16, 17, 10_5
+       9  ?<Constant {5, 6, 7, 8, 9, 23, 56, 23, 6}>
+      12  ?<Constant {5, 6, 7, 8, 9, 36, 85, 98, 23, 98,
+       5  ?<Constant {5, 6, 7, 8, 9}>
        5  ?<Initializer for <Constant "%s\r\n">>
       41  ?<Initializer for <Constant "*****************
       19  ?<Initializer for <Constant "*ASSERT* %s:%d ->
@@ -5549,7 +5081,6 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       17  ?<Initializer for <Constant "*ASSERT* %s:%d->"_4
       17  ?<Initializer for <Constant "*ASSERT* %s:%d->"_5
       17  ?<Initializer for <Constant "*ASSERT* %s:%d->"_6
-      17  ?<Initializer for <Constant "*ASSERT* %s:%d->"_7
       19  ?<Initializer for <Constant "*LOGGER* %s:%d ->
       19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_1
       19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_2
@@ -5565,7 +5096,6 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       27  ?<Initializer for <Constant ".Program executio_4
       27  ?<Initializer for <Constant ".Program executio_5
       27  ?<Initializer for <Constant ".Program executio_6
-      27  ?<Initializer for <Constant ".Program executio_7
       10  ?<Initializer for <Constant "0123456789">>
       13  ?<Initializer for <Constant "Assert fails">>
       13  ?<Initializer for <Constant "Assert fails">>_1
@@ -5574,7 +5104,6 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       13  ?<Initializer for <Constant "Assert fails">>_4
       13  ?<Initializer for <Constant "Assert fails">>_5
       13  ?<Initializer for <Constant "Assert fails">>_6
-      13  ?<Initializer for <Constant "Assert fails">>_7
       30  ?<Initializer for <Constant "CCM coder corrupt
       29  ?<Initializer for <Constant "CCM coder corrupt_1
       31  ?<Initializer for <Constant "CCM coder corrupt_2
@@ -5590,43 +5119,36 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       23  ?<Initializer for <Constant "CCM nonce data co
       17  ?<Initializer for <Constant "Callback is NULL"
       36  ?<Initializer for <Constant "Coder test stub o
+       7  ?<Initializer for <Constant "Create">>
       54  ?<Initializer for <Constant "Data size = %d. F
+       7  ?<Initializer for <Constant "Delete">>
       13  ?<Initializer for <Constant "FAILD : %d\r\n">>
       13  ?<Initializer for <Constant "FAILED <----">>
-      24  ?<Initializer for <Constant "FB_RAW_LAY len is
-      24  ?<Initializer for <Constant "FB_RAW_LAY mem is
-      27  ?<Initializer for <Constant "FB_RAW_LAY mem is_1
       11  ?<Initializer for <Constant "Fn is NULL">>
       37  ?<Initializer for <Constant "Frame puted to MA
       46  ?<Initializer for <Constant "Frame_s size = %d
       14  ?<Initializer for <Constant "Frames module">>
       16  ?<Initializer for <Constant "HEAP_PTR = %d\r\n
+      11  ?<Initializer for <Constant "Header add">>
       46  ?<Initializer for <Constant "Hello worldHello
       13  ?<Initializer for <Constant "Hello world\n">>
       13  ?<Initializer for <Constant "Incorrect TS">>
       19  ?<Initializer for <Constant "Incorrect eth siz
-      20  ?<Initializer for <Constant "Incorrect fbuf ty
       24  ?<Initializer for <Constant "Incorrect radio c
       16  ?<Initializer for <Constant "Incorrect ticks">
-      24  ?<Initializer for <Constant "Insert head. head
-      24  ?<Initializer for <Constant "Insert head. tail
-      24  ?<Initializer for <Constant "Insert tail. head
-      24  ?<Initializer for <Constant "Insert tail. tail
       27  ?<Initializer for <Constant "LLC re_malloc for
        6  ?<Initializer for <Constant "LLC.c">>
        6  ?<Initializer for <Constant "MAC.c">>
       38  ?<Initializer for <Constant "MAC_ACK_Send time
+      20  ?<Initializer for <Constant "Memmory free test
+      20  ?<Initializer for <Constant "Memmory free test_1
       24  ?<Initializer for <Constant "Memory allocation
-      12  ?<Initializer for <Constant "Memory corr">>
       42  ?<Initializer for <Constant "Module: %-15s Nam
        7  ?<Initializer for <Constant "NTMR.c">>
       23  ?<Initializer for <Constant "NULL pointer not
       23  ?<Initializer for <Constant "NULL pointer not _1
-       6  ?<Initializer for <Constant "No fb">>
-       6  ?<Initializer for <Constant "No fr">>
       10  ?<Initializer for <Constant "No memory">>
       10  ?<Initializer for <Constant "No memory">>_1
-      10  ?<Initializer for <Constant "No memory">>_2
        7  ?<Initializer for <Constant "PASSED">>
       13  ?<Initializer for <Constant "PASSED: %d\r\n">>
       13  ?<Initializer for <Constant "RADIO module">>
@@ -5651,44 +5173,18 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       18  ?<Initializer for <Constant "Unit test symmary
        3  ?<Initializer for <Constant "\r\n">>
       13  ?<Initializer for <Constant "attempts = 0">>
-      17  ?<Initializer for <Constant "chain fb1 -> fb2"
-      17  ?<Initializer for <Constant "chain fb2 -> fb3"
-      20  ?<Initializer for <Constant "chain fb3 next NU
       13  ?<Initializer for <Constant "coder module">>
        6  ?<Initializer for <Constant "coder">>
       14  ?<Initializer for <Constant "delays module">>
        7  ?<Initializer for <Constant "delays">>
-      17  ?<Initializer for <Constant "delete test. fb1"
-      17  ?<Initializer for <Constant "delete test. fb2"
-      17  ?<Initializer for <Constant "delete test. fb3"
-      17  ?<Initializer for <Constant "delete test. fb4"
       11  ?<Initializer for <Constant "ethernet.c">>
-      24  ?<Initializer for <Constant "fbuf FB_ETH_LAY c
-      23  ?<Initializer for <Constant "fbuf FB_ETH_LAY l
-      23  ?<Initializer for <Constant "fbuf FB_IP_LAY cr
-      22  ?<Initializer for <Constant "fbuf FB_IP_LAY le
-      25  ?<Initializer for <Constant "fbuf FB_SYNC_LAY
-      24  ?<Initializer for <Constant "fbuf FB_SYNC_LAY _1
-      12  ?<Initializer for <Constant "fbuf module">>
-      12  ?<Initializer for <Constant "fbuf module">>_1
-       5  ?<Initializer for <Constant "fbuf">>
-       7  ?<Initializer for <Constant "fbuf.c">>
-      12  ?<Initializer for <Constant "fbuf_delete">>
        8  ?<Initializer for <Constant "fr NULL">>
        8  ?<Initializer for <Constant "fr NULL">>_1
       11  ?<Initializer for <Constant "fr is NULL">>
+      13  ?<Initializer for <Constant "frame module">>
        6  ?<Initializer for <Constant "frame">>
        8  ?<Initializer for <Constant "frame.c">>
-      15  ?<Initializer for <Constant "frame_len calc">>
       19  ?<Initializer for <Constant "isACK_OK func NUL
-      16  ?<Initializer for <Constant "iterator = NULL">
-      16  ?<Initializer for <Constant "iterator = NULL">_1
-      15  ?<Initializer for <Constant "iterator = fb1">>
-      15  ?<Initializer for <Constant "iterator = fb1">>_1
-      15  ?<Initializer for <Constant "iterator = fb2">>
-      15  ?<Initializer for <Constant "iterator = fb2">>_1
-      15  ?<Initializer for <Constant "iterator = fb3">>
-      15  ?<Initializer for <Constant "iterator = fb3">>_1
       14  ?<Initializer for <Constant "passed %lu \r\n">
       18  ?<Initializer for <Constant "printf speed uart
        8  ?<Initializer for <Constant "utest.c">>
@@ -5697,17 +5193,19 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       14  ?<Initializer for <Constant "utest_coder.c">>
       20  ?<Initializer for <Constant "utest_printf_uart
       14  ?<Initializer for <Constant "utest_radio.c">>
+      10  ?<Initializer for <Constant {0, 1, 2, 3, 4, 3,
       10  ?<Initializer for <Constant {0, 1, 2, 3, 4, 5,
       10  ?<Initializer for <Constant {0, 1, 2, 3, 4, 5,_1
       10  ?<Initializer for <Constant {0, 1, 2, 3, 4, 5,_2
       10  ?<Initializer for <Constant {0, 1, 2, 3, 4, 5,_3
-      10  ?<Initializer for <Constant {0, 1, 2, 3, 4, 5,_4
+       5  ?<Initializer for <Constant {0, 1, 2, 3, 4}>>
       16  ?<Initializer for <Constant {1, 2, 3, 4, 5, 6,
       16  ?<Initializer for <Constant {1, 2, 3, 4, 5, 6,_1
       16  ?<Initializer for <Constant {1, 2, 3, 4, 5, 6,_2
       16  ?<Initializer for <Constant {1, 2, 3, 4, 5, 6,_3
       16  ?<Initializer for <Constant {1, 2, 3, 4, 5, 6,_4
       16  ?<Initializer for <Constant {1, 2, 3, 4, 5, 6,_5
+       8  ?<Initializer for <Constant {10, 11, 12, 13, 1
        4  ?<Initializer for <Constant {10, 50, 100, 125}
       16  ?<Initializer for <Constant {18, 11, 12, 13, 1
       16  ?<Initializer for <Constant {18, 11, 12, 13, 1_1
@@ -5715,6 +5213,9 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       16  ?<Initializer for <Constant {18, 11, 12, 13, 1_3
       16  ?<Initializer for <Constant {18, 11, 12, 13, 1_4
       16  ?<Initializer for <Constant {18, 11, 12, 13, 1_5
+       9  ?<Initializer for <Constant {5, 6, 7, 8, 9, 23
+      12  ?<Initializer for <Constant {5, 6, 7, 8, 9, 36
+       5  ?<Initializer for <Constant {5, 6, 7, 8, 9}>>
       16  ?<Initializer for IV>
       16  ?<Initializer for KEY>
        4  ?<Initializer for MAC_TIMER_MAX>
@@ -5785,7 +5286,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       16  KEY
       37  LED
        6  LED::?relay
-     314  LLC_AddTask
+     312  LLC_AddTask
        6  LLC_AddTask::?relay
       16  LLC_GetTaskLen
        6  LLC_GetTaskLen::?relay
@@ -5808,7 +5309,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
      350  MACSlotTable
        7  MAC_ACK_Recv
        6  MAC_ACK_Recv::?relay
-      50  MAC_ACK_Send
+      49  MAC_ACK_Send
        6  MAC_ACK_Send::?relay
      122  MAC_CloseRXSlot
        6  MAC_CloseRXSlot::?relay
@@ -5822,7 +5323,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  MAC_OpenRXSlot::?relay
      152  MAC_RX_HNDL
        6  MAC_RX_HNDL::?relay
-     338  MAC_Send
+     336  MAC_Send
        6  MAC_Send::?relay
       19  MAC_SetRXCallback
        6  MAC_SetRXCallback::?relay
@@ -5833,7 +5334,6 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  MAC_TX_HNDL::?relay
       12  MyLowLevelPutchar
        6  MyLowLevelPutchar::?relay
-       1  NBR_BUF
        1  NBR_FRAME
        4  NODE_NONCE
        4  NODE_RTC
@@ -5873,7 +5373,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  RI_GetCRCError::?relay
       17  RI_GetUptime
        6  RI_GetUptime::?relay
-     613  RI_Receive
+     581  RI_Receive
        6  RI_Receive::?relay
      217  RI_Send
        6  RI_Send::?relay
@@ -5896,7 +5396,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        2  RXCallback
        2  RXCallback
        2  RXCallback
-     176  RadioRecvTest1
+     166  RadioRecvTest1
        6  RadioRecvTest1::?relay
       59  ReadTimer
        6  ReadTimer::?relay
@@ -5912,7 +5412,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        2  STACK_FAILURE
        6  STACK_FAILURE::?relay
        1  STLOAD
-     204  SendData
+     180  SendData
        6  SendData::?relay
       12  SetCPU32M
        6  SetCPU32M::?relay
@@ -6023,46 +5523,26 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  calcCompareTime::?relay
       94  clocks_update
        6  clocks_update::?relay
-      84  delete_test
-     506  delete_test
-       6  delete_test::?relay
-       6  delete_test::?relay
-     217  extract_header
+     164  extract_header
        6  extract_header::?relay
-      20  fbuf_chain
-       6  fbuf_chain::?relay
-     346  fbuf_create
-       6  fbuf_create::?relay
-      28  fbuf_delete
-       6  fbuf_delete::?relay
-      16  fbuf_getCount
-       6  fbuf_getCount::?relay
-      43  fbuf_next
-       6  fbuf_next::?relay
        1  finised
-     149  frame_create
+     368  frame_addHeader
+       6  frame_addHeader::?relay
+     169  frame_create
        6  frame_create::?relay
-      73  frame_delete
+     216  frame_delHeader
+       6  frame_delHeader::?relay
+      71  frame_delete
        6  frame_delete::?relay
       16  frame_getCount
        6  frame_getCount::?relay
-      20  frame_get_fbuf_head
-       6  frame_get_fbuf_head::?relay
-      22  frame_get_fbuf_tail
-       6  frame_get_fbuf_tail::?relay
-      72  frame_insert_head
-       6  frame_insert_head::?relay
-     213  frame_insert_tail
-       6  frame_insert_tail::?relay
-      49  frame_len
+      19  frame_len
        6  frame_len::?relay
-     348  frame_merge
-       6  frame_merge::?relay
       21  free
        6  free::?relay
      241  generateAuthData
        6  generateAuthData::?relay
-     150  getFrame
+     105  getFrame
        6  getFrame::?relay
       34  getMallocSize
        6  getMallocSize::?relay
@@ -6074,14 +5554,6 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  heap_size::?relay
       36  incrementTS
        6  incrementTS::?relay
-     134  insert1_test
-       6  insert1_test::?relay
-     134  insert2_test
-       6  insert2_test::?relay
-     375  insert3_test
-       6  insert3_test::?relay
-     375  insert4_test
-       6  insert4_test::?relay
        2  isACK_OK
       11  isIRQEnable
        6  isIRQEnable::?relay
@@ -6103,12 +5575,10 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        1  nbrTasks
       17  nwDebugerInit
        6  nwDebugerInit::?relay
-     177  one_speed_test
+     165  one_speed_test
        6  one_speed_test::?relay
       78  random_core_init
        6  random_core_init::?relay
-     242  raw_data_test
-       6  raw_data_test::?relay
       35  re_free
        6  re_free::?relay
       49  re_malloc
@@ -6126,7 +5596,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  set_capture_time::?relay
      114  single_enc_dec_test
        6  single_enc_dec_test::?relay
-     840  speed_test
+     745  speed_test
        6  speed_test::?relay
        3  strip_header
        6  strip_header::?relay
@@ -6152,9 +5622,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  suite_delays::?relay
       14  suite_delays_HW
        6  suite_delays_HW::?relay
-      30  suite_fbuf
-       6  suite_fbuf::?relay
-      39  suite_frame
+      30  suite_frame
        6  suite_frame::?relay
       14  suite_malloc
        6  suite_malloc::?relay
@@ -6162,27 +5630,27 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  suite_printf_uart::?relay
        1  tasksBLOCK
       74  test_1
+      76  test_1
      271  test_1
        6  test_1::?relay
        6  test_1::?relay
-     214  test_ACK_SEND
+       6  test_1::?relay
+     108  test_2
+       6  test_2::?relay
+     167  test_3
+       6  test_3::?relay
+     201  test_4
+       6  test_4::?relay
+     194  test_ACK_SEND
        6  test_ACK_SEND::?relay
-     215  test_TS_Send
+     194  test_TS_Send
        6  test_TS_Send::?relay
-     244  test_create
-     424  test_create
+     410  test_create
        6  test_create::?relay
-       6  test_create::?relay
-     143  test_frame_merge
-       6  test_frame_merge::?relay
      143  test_hw
        6  test_hw::?relay
-     375  test_logic
-       6  test_logic::?relay
       37  timealloc
        6  timealloc::?relay
-     211  tot_len_test
-       6  tot_len_test::?relay
       19  uart_init
        6  uart_init::?relay
      118  umsg
@@ -6199,19 +5667,19 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  validate::?relay
 
  
- 22 967 bytes in segment BANKED_CODE
-  1 104 bytes in segment BANK_RELAYS
+ 19 770 bytes in segment BANKED_CODE
+  1 008 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
      60 bytes in segment NEAR_CODE
      35 bytes in segment SFR_AN
-  3 366 bytes in segment XDATA_I
-  3 366 bytes in segment XDATA_ID
-    696 bytes in segment XDATA_Z
+  2 753 bytes in segment XDATA_I
+  2 753 bytes in segment XDATA_ID
+    695 bytes in segment XDATA_Z
  
-  4 444 bytes of CODE     memory (+ 89 bytes shared)
+  3 735 bytes of CODE     memory (+ 89 bytes shared)
       0 bytes of DATA     memory (+ 35 bytes shared)
- 22 923 bytes of HUGECODE memory (+ 44 bytes shared)
-  3 994 bytes of XDATA    memory (+ 68 bytes shared)
+ 19 726 bytes of HUGECODE memory (+ 44 bytes shared)
+  3 380 bytes of XDATA    memory (+ 68 bytes shared)
 
 Errors: none
 Warnings: 15
