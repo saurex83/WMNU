@@ -215,8 +215,14 @@ static bool SendData(frame_s *fr)
 ////ts_rssistat, ts_istxon, ts_sfd, ts_stop;
   
 ////TIM_TimeStamp(&ts_start);  
+  
+  // Обязательно скопируем данные для отправки.
+  // Данные могут шифроваться и если их не отправили, то payload измениться.
   uint8_t data_size = fr->len;
-  uint8_t *data = (uint8_t*)fr->payload; 
+  uint8_t *data = re_malloc(data_size);
+  ASSERT_HALT(data !=NULL, "No memory");
+  re_memcpy(data, fr->payload, data_size);
+    
 ////TIM_TimeStamp(&ts_frame_merge);  
   bool result = true;
   switch(true)

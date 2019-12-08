@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               02/Dec/2019  12:47:47
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               02/Dec/2019  22:10:59
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,7 +14,7 @@
 #    Source file        =  
 #        \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW16B8.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW5EF7.tmp
 #        ("\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c" -lc
 #        "\\vmware-host\Shared
@@ -1119,233 +1119,246 @@ Warning[Pe940]: missing return statement at end of non-void function
      27          
      28          // Переменные модуля
      29          #define UNICAST_SEND_ATEMPTS 5 //!< Количество попыток передачи пакета 
-     30          #define MAX_nbrTASKS 20 //!< Максимальное количество задач в очередях
-     31          
-     32          typedef struct LLCTask LLCTask;
-     33          typedef struct TimeAllocFunc TimeAllocFunc;
-     34          static bool tasksBLOCK; //!< блокировка доступа к LLCTask
-     35          
-     36          /**
-     37          @brief Описание задачи модуля LLC
-     38          */
-     39          struct LLCTask
-     40          {
-     41            LLCTask *next; //!< Указатель на следующую задачу. NULL - конец очереди
-     42            uint8_t TS; //!< Номер временого канала для передачи сообщения
-     43            uint8_t CH; //!< Номера радиоканала для передачи сообщения
-     44            frame_s *fr; //!< Указатель на данные для передачи
-     45          };
-     46          
-     47          /**
-     48          @brief Список функций вызываемых по завешению временного слота
-     49          */
-     50          struct TimeAllocFunc
-     51          {
-     52            TimeAllocFunc *next; //!< Указатель на следующую функцию. NULL - конец списка
-     53            void (*fn)(void); //!< Указатель на функцию. NULL - нет обработчика
-     54          };
-     55          
-     56          static LLCTask *FirstTask; //!< Указатель на первый элемент очереди задач
-     57          static uint8_t nbrTasks; // Количество задач в очереди
-     58          
-     59          /**
-     60          @brief Обратный вызов при приеме пакета данных
-     61          */
-     62          static void (*RXCallback)(frame_s *fr);
-     63          
-     64          /**
-     65          @brief Первый элемент обработчика конца временного слота
-     66          @details Элемент создается статически, все остальные задачи создаются re_malloc
-     67          и добавляются к HeadAllocFunc.
-     68          */
-     69          static TimeAllocFunc HeadAllocFunc;
-     70          
-     71          /**
-     72          @brief Инициализация модуля
-     73          @detail Иницилизирует MAC
-     74          */
-     75          void LLC_Init(void)
-     76          {  
-     77            MAC_Init();
-     78            nbrTasks = 0; 
-     79            tasksBLOCK = false;
-     80            FirstTask = NULL;
-     81            // TODO Очистить очередь HeadTask
-     82            // Регистрируем обработчики
-     83            TIC_SetSECallback(LLC_SE_HNDL); // Завершение временного слота
-     84            MAC_SetRXCallback(LLC_RX_HNDL); // Принято сообщение
-     85          }
-     86          
-     87          /**
-     88          @brief Количество задач в очереди
-     89          @return количество задач в очереди
-     90          */
-     91          uint8_t LLC_GetTaskLen(void)
-     92          {
-     93            return nbrTasks;
-     94          }
-     95          
-     96          void LLC_SetRXCallback(void (*fn)(frame_s *fr))
-     97          {
-     98            ASSERT_HALT(fn != NULL, "NULL pointer not allow");
-     99            RXCallback = fn;
-    100          }
-    101          
-    102          /**
-    103          @brief Добавляет обработчик заверешения временого слота в список
-    104          */
-    105          void LLC_TimeAlloc(void (*fn)(void))
-    106          {
-    107            TimeAllocFunc *ta = re_malloc(sizeof(TimeAllocFunc));
-    108            ASSERT_HALT(ta != NULL, "Memory allocation fails");
-    109            ta->next = NULL;
-    110            ta->fn = fn;
-    111          
-    112            // Перебираемся в конец списка
-    113            TimeAllocFunc *next = &HeadAllocFunc;
-    114            while (next->next != NULL)
-    115              next = next->next;
-    116            
-    117            // Добавляем новый элемент
-    118            next->next = ta;
-    119          };
-    120          
-    121          /**
-    122          @brief Добавляем задачу в очередь
-    123          @brief Взовращает true если задача добавлена в очередь. false, если размер 
-    124           очереди достиг максимального размера.
-    125          */
-    126          bool LLC_AddTask(frame_s* fr)
-    127          {
-    128             ASSERT_HALT(fr != NULL, "fr NULL");
-    129           
-    130              if (nbrTasks == MAX_nbrTASKS)
-    131                return false;
-    132              
-    133             // Ждем пока разбокируется доступ.
-    134             while (tasksBLOCK);
-    135             tasksBLOCK = true;
-    136             
-    137             // Создаем новую задачу
-    138             LLCTask *new_task = (LLCTask*)re_malloc(sizeof(LLCTask));
-    139             ASSERT_HALT(new_task !=NULL, "LLC re_malloc for new_task"); 
-    140                
-    141             new_task->TS = fr->meta.TS;
-    142             new_task->CH = fr->meta.CH;
-    143             new_task->fr = fr;
-    144             
-    145            LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Add task = %u, CH = %d, TS = %d, OTS = %d. fr = %d\r\n",
-    146                (uint16_t)new_task,new_task->CH, new_task->TS, fr->meta.TS, (uint16_t)fr);
-    147            
-    148             // Если в очереди нет задач, добавим первую
-    149             if (FirstTask == NULL) 
-    150             {
-    151               new_task->next = NULL;
-    152               FirstTask = new_task;
-    153             }
-    154             // Если в очереди были задачи то вставим новую в голову списка
-    155             else 
-    156             {
-    157               new_task->next = FirstTask;
-    158               FirstTask = new_task;  
-    159             }
-    160             
-    161             nbrTasks ++;
-    162             tasksBLOCK = false;
-    163             return true;
-    164          }
-    165          
-    166          /**
-    167          @brief Планировщик задач
-    168          @details Соотносит задачи в очереди и свободные временные слоты MAC уровня.
-    169          При освобождении временных слотов, планировщик устанавливает данные для 
-    170          передачи в MAC.
-    171          @param[in] TS номер текущего временого слота
-    172          */
-    173          static void LLC_Shelduler(uint8_t TS)
-    174          {
-    175            // Если работает функция добавления задачи, то обслуживание очереди не
-    176            // производится. Это может привести к необычным последствиям
-    177            if (tasksBLOCK)
-    178              return;
-    179            
-    180            tasksBLOCK = true;
-    181            // Перебираем попорядку весь список на отправку
-    182            // HeadTask только указатель на первый элемент, сам он не подлежит отправке
-    183            LLCTask *task = FirstTask;
-    184            LLCTask *last = FirstTask;
-    185            LLCTask *next = FirstTask;
-    186            
-    187            while (task != NULL)
-    188            {    
-    189              
-    190              if (MAC_GetTXState(task->TS)) // Занят ли временой слот
-    191              {
-    192                // Если слот занят переходим к следующей задаче
-    193                last = task;
-    194                task = task->next;
-    195                continue; 
-    196              }
-    197              
-    198              MAC_Send(task->fr, UNICAST_SEND_ATEMPTS);
-    199              
-    200              next = task->next; // Запомним следующую задачу
+     30          #define BROADCAST_SEND_ATEMPTS 3 //!< Количество попыток передачи пакета 
+     31          #define MAX_nbrTASKS 20 //!< Максимальное количество задач в очередях
+     32          
+     33          typedef struct LLCTask LLCTask;
+     34          typedef struct TimeAllocFunc TimeAllocFunc;
+     35          static bool tasksBLOCK; //!< блокировка доступа к LLCTask
+     36          
+     37          /**
+     38          @brief Описание задачи модуля LLC
+     39          */
+     40          struct LLCTask
+     41          {
+     42            LLCTask *next; //!< Указатель на следующую задачу. NULL - конец очереди
+     43            uint8_t TS; //!< Номер временого канала для передачи сообщения
+     44            uint8_t CH; //!< Номера радиоканала для передачи сообщения
+     45            frame_s *fr; //!< Указатель на данные для передачи
+     46          };
+     47          
+     48          /**
+     49          @brief Список функций вызываемых по завешению временного слота
+     50          */
+     51          struct TimeAllocFunc
+     52          {
+     53            TimeAllocFunc *next; //!< Указатель на следующую функцию. NULL - конец списка
+     54            void (*fn)(void); //!< Указатель на функцию. NULL - нет обработчика
+     55          };
+     56          
+     57          static LLCTask *FirstTask; //!< Указатель на первый элемент очереди задач
+     58          static uint8_t nbrTasks; // Количество задач в очереди
+     59          
+     60          /**
+     61          @brief Обратный вызов при приеме пакета данных
+     62          */
+     63          static void (*RXCallback)(frame_s *fr);
+     64          
+     65          /**
+     66          @brief Первый элемент обработчика конца временного слота
+     67          @details Элемент создается статически, все остальные задачи создаются re_malloc
+     68          и добавляются к HeadAllocFunc.
+     69          */
+     70          static TimeAllocFunc HeadAllocFunc;
+     71          
+     72          /**
+     73          @brief Инициализация модуля
+     74          @detail Иницилизирует MAC
+     75          */
+     76          void LLC_Init(void)
+     77          {  
+     78            MAC_Init();
+     79            nbrTasks = 0; 
+     80            tasksBLOCK = false;
+     81            FirstTask = NULL;
+     82            // TODO Очистить очередь HeadTask
+     83            // Регистрируем обработчики
+     84            TIC_SetSECallback(LLC_SE_HNDL); // Завершение временного слота
+     85            MAC_SetRXCallback(LLC_RX_HNDL); // Принято сообщение
+     86          }
+     87          
+     88          /**
+     89          @brief Количество задач в очереди
+     90          @return количество задач в очереди
+     91          */
+     92          uint8_t LLC_GetTaskLen(void)
+     93          {
+     94            return nbrTasks;
+     95          }
+     96          
+     97          void LLC_SetRXCallback(void (*fn)(frame_s *fr))
+     98          {
+     99            ASSERT_HALT(fn != NULL, "NULL pointer not allow");
+    100            RXCallback = fn;
+    101          }
+    102          
+    103          /**
+    104          @brief Добавляет обработчик заверешения временого слота в список
+    105          */
+    106          void LLC_TimeAlloc(void (*fn)(void))
+    107          {
+    108            TimeAllocFunc *ta = re_malloc(sizeof(TimeAllocFunc));
+    109            ASSERT_HALT(ta != NULL, "Memory allocation fails");
+    110            ta->next = NULL;
+    111            ta->fn = fn;
+    112          
+    113            // Перебираемся в конец списка
+    114            TimeAllocFunc *next = &HeadAllocFunc;
+    115            while (next->next != NULL)
+    116              next = next->next;
+    117            
+    118            // Добавляем новый элемент
+    119            next->next = ta;
+    120          };
+    121          
+    122          /**
+    123          @brief Добавляем задачу в очередь
+    124          @brief Взовращает true если задача добавлена в очередь. false, если размер 
+    125           очереди достиг максимального размера.
+    126          */
+    127          bool LLC_AddTask(frame_s* fr)
+    128          {
+    129             ASSERT_HALT(fr != NULL, "fr NULL");
+    130           
+    131              if (nbrTasks == MAX_nbrTASKS)
+    132                return false;
+    133              
+    134             // Ждем пока разблокируется доступ.
+    135             while (tasksBLOCK);
+    136             tasksBLOCK = true;
+    137          
+    138             // Создаем новую задачу
+    139             LLCTask *new_task = (LLCTask*)re_malloc(sizeof(LLCTask));
+    140             ASSERT_HALT(new_task !=NULL, "LLC re_malloc for new_task"); 
+    141                
+    142             new_task->TS = fr->meta.TS;
+    143             new_task->CH = fr->meta.CH;
+    144             new_task->fr = fr;
+    145             
+    146            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Add task = %u, CH = %d, TS = %d, OTS = %d. fr = %d\r\n",
+    147                (uint16_t)new_task,new_task->CH, new_task->TS, fr->meta.TS, (uint16_t)fr);
+    148            
+    149             // Если в очереди нет задач, добавим первую
+    150             if (FirstTask == NULL) 
+    151             {
+    152               new_task->next = NULL;
+    153               FirstTask = new_task;
+    154             }
+    155             // Если в очереди были задачи то вставим новую в голову списка
+    156             else 
+    157             {
+    158               new_task->next = FirstTask;
+    159               FirstTask = new_task;  
+    160             }
+    161             
+    162             nbrTasks ++;
+    163             tasksBLOCK = false;
+    164          
+    165             return true;
+    166          }
+    167          
+    168          
+    169          
+    170          
+    171          /**
+    172          @brief Планировщик задач
+    173          @details Соотносит задачи в очереди и свободные временные слоты MAC уровня.
+    174          При освобождении временных слотов, планировщик устанавливает данные для 
+    175          передачи в MAC.
+    176          @param[in] TS номер текущего временого слота
+    177          */
+    178          static void LLC_Shelduler(uint8_t TS)
+    179          {
+    180            // Если работает функция добавления задачи, то обслуживание очереди не
+    181            // производится. Это может привести к необычным последствиям
+    182            if (tasksBLOCK)
+    183              return;
+    184            tasksBLOCK = true;
+    185            
+    186            // Перебираем попорядку весь список на отправку
+    187            // HeadTask только указатель на первый элемент, сам он не подлежит отправке
+    188            LLCTask *task = FirstTask;
+    189            LLCTask *last = FirstTask;
+    190            LLCTask *next = FirstTask;
+    191            
+    192            while (task != NULL)
+    193            {    
+    194              if (MAC_GetTXState(task->TS)) // Занят ли временой слот
+    195              {
+    196                // Если слот занят переходим к следующей задаче
+    197                last = task;
+    198                task = task->next;
+    199                continue; 
+    200              }
     201              
-    202              // Удаляем текущую задачу из списка
-    203              if (task == FirstTask)
-    204              {
-    205              // Удаляемым элементом является указателем на голову
-    206                 FirstTask = next;
-    207                 last = FirstTask;
-    208              }
-    209              else
-    210              {
-    211                // Удаляемым элементом является промежуточный элемент
-    212                last->next = next;
-    213              }
+    202              //Выбераем количество попыток передачи в зависимости от типа пакета
+    203              uint8_t attempts;
+    204              if (task->fr->meta.TX_METHOD == UNICAST)
+    205                attempts = UNICAST_SEND_ATEMPTS;
+    206              else if (task->fr->meta.TX_METHOD == BROADCAST)
+    207                attempts = BROADCAST_SEND_ATEMPTS;
+    208              else
+    209                ASSERT_HALT(false, "Incorrect TX_METHOD");
+    210              
+    211              MAC_Send(task->fr, attempts);
+    212              
+    213              next = task->next; // Запомним следующую задачу
     214              
-    215              nbrTasks--;
-    216              LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Free task = %u, nbrTasks = %d\r\n",
-    217                  (uint16_t)task, nbrTasks); 
-    218              re_free(task);
-    219              task = next;
-    220            }
-    221            
-    222            tasksBLOCK = false;
-    223          }
-    224          
-    225          /**
-    226          @brief Обработчик заверешния временого слота
-    227          @details Обратный вызов из TIC. Обработчик вызывает планировщик задач очереди
-    228          и передает управление зарегистрированым функциям с помощью LLC_TimeAlloc.
-    229          @param[in] TS номер завершенного временого слота
-    230          */
-    231          static void LLC_SE_HNDL(uint8_t TS)
-    232          {
-    233            LLC_Shelduler(TS);
-    234            LLC_RunTimeAlloc();
-    235          }
-    236          
-    237          static void LLC_RX_HNDL(frame_s *fr)
-    238          {
-    239            ASSERT_HALT(RXCallback !=NULL, "RXCallback func NULL");
-    240            RXCallback(fr);
-    241          }
-    242          
-    243          /**
-    244          @brief Передаем управление зарегистрированным функциям
-    245          */
-    246          static void LLC_RunTimeAlloc(void)
-    247          {
-    248              TimeAllocFunc *next = &HeadAllocFunc;
-    249            // HeadAllocFunc служит только для указания на первый элемент в очереди
-    250            // так что его нужно пропустить и переходить сразу к next
-    251            while (next->next != NULL)
-    252            {
-    253              next->next->fn();
-    254              next = next->next;
-    255            }
-    256          }
+    215              // Удаляем текущую задачу из списка
+    216              if (task == FirstTask)
+    217              {
+    218              // Удаляемым элементом является указателем на голову
+    219                 FirstTask = next;
+    220                 last = FirstTask;
+    221              }
+    222              else
+    223              {
+    224                // Удаляемым элементом является промежуточный элемент
+    225                last->next = next;
+    226              }
+    227              
+    228              nbrTasks--;
+    229              LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Free task = %u, nbrTasks = %d\r\n",
+    230                  (uint16_t)task, nbrTasks); 
+    231              re_free(task);
+    232              task = next;
+    233            }
+    234            
+    235            tasksBLOCK = false;
+    236          }
+    237          
+    238          /**
+    239          @brief Обработчик заверешния временого слота
+    240          @details Обратный вызов из TIC. Обработчик вызывает планировщик задач очереди
+    241          и передает управление зарегистрированым функциям с помощью LLC_TimeAlloc.
+    242          @param[in] TS номер завершенного временого слота
+    243          */
+    244          static void LLC_SE_HNDL(uint8_t TS)
+    245          {
+    246            LLC_Shelduler(TS);
+    247            LLC_RunTimeAlloc();
+    248          }
+    249          
+    250          static void LLC_RX_HNDL(frame_s *fr)
+    251          {
+    252            ASSERT_HALT(RXCallback !=NULL, "RXCallback func NULL");
+    253            RXCallback(fr);
+    254          }
+    255          
+    256          /**
+    257          @brief Передаем управление зарегистрированным функциям
+    258          */
+    259          static void LLC_RunTimeAlloc(void)
+    260          {
+    261              TimeAllocFunc *next = &HeadAllocFunc;
+    262            // HeadAllocFunc служит только для указания на первый элемент в очереди
+    263            // так что его нужно пропустить и переходить сразу к next
+    264            while (next->next != NULL)
+    265            {
+    266              next->next->fn();
+    267              next = next->next;
+    268            }
+    269          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\MAC.c
       1          #include "MAC.h"
       2          #include "frame.h"
@@ -1643,64 +1656,69 @@ Warning[Pe940]: missing return statement at end of non-void function
       2          #include "stdlib.h"
       3          #include "stdint.h"
       4          #include "string.h"
-      5          
-      6          void re_free(void* ptr);
-      7          void* re_malloc(size_t size);
-      8          uint16_t heap_ptr(size_t size);
-      9          void re_memcpy(void *dst, const void *src, size_t n);
-     10          
-     11          /**
-     12          @brief Возвращает адрес следующего свободного участка памяти
-     13          @detail Функция нужна для оценки использования стека
-     14          @param[in] size размер запрашиваемой области
-     15          @return если памяти нету возвращает 0, иначе адрес свободного участка.
-     16          */
-     17          uint16_t heap_ptr(size_t size)
-     18          {
-     19            uint16_t *heap_ptr;
-     20            heap_ptr = (uint16_t*)re_malloc(size);
-     21            re_free(heap_ptr);
-     22            return (uint16_t)heap_ptr;
-     23          }
-     24          
-     25          /**
-     26          @brief Реентерабельное копирование памяти
-     27          */
-     28          void re_memcpy(void *dst, const void *src, size_t n)
-     29          {
-     30            unsigned short EA_save = EA;
-     31            
-     32            EA = 0;
-     33            memcpy(dst, src, n);
-     34            EA = EA_save;  
-     35          }
-     36          
-     37          /**
-     38          @brief Реентерабельное выделение памяти
-     39          */
-     40          void* re_malloc(size_t size)
-     41          {
-     42            void* ptr;
-     43            unsigned short EA_save = EA;
-     44            
-     45            EA = 0;
-     46            ptr = malloc(size);
-     47            EA = EA_save;
-     48            
-     49            return ptr;
-     50          }
-     51          
-     52          /**
-     53          @brief Реентерабельное освобождение памяти
-     54          */
-     55          void re_free(void* ptr)
-     56          {
-     57            unsigned short EA_save = EA;
-     58            
-     59            EA = 0;
-     60            free(ptr);
-     61            EA = EA_save;
-     62          }
+      5          #include "nwdebuger.h"
+      6          
+      7          void re_free(void* ptr);
+      8          void* re_malloc(size_t size);
+      9          uint16_t heap_ptr(size_t size);
+     10          void re_memcpy(void *dst, const void *src, size_t n);
+     11          
+     12          /**
+     13          @brief Возвращает адрес следующего свободного участка памяти
+     14          @detail Функция нужна для оценки использования стека
+     15          @param[in] size размер запрашиваемой области
+     16          @return если памяти нету возвращает 0, иначе адрес свободного участка.
+     17          */
+     18          uint16_t heap_ptr(size_t size)
+     19          {
+     20            unsigned short EA_save = EA;
+     21            EA = 0;
+     22            
+     23            uint16_t *heap_ptr;
+     24            heap_ptr = (uint16_t*)re_malloc(size);
+     25            re_free(heap_ptr);
+     26            EA = EA_save;
+     27            return (uint16_t)heap_ptr;
+     28          }
+     29          
+     30          /**
+     31          @brief Реентерабельное копирование памяти
+     32          */
+     33          void re_memcpy(void *dst, const void *src, size_t n)
+     34          {
+     35            unsigned short EA_save = EA;
+     36            
+     37            EA = 0;
+     38            memcpy(dst, src, n);
+     39            EA = EA_save;  
+     40          }
+     41          
+     42          /**
+     43          @brief Реентерабельное выделение памяти
+     44          */
+     45          void* re_malloc(size_t size)
+     46          {
+     47            unsigned short EA_save = EA;
+     48            void* ptr; 
+     49            EA = 0;
+     50            ptr = malloc(size);
+     51            EA = EA_save;
+     52            //LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "malloc = %d, L= %d \r\n", (uint16_t)ptr, size);
+     53            return ptr;
+     54          }
+     55          
+     56          /**
+     57          @brief Реентерабельное освобождение памяти
+     58          */
+     59          void re_free(void* ptr)
+     60          {
+     61            unsigned short EA_save = EA;
+     62            
+     63            EA = 0;
+     64            free(ptr);
+     65            EA = EA_save;
+     66            //LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "free = %d\r\n", (uint16_t)ptr);  
+     67          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\NTMR.c
       1          #include "NTMR.h"
       2          #include "stdlib.h"
@@ -2333,395 +2351,401 @@ Warning[Pe940]: missing return statement at end of non-void function
     215          ////ts_rssistat, ts_istxon, ts_sfd, ts_stop;
     216            
     217          ////TIM_TimeStamp(&ts_start);  
-    218            uint8_t data_size = fr->len;
-    219            uint8_t *data = (uint8_t*)fr->payload; 
-    220          ////TIM_TimeStamp(&ts_frame_merge);  
-    221            bool result = true;
-    222            switch(true)
-    223            {
-    224              case true:
-    225                // Шифруем данные при необходимости
-    226                RI_BitRawCrypt(data, data_size);
-    227          ////TIM_TimeStamp(&ts_crypt); 
-    228                // Копируем данные в буфер. Очистка буфера автоматическая
-    229                LoadTXData(data, data_size);
-    230          ////TIM_TimeStamp(&ts_load_tx); 
-    231                // Для начала передачи по команде STXONCCA нужно включить приемник
-    232                ISRXON();
-    233                // Ждем пока статус RSSI_VALID станет true
-    234                while(!RSSISTAT);
-    235          ////TIM_TimeStamp(&ts_rssistat); 
-    236                // Очищаем флаг завершения передачи сообщения
-    237                RFIRQF1 &= ~RFIRQF1_TXDONE;
-    238                RFIRQF0 &= ~RFIRQF0_SFD;
-    239                
-    240                // Время отправки сообщения измеряется в тактах сетевого времени NTMR
-    241                // Он работатаеи намного лучше чем MAC таймер(меньше погрешность)
-    242                // Отправка в обозначенное время или по факту готовности
-    243                uint16_t timer = 0; // Для отлалки. 
+    218            
+    219            // Обязательно скопируем данные для отправки.
+    220            // Данные могут шифроваться и если их не отправили, то payload измениться.
+    221            uint8_t data_size = fr->len;
+    222            uint8_t *data = re_malloc(data_size);
+    223            ASSERT_HALT(data !=NULL, "No memory");
+    224            re_memcpy(data, fr->payload, data_size);
+    225              
+    226          ////TIM_TimeStamp(&ts_frame_merge);  
+    227            bool result = true;
+    228            switch(true)
+    229            {
+    230              case true:
+    231                // Шифруем данные при необходимости
+    232                RI_BitRawCrypt(data, data_size);
+    233          ////TIM_TimeStamp(&ts_crypt); 
+    234                // Копируем данные в буфер. Очистка буфера автоматическая
+    235                LoadTXData(data, data_size);
+    236          ////TIM_TimeStamp(&ts_load_tx); 
+    237                // Для начала передачи по команде STXONCCA нужно включить приемник
+    238                ISRXON();
+    239                // Ждем пока статус RSSI_VALID станет true
+    240                while(!RSSISTAT);
+    241          ////TIM_TimeStamp(&ts_rssistat); 
+    242                // Очищаем флаг завершения передачи сообщения
+    243                RFIRQF1 &= ~RFIRQF1_TXDONE;
+    244                RFIRQF0 &= ~RFIRQF0_SFD;
+    245                
+    246                // Время отправки сообщения измеряется в тактах сетевого времени NTMR
+    247                // Он работатаеи намного лучше чем MAC таймер(меньше погрешность)
+    248                // Отправка в обозначенное время или по факту готовности
+    249                uint16_t timer = 0; // Для отлалки. 
                                 ^
 Warning[Pe550]: variable "timer" was set but never used
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\RADIO.c"
-    244                if (fr->meta.SEND_TIME != 0)
-    245                  timer = NT_WaitTime(fr->meta.SEND_TIME);
-    246          
-    247                // Начинаем передачу данных
-    248                // Transmission of preamble begins 192 μs after the STXON or STXONCCA 
-    249                // command strobe
-    250                // 192+(4(pream)+1(sfd))*8bit*4us = 352 мкс. Измерил 360мкс
-    251                // Измерил в тактах NT_GetTimer() получилось 13 тиков. 396 мкс 
-    252                ISTXONCCA();
-    253          ////TIM_TimeStamp(&ts_istxon); 
-    254                // Произошла ошибка передачи если SAMPLED_CCA false
-    255                if (!(FSMSTAT1 & 1<<3)) //SAMPLED_CCA == 0
-    256                {
-    257                  result = false;
-    258                  break;
-    259                }
-    260          
-    261                // Ждем завершения отправки SFD
-    262                while (!(RFIRQF0 & RFIRQF0_SFD));
-    263                fr->meta.TIMESTAMP = NT_GetTime(); 
-    264          ////TIM_TimeStamp(&ts_sfd); 
-    265                // Проверим переданно ли сообщение TX_FRM_DONE
-    266                while (!(RFIRQF1 & RFIRQF1_TXDONE));
-    267                break;
-    268            }
-    269          ////TIM_TimeStamp(&ts_stop);
-    270          
-    271            re_free(data);
-    272            ISRFOFF();
-    273          ////  LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-    274          ////"Merge = %lu. Crypt = %lu. Load TX = %lu. RSSI_OK = %lu. ISTXON = %lu. SFD = %lu. TX = %lu. FULL = %lu \n", 
-    275          ////      TIM_passedTime(&ts_start, &ts_frame_merge),
-    276          ////      TIM_passedTime(&ts_frame_merge, &ts_crypt),
-    277          ////      TIM_passedTime(&ts_crypt, &ts_load_tx),
-    278          ////      TIM_passedTime(&ts_load_tx, &ts_rssistat),
-    279          ////      TIM_passedTime(&ts_rssistat, &ts_istxon),
-    280          ////      TIM_passedTime(&ts_istxon, &ts_sfd),
-    281          ////      TIM_passedTime(&ts_sfd, &ts_stop),
-    282          ////      TIM_passedTime(&ts_start, &ts_stop)
-    283          ////      );
-    284            
-    285            if (result)
-    286              return true;
-    287            return false; 
-    288          }
-    289          
-    290          /**
-    291          @brief Загрузка данных для передачи в буфер. 
-    292          @detail Поля LEN, FCS1, FCS2 добавляются автоматически
-    293          @param[in] src указатель на данные
-    294          @param[in] len размер данных
-    295          */
-    296          static void LoadTXData(uint8_t *src, uint8_t len)
-    297          {
-    298            // Очищаем буфер передатчика
-    299            ISFLUSHTX(); 
-    300            // Поле LEN на два байта больше
-    301            RFD = len + 2;
-    302            
-    303            for (uint8_t i = 0 ; i < len; i++)
-    304              RFD = src[i];
-    305            
-    306            // Добавляем CRC1,2
-    307            RFD = 0x00;
-    308            RFD = 0x00;
-    309          };
-    310          
-    311          /**
-    312          @brief Выгружаем принятый пакет из радио
-    313          @param[out] src указатель на буфер приемника
-    314          @param[in] len размер выгружаемых данных
-    315          */
-    316          static void UnLoadRXData(uint8_t *src, uint8_t len)
-    317          {
-    318            for (uint8_t i = 0 ; i < len; i++)
-    319              src[i] = RFD;
-    320          };
-    321          
-    322          static inline void setFreq(uint8_t CH)
+    250                if (fr->meta.SEND_TIME != 0)
+    251                  timer = NT_WaitTime(fr->meta.SEND_TIME);
+    252          
+    253                // Начинаем передачу данных
+    254                // Transmission of preamble begins 192 μs after the STXON or STXONCCA 
+    255                // command strobe
+    256                // 192+(4(pream)+1(sfd))*8bit*4us = 352 мкс. Измерил 360мкс
+    257                // Измерил в тактах NT_GetTimer() получилось 13 тиков. 396 мкс 
+    258                ISTXONCCA();
+    259          ////TIM_TimeStamp(&ts_istxon); 
+    260                // Произошла ошибка передачи если SAMPLED_CCA false
+    261                if (!(FSMSTAT1 & 1<<3)) //SAMPLED_CCA == 0
+    262                {
+    263                  result = false;
+    264                  break;
+    265                }
+    266          
+    267                // Ждем завершения отправки SFD
+    268                while (!(RFIRQF0 & RFIRQF0_SFD));
+    269                fr->meta.TIMESTAMP = NT_GetTime(); 
+    270          ////TIM_TimeStamp(&ts_sfd); 
+    271                // Проверим переданно ли сообщение TX_FRM_DONE
+    272                while (!(RFIRQF1 & RFIRQF1_TXDONE));
+    273                break;
+    274            }
+    275          ////TIM_TimeStamp(&ts_stop);
+    276          
+    277            re_free(data);
+    278            ISRFOFF();
+    279          ////  LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
+    280          ////"Merge = %lu. Crypt = %lu. Load TX = %lu. RSSI_OK = %lu. ISTXON = %lu. SFD = %lu. TX = %lu. FULL = %lu \n", 
+    281          ////      TIM_passedTime(&ts_start, &ts_frame_merge),
+    282          ////      TIM_passedTime(&ts_frame_merge, &ts_crypt),
+    283          ////      TIM_passedTime(&ts_crypt, &ts_load_tx),
+    284          ////      TIM_passedTime(&ts_load_tx, &ts_rssistat),
+    285          ////      TIM_passedTime(&ts_rssistat, &ts_istxon),
+    286          ////      TIM_passedTime(&ts_istxon, &ts_sfd),
+    287          ////      TIM_passedTime(&ts_sfd, &ts_stop),
+    288          ////      TIM_passedTime(&ts_start, &ts_stop)
+    289          ////      );
+    290            
+    291            if (result)
+    292              return true;
+    293            return false; 
+    294          }
+    295          
+    296          /**
+    297          @brief Загрузка данных для передачи в буфер. 
+    298          @detail Поля LEN, FCS1, FCS2 добавляются автоматически
+    299          @param[in] src указатель на данные
+    300          @param[in] len размер данных
+    301          */
+    302          static void LoadTXData(uint8_t *src, uint8_t len)
+    303          {
+    304            // Очищаем буфер передатчика
+    305            ISFLUSHTX(); 
+    306            // Поле LEN на два байта больше
+    307            RFD = len + 2;
+    308            
+    309            for (uint8_t i = 0 ; i < len; i++)
+    310              RFD = src[i];
+    311            
+    312            // Добавляем CRC1,2
+    313            RFD = 0x00;
+    314            RFD = 0x00;
+    315          };
+    316          
+    317          /**
+    318          @brief Выгружаем принятый пакет из радио
+    319          @param[out] src указатель на буфер приемника
+    320          @param[in] len размер выгружаемых данных
+    321          */
+    322          static void UnLoadRXData(uint8_t *src, uint8_t len)
     323          {
-    324            ASSERT_HALT( (CH >= 11) && (CH <= 26), "Incorrect radio channel");
-    325            // Устанавливаем частоту радиопередатчика
-    326            FREQCTRL_u FRQ;
-    327            FRQ.value = FRQ_CALC(RADIO_CFG.CH);
-    328            FREQCTRL = FRQ.value;  
-    329          }
-    330          
-    331          /*!
-    332          \brief Принимает данные из эфира
-    333          \details Функция принимает данные из эфира. Проводит проверку CRC, увеличивает
-    334          RI_CRC_ERROR. Дешифрует данные при необходимости. Отмечает время прихода SFD 
-    335           в тактах сетевого времени .
-    336          \param[in] timeout Время ожидания данных в милисекундах
-    337          \return Возвращает NULL если данных нет
-    338          */
-    339          frame_s* RI_Receive(uint16_t timeout)
-    340          {
-    341            // Устанавливаем частоту передачи пакета
-    342            RI_cfg();
-    343            uint16_t SFD_TimeStamp;
-    344            
-    345            // Принимаем пакет 
-    346            uint32_t timeout_us = timeout*1000UL; // Переводим мс->мкс
-    347            TimeStamp_s start,stop; // Измерение времени
-    348            TIM_TimeStamp(&start); // Начало измерения времени работы радио
-    349            bool recv_res = RecvData(timeout_us, &SFD_TimeStamp);
-    350            TIM_TimeStamp(&stop); // Конец измерения времени радио
-    351            uint32_t passed = TIM_passedTime(&start, &stop);
-    352            RI_UPTIME += (float)passed/(float)1000; // Микросекунды в милисекунды
-    353            
-    354            // Если ничего не приняли возвращаем NULL
-    355            if (!recv_res)
-    356              return NULL;
-    357            
-    358            uint8_t frame_size = RXFIFOCNT; // Количество принятых данных
+    324            for (uint8_t i = 0 ; i < len; i++)
+    325              src[i] = RFD;
+    326          };
+    327          
+    328          static inline void setFreq(uint8_t CH)
+    329          {
+    330            ASSERT_HALT( (CH >= 11) && (CH <= 26), "Incorrect radio channel");
+    331            // Устанавливаем частоту радиопередатчика
+    332            FREQCTRL_u FRQ;
+    333            FRQ.value = FRQ_CALC(RADIO_CFG.CH);
+    334            FREQCTRL = FRQ.value;  
+    335          }
+    336          
+    337          /*!
+    338          \brief Принимает данные из эфира
+    339          \details Функция принимает данные из эфира. Проводит проверку CRC, увеличивает
+    340          RI_CRC_ERROR. Дешифрует данные при необходимости. Отмечает время прихода SFD 
+    341           в тактах сетевого времени .
+    342          \param[in] timeout Время ожидания данных в милисекундах
+    343          \return Возвращает NULL если данных нет
+    344          */
+    345          frame_s* RI_Receive(uint16_t timeout)
+    346          {
+    347            // Устанавливаем частоту передачи пакета
+    348            RI_cfg();
+    349            uint16_t SFD_TimeStamp;
+    350            
+    351            // Принимаем пакет 
+    352            uint32_t timeout_us = timeout*1000UL; // Переводим мс->мкс
+    353            TimeStamp_s start,stop; // Измерение времени
+    354            TIM_TimeStamp(&start); // Начало измерения времени работы радио
+    355            bool recv_res = RecvData(timeout_us, &SFD_TimeStamp);
+    356            TIM_TimeStamp(&stop); // Конец измерения времени радио
+    357            uint32_t passed = TIM_passedTime(&start, &stop);
+    358            RI_UPTIME += (float)passed/(float)1000; // Микросекунды в милисекунды
     359            
-    360            // Минимальный размер FCS1,FCS2 - 2 байта. LEN не включен в подсчет 
-    361            if (frame_size <= 2)
+    360            // Если ничего не приняли возвращаем NULL
+    361            if (!recv_res)
     362              return NULL;
     363            
-    364            // Выгружаем данные из приемника
-    365            uint8_t *frame_raw = re_malloc(frame_size); 
-    366            UnLoadRXData(frame_raw, frame_size);
-    367            
-    368            int8_t  FCS1 = frame_raw[frame_size - 2]; // RSSI
-    369            uint8_t FCS2 = frame_raw[frame_size - 1]; // bit7 = CRCOK, bit[6..0] Corr_val
-    370            uint8_t LEN_F = frame_raw[0]; // Поле LEN
-    371            
-    372            // Проверим поле LEN. Размер данных в заголовке должен совпадать
-    373            // с фактической длинной принятых данных
-    374            if (LEN_F != frame_size - 1)
-    375            {
-    376              re_free(frame_raw);
-    377              RI_CRC_ERROR ++;
-    378              return NULL;
-    379            }
-    380            
-    381            // Проверим поле CRCOK
-    382            if (!(FCS2 && 1<<7))
-    383            {
-    384              re_free(frame_raw);
-    385              RI_CRC_ERROR ++;
-    386              return NULL;
-    387            }
-    388            
-    389            // Создаем буфер, последнии два байта FCS1,2 и поле LEN не копируем
-    390            frame_s *raw_frame = frame_create();
-    391            frame_addHeader(raw_frame, &frame_raw[1], frame_size - 2);
-    392            // Декодируем поток если нужно
-    393            RI_BitRawDecrypt(raw_frame->payload, raw_frame->len);
+    364            uint8_t frame_size = RXFIFOCNT; // Количество принятых данных
+    365            
+    366            // Минимальный размер FCS1,FCS2 - 2 байта. LEN не включен в подсчет 
+    367            if (frame_size <= 2)
+    368              return NULL;
+    369            
+    370            // Выгружаем данные из приемника
+    371            uint8_t *frame_raw = re_malloc(frame_size); 
+    372            UnLoadRXData(frame_raw, frame_size);
+    373            
+    374            int8_t  FCS1 = frame_raw[frame_size - 2]; // RSSI
+    375            uint8_t FCS2 = frame_raw[frame_size - 1]; // bit7 = CRCOK, bit[6..0] Corr_val
+    376            uint8_t LEN_F = frame_raw[0]; // Поле LEN
+    377            
+    378            // Проверим поле LEN. Размер данных в заголовке должен совпадать
+    379            // с фактической длинной принятых данных
+    380            if (LEN_F != frame_size - 1)
+    381            {
+    382              re_free(frame_raw);
+    383              RI_CRC_ERROR ++;
+    384              return NULL;
+    385            }
+    386            
+    387            // Проверим поле CRCOK
+    388            if (!(FCS2 && 1<<7))
+    389            {
+    390              re_free(frame_raw);
+    391              RI_CRC_ERROR ++;
+    392              return NULL;
+    393            }
     394            
-    395            // Копируем метку времени SFD
-    396            raw_frame->meta.TIMESTAMP = SFD_TimeStamp;
-    397            
-    398            // Расчитываем мощность принятого сигнала
-    399            raw_frame->meta.RSSI_SIG =  FCS1 + RSSI_OFFSET;
-    400            // Расчитываем качество сигнала
-    401            uint8_t corr = FCS2 & 0x7F;
-    402            raw_frame->meta.LIQ = LIQ_CALC(corr); // Значение коэфф. корреляции
-    403          
-    404            raw_frame->meta.CH = RADIO_CFG.CH;
-    405          
-    406            re_free(frame_raw);
-    407            return raw_frame;
-    408          }
+    395            // Создаем буфер, последнии два байта FCS1,2 и поле LEN не копируем
+    396            frame_s *raw_frame = frame_create();
+    397            frame_addHeader(raw_frame, &frame_raw[1], frame_size - 2);
+    398            // Декодируем поток если нужно
+    399            RI_BitRawDecrypt(raw_frame->payload, raw_frame->len);
+    400            
+    401            // Копируем метку времени SFD
+    402            raw_frame->meta.TIMESTAMP = SFD_TimeStamp;
+    403            
+    404            // Расчитываем мощность принятого сигнала
+    405            raw_frame->meta.RSSI_SIG =  FCS1 + RSSI_OFFSET;
+    406            // Расчитываем качество сигнала
+    407            uint8_t corr = FCS2 & 0x7F;
+    408            raw_frame->meta.LIQ = LIQ_CALC(corr); // Значение коэфф. корреляции
     409          
-    410          /**
-    411          @brief Прием данных из эфира
-    412          @param[in] timeout_us время ожидания в микросекундах
-    413          @param[out] SFD_TimeStamp отметка времени завершения приема SFD
-    414          */
-    415          static bool RecvData(uint32_t timeout_us, uint16_t *SFD_TimeStamp)
-    416          {
-    417            TimeStamp_s start,stop; // Измерение времени  
-    418            ISFLUSHRX(); // Очищаем буфер приема
-    419            
-    420            TIM_TimeStamp(&start);
-    421            
-    422            // Очищаем флаг завершения передачи сообщения и приема SFD
-    423            RFIRQF0 &= ~RFIRQF0_RXPKTDONE;  
-    424            RFIRQF0 &= ~RFIRQF0_SFD; 
-    425            ISRXON(); // Включаем радиопередатчик
-    426          
-    427            bool time_out = false; // Истекло время ожидания пакета
-    428            bool packet_received = false; // Приняли пакет
-    429            bool sfd_received = false; // Приняли sfd
-    430            
-    431            // Цикл приема пакета
-    432            while (true)
-    433            {
-    434              TIM_TimeStamp(&stop);
-    435              if (TIM_passedTime(&start, &stop) >= timeout_us)
-    436              {
-    437                time_out = true;
-    438                break;
-    439              }
-    440             
-    441              // Принят сигнал SFD
-    442              if ((RFIRQF0 & RFIRQF0_SFD))
-    443              {
-    444                *SFD_TimeStamp = NT_GetTime(); 
-    445                sfd_received = true;
-    446              }
-    447              
-    448              //  Завершен ли прием сообщения RX_FRM_DONE (RXPKTDONE)
-    449              if ((RFIRQF0 & RFIRQF0_RXPKTDONE))
-    450              {
-    451                packet_received = true;
-    452                break;
-    453              }
-    454            } // while 
-    455            
-    456            ISRFOFF();
-    457            if (packet_received && sfd_received && !time_out)
-    458              return true;
-    459            else
-    460              return false;
-    461          }
-    462          
-    463          /*!
-    464          \brief Возвращает количество ошибок возникших с момента иницилизации
-    465          \return Количество CRC ошибок
-    466          */
-    467          uint32_t RI_GetCRCError(void)
-    468          {
-    469            return RI_CRC_ERROR;
-    470          }
-    471          
-    472          /*!
-    473          \brief Возвращает количестов отказов передачи пакета из-за занятости канала.
-    474          \return Количество отказов CCA
-    475          */
-    476          uint32_t RI_GetCCAReject(void)
-    477          {
-    478            return RI_CCA_REJECT;
-    479          }
-    480          
-    481          /*!
-    482          \brief Возвращает суммарное время работы радио в режиме прием/передача
-    483          \return Вермя в милисекундах
-    484          */
-    485          float RI_GetUptime(void)
-    486          {
-    487            return RI_UPTIME;
-    488          }
-    489          
-    490          /**
-    491          @breif Подссчет количества бит в байте
-    492          @return Возвращает количество бит
-    493          */
-    494          static uint8_t bits_count(uint8_t value) {
-    495            int ret = 0;
-    496            for ( ; value; value = value >> 1 )
-    497              ret += value & 1;
-    498            return ret;
-    499          }
-    500          
-    501          /**
-    502          @brief Возращает 1 байт случайного числа
-    503          @details Радио выдает всего лишь дви бита, нам нужно 8 
-    504          */
-    505          static inline uint8_t getRNDByte(void)
-    506          {
-    507            uint8_t val = 0;
-    508            val |= RFRND << 0;
-    509            val |= RFRND << 2;
-    510            val |= RFRND << 4;
-    511            val |= RFRND << 6;
-    512            return val;
-    513          }
-    514          
-    515          /**
-    516          @brief Возвращает случайное число с числом включеных бит от 2 до 6 включительно
-    517          @details Случайные числа появляются в регистре с частотой 170нс. Функция 
-    518          возвращает гарантированно новое значение. 
-    519          @return возвращает случайное число.
-    520          */
-    521          static inline uint8_t readRandom(void)
-    522          {
-    523            uint8_t rnd_val = 0;
-    524            uint8_t bit_cnt = 0;
-    525            while ( bit_cnt <= 2 || bit_cnt >= 6 )
-    526            {
-    527              rnd_val = getRNDByte();
-    528              while (rnd_val == getRNDByte());
-    529              rnd_val = getRNDByte();
-    530              bit_cnt = bits_count(rnd_val);
-    531            }
-    532            return rnd_val;
-    533          }
-    534          
-    535          /*!
-    536          \brief Иницилизирует ядро генератора случайных чисел данными из эфира
-    537          */
-    538          static void random_core_init(void)  
-    539          {
-    540            unsigned int rnd_core = 0;;
-    541               
-    542            RI_cfg();
-    543            FREQCTRL = 0x00; // Выбираем не используемую частоту
-    544          
-    545            // TODO По какой то причине OP_EXE не выполняет команду.
-    546            // регистра RFST читается как 0xD0. это его состояние при reset
-    547            // Включаем демодулятор
-    548            ISRXON();
-    549            
-    550            // Ждем пока статус RSSI_VALID станет true
-    551            while(!RSSISTAT);
-    552            
-    553            // Ждем случайных чисел
-    554            while (RFRND == 0);
+    410            raw_frame->meta.CH = RADIO_CFG.CH;
+    411          
+    412            re_free(frame_raw);
+    413            return raw_frame;
+    414          }
+    415          
+    416          /**
+    417          @brief Прием данных из эфира
+    418          @param[in] timeout_us время ожидания в микросекундах
+    419          @param[out] SFD_TimeStamp отметка времени завершения приема SFD
+    420          */
+    421          static bool RecvData(uint32_t timeout_us, uint16_t *SFD_TimeStamp)
+    422          {
+    423            TimeStamp_s start,stop; // Измерение времени  
+    424            ISFLUSHRX(); // Очищаем буфер приема
+    425            
+    426            TIM_TimeStamp(&start);
+    427            
+    428            // Очищаем флаг завершения передачи сообщения и приема SFD
+    429            RFIRQF0 &= ~RFIRQF0_RXPKTDONE;  
+    430            RFIRQF0 &= ~RFIRQF0_SFD; 
+    431            ISRXON(); // Включаем радиопередатчик
+    432          
+    433            bool time_out = false; // Истекло время ожидания пакета
+    434            bool packet_received = false; // Приняли пакет
+    435            bool sfd_received = false; // Приняли sfd
+    436            
+    437            // Цикл приема пакета
+    438            while (true)
+    439            {
+    440              TIM_TimeStamp(&stop);
+    441              if (TIM_passedTime(&start, &stop) >= timeout_us)
+    442              {
+    443                time_out = true;
+    444                break;
+    445              }
+    446             
+    447              // Принят сигнал SFD
+    448              if ((RFIRQF0 & RFIRQF0_SFD))
+    449              {
+    450                *SFD_TimeStamp = NT_GetTime(); 
+    451                sfd_received = true;
+    452              }
+    453              
+    454              //  Завершен ли прием сообщения RX_FRM_DONE (RXPKTDONE)
+    455              if ((RFIRQF0 & RFIRQF0_RXPKTDONE))
+    456              {
+    457                packet_received = true;
+    458                break;
+    459              }
+    460            } // while 
+    461            
+    462            ISRFOFF();
+    463            if (packet_received && sfd_received && !time_out)
+    464              return true;
+    465            else
+    466              return false;
+    467          }
+    468          
+    469          /*!
+    470          \brief Возвращает количество ошибок возникших с момента иницилизации
+    471          \return Количество CRC ошибок
+    472          */
+    473          uint32_t RI_GetCRCError(void)
+    474          {
+    475            return RI_CRC_ERROR;
+    476          }
+    477          
+    478          /*!
+    479          \brief Возвращает количестов отказов передачи пакета из-за занятости канала.
+    480          \return Количество отказов CCA
+    481          */
+    482          uint32_t RI_GetCCAReject(void)
+    483          {
+    484            return RI_CCA_REJECT;
+    485          }
+    486          
+    487          /*!
+    488          \brief Возвращает суммарное время работы радио в режиме прием/передача
+    489          \return Вермя в милисекундах
+    490          */
+    491          float RI_GetUptime(void)
+    492          {
+    493            return RI_UPTIME;
+    494          }
+    495          
+    496          /**
+    497          @breif Подссчет количества бит в байте
+    498          @return Возвращает количество бит
+    499          */
+    500          static uint8_t bits_count(uint8_t value) {
+    501            int ret = 0;
+    502            for ( ; value; value = value >> 1 )
+    503              ret += value & 1;
+    504            return ret;
+    505          }
+    506          
+    507          /**
+    508          @brief Возращает 1 байт случайного числа
+    509          @details Радио выдает всего лишь дви бита, нам нужно 8 
+    510          */
+    511          static inline uint8_t getRNDByte(void)
+    512          {
+    513            uint8_t val = 0;
+    514            val |= RFRND << 0;
+    515            val |= RFRND << 2;
+    516            val |= RFRND << 4;
+    517            val |= RFRND << 6;
+    518            return val;
+    519          }
+    520          
+    521          /**
+    522          @brief Возвращает случайное число с числом включеных бит от 2 до 6 включительно
+    523          @details Случайные числа появляются в регистре с частотой 170нс. Функция 
+    524          возвращает гарантированно новое значение. 
+    525          @return возвращает случайное число.
+    526          */
+    527          static inline uint8_t readRandom(void)
+    528          {
+    529            uint8_t rnd_val = 0;
+    530            uint8_t bit_cnt = 0;
+    531            while ( bit_cnt <= 2 || bit_cnt >= 6 )
+    532            {
+    533              rnd_val = getRNDByte();
+    534              while (rnd_val == getRNDByte());
+    535              rnd_val = getRNDByte();
+    536              bit_cnt = bits_count(rnd_val);
+    537            }
+    538            return rnd_val;
+    539          }
+    540          
+    541          /*!
+    542          \brief Иницилизирует ядро генератора случайных чисел данными из эфира
+    543          */
+    544          static void random_core_init(void)  
+    545          {
+    546            unsigned int rnd_core = 0;;
+    547               
+    548            RI_cfg();
+    549            FREQCTRL = 0x00; // Выбираем не используемую частоту
+    550          
+    551            // TODO По какой то причине OP_EXE не выполняет команду.
+    552            // регистра RFST читается как 0xD0. это его состояние при reset
+    553            // Включаем демодулятор
+    554            ISRXON();
     555            
-    556            // Настраиваем ядро случайного генератора
-    557            rnd_core = readRandom();
-    558            rnd_core |= (unsigned int)readRandom()<<8;
-    559            srand(rnd_core);
-    560            
-    561            // Включаем демодулятор
-    562            ISRFOFF();
-    563            // Первая генерация случайного числа занимает много времени.
-    564            // Влияло на работу радио, так как использовались случайные посылки
-    565            rand(); 
-    566          }
-    567          
-    568          /*!
-    569          \brief Установка разрешения шифрования потока данных
-    570          \param[in] true - включить шифрование
-    571          */
-    572          void RI_StreamCrypt(bool state)
-    573          {
-    574            RADIO_CFG.STREAM_CRYPT_ENABLE = state;
-    575          }
-    576          
-    577          /*!
-    578          \brief Шифрует область памяти если шифрование разрешено
-    579          \param[in,out] *src Указатель на начало области шифрования
-    580          \param[in] size Размер шифруемых данных
-    581          */
-    582          static void RI_BitRawCrypt(uint8_t *src, uint8_t size)
-    583          {
-    584            if (!RADIO_CFG.STREAM_CRYPT_ENABLE)
-    585              return;
-    586            
-    587            AES_StreamCoder(true, src, src, KEY, IV, size);
-    588          }
-    589          
-    590          /*!
-    591          \brief Расшифровка область памяти если шифрование разрешено
-    592          \param[in,out] *src Указатель на начало области дешифрования
-    593          \param[in] size Размер расшифруемых данных
-    594          */
-    595          static void RI_BitRawDecrypt(uint8_t *src, uint8_t size)
-    596          {
-    597             if (!RADIO_CFG.STREAM_CRYPT_ENABLE)
-    598              return;
-    599             
-    600            AES_StreamCoder(false, src, src, KEY, IV, size);
-    601          }
+    556            // Ждем пока статус RSSI_VALID станет true
+    557            while(!RSSISTAT);
+    558            
+    559            // Ждем случайных чисел
+    560            while (RFRND == 0);
+    561            
+    562            // Настраиваем ядро случайного генератора
+    563            rnd_core = readRandom();
+    564            rnd_core |= (unsigned int)readRandom()<<8;
+    565            srand(rnd_core);
+    566            
+    567            // Включаем демодулятор
+    568            ISRFOFF();
+    569            // Первая генерация случайного числа занимает много времени.
+    570            // Влияло на работу радио, так как использовались случайные посылки
+    571            rand(); 
+    572          }
+    573          
+    574          /*!
+    575          \brief Установка разрешения шифрования потока данных
+    576          \param[in] true - включить шифрование
+    577          */
+    578          void RI_StreamCrypt(bool state)
+    579          {
+    580            RADIO_CFG.STREAM_CRYPT_ENABLE = state;
+    581          }
+    582          
+    583          /*!
+    584          \brief Шифрует область памяти если шифрование разрешено
+    585          \param[in,out] *src Указатель на начало области шифрования
+    586          \param[in] size Размер шифруемых данных
+    587          */
+    588          static void RI_BitRawCrypt(uint8_t *src, uint8_t size)
+    589          {
+    590            if (!RADIO_CFG.STREAM_CRYPT_ENABLE)
+    591              return;
+    592            
+    593            AES_StreamCoder(true, src, src, KEY, IV, size);
+    594          }
+    595          
+    596          /*!
+    597          \brief Расшифровка область памяти если шифрование разрешено
+    598          \param[in,out] *src Указатель на начало области дешифрования
+    599          \param[in] size Размер расшифруемых данных
+    600          */
+    601          static void RI_BitRawDecrypt(uint8_t *src, uint8_t size)
+    602          {
+    603             if (!RADIO_CFG.STREAM_CRYPT_ENABLE)
+    604              return;
+    605             
+    606            AES_StreamCoder(false, src, src, KEY, IV, size);
+    607          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\TIC.c
       1          #include "TIC.h"
       2          #include "NTMR.h"
@@ -3527,162 +3551,152 @@ Warning[Pe550]: variable "timer" was set but never used
      18          static frame_s* getFrame(uint8_t *src, uint8_t len, uint8_t CH, uint8_t TS)
      19          {
      20            frame_s *fr;
-     21            EA=0;
-     22            fr = frame_create();
-     23            frame_addHeader(fr, src, len);
-     24            EA=1;
-     25            fr->meta.SEND_TIME = 0;
-     26            fr->meta.TS = TS;
-     27            fr->meta.CH = CH;
-     28            return fr;
-     29          }
-     30          
-     31          static void show_heap_ptr(void)
-     32          { 
-     33            uint16_t *heap_ptr;
-     34            heap_ptr = (uint16_t*)re_malloc(1);
-     35            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "HEAP_PTR = %d\r\n", (uint16_t)heap_ptr ); 
-     36            re_free(heap_ptr);
-     37          }
-     38          
-     39          static void test_create()
-     40          {
-     41            LLC_Init();
-     42            LLC_TimeAlloc(timealloc);
-     43            EA = 1;
-     44            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
+     21            fr = frame_create();
+     22            frame_addHeader(fr, src, len);
+     23            fr->meta.SEND_TIME = 0;
+     24            fr->meta.TS = TS;
+     25            fr->meta.CH = CH;
+     26            return fr;
+     27          }
+     28          
+     29          static void show_heap_ptr(void)
+     30          { 
+     31            uint16_t *heap_ptr;
+     32            heap_ptr = (uint16_t*)re_malloc(1);
+     33            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "HEAP_PTR = %d\r\n", (uint16_t)heap_ptr ); 
+     34            re_free(heap_ptr);
+     35          }
+     36          
+     37          static void test_create()
+     38          {
+     39            LLC_Init();
+     40            LLC_TimeAlloc(timealloc);
+     41            EA = 1;
+     42            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
+     43            
+     44            frame_s *fr;
      45            
-     46            frame_s *fr;
-     47            
-     48            uint16_t TS = 0;
-     49            uint8_t *ptr_stack = (uint8_t*)0x100;
-     50            
-     51            fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
-     52            uint16_t fr_size = sizeof(frame_s);
-     53            uint16_t bf_size = frame_len(fr);
-     54            uint16_t HEAP_PTR_MAX = 0;
-     55            uint16_t heap;
-     56            uint8_t nbr_bufs, nbr_frames;
+     46            uint16_t TS = 0;
+     47            uint8_t *ptr_stack = (uint8_t*)0x100;
+     48            
+     49            fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
+     50            uint16_t fr_size = sizeof(frame_s);
+     51            uint16_t bf_size = frame_len(fr);
+     52            uint16_t HEAP_PTR_MAX = 0;
+     53            uint16_t heap;
+     54            uint8_t nbr_bufs, nbr_frames;
                            ^
 Warning[Pe177]: variable "nbr_bufs" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
-
-    uint8_t nbr_bufs, nbr_frames;
-                      ^
-"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",56  Warning[Pe550]: 
-          variable "nbr_frames" was set but never used
-          detected during compilation of secondary translation unit
-                    "\\vmware-host\Shared
-                    Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
-     57            
-     58            LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-     59                "Frame_s size = %d. Fbuf data = %d. Full =%d\r\n",
-     60                fr_size, bf_size, bf_size+fr_size );
-     61            frame_delete(fr);
-     62            
-     63            while(true)
-     64            {  
-     65              nbr_frames = frame_getCount();
-     66             // LOG(MSG_ON | MSG_INFO | MSG_TRACE, "nbr_frames = %d \r\n" ,nbr_frames );
-     67              
-     68              if (LLC_GetTaskLen() < 5)
-     69              {
-     70                fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
-     71                LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Create frame = %d.\r\n", (uint16_t)fr);    
-     72                LLC_AddTask(fr);
-     73                TS ++;
-     74                if (TS == 5)
-     75                TS = 0;
-     76              }   
-     77              if (*ptr_stack != 0xcd) // Контроль переполнения стека
-     78                while(1);
-     79             
-     80              heap =  heap_ptr(10);
-     81              if (heap > HEAP_PTR_MAX)
-     82              {
-     83                HEAP_PTR_MAX = heap;
-     84                LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-     85                "HEAP_PTR = %d\r\n", HEAP_PTR_MAX );
-     86              }
-     87            }
-     88          }
-     89          
-     90          static void find_mem_problem(void)
-     91          {
-     92            LLC_Init();
-     93            LLC_TimeAlloc(timealloc);
-     94            EA = 1;
-     95            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
+     55            
+     56            LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
+     57                "Frame_s size = %d. Fbuf data = %d. Full =%d\r\n",
+     58                fr_size, bf_size, bf_size+fr_size );
+     59            frame_delete(fr);
+     60            
+     61            while(true)
+     62            {  
+     63              nbr_frames = frame_getCount();
+     64              LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "nbr_frames = %d \r\n" ,nbr_frames );
+     65              
+     66              if (LLC_GetTaskLen() < 20)
+     67              {
+     68                fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
+     69                LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Create frame = %d.\r\n", (uint16_t)fr);    
+     70                LLC_AddTask(fr);
+     71                TS ++;
+     72                if (TS == 49)
+     73                TS = 0;
+     74              }   
+     75              if (*ptr_stack != 0xcd) // Контроль переполнения стека
+     76                while(1);
+     77             
+     78              heap =  heap_ptr(10);
+     79              if (heap > HEAP_PTR_MAX)
+     80              {
+     81                HEAP_PTR_MAX = heap;
+     82                LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
+     83                "HEAP_PTR = %d\r\n", HEAP_PTR_MAX );
+     84              }
+     85            }
+     86          }
+     87          
+     88          static void find_mem_problem(void)
+     89          {
+     90            LLC_Init();
+     91            LLC_TimeAlloc(timealloc);
+     92            EA = 1;
+     93            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
+     94            
+     95            frame_s *fr;
      96            
-     97            frame_s *fr;
-     98            
-     99            uint16_t TS = 0;
-    100            uint8_t *ptr_stack = (uint8_t*)0x100;
-    101            
-    102            uint16_t HEAP_PTR_MAX = 0;
+     97            uint16_t TS = 0;
+     98            uint8_t *ptr_stack = (uint8_t*)0x100;
+     99            
+    100            uint16_t HEAP_PTR_MAX = 0;
                             ^
 Warning[Pe177]: variable "HEAP_PTR_MAX" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
-    103            uint16_t *heap_ptr;
+    101            uint16_t *heap_ptr;
                              ^
 Warning[Pe177]: variable "heap_ptr" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
-    104            
-    105            while(true)
-    106            {  
-    107              if (frame_getCount() == 0)
-    108              {
-    109                show_heap_ptr();
-    110                for (uint8_t i = 0; i < 20 ; i++)
-    111                {
-    112                    fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
-    113                    TS++;
-    114                    if (TS == 49)
-    115                      TS = 0;
-    116                    LLC_AddTask(fr);
-    117                }
-    118              }   
-    119              
-    120              if (*ptr_stack != 0xcd) // Контроль переполнения стека
-    121                while(1);
-    122            }
-    123            
-    124            
-    125          }
-    126          
-    127          // Тест на максимальное количество фреймов 
-    128          static void test_mem(void)
-    129          {
-    130            frame_s *FR[150];
+    102            
+    103            while(true)
+    104            {  
+    105              if (frame_getCount() == 0)
+    106              {
+    107                show_heap_ptr();
+    108                for (uint8_t i = 0; i < 20 ; i++)
+    109                {
+    110                    fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
+    111                    TS++;
+    112                    if (TS == 49)
+    113                      TS = 0;
+    114                    LLC_AddTask(fr);
+    115                }
+    116              }   
+    117              
+    118              if (*ptr_stack != 0xcd) // Контроль переполнения стека
+    119                while(1);
+    120            }
+    121            
+    122            
+    123          }
+    124          
+    125          // Тест на максимальное количество фреймов 
+    126          static void test_mem(void)
+    127          {
+    128            frame_s *FR[150];
                             ^
 Warning[Pe550]: variable "FR" was set but never used
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
-    131            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9}; 
-    132            
-    133            for (uint8_t i = 0; i < 105; i++) 
-    134              FR[i] = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, 5);
-    135          }
-    136          
-    137          
-    138          void suite_LLC_HW(void)
-    139          {
-    140           // umsg_line("LLC module");
-    141            
-    142            // Устанавливает и поддерживает в очереди 20 пакетов.
-    143            // Для приема пакетов испольуеться второй модуль с прошивкой RadioRecvTest1
-    144            test_create(); 
-    145           // test_mem();
-    146           // find_mem_problem();
-    147             
-    148          }
+    129            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9}; 
+    130            
+    131            for (uint8_t i = 0; i < 105; i++) 
+    132              FR[i] = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, 5);
+    133          }
+    134          
+    135          
+    136          void suite_LLC_HW(void)
+    137          {
+    138           // umsg_line("LLC module");
+    139            
+    140            // Устанавливает и поддерживает в очереди 20 пакетов.
+    141            // Для приема пакетов испольуеться второй модуль с прошивкой RadioRecvTest1
+    142            test_create(); 
+    143           // test_mem();
+    144           // find_mem_problem();
+    145             
+    146          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_MAC.c
       1          #include "utest_suite.h"
       2          #include "MAC.h"
@@ -4042,7 +4056,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
 
   static void find_mem_problem(void)
               ^
-"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",90  Warning[Pe177]: 
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",88  Warning[Pe177]: 
           function "find_mem_problem" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
@@ -4050,7 +4064,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
 
   static void test_mem(void)
               ^
-"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",128  Warning[Pe177]: 
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",126  Warning[Pe177]: 
           function "test_mem" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
@@ -4394,11 +4408,12 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     14   -> printf
       0     54   Interval
       0     52   LED
-      1     49   LLC_AddTask
-        0     12   -> STACK_FAILURE
-        0     12   -> printf
-        0     16   -> printf
-        0     12   -> re_malloc
+      1     57   LLC_AddTask
+        0     14   -> STACK_FAILURE
+        0     14   -> printf
+        0     18   -> printf
+        0     24   -> printf
+        0     14   -> re_malloc
       2     33   LLC_GetTaskLen
       2     33   LLC_Init
         2      0   -> MAC_Init
@@ -4416,10 +4431,13 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     10   -> STACK_FAILURE
         0     10   -> printf
         0     14   -> printf
-      0     22   LLC_Shelduler
-        0     13   -> MAC_GetTXState
-        0     13   -> MAC_Send
-        0     13   -> re_free
+      0     29   LLC_Shelduler
+        0     16   -> MAC_GetTXState
+        0     16   -> MAC_Send
+        0     16   -> STACK_FAILURE
+        0     16   -> printf
+        0     20   -> printf
+        0     16   -> re_free
       0     49   LLC_TimeAlloc
         0     12   -> STACK_FAILURE
         0     12   -> printf
@@ -4563,12 +4581,17 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     32   -> TIM_passedTime
       0      0   SEC
       0     36   STACK_FAILURE
-      0     52   SendData
+      0     56   SendData
         0     16   -> LoadTXData
         0     16   -> NT_GetTime
         0     16   -> NT_WaitTime
         0     16   -> RI_BitRawCrypt
+        0     16   -> STACK_FAILURE
+        0     16   -> printf
+        0     20   -> printf
         0     16   -> re_free
+        0     16   -> re_malloc
+        0     18   -> re_memcpy
       0      0   SetCPU32M
       2     12   TIC_GetNonce
       2     24   TIC_GetRTC
@@ -4711,9 +4734,9 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     16   -> frame_create
       2     14   getMallocSize
       2      9   getRNDByte
-      0     63   heap_ptr
-        0     12   -> re_free
-        0     12   -> re_malloc
+      0     65   heap_ptr
+        0     14   -> re_free
+        0     14   -> re_malloc
       0      0   heap_size
       2      1   incrementTS
       0     14   isIRQEnable
@@ -4943,6 +4966,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       19  ?<Constant "*LOGGER* %s:%d -> ">_4
       19  ?<Constant "*LOGGER* %s:%d -> ">_5
       19  ?<Constant "*LOGGER* %s:%d -> ">_6
+      19  ?<Constant "*LOGGER* %s:%d -> ">_7
        9  ?<Constant "*fr null">
       27  ?<Constant ".Program execution ha...">
       27  ?<Constant ".Program execution ha...">_1
@@ -4952,6 +4976,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       27  ?<Constant ".Program execution ha...">_5
       27  ?<Constant ".Program execution ha...">_6
       10  ?<Constant "0123456789">
+      53  ?<Constant "Add task = %u, CH = %...">
       13  ?<Constant "Assert fails">
       13  ?<Constant "Assert fails">_1
       13  ?<Constant "Assert fails">_2
@@ -4988,6 +5013,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       46  ?<Constant "Hello worldHello worl...">
       13  ?<Constant "Hello world\n">
       13  ?<Constant "Incorrect TS">
+      20  ?<Constant "Incorrect TX_METHOD">
       19  ?<Constant "Incorrect eth size">
       24  ?<Constant "Incorrect radio channel">
       16  ?<Constant "Incorrect ticks">
@@ -5004,6 +5030,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       23  ?<Constant "NULL pointer not allow">_1
       10  ?<Constant "No memory">
       10  ?<Constant "No memory">_1
+      10  ?<Constant "No memory">_2
        7  ?<Constant "PASSED">
       13  ?<Constant "PASSED: %d\r\n">
       13  ?<Constant "RADIO module">
@@ -5088,6 +5115,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_4
       19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_5
       19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_6
+      19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_7
        9  ?<Initializer for <Constant "*fr null">>
       27  ?<Initializer for <Constant ".Program executio
       27  ?<Initializer for <Constant ".Program executio_1
@@ -5097,6 +5125,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       27  ?<Initializer for <Constant ".Program executio_5
       27  ?<Initializer for <Constant ".Program executio_6
       10  ?<Initializer for <Constant "0123456789">>
+      53  ?<Initializer for <Constant "Add task = %u, CH
       13  ?<Initializer for <Constant "Assert fails">>
       13  ?<Initializer for <Constant "Assert fails">>_1
       13  ?<Initializer for <Constant "Assert fails">>_2
@@ -5133,6 +5162,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       46  ?<Initializer for <Constant "Hello worldHello
       13  ?<Initializer for <Constant "Hello world\n">>
       13  ?<Initializer for <Constant "Incorrect TS">>
+      20  ?<Initializer for <Constant "Incorrect TX_METH
       19  ?<Initializer for <Constant "Incorrect eth siz
       24  ?<Initializer for <Constant "Incorrect radio c
       16  ?<Initializer for <Constant "Incorrect ticks">
@@ -5149,6 +5179,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       23  ?<Initializer for <Constant "NULL pointer not _1
       10  ?<Initializer for <Constant "No memory">>
       10  ?<Initializer for <Constant "No memory">>_1
+      10  ?<Initializer for <Constant "No memory">>_2
        7  ?<Initializer for <Constant "PASSED">>
       13  ?<Initializer for <Constant "PASSED: %d\r\n">>
       13  ?<Initializer for <Constant "RADIO module">>
@@ -5286,7 +5317,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       16  KEY
       37  LED
        6  LED::?relay
-     312  LLC_AddTask
+     449  LLC_AddTask
        6  LLC_AddTask::?relay
       16  LLC_GetTaskLen
        6  LLC_GetTaskLen::?relay
@@ -5300,7 +5331,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  LLC_SE_HNDL::?relay
       81  LLC_SetRXCallback
        6  LLC_SetRXCallback::?relay
-     201  LLC_Shelduler
+     318  LLC_Shelduler
        6  LLC_Shelduler::?relay
      149  LLC_TimeAlloc
        6  LLC_TimeAlloc::?relay
@@ -5412,7 +5443,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        2  STACK_FAILURE
        6  STACK_FAILURE::?relay
        1  STLOAD
-     180  SendData
+     287  SendData
        6  SendData::?relay
       12  SetCPU32M
        6  SetCPU32M::?relay
@@ -5542,13 +5573,13 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  free::?relay
      241  generateAuthData
        6  generateAuthData::?relay
-     105  getFrame
+     101  getFrame
        6  getFrame::?relay
       34  getMallocSize
        6  getMallocSize::?relay
       53  getRNDByte
        6  getRNDByte::?relay
-      40  heap_ptr
+      56  heap_ptr
        6  heap_ptr::?relay
        7  heap_size
        6  heap_size::?relay
@@ -5667,19 +5698,19 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  validate::?relay
 
  
- 19 770 bytes in segment BANKED_CODE
+ 20 143 bytes in segment BANKED_CODE
   1 008 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
      60 bytes in segment NEAR_CODE
      35 bytes in segment SFR_AN
-  2 753 bytes in segment XDATA_I
-  2 753 bytes in segment XDATA_ID
+  2 855 bytes in segment XDATA_I
+  2 855 bytes in segment XDATA_ID
     695 bytes in segment XDATA_Z
  
-  3 735 bytes of CODE     memory (+ 89 bytes shared)
+  3 837 bytes of CODE     memory (+ 89 bytes shared)
       0 bytes of DATA     memory (+ 35 bytes shared)
- 19 726 bytes of HUGECODE memory (+ 44 bytes shared)
-  3 380 bytes of XDATA    memory (+ 68 bytes shared)
+ 20 099 bytes of HUGECODE memory (+ 44 bytes shared)
+  3 482 bytes of XDATA    memory (+ 68 bytes shared)
 
 Errors: none
-Warnings: 15
+Warnings: 14

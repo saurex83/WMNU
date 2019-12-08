@@ -27,6 +27,7 @@ static void LLC_RunTimeAlloc(void);
 
 // Переменные модуля
 #define UNICAST_SEND_ATEMPTS 5 //!< Количество попыток передачи пакета 
+#define BROADCAST_SEND_ATEMPTS 3 //!< Количество попыток передачи пакета 
 #define MAX_nbrTASKS 20 //!< Максимальное количество задач в очередях
 
 typedef struct LLCTask LLCTask;
@@ -130,10 +131,10 @@ bool LLC_AddTask(frame_s* fr)
     if (nbrTasks == MAX_nbrTASKS)
       return false;
     
-   // Ждем пока разбокируется доступ.
+   // Ждем пока разблокируется доступ.
    while (tasksBLOCK);
    tasksBLOCK = true;
-   
+
    // Создаем новую задачу
    LLCTask *new_task = (LLCTask*)re_malloc(sizeof(LLCTask));
    ASSERT_HALT(new_task !=NULL, "LLC re_malloc for new_task"); 
@@ -142,7 +143,7 @@ bool LLC_AddTask(frame_s* fr)
    new_task->CH = fr->meta.CH;
    new_task->fr = fr;
    
-  LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Add task = %u, CH = %d, TS = %d, OTS = %d. fr = %d\r\n",
+  LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Add task = %u, CH = %d, TS = %d, OTS = %d. fr = %d\r\n",
       (uint16_t)new_task,new_task->CH, new_task->TS, fr->meta.TS, (uint16_t)fr);
   
    // Если в очереди нет задач, добавим первую
@@ -160,8 +161,12 @@ bool LLC_AddTask(frame_s* fr)
    
    nbrTasks ++;
    tasksBLOCK = false;
+
    return true;
 }
+
+
+
 
 /**
 @brief Планировщик задач
@@ -176,8 +181,8 @@ static void LLC_Shelduler(uint8_t TS)
   // производится. Это может привести к необычным последствиям
   if (tasksBLOCK)
     return;
-  
   tasksBLOCK = true;
+  
   // Перебираем попорядку весь список на отправку
   // HeadTask только указатель на первый элемент, сам он не подлежит отправке
   LLCTask *task = FirstTask;
@@ -186,7 +191,6 @@ static void LLC_Shelduler(uint8_t TS)
   
   while (task != NULL)
   {    
-    
     if (MAC_GetTXState(task->TS)) // Занят ли временой слот
     {
       // Если слот занят переходим к следующей задаче
@@ -195,7 +199,16 @@ static void LLC_Shelduler(uint8_t TS)
       continue; 
     }
     
-    MAC_Send(task->fr, UNICAST_SEND_ATEMPTS);
+    //Выбераем количество попыток передачи в зависимости от типа пакета
+    uint8_t attempts;
+    if (task->fr->meta.TX_METHOD == UNICAST)
+      attempts = UNICAST_SEND_ATEMPTS;
+    else if (task->fr->meta.TX_METHOD == BROADCAST)
+      attempts = BROADCAST_SEND_ATEMPTS;
+    else
+      ASSERT_HALT(false, "Incorrect TX_METHOD");
+    
+    MAC_Send(task->fr, attempts);
     
     next = task->next; // Запомним следующую задачу
     

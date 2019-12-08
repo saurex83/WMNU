@@ -18,10 +18,8 @@ static void timealloc(void)
 static frame_s* getFrame(uint8_t *src, uint8_t len, uint8_t CH, uint8_t TS)
 {
   frame_s *fr;
-  EA=0;
   fr = frame_create();
   frame_addHeader(fr, src, len);
-  EA=1;
   fr->meta.SEND_TIME = 0;
   fr->meta.TS = TS;
   fr->meta.CH = CH;
@@ -63,15 +61,15 @@ static void test_create()
   while(true)
   {  
     nbr_frames = frame_getCount();
-   // LOG(MSG_ON | MSG_INFO | MSG_TRACE, "nbr_frames = %d \r\n" ,nbr_frames );
+    LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "nbr_frames = %d \r\n" ,nbr_frames );
     
-    if (LLC_GetTaskLen() < 5)
+    if (LLC_GetTaskLen() < 20)
     {
       fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
       LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Create frame = %d.\r\n", (uint16_t)fr);    
       LLC_AddTask(fr);
       TS ++;
-      if (TS == 5)
+      if (TS == 49)
       TS = 0;
     }   
     if (*ptr_stack != 0xcd) // Контроль переполнения стека
