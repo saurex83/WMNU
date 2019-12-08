@@ -16,8 +16,7 @@ void test_1(void)
   
   uint32_t passed = TIM_passedTime(&start, &stop);
   
-  LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-      "String 1 len = %d. Print time = %lu us\n",
+  LOG_ON("String 1 len = %d. Print time = %lu us",
       sizeof(test_string1), passed);
   
   TIM_TimeStamp(&start);
@@ -26,8 +25,7 @@ void test_1(void)
   
   passed = TIM_passedTime(&start, &stop);
   
-  LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-      "String 2 len = %d. Print time = %lu us.\n",
+  LOG_ON("String 2 len = %d. Print time = %lu us",
       sizeof(test_string2), passed);  
 }
 

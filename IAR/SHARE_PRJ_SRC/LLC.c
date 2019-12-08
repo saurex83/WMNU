@@ -96,7 +96,7 @@ uint8_t LLC_GetTaskLen(void)
 
 void LLC_SetRXCallback(void (*fn)(frame_s *fr))
 {
-  ASSERT_HALT(fn != NULL, "NULL pointer not allow");
+  ASSERT(fn != NULL);
   RXCallback = fn;
 }
 
@@ -106,7 +106,7 @@ void LLC_SetRXCallback(void (*fn)(frame_s *fr))
 void LLC_TimeAlloc(void (*fn)(void))
 {
   TimeAllocFunc *ta = re_malloc(sizeof(TimeAllocFunc));
-  ASSERT_HALT(ta != NULL, "Memory allocation fails");
+  ASSERT(ta != NULL);
   ta->next = NULL;
   ta->fn = fn;
 
@@ -126,7 +126,7 @@ void LLC_TimeAlloc(void (*fn)(void))
 */
 bool LLC_AddTask(frame_s* fr)
 {
-   ASSERT_HALT(fr != NULL, "fr NULL");
+   ASSERT(fr != NULL);
  
     if (nbrTasks == MAX_nbrTASKS)
       return false;
@@ -137,13 +137,13 @@ bool LLC_AddTask(frame_s* fr)
 
    // Создаем новую задачу
    LLCTask *new_task = (LLCTask*)re_malloc(sizeof(LLCTask));
-   ASSERT_HALT(new_task !=NULL, "LLC re_malloc for new_task"); 
+   ASSERT(new_task !=NULL); 
       
    new_task->TS = fr->meta.TS;
    new_task->CH = fr->meta.CH;
    new_task->fr = fr;
    
-  LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Add task = %u, CH = %d, TS = %d, OTS = %d. fr = %d\r\n",
+  LOG_ON("Add task = %u, CH = %d, TS = %d, OTS = %d. fr = %d",
       (uint16_t)new_task,new_task->CH, new_task->TS, fr->meta.TS, (uint16_t)fr);
   
    // Если в очереди нет задач, добавим первую
@@ -206,7 +206,7 @@ static void LLC_Shelduler(uint8_t TS)
     else if (task->fr->meta.TX_METHOD == BROADCAST)
       attempts = BROADCAST_SEND_ATEMPTS;
     else
-      ASSERT_HALT(false, "Incorrect TX_METHOD");
+      ASSERT(false);
     
     MAC_Send(task->fr, attempts);
     
@@ -226,7 +226,7 @@ static void LLC_Shelduler(uint8_t TS)
     }
     
     nbrTasks--;
-    LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Free task = %u, nbrTasks = %d\r\n",
+    LOG_OFF("Free task = %u, nbrTasks = %d\r\n",
         (uint16_t)task, nbrTasks); 
     re_free(task);
     task = next;
@@ -249,7 +249,7 @@ static void LLC_SE_HNDL(uint8_t TS)
 
 static void LLC_RX_HNDL(frame_s *fr)
 {
-  ASSERT_HALT(RXCallback !=NULL, "RXCallback func NULL");
+  ASSERT(RXCallback !=NULL);
   RXCallback(fr);
 }
 

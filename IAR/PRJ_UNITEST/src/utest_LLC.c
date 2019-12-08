@@ -30,7 +30,7 @@ static void show_heap_ptr(void)
 { 
   uint16_t *heap_ptr;
   heap_ptr = (uint16_t*)re_malloc(1);
-  LOG(MSG_ON | MSG_INFO | MSG_TRACE, "HEAP_PTR = %d\r\n", (uint16_t)heap_ptr ); 
+  LOG_ON("HEAP_PTR = %d", (uint16_t)heap_ptr ); 
   re_free(heap_ptr);
 }
 
@@ -53,20 +53,19 @@ static void test_create()
   uint16_t heap;
   uint8_t nbr_bufs, nbr_frames;
   
-  LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-      "Frame_s size = %d. Fbuf data = %d. Full =%d\r\n",
+  LOG_ON("Frame_s size = %d. Fbuf data = %d. Full =%d",
       fr_size, bf_size, bf_size+fr_size );
   frame_delete(fr);
   
   while(true)
   {  
     nbr_frames = frame_getCount();
-    LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "nbr_frames = %d \r\n" ,nbr_frames );
+    LOG_OFF("nbr_frames = %d" ,nbr_frames );
     
     if (LLC_GetTaskLen() < 20)
     {
       fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
-      LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Create frame = %d.\r\n", (uint16_t)fr);    
+      LOG_OFF("Create frame = %d", (uint16_t)fr);    
       LLC_AddTask(fr);
       TS ++;
       if (TS == 49)
@@ -79,8 +78,7 @@ static void test_create()
     if (heap > HEAP_PTR_MAX)
     {
       HEAP_PTR_MAX = heap;
-      LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-      "HEAP_PTR = %d\r\n", HEAP_PTR_MAX );
+      LOG_ON("HEAP_PTR = %d", HEAP_PTR_MAX );
     }
   }
 }

@@ -64,7 +64,7 @@ static void single_speed_test(uint8_t *data, uint8_t f, uint8_t c, uint8_t m,
   AES_CCMEncrypt( data, f, c , m, key, nonce, MIC);
   TIM_TimeStamp(&stop);
   uint32_t time = TIM_passedTime(&start, &stop);
-  LOG(MSG_ON | MSG_INFO | MSG_TRACE, "m=%d f=%d c=%d. Time = %lu\n",
+  LOG_ON("m=%d f=%d c=%d. Time = %lu\n",
       m, f, c, time);
 }
 
@@ -115,7 +115,7 @@ static void CCM_code_decode_test(void)
   
   bool res;
  
-  LOG(MSG_ON | MSG_INFO | MSG_TRACE, "CCM full size test 60 sec\n");
+  LOG_ON("CCM full size test 60 sec");
   
   res = true;
   for (uint8_t m = 0; m < 3; m++)
@@ -126,8 +126,7 @@ static void CCM_code_decode_test(void)
         if (res)
           continue;
         
-        LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-            "Coder test stub on m=%d f=%d c=%d \n", m, f, c);
+        LOG_ON("Coder test stub on m=%d f=%d c=%d", m, f, c);
         break;
       }
   umsg("coder", "CCM full coder test", res == true);

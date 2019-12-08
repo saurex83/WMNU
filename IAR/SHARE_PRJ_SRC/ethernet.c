@@ -28,7 +28,7 @@ void ETH_Init(void)
 */
 void ETH_Set_RXCallback(void (*fn)(frame_s *fr))
 {
-  ASSERT_HALT(fn != NULL, "NULL pointer not allow");
+  ASSERT(fn != NULL);
   RXCallback = fn;
 }
 
@@ -39,7 +39,7 @@ void ETH_Set_RXCallback(void (*fn)(frame_s *fr))
 */
 static void ETH_RX_HNDL(frame_s *fr)
 {
-  ASSERT_HALT(fr != NULL, "fr is NULL");
+  ASSERT(fr != NULL);
   
   bool valid;
   frame_s *striped_frame;
@@ -63,10 +63,10 @@ static void ETH_RX_HNDL(frame_s *fr)
   // Создаем новый пакет без заголовка и удаляем исходный
   striped_frame = strip_header(fr);
   frame_delete(fr);
-  ASSERT_HALT(striped_frame != NULL, "Striped_frame is NULL");
+  ASSERT(striped_frame != NULL);
   
   // Передаем обработчику выше по стеку
-  ASSERT_HALT(RXCallback != NULL, "RXCallback is NULL");
+  ASSERT(RXCallback != NULL);
   RXCallback(striped_frame);
   
   re_free(eth_h);
@@ -102,10 +102,10 @@ static bool validate(ETH_LAY *eth)
 static ETH_LAY* extract_header(frame_s *fr)
 {
   ETH_LAY* eth_h = (ETH_LAY*)re_malloc(ETH_LAY_SIZE);
-  ASSERT_HALT(eth_h != NULL, "No memory");
+  ASSERT(eth_h != NULL);
   
   uint8_t len = frame_len(fr);
-  ASSERT_HALT(len >= ETH_LAY_SIZE, "Incorrect eth size");
+  ASSERT(len >= ETH_LAY_SIZE);
   
   //fbuf_s *fb = frame_get_fbuf_head(fr);
   //re_memcpy(eth_h, fb->payload, ETH_LAY_SIZE);

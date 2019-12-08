@@ -97,8 +97,7 @@ static void one_speed_test(frame_s *fr)
   
   uint32_t passed = TIM_passedTime(&start, &stop);
   uint16_t passed_sfd = fr->meta.TIMESTAMP;
-  LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-      "Data size = %d. Full time = %lu us. SFD time = %d us\n"
+  LOG_ON("Data size = %d. Full time = %lu us. SFD time = %d us"
       ,fr->len, passed, passed_sfd);
  
 }
@@ -120,7 +119,7 @@ static void speed_test(void)
   
   // Подготовим данные к отправке
   
-  LOG(MSG_ON | MSG_INFO | MSG_TRACE, "SEND SPEED TEST WITH DATA ENCODE\n");  
+  LOG_ON("SEND SPEED TEST WITH DATA ENCODE");  
   for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
   {
     frame_s *fr = frame_create();
@@ -130,7 +129,7 @@ static void speed_test(void)
   }
   
   RI_StreamCrypt(false);
-  LOG(MSG_ON | MSG_INFO | MSG_TRACE, "SEND SPEED TEST WITHOUT DATA ENCODE\n"); 
+  LOG_ON("SEND SPEED TEST WITHOUT DATA ENCODE"); 
   for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
   {
     frame_s *fr = frame_create();
@@ -140,7 +139,7 @@ static void speed_test(void)
   }
   
   RI_StreamCrypt(true);
-  LOG(MSG_ON | MSG_INFO | MSG_TRACE, "SEND IN SEND_TIME 1000 ticks AFTER TS0\n"); 
+  LOG_ON("SEND IN SEND_TIME 1000 ticks AFTER TS0"); 
   for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
   {
     frame_s *fr = frame_create();
@@ -153,7 +152,7 @@ static void speed_test(void)
   
 
   RI_StreamCrypt(true);
-  LOG(MSG_ON | MSG_INFO | MSG_TRACE, "SEND IN SEND_TIME 1000 ticks AFTER TS0\n"); 
+  LOG_ON("SEND IN SEND_TIME 1000 ticks AFTER TS0"); 
   for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
   {
     frame_s *fr = frame_create();
@@ -165,7 +164,7 @@ static void speed_test(void)
   } 
   
   RI_StreamCrypt(true);
-  LOG(MSG_ON | MSG_INFO | MSG_TRACE, "SEND IN SEND_TIME 1000 ticks AFTER TS0\n"); 
+  LOG_ON("SEND IN SEND_TIME 1000 ticks AFTER TS0"); 
   for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
   {
     frame_s *fr = frame_create();

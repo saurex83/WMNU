@@ -93,7 +93,7 @@ void NT_Init(void)
 */
 bool NT_SetTime(uint16_t ticks)
 {
-  ASSERT_HALT(ticks < 32768, "Incorrect ticks");
+  ASSERT(ticks < 32768);
   if (ticks > 32767)
     return false;
  
@@ -132,8 +132,7 @@ static inline uint32_t calcCompareTime(uint16_t ticks)
       cmp_time &=0xFFFFFF;
     }
       
-     LOG(MSG_OFF | MSG_INFO | MSG_TRACE, 
-         "Timer = %lu, Ticks = %d,CMP = %lu \r\n",
+     LOG_OFF("Timer = %lu, Ticks = %d,CMP = %lu \r\n",
           timer, ticks, cmp_time );
     return cmp_time;
 }
@@ -147,7 +146,7 @@ static inline uint32_t calcCompareTime(uint16_t ticks)
 */
 void NT_SetCompare(uint16_t ticks)
 {
-  ASSERT_HALT(ticks < 32768, "Incorrect ticks");
+  ASSERT(ticks < 32768);
   
   COMPARE_TIME = ticks; // Сохраняем установленное значение
  

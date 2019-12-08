@@ -23,8 +23,9 @@ int main()
 {
   nwDebugerInit();
   utestSigTraceInit();
-  LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Test log output\r\n");
-  ASSERT(false, "Test assert output\r\n");
+  LOG_ON("");
+  LOG_ON("Test start");
+ // ASSERT(false, "Test assert output\r\n");
   
   // Вызов функций тестирования
   // Аппаратное тестирование

@@ -180,7 +180,7 @@ bool RI_SetChannel(uint8_t CH)
 */
 bool RI_Send(frame_s *fr)
 {
-  ASSERT_HALT(fr != NULL, "fr NULL");
+  ASSERT(fr != NULL);
   
   // Устанавливаем частоту передачи пакета
   RI_cfg();
@@ -220,7 +220,7 @@ static bool SendData(frame_s *fr)
   // Данные могут шифроваться и если их не отправили, то payload измениться.
   uint8_t data_size = fr->len;
   uint8_t *data = re_malloc(data_size);
-  ASSERT_HALT(data !=NULL, "No memory");
+  ASSERT(data !=NULL);
   re_memcpy(data, fr->payload, data_size);
     
 ////TIM_TimeStamp(&ts_frame_merge);  
@@ -327,7 +327,7 @@ static void UnLoadRXData(uint8_t *src, uint8_t len)
 
 static inline void setFreq(uint8_t CH)
 {
-  ASSERT_HALT( (CH >= 11) && (CH <= 26), "Incorrect radio channel");
+  ASSERT( (CH >= 11) && (CH <= 26));
   // Устанавливаем частоту радиопередатчика
   FREQCTRL_u FRQ;
   FRQ.value = FRQ_CALC(RADIO_CFG.CH);

@@ -92,7 +92,7 @@ void MAC_Init(void)
 */
 void MAC_OpenRXSlot(uint8_t TS, uint8_t CH)
 {
-    ASSERT_HALT(TS < 50, "Incorrect TS");
+    ASSERT(TS < 50);
     MACSlotTable[TS].RX.enable = true;
     MACSlotTable[TS].RX.CH = CH;
     TIC_SetRXState(TS, true);
@@ -104,7 +104,7 @@ void MAC_OpenRXSlot(uint8_t TS, uint8_t CH)
 */
 void MAC_CloseRXSlot(uint8_t TS)
 {
-  ASSERT_HALT(TS < 50, "Incorrect TS");
+  ASSERT(TS < 50);
   MACSlotTable[TS].RX.enable = false;
   TIC_SetRXState(TS, false);
 }
@@ -116,8 +116,8 @@ void MAC_CloseRXSlot(uint8_t TS)
 */
 void MAC_Send(frame_s *fr, uint8_t attempts)
 {
-    ASSERT_HALT(fr != NULL, "*fr null");
-    ASSERT_HALT(attempts != 0, "attempts = 0");
+    ASSERT(fr != NULL);
+    ASSERT(attempts != 0);
     
     uint8_t TS = fr->meta.TS; 
     MACSlotTable[TS].TX.attempts = attempts;
@@ -167,7 +167,7 @@ void MAC_SetRXCallback(void (*fn)(frame_s *fr))
 */
 bool MAC_GetTXState(uint8_t TS)
 {
-  ASSERT_HALT(TS < 50, "Incorrect TS");
+  ASSERT(TS < 50);
   return MACSlotTable[TS].TX.enable;
 }
 
@@ -177,7 +177,7 @@ bool MAC_GetTXState(uint8_t TS)
 */
 bool MAC_GetRXState(uint8_t TS)
 {
-  ASSERT_HALT(TS < 50, "Incorrect TS");
+  ASSERT(TS < 50);
   return MACSlotTable[TS].RX.enable;
 }
 
@@ -188,7 +188,7 @@ bool MAC_GetRXState(uint8_t TS)
 */
 static void MAC_RX_HNDL(uint8_t TS)
 {
-  ASSERT_HALT(TS < 50, "Incorrect TS");
+  ASSERT(TS < 50);
   
   RI_SetChannel(MACSlotTable[TS].RX.CH);
   frame_s *fr = RI_Receive(RECV_TIMEOUT);
@@ -210,7 +210,7 @@ static void MAC_RX_HNDL(uint8_t TS)
 */
 static void MAC_TX_HNDL(uint8_t TS)
 {
-  ASSERT_HALT(TS < 50, "Incorrect TS");
+  ASSERT(TS < 50);
   
   // По ошибки вызвали. Такого быть не должно, но подстрахуемся.
   if ((!MACSlotTable[TS].TX.enable) || (MACSlotTable[TS].TX.attempts == 0)) 
@@ -222,7 +222,7 @@ static void MAC_TX_HNDL(uint8_t TS)
   bool tx_success = RI_Send(MACSlotTable[TS].TX.fr); 
   bool send_success = false;  
   
-  LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "RI_Send = %d, CH = %d, TS = %d\r\n",
+  LOG_OFF("RI_Send = %d, CH = %d, TS = %d\r\n",
       tx_success, MACSlotTable[TS].TX.CH, TS);
     
   // Если отправка была успешна и требуется прием подтверждения ACK
@@ -252,7 +252,7 @@ static void MAC_TX_HNDL(uint8_t TS)
     
     else // Приняли ACK
     {
-      ASSERT_HALT(isACK_OK !=NULL, "isACK_OK func NULL");
+      ASSERT(isACK_OK !=NULL);
      
       // Проверим является ли принятый пакет ACK подтверждением 
       // переданного пакета 

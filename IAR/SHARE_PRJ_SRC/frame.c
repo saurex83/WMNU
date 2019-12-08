@@ -47,7 +47,7 @@ void frame_addHeader(frame_s *fr, void *src, uint8_t len)
   
   uint8_t new_len = fr->len + len; // Новый размер
   void *new_payload = re_malloc(new_len);
-  ASSERT_HALT(new_payload != NULL, "No memory");
+  ASSERT(new_payload != NULL);
   
   // Копируем данные в конец области
   re_memcpy((char*)new_payload + len, fr->payload, fr->len);
@@ -75,7 +75,7 @@ void frame_delHeader(frame_s *fr, uint8_t len)
   
   uint8_t new_len = fr->len - len; // Новый размер
   void *new_payload = re_malloc(new_len);
-  ASSERT_HALT(new_payload != NULL, "No memory");
+  ASSERT(new_payload != NULL);
   
   // Копируем данные с пропуском первых len байт
   re_memcpy((char*)new_payload, (char*)fr->payload + len, new_len);
@@ -96,7 +96,7 @@ frame_s* frame_create(void)
     EA = 0; 
     
     frame_s* fr= (frame_s*)re_malloc(FRAME_S_SIZE);
-    ASSERT_HALT(fr != NULL, "No memory");
+    ASSERT(fr != NULL);
     
     fr->payload = NULL;
     fr->len = 0;

@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               02/Dec/2019  22:10:59
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               08/Dec/2019  19:17:08
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,7 +14,7 @@
 #    Source file        =  
 #        \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW5EF7.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW62AE.tmp
 #        ("\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c" -lc
 #        "\\vmware-host\Shared
@@ -862,7 +862,7 @@
      28          */
      29          void ETH_Set_RXCallback(void (*fn)(frame_s *fr))
      30          {
-     31            ASSERT_HALT(fn != NULL, "NULL pointer not allow");
+     31            ASSERT(fn != NULL);
      32            RXCallback = fn;
      33          }
      34          
@@ -873,7 +873,7 @@
      39          */
      40          static void ETH_RX_HNDL(frame_s *fr)
      41          {
-     42            ASSERT_HALT(fr != NULL, "fr is NULL");
+     42            ASSERT(fr != NULL);
      43            
      44            bool valid;
      45            frame_s *striped_frame;
@@ -897,10 +897,10 @@
      63            // Создаем новый пакет без заголовка и удаляем исходный
      64            striped_frame = strip_header(fr);
      65            frame_delete(fr);
-     66            ASSERT_HALT(striped_frame != NULL, "Striped_frame is NULL");
+     66            ASSERT(striped_frame != NULL);
      67            
      68            // Передаем обработчику выше по стеку
-     69            ASSERT_HALT(RXCallback != NULL, "RXCallback is NULL");
+     69            ASSERT(RXCallback != NULL);
      70            RXCallback(striped_frame);
      71            
      72            re_free(eth_h);
@@ -942,10 +942,10 @@ Warning[Pe940]: missing return statement at end of non-void function
     102          static ETH_LAY* extract_header(frame_s *fr)
     103          {
     104            ETH_LAY* eth_h = (ETH_LAY*)re_malloc(ETH_LAY_SIZE);
-    105            ASSERT_HALT(eth_h != NULL, "No memory");
+    105            ASSERT(eth_h != NULL);
     106            
     107            uint8_t len = frame_len(fr);
-    108            ASSERT_HALT(len >= ETH_LAY_SIZE, "Incorrect eth size");
+    108            ASSERT(len >= ETH_LAY_SIZE);
     109            
     110            //fbuf_s *fb = frame_get_fbuf_head(fr);
     111            //re_memcpy(eth_h, fb->payload, ETH_LAY_SIZE);
@@ -1001,7 +1001,7 @@ Warning[Pe940]: missing return statement at end of non-void function
      47            
      48            uint8_t new_len = fr->len + len; // Новый размер
      49            void *new_payload = re_malloc(new_len);
-     50            ASSERT_HALT(new_payload != NULL, "No memory");
+     50            ASSERT(new_payload != NULL);
      51            
      52            // Копируем данные в конец области
      53            re_memcpy((char*)new_payload + len, fr->payload, fr->len);
@@ -1029,7 +1029,7 @@ Warning[Pe940]: missing return statement at end of non-void function
      75            
      76            uint8_t new_len = fr->len - len; // Новый размер
      77            void *new_payload = re_malloc(new_len);
-     78            ASSERT_HALT(new_payload != NULL, "No memory");
+     78            ASSERT(new_payload != NULL);
      79            
      80            // Копируем данные с пропуском первых len байт
      81            re_memcpy((char*)new_payload, (char*)fr->payload + len, new_len);
@@ -1050,7 +1050,7 @@ Warning[Pe940]: missing return statement at end of non-void function
      96              EA = 0; 
      97              
      98              frame_s* fr= (frame_s*)re_malloc(FRAME_S_SIZE);
-     99              ASSERT_HALT(fr != NULL, "No memory");
+     99              ASSERT(fr != NULL);
     100              
     101              fr->payload = NULL;
     102              fr->len = 0;
@@ -1188,7 +1188,7 @@ Warning[Pe940]: missing return statement at end of non-void function
      96          
      97          void LLC_SetRXCallback(void (*fn)(frame_s *fr))
      98          {
-     99            ASSERT_HALT(fn != NULL, "NULL pointer not allow");
+     99            ASSERT(fn != NULL);
     100            RXCallback = fn;
     101          }
     102          
@@ -1198,7 +1198,7 @@ Warning[Pe940]: missing return statement at end of non-void function
     106          void LLC_TimeAlloc(void (*fn)(void))
     107          {
     108            TimeAllocFunc *ta = re_malloc(sizeof(TimeAllocFunc));
-    109            ASSERT_HALT(ta != NULL, "Memory allocation fails");
+    109            ASSERT(ta != NULL);
     110            ta->next = NULL;
     111            ta->fn = fn;
     112          
@@ -1218,7 +1218,7 @@ Warning[Pe940]: missing return statement at end of non-void function
     126          */
     127          bool LLC_AddTask(frame_s* fr)
     128          {
-    129             ASSERT_HALT(fr != NULL, "fr NULL");
+    129             ASSERT(fr != NULL);
     130           
     131              if (nbrTasks == MAX_nbrTASKS)
     132                return false;
@@ -1229,13 +1229,13 @@ Warning[Pe940]: missing return statement at end of non-void function
     137          
     138             // Создаем новую задачу
     139             LLCTask *new_task = (LLCTask*)re_malloc(sizeof(LLCTask));
-    140             ASSERT_HALT(new_task !=NULL, "LLC re_malloc for new_task"); 
+    140             ASSERT(new_task !=NULL); 
     141                
     142             new_task->TS = fr->meta.TS;
     143             new_task->CH = fr->meta.CH;
     144             new_task->fr = fr;
     145             
-    146            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Add task = %u, CH = %d, TS = %d, OTS = %d. fr = %d\r\n",
+    146            LOG_ON("Add task = %u, CH = %d, TS = %d, OTS = %d. fr = %d",
     147                (uint16_t)new_task,new_task->CH, new_task->TS, fr->meta.TS, (uint16_t)fr);
     148            
     149             // Если в очереди нет задач, добавим первую
@@ -1298,7 +1298,7 @@ Warning[Pe940]: missing return statement at end of non-void function
     206              else if (task->fr->meta.TX_METHOD == BROADCAST)
     207                attempts = BROADCAST_SEND_ATEMPTS;
     208              else
-    209                ASSERT_HALT(false, "Incorrect TX_METHOD");
+    209                ASSERT(false);
     210              
     211              MAC_Send(task->fr, attempts);
     212              
@@ -1318,7 +1318,7 @@ Warning[Pe940]: missing return statement at end of non-void function
     226              }
     227              
     228              nbrTasks--;
-    229              LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Free task = %u, nbrTasks = %d\r\n",
+    229              LOG_OFF("Free task = %u, nbrTasks = %d\r\n",
     230                  (uint16_t)task, nbrTasks); 
     231              re_free(task);
     232              task = next;
@@ -1341,7 +1341,7 @@ Warning[Pe940]: missing return statement at end of non-void function
     249          
     250          static void LLC_RX_HNDL(frame_s *fr)
     251          {
-    252            ASSERT_HALT(RXCallback !=NULL, "RXCallback func NULL");
+    252            ASSERT(RXCallback !=NULL);
     253            RXCallback(fr);
     254          }
     255          
@@ -1454,7 +1454,7 @@ Warning[Pe940]: missing return statement at end of non-void function
      92          */
      93          void MAC_OpenRXSlot(uint8_t TS, uint8_t CH)
      94          {
-     95              ASSERT_HALT(TS < 50, "Incorrect TS");
+     95              ASSERT(TS < 50);
      96              MACSlotTable[TS].RX.enable = true;
      97              MACSlotTable[TS].RX.CH = CH;
      98              TIC_SetRXState(TS, true);
@@ -1466,7 +1466,7 @@ Warning[Pe940]: missing return statement at end of non-void function
     104          */
     105          void MAC_CloseRXSlot(uint8_t TS)
     106          {
-    107            ASSERT_HALT(TS < 50, "Incorrect TS");
+    107            ASSERT(TS < 50);
     108            MACSlotTable[TS].RX.enable = false;
     109            TIC_SetRXState(TS, false);
     110          }
@@ -1478,8 +1478,8 @@ Warning[Pe940]: missing return statement at end of non-void function
     116          */
     117          void MAC_Send(frame_s *fr, uint8_t attempts)
     118          {
-    119              ASSERT_HALT(fr != NULL, "*fr null");
-    120              ASSERT_HALT(attempts != 0, "attempts = 0");
+    119              ASSERT(fr != NULL);
+    120              ASSERT(attempts != 0);
     121              
     122              uint8_t TS = fr->meta.TS; 
     123              MACSlotTable[TS].TX.attempts = attempts;
@@ -1529,7 +1529,7 @@ Warning[Pe940]: missing return statement at end of non-void function
     167          */
     168          bool MAC_GetTXState(uint8_t TS)
     169          {
-    170            ASSERT_HALT(TS < 50, "Incorrect TS");
+    170            ASSERT(TS < 50);
     171            return MACSlotTable[TS].TX.enable;
     172          }
     173          
@@ -1539,7 +1539,7 @@ Warning[Pe940]: missing return statement at end of non-void function
     177          */
     178          bool MAC_GetRXState(uint8_t TS)
     179          {
-    180            ASSERT_HALT(TS < 50, "Incorrect TS");
+    180            ASSERT(TS < 50);
     181            return MACSlotTable[TS].RX.enable;
     182          }
     183          
@@ -1550,7 +1550,7 @@ Warning[Pe940]: missing return statement at end of non-void function
     188          */
     189          static void MAC_RX_HNDL(uint8_t TS)
     190          {
-    191            ASSERT_HALT(TS < 50, "Incorrect TS");
+    191            ASSERT(TS < 50);
     192            
     193            RI_SetChannel(MACSlotTable[TS].RX.CH);
     194            frame_s *fr = RI_Receive(RECV_TIMEOUT);
@@ -1572,7 +1572,7 @@ Warning[Pe940]: missing return statement at end of non-void function
     210          */
     211          static void MAC_TX_HNDL(uint8_t TS)
     212          {
-    213            ASSERT_HALT(TS < 50, "Incorrect TS");
+    213            ASSERT(TS < 50);
     214            
     215            // По ошибки вызвали. Такого быть не должно, но подстрахуемся.
     216            if ((!MACSlotTable[TS].TX.enable) || (MACSlotTable[TS].TX.attempts == 0)) 
@@ -1584,7 +1584,7 @@ Warning[Pe940]: missing return statement at end of non-void function
     222            bool tx_success = RI_Send(MACSlotTable[TS].TX.fr); 
     223            bool send_success = false;  
     224            
-    225            LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "RI_Send = %d, CH = %d, TS = %d\r\n",
+    225            LOG_OFF("RI_Send = %d, CH = %d, TS = %d\r\n",
     226                tx_success, MACSlotTable[TS].TX.CH, TS);
     227              
     228            // Если отправка была успешна и требуется прием подтверждения ACK
@@ -1614,7 +1614,7 @@ Warning[Pe940]: missing return statement at end of non-void function
     252              
     253              else // Приняли ACK
     254              {
-    255                ASSERT_HALT(isACK_OK !=NULL, "isACK_OK func NULL");
+    255                ASSERT(isACK_OK !=NULL);
     256               
     257                // Проверим является ли принятый пакет ACK подтверждением 
     258                // переданного пакета 
@@ -1672,53 +1672,50 @@ Warning[Pe940]: missing return statement at end of non-void function
      18          uint16_t heap_ptr(size_t size)
      19          {
      20            unsigned short EA_save = EA;
-     21            EA = 0;
-     22            
-     23            uint16_t *heap_ptr;
-     24            heap_ptr = (uint16_t*)re_malloc(size);
-     25            re_free(heap_ptr);
-     26            EA = EA_save;
-     27            return (uint16_t)heap_ptr;
-     28          }
-     29          
-     30          /**
-     31          @brief Реентерабельное копирование памяти
-     32          */
-     33          void re_memcpy(void *dst, const void *src, size_t n)
-     34          {
-     35            unsigned short EA_save = EA;
-     36            
-     37            EA = 0;
-     38            memcpy(dst, src, n);
-     39            EA = EA_save;  
-     40          }
-     41          
-     42          /**
-     43          @brief Реентерабельное выделение памяти
-     44          */
-     45          void* re_malloc(size_t size)
-     46          {
-     47            unsigned short EA_save = EA;
-     48            void* ptr; 
-     49            EA = 0;
-     50            ptr = malloc(size);
-     51            EA = EA_save;
-     52            //LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "malloc = %d, L= %d \r\n", (uint16_t)ptr, size);
-     53            return ptr;
-     54          }
-     55          
-     56          /**
-     57          @brief Реентерабельное освобождение памяти
-     58          */
-     59          void re_free(void* ptr)
-     60          {
-     61            unsigned short EA_save = EA;
-     62            
-     63            EA = 0;
-     64            free(ptr);
-     65            EA = EA_save;
-     66            //LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "free = %d\r\n", (uint16_t)ptr);  
-     67          }
+     21            EA = 0; 
+     22            uint16_t *heap_ptr;
+     23            heap_ptr = (uint16_t*)re_malloc(size);
+     24            re_free(heap_ptr);
+     25            EA = EA_save;
+     26            return (uint16_t)heap_ptr;
+     27          }
+     28          
+     29          /**
+     30          @brief Реентерабельное копирование памяти
+     31          */
+     32          void re_memcpy(void *dst, const void *src, size_t n)
+     33          {
+     34            unsigned short EA_save = EA;
+     35            EA = 0;
+     36            memcpy(dst, src, n);
+     37            EA = EA_save;  
+     38          }
+     39          
+     40          /**
+     41          @brief Реентерабельное выделение памяти
+     42          */
+     43          void* re_malloc(size_t size)
+     44          {
+     45            unsigned short EA_save = EA;
+     46            void* ptr; 
+     47            EA = 0;
+     48            ptr = malloc(size);
+     49            EA = EA_save;
+     50            //LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "malloc = %d, L= %d \r\n", (uint16_t)ptr, size);
+     51            return ptr;
+     52          }
+     53          
+     54          /**
+     55          @brief Реентерабельное освобождение памяти
+     56          */
+     57          void re_free(void* ptr)
+     58          {
+     59            unsigned short EA_save = EA;
+     60            EA = 0;
+     61            free(ptr);
+     62            EA = EA_save;
+     63            //LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "free = %d\r\n", (uint16_t)ptr);  
+     64          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\NTMR.c
       1          #include "NTMR.h"
       2          #include "stdlib.h"
@@ -1815,7 +1812,7 @@ Warning[Pe940]: missing return statement at end of non-void function
      93          */
      94          bool NT_SetTime(uint16_t ticks)
      95          {
-     96            ASSERT_HALT(ticks < 32768, "Incorrect ticks");
+     96            ASSERT(ticks < 32768);
      97            if (ticks > 32767)
      98              return false;
      99           
@@ -1854,285 +1851,280 @@ Warning[Pe940]: missing return statement at end of non-void function
     132                cmp_time &=0xFFFFFF;
     133              }
     134                
-    135               LOG(MSG_OFF | MSG_INFO | MSG_TRACE, 
-    136                   "Timer = %lu, Ticks = %d,CMP = %lu \r\n",
-    137                    timer, ticks, cmp_time );
-    138              return cmp_time;
-    139          }
-    140          
-    141          /**
-    142          @brief Устанавливает время прерывания
-    143          @details Время прерывания устанавливается относительно времени сети
-    144          ,к примеру, что бы проснуться в таймслот номер 0, нужно установить ticks = 0.
-    145          Процедура учитывает текущее значение таймера и перерасчитывает значение ticks. 
-    146          @params[in] ticks время сети в тиках когда нужно проснуться
-    147          */
-    148          void NT_SetCompare(uint16_t ticks)
-    149          {
-    150            ASSERT_HALT(ticks < 32768, "Incorrect ticks");
-    151            
-    152            COMPARE_TIME = ticks; // Сохраняем установленное значение
-    153           
-    154            uint32_t compare_time = calcCompareTime(ticks);
-    155           
-    156            loadTimerCompare(compare_time);
-    157            NT_IRQEnable(true);
-    158          }
-    159          
-    160          /**
-    161          @brief Разрешение прерываний таймера сна
-    162          @params[in] state = true - разрешить обработку прерываний
-    163          */
-    164          static inline void NT_IRQEnable(bool state)
-    165          {
-    166            STIF = 0;
-    167            if (state)
-    168            {
-    169              STIE = 1;
-    170            }
-    171            else
-    172            {
-    173              STIE = 0;
-    174            }
-    175          }
-    176          
-    177          /**
-    178          @brief Проверка активности прерывания таймера
-    179          @return true если прерывание установленно
-    180          */
-    181          static inline bool isIRQEnable(void)
-    182          {
-    183            if (STIE)
-    184              return true;
-    185            else 
-    186              return false;
-    187          }
-    188          
-    189          /**
-    190          @brief Устанавливает обработчик прерывания таймера
-    191          @param[in] fn(uint16_t ticks) указатель на функцию-обработчик
-    192          */
-    193          void NT_SetEventCallback(void (*fn)(uint16_t ticks))
-    194          {
-    195            EventCallback = fn;
-    196          }
-    197          
-    198          /**
-    199          @brief Возвращает время сети 
-    200          @return Время сети в тиках
-    201          */
-    202          uint16_t NT_GetTime(void)
-    203          {
-    204            uint32_t val = ReadTimer();
-    205            // TOFFSET = NETWORK TIME - TIMER
-    206            // NETWORK TIME = TIMER + TOFFSET
-    207            val +=TOFFSET;
-    208            val &= 0x7FFF; // Приводим значения таймера к 0-32767
-    209            return val;
-    210          }
-    211          
-    212          /**
-    213          @brief Обработчик прерывания таймера сна
-    214          */
-    215          #pragma vector=ST_VECTOR
-    216          __interrupt void TimerCompareInterrupt(void)
-    217          {  
-    218            uint16_t ticks = NT_GetTime();
-    219            if (EventCallback == NULL)
-    220              return;
-    221            // Отключаем прерывание таймера. Забота пользователя его включить
-    222            NT_IRQEnable(false); 
-    223            EventCallback(ticks); // Вызываем пользовательский обработчик
-    224            STIF = 0; // Очищаем флаг прерывания
-    225          }
-    226          
-    227          /**
-    228          @breif Ожидание наступления времени сети
-    229          @param[in] ticks время в тактах
-    230          @return фактическое время сети
-    231          */
-    232          uint16_t NT_WaitTime(uint16_t ticks)
-    233          {
-    234            static union 
-    235            {
-    236              uint32_t val;
-    237              uint8_t fild[4];
-    238            } val;
-    239            
-    240            val.val = 0;
-    241            // TOFFSET = NETWORK TIME - TIMER
-    242            // NETWORK TIME = TIMER + TOFFSET
-    243            
-    244            // Ждем синхронизацию таймера после пробуждения
-    245            while (!(SLEEPSTA & 0x01));
-    246            
-    247            do
-    248            {
-    249              // Соблюдаем порядок чтения регисторов ST  
-    250              val.fild[0] = ST0;
-    251              val.fild[1] = ST1;
-    252              val.fild[2] = ST2;
-    253              val.val +=TOFFSET;
-    254              val.val &= 0x7FFF; // Приводим значения таймера к 0-32767    
-    255            } while (val.val < ticks);
-    256            return val.val;
-    257          }
-    258          
-    259          /**
-    260          @brief Возвращает текущее значение таймера
-    261          @return Текущие ticks
-    262          */
-    263          static uint32_t ReadTimer(void)
-    264          {
-    265            static union 
-    266            {
-    267              uint32_t val;
-    268              uint8_t fild[4];
-    269            } ret_val;
-    270            
-    271            ret_val.val = 0;
-    272            
-    273            // Ждем синхронизацию таймера после пробуждения
-    274            while (!(SLEEPSTA & 0x01));
-    275            
-    276            // Соблюдаем порядок чтения регисторов ST  
-    277            ret_val.fild[0] = ST0;
-    278            ret_val.fild[1] = ST1;
-    279            ret_val.fild[2] = ST2;
-    280            return ret_val.val;
-    281          }
-    282          
-    283          /**
-    284          @brief Устанавливает время пробуждения микроконтролера
-    285          @params[in] ticks 24 битное значение времени пробуждения в ticks
-    286          */
-    287          static void loadTimerCompare(uint32_t ticks)
-    288          {
-    289            union 
-    290            {
-    291              uint32_t val;
-    292              uint8_t fild[4];
-    293            } value;
-    294            
-    295            value.val = ticks;
-    296            
-    297            // Ждем разрешения на запись нового значения
-    298            while (!(STLOAD & 0x01));
-    299            
-    300            // Регистр ST0 должен быть записан в последнию очередь
-    301            ST2 = value.fild[2];
-    302            ST1 = value.fild[1];
-    303            ST0 = value.fild[0];
-    304          }
+    135               LOG_OFF("Timer = %lu, Ticks = %d,CMP = %lu \r\n",
+    136                    timer, ticks, cmp_time );
+    137              return cmp_time;
+    138          }
+    139          
+    140          /**
+    141          @brief Устанавливает время прерывания
+    142          @details Время прерывания устанавливается относительно времени сети
+    143          ,к примеру, что бы проснуться в таймслот номер 0, нужно установить ticks = 0.
+    144          Процедура учитывает текущее значение таймера и перерасчитывает значение ticks. 
+    145          @params[in] ticks время сети в тиках когда нужно проснуться
+    146          */
+    147          void NT_SetCompare(uint16_t ticks)
+    148          {
+    149            ASSERT(ticks < 32768);
+    150            
+    151            COMPARE_TIME = ticks; // Сохраняем установленное значение
+    152           
+    153            uint32_t compare_time = calcCompareTime(ticks);
+    154           
+    155            loadTimerCompare(compare_time);
+    156            NT_IRQEnable(true);
+    157          }
+    158          
+    159          /**
+    160          @brief Разрешение прерываний таймера сна
+    161          @params[in] state = true - разрешить обработку прерываний
+    162          */
+    163          static inline void NT_IRQEnable(bool state)
+    164          {
+    165            STIF = 0;
+    166            if (state)
+    167            {
+    168              STIE = 1;
+    169            }
+    170            else
+    171            {
+    172              STIE = 0;
+    173            }
+    174          }
+    175          
+    176          /**
+    177          @brief Проверка активности прерывания таймера
+    178          @return true если прерывание установленно
+    179          */
+    180          static inline bool isIRQEnable(void)
+    181          {
+    182            if (STIE)
+    183              return true;
+    184            else 
+    185              return false;
+    186          }
+    187          
+    188          /**
+    189          @brief Устанавливает обработчик прерывания таймера
+    190          @param[in] fn(uint16_t ticks) указатель на функцию-обработчик
+    191          */
+    192          void NT_SetEventCallback(void (*fn)(uint16_t ticks))
+    193          {
+    194            EventCallback = fn;
+    195          }
+    196          
+    197          /**
+    198          @brief Возвращает время сети 
+    199          @return Время сети в тиках
+    200          */
+    201          uint16_t NT_GetTime(void)
+    202          {
+    203            uint32_t val = ReadTimer();
+    204            // TOFFSET = NETWORK TIME - TIMER
+    205            // NETWORK TIME = TIMER + TOFFSET
+    206            val +=TOFFSET;
+    207            val &= 0x7FFF; // Приводим значения таймера к 0-32767
+    208            return val;
+    209          }
+    210          
+    211          /**
+    212          @brief Обработчик прерывания таймера сна
+    213          */
+    214          #pragma vector=ST_VECTOR
+    215          __interrupt void TimerCompareInterrupt(void)
+    216          {  
+    217            uint16_t ticks = NT_GetTime();
+    218            if (EventCallback == NULL)
+    219              return;
+    220            // Отключаем прерывание таймера. Забота пользователя его включить
+    221            NT_IRQEnable(false); 
+    222            EventCallback(ticks); // Вызываем пользовательский обработчик
+    223            STIF = 0; // Очищаем флаг прерывания
+    224          }
+    225          
+    226          /**
+    227          @breif Ожидание наступления времени сети
+    228          @param[in] ticks время в тактах
+    229          @return фактическое время сети
+    230          */
+    231          uint16_t NT_WaitTime(uint16_t ticks)
+    232          {
+    233            static union 
+    234            {
+    235              uint32_t val;
+    236              uint8_t fild[4];
+    237            } val;
+    238            
+    239            val.val = 0;
+    240            // TOFFSET = NETWORK TIME - TIMER
+    241            // NETWORK TIME = TIMER + TOFFSET
+    242            
+    243            // Ждем синхронизацию таймера после пробуждения
+    244            while (!(SLEEPSTA & 0x01));
+    245            
+    246            do
+    247            {
+    248              // Соблюдаем порядок чтения регисторов ST  
+    249              val.fild[0] = ST0;
+    250              val.fild[1] = ST1;
+    251              val.fild[2] = ST2;
+    252              val.val +=TOFFSET;
+    253              val.val &= 0x7FFF; // Приводим значения таймера к 0-32767    
+    254            } while (val.val < ticks);
+    255            return val.val;
+    256          }
+    257          
+    258          /**
+    259          @brief Возвращает текущее значение таймера
+    260          @return Текущие ticks
+    261          */
+    262          static uint32_t ReadTimer(void)
+    263          {
+    264            static union 
+    265            {
+    266              uint32_t val;
+    267              uint8_t fild[4];
+    268            } ret_val;
+    269            
+    270            ret_val.val = 0;
+    271            
+    272            // Ждем синхронизацию таймера после пробуждения
+    273            while (!(SLEEPSTA & 0x01));
+    274            
+    275            // Соблюдаем порядок чтения регисторов ST  
+    276            ret_val.fild[0] = ST0;
+    277            ret_val.fild[1] = ST1;
+    278            ret_val.fild[2] = ST2;
+    279            return ret_val.val;
+    280          }
+    281          
+    282          /**
+    283          @brief Устанавливает время пробуждения микроконтролера
+    284          @params[in] ticks 24 битное значение времени пробуждения в ticks
+    285          */
+    286          static void loadTimerCompare(uint32_t ticks)
+    287          {
+    288            union 
+    289            {
+    290              uint32_t val;
+    291              uint8_t fild[4];
+    292            } value;
+    293            
+    294            value.val = ticks;
+    295            
+    296            // Ждем разрешения на запись нового значения
+    297            while (!(STLOAD & 0x01));
+    298            
+    299            // Регистр ST0 должен быть записан в последнию очередь
+    300            ST2 = value.fild[2];
+    301            ST1 = value.fild[1];
+    302            ST0 = value.fild[0];
+    303          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\nwdebuger.c
       1          #include "nwdebuger.h"
       2          #include "ioCC2530.h"
       3          #include "stdint.h"
       4          #include "stdio.h"
       5          
-      6          
-      7          #define UART_DEBUG // Если определено, то вывод в uart
-      8          
-      9          // Настройка выводов SIG и порта uart для отладки
-     10          
-     11          static void uart_init(void)
-     12          {
-     13            // Выбор расположения UART на выводах
-     14            uint8_t U0CFG = 0; // 0={TX=P0_3, RX=P0_2
-     15            PERCFG |= (U0CFG<<0); 
-     16            
-     17            // U0UCR регистр настройки режима uart. меня устраивает по умолчанию
-     18            U0CSR = (1<<7); // Выбираем режим uart 
+      6          // Настройка порта uart для отладки
+      7          static void uart_init(void)
+      8          {
+      9            // Выбор расположения UART на выводах
+     10            uint8_t U0CFG = 0; // 0={TX=P0_3, RX=P0_2
+     11            PERCFG |= (U0CFG<<0); 
+     12            
+     13            // U0UCR регистр настройки режима uart. меня устраивает по умолчанию
+     14            U0CSR = (1<<7); // Выбираем режим uart 
+     15            
+     16            // Настройка скорости передачи данных на 2М  
+     17            U0BAUD = 0;  // табличные значения из pdf
+     18            U0GCR =  16;
      19            
-     20            // Настройка скорости передачи данных на 2М  
-     21            U0BAUD = 0;  // табличные значения из pdf
-     22            U0GCR =  16;
-     23            
-     24            // Включаем альтернативные функции выводов
-     25            P0SEL = (1<<2)|(1<<3);
-     26          }
-     27          
-     28          static void SetCPU32M(void)
-     29          {
-     30            CLKCONCMD = 0x88;
-     31            while (CLKCONSTA&(1<<6));
-     32          }
-     33          
-     34          void nwDebugerInit(void)
-     35          {
-     36            SetCPU32M();
-     37          #ifdef UART_DEBUG
-     38            uart_init();
-     39          #endif
-     40          }
-     41          
-     42          __attribute__((weak)) void STACK_FAILURE(char* msg)
-     43          {
-     44            LOG(MSG_ON | MSG_ALARM | MSG_ALL, "STACK FAILURE. HALT\n");
-     45            while(1);
-     46          }
+     20            // Включаем альтернативные функции выводов
+     21            P0SEL = (1<<2)|(1<<3);
+     22          }
+     23          
+     24          static void SetCPU32M(void)
+     25          {
+     26            CLKCONCMD = 0x88;
+     27            while (CLKCONSTA&(1<<6));
+     28          }
+     29          
+     30          void nwDebugerInit(void)
+     31          {
+     32            SetCPU32M();
+     33          #ifdef UART_DEBUG
+     34            uart_init();
+     35          #endif
+     36          }
+     37          
+     38          __attribute__((weak)) void STACK_FAILURE(char* msg)
+     39          {
+     40            LOG_ON("STACK FAILURE. HALT");
+     41            while(1);
+     42          }
+     43          
+     44          // Переопределяем функцию записи в порт
+     45          #ifdef UART_DEBUG
+     46          #include <yfuns.h>
      47          
-     48          // Переопределяем функцию записи в порт
-     49          #ifdef UART_DEBUG
-     50          #include <yfuns.h>
+     48          _STD_BEGIN
+     49          
+     50          #pragma module_name = "?__write"
      51          
-     52          _STD_BEGIN
+     52          int MyLowLevelPutchar(int x);
      53          
-     54          #pragma module_name = "?__write"
-     55          
-     56          int MyLowLevelPutchar(int x);
-     57          
-     58          int MyLowLevelPutchar(int x){
-     59            while( U0CSR&(1<<0));
-     60            U0DBUF = x;
-     61            return x;
-     62          }
-     63          /*
-     64           * If the __write implementation uses internal buffering, uncomment
-     65           * the following line to ensure that we are called with "buffer" as 0
-     66           * (i.e. flush) when the application terminates.
-     67           */
-     68          
-     69          size_t __write(int handle, const unsigned char * buffer, size_t size)
-     70          {
-     71            /* Remove the #if #endif pair to enable the implementation */
-     72             
-     73          
-     74            size_t nChars = 0;
-     75          
-     76            if (buffer == 0)
-     77            {
-     78              /*
-     79               * This means that we should flush internal buffers.  Since we
-     80               * don't we just return.  (Remember, "handle" == -1 means that all
-     81               * handles should be flushed.)
-     82               */
-     83              return 0;
-     84            }
-     85          
-     86            /* This template only writes to "standard out" and "standard err",
-     87             * for all other file handles it returns failure. */
-     88            if (handle != _LLIO_STDOUT && handle != _LLIO_STDERR)
-     89            {
-     90              return _LLIO_ERROR;
-     91            }
-     92          
-     93            for (/* Empty */; size != 0; --size)
-     94            {
-     95              if (MyLowLevelPutchar(*buffer++) < 0)
-     96              {
-     97                return _LLIO_ERROR;
-     98              }
-     99          
-    100              ++nChars;
-    101            }
+     54          int MyLowLevelPutchar(int x){
+     55            while( U0CSR&(1<<0));
+     56            U0DBUF = x;
+     57            return x;
+     58          }
+     59          /*
+     60           * If the __write implementation uses internal buffering, uncomment
+     61           * the following line to ensure that we are called with "buffer" as 0
+     62           * (i.e. flush) when the application terminates.
+     63           */
+     64          
+     65          size_t __write(int handle, const unsigned char * buffer, size_t size)
+     66          {
+     67            /* Remove the #if #endif pair to enable the implementation */
+     68             
+     69          
+     70            size_t nChars = 0;
+     71          
+     72            if (buffer == 0)
+     73            {
+     74              /*
+     75               * This means that we should flush internal buffers.  Since we
+     76               * don't we just return.  (Remember, "handle" == -1 means that all
+     77               * handles should be flushed.)
+     78               */
+     79              return 0;
+     80            }
+     81          
+     82            /* This template only writes to "standard out" and "standard err",
+     83             * for all other file handles it returns failure. */
+     84            if (handle != _LLIO_STDOUT && handle != _LLIO_STDERR)
+     85            {
+     86              return _LLIO_ERROR;
+     87            }
+     88          
+     89            for (/* Empty */; size != 0; --size)
+     90            {
+     91              if (MyLowLevelPutchar(*buffer++) < 0)
+     92              {
+     93                return _LLIO_ERROR;
+     94              }
+     95          
+     96              ++nChars;
+     97            }
+     98          
+     99            return nChars;
+    100          
+    101          }
     102          
-    103            return nChars;
-    104          
-    105          }
-    106          
-    107          _STD_END
-    108          #endif
+    103          _STD_END
+    104          #endif
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\RADIO.c
       1          /*!
       2          \file 
@@ -2316,7 +2308,7 @@ Warning[Pe940]: missing return statement at end of non-void function
     180          */
     181          bool RI_Send(frame_s *fr)
     182          {
-    183            ASSERT_HALT(fr != NULL, "fr NULL");
+    183            ASSERT(fr != NULL);
     184            
     185            // Устанавливаем частоту передачи пакета
     186            RI_cfg();
@@ -2356,7 +2348,7 @@ Warning[Pe940]: missing return statement at end of non-void function
     220            // Данные могут шифроваться и если их не отправили, то payload измениться.
     221            uint8_t data_size = fr->len;
     222            uint8_t *data = re_malloc(data_size);
-    223            ASSERT_HALT(data !=NULL, "No memory");
+    223            ASSERT(data !=NULL);
     224            re_memcpy(data, fr->payload, data_size);
     225              
     226          ////TIM_TimeStamp(&ts_frame_merge);  
@@ -2468,7 +2460,7 @@ Warning[Pe550]: variable "timer" was set but never used
     327          
     328          static inline void setFreq(uint8_t CH)
     329          {
-    330            ASSERT_HALT( (CH >= 11) && (CH <= 26), "Incorrect radio channel");
+    330            ASSERT( (CH >= 11) && (CH <= 26));
     331            // Устанавливаем частоту радиопередатчика
     332            FREQCTRL_u FRQ;
     333            FRQ.value = FRQ_CALC(RADIO_CFG.CH);
@@ -2843,7 +2835,7 @@ Warning[Pe550]: variable "timer" was set but never used
      94          
      95          void TIC_SetTimer(uint16_t ticks)
      96          {
-     97            ASSERT_HALT(ticks < MAX_TICKS, "Ticks not in range");
+     97            ASSERT(ticks < MAX_TICKS);
      98            if (ticks >= MAX_TICKS)
      99              return ;
     100            
@@ -2861,7 +2853,7 @@ Warning[Pe550]: variable "timer" was set but never used
     112            {
     113              return false;
     114            }
-    115            ASSERT_HALT(TS<MAX_TS, "TS not in range");
+    115            ASSERT(TS<MAX_TS);
     116            
     117            if (state)
     118              TSStateTable[TS] |= TS_TX;
@@ -2877,7 +2869,7 @@ Warning[Pe550]: variable "timer" was set but never used
     128            {
     129              return false;
     130            }
-    131            ASSERT_HALT(TS<MAX_TS, "TS not in range");
+    131            ASSERT(TS<MAX_TS);
     132            
     133            if (state)
     134              TSStateTable[TS] |= TS_RX;
@@ -2893,7 +2885,7 @@ Warning[Pe550]: variable "timer" was set but never used
     144            {
     145              return false;
     146            }
-    147            ASSERT_HALT(TS<MAX_TS, "TS not in range");
+    147            ASSERT(TS<MAX_TS);
     148            
     149            return (TSStateTable[TS] & TS_TX) ;
     150          }
@@ -2904,26 +2896,26 @@ Warning[Pe550]: variable "timer" was set but never used
     155            {
     156              return false;
     157            }
-    158            ASSERT_HALT(TS<MAX_TS, "TS not in range");
+    158            ASSERT(TS<MAX_TS);
     159            
     160            return (TSStateTable[TS] & TS_RX) ;
     161          }
     162          
     163          void TIC_SetRXCallback(void (*fn)(uint8_t TS))
     164          {
-    165            ASSERT_HALT(fn != NULL, "Fn is NULL");
+    165            ASSERT(fn != NULL);
     166            RXCallback = fn;
     167          }
     168          
     169          void TIC_SetTXCallback(void (*fn)(uint8_t TS))
     170          {
-    171            ASSERT_HALT(fn != NULL, "Fn is NULL");
+    171            ASSERT(fn != NULL);
     172            TXCallback = fn;
     173          }
     174          
     175          void TIC_SetSECallback(void (*fn)(uint8_t TS))
     176          {
-    177            ASSERT_HALT(fn != NULL, "Fn is NULL");
+    177            ASSERT(fn != NULL);
     178            SECallback = fn;
     179          }
     180          
@@ -2973,8 +2965,13 @@ Warning[Pe550]: variable "timer" was set but never used
     224          static inline void set_capture_time(uint8_t TS)
     225          {
     226            uint16_t ct = FULL_SLOT*(uint16_t)TS;
+                            ^
+Warning[Pe177]: variable "ct" was declared but never referenced
+          detected during compilation of secondary translation unit
+                    "\\vmware-host\Shared
+                    Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\TIC.c"
     227            
-    228            LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Set compare = %d, TS = %d \r\n", ct, TS);
+    228            LOG_OFF("Set compare = %d, TS = %d \r\n", ct, TS);
     229            // Установка прерывания на нужный слот
     230            NT_SetCompare(FULL_SLOT*(uint16_t)TS);
     231          }
@@ -2996,7 +2993,7 @@ Warning[Pe550]: variable "timer" was set but never used
     247          static inline void Callback_execution(void (*fn)(uint8_t TS), uint8_t TS)
     248          {
     249            // Помошник вызова функций. Упрощает проверки
-    250            ASSERT_HALT(fn != NULL, "Callback is NULL");
+    250            ASSERT(fn != NULL);
     251            if (fn == NULL)
     252              return;
     253            fn(TS);
@@ -3019,7 +3016,7 @@ Warning[Pe550]: variable "timer" was set but never used
     270            if (c_TS == NO_TIME_SLOT)
     271            {
     272              TIC_TDMAShelduler(c_TS);
-    273              LOG(MSG_ON | MSG_INFO | MSG_TRACE, "TS = 255 \r\n");
+    273              LOG_ON("TS = 255 \r\n");
     274              return;
     275            }
     276              
@@ -3081,37 +3078,38 @@ Warning[Pe550]: variable "timer" was set but never used
      23          {
      24            nwDebugerInit();
      25            utestSigTraceInit();
-     26            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Test log output\r\n");
-     27            ASSERT(false, "Test assert output\r\n");
-     28            
-     29            // Вызов функций тестирования
-     30            // Аппаратное тестирование
-     31            {
-     32              //suite_RADIO_HW();
-     33              //suite_delays_HW();    //12.11 Работает
-     34              //suite_TIC_HW();       //12.11 Работает
-     35              //suite_NT_HW();        // 12.11 Работает
-     36              suite_LLC_HW();
-     37            };
-     38            // Юнит тестирование
-     39            {
-     40              //suite_delays();
-     41              //suite_coder();
-     42              //suite_fbuf();
-     43              //suite_frame();
-     44              //suite_RADIO();
-     45             // suite_MAC();
-     46            // suite_printf_uart();
-     47              //suite_malloc();
-     48            }
-     49          
-     50          	//run_utest_framepart();
-     51          
-     52          // Добавляем результаты тестов
-     53          	umsg_summary();
-     54           //     while(1);
-     55          	return 0;
-     56          }
+     26            LOG_ON("");
+     27            LOG_ON("Test start");
+     28           // ASSERT(false, "Test assert output\r\n");
+     29            
+     30            // Вызов функций тестирования
+     31            // Аппаратное тестирование
+     32            {
+     33              //suite_RADIO_HW();
+     34              //suite_delays_HW();    //12.11 Работает
+     35              //suite_TIC_HW();       //12.11 Работает
+     36              //suite_NT_HW();        // 12.11 Работает
+     37              suite_LLC_HW();
+     38            };
+     39            // Юнит тестирование
+     40            {
+     41              //suite_delays();
+     42              //suite_coder();
+     43              //suite_fbuf();
+     44              //suite_frame();
+     45              //suite_RADIO();
+     46             // suite_MAC();
+     47            // suite_printf_uart();
+     48              //suite_malloc();
+     49            }
+     50          
+     51          	//run_utest_framepart();
+     52          
+     53          // Добавляем результаты тестов
+     54          	umsg_summary();
+     55           //     while(1);
+     56          	return 0;
+     57          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_coder.c
       1          #include "utest_suite.h"
       2          #include "coder.h"
@@ -3179,7 +3177,7 @@ Warning[Pe550]: variable "timer" was set but never used
      64            AES_CCMEncrypt( data, f, c , m, key, nonce, MIC);
      65            TIM_TimeStamp(&stop);
      66            uint32_t time = TIM_passedTime(&start, &stop);
-     67            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "m=%d f=%d c=%d. Time = %lu\n",
+     67            LOG_ON("m=%d f=%d c=%d. Time = %lu\n",
      68                m, f, c, time);
      69          }
      70          
@@ -3230,7 +3228,7 @@ Warning[Pe550]: variable "timer" was set but never used
     115            
     116            bool res;
     117           
-    118            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "CCM full size test 60 sec\n");
+    118            LOG_ON("CCM full size test 60 sec");
     119            
     120            res = true;
     121            for (uint8_t m = 0; m < 3; m++)
@@ -3241,157 +3239,156 @@ Warning[Pe550]: variable "timer" was set but never used
     126                  if (res)
     127                    continue;
     128                  
-    129                  LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-    130                      "Coder test stub on m=%d f=%d c=%d \n", m, f, c);
-    131                  break;
-    132                }
-    133            umsg("coder", "CCM full coder test", res == true);
-    134            
-    135            res = single_enc_dec_test(data, 10, 10, 1, key, nonce, MIC);
-    136          }
-    137          
-    138          static void mem_control(void)
-    139          {
-    140            #define MEM_CNTR_SIZE 10
-    141            #define MAGIC_NUM 0x73
-    142            
-    143            uint8_t key[16] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
-    144            uint8_t nonce[16] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
-    145            
-    146            struct 
-    147            {
-    148              uint8_t cnt_byte1;
-    149              uint8_t data[MEM_CNTR_SIZE];
-    150              uint8_t cnt_byte2;
-    151            } __attribute__((packed)) data_struct;
-    152           
-    153              struct 
-    154            {
-    155              uint8_t cnt_byte1;
-    156              uint8_t key[16];
-    157              uint8_t cnt_byte2;
-    158            } __attribute__((packed)) key_struct;
-    159            
-    160            struct 
-    161            {
-    162              uint8_t cnt_byte1;
-    163              uint8_t nonce[16];
-    164              uint8_t cnt_byte2;
-    165            } __attribute__((packed)) nonce_struct;
-    166            
-    167            struct 
-    168            {
-    169              uint8_t cnt_byte1;
-    170              uint8_t MIC[16];
-    171              uint8_t cnt_byte2;
-    172            } __attribute__((packed)) mic_struct;
-    173            
-    174            AES_init();
-    175            TIM_init();
-    176            
-    177            data_struct.cnt_byte1 = MAGIC_NUM;
-    178            data_struct.cnt_byte2 = MAGIC_NUM;
-    179            key_struct.cnt_byte1 = MAGIC_NUM;  
-    180            key_struct.cnt_byte2 = MAGIC_NUM;
-    181            nonce_struct.cnt_byte1 = MAGIC_NUM;  
-    182            nonce_struct.cnt_byte2 = MAGIC_NUM;
-    183            mic_struct.cnt_byte1 = MAGIC_NUM;  
-    184            mic_struct.cnt_byte2 = MAGIC_NUM;
-    185            
-    186            memcpy(key_struct.key , key, 16);
-    187            memcpy(nonce_struct.nonce , nonce, 16);
-    188            for (uint8_t i = 0; i < MEM_CNTR_SIZE; i++)
-    189              data_struct.data[i] = i;
-    190          
-    191            for (uint8_t i = 0; i < 16; i++)
-    192            {
-    193              key_struct.key[i] = i + 100;
-    194              nonce_struct.nonce[i] = i + 200;
-    195            }
-    196            
-    197            AES_CCMEncrypt( data_struct.data, 5, MEM_CNTR_SIZE - 5, 1, key_struct.key,
-    198                           nonce_struct.nonce, mic_struct.MIC);  
-    199            
-    200            bool data_mem_corrupt = false;
-    201            bool key_mem_corrupt = false;
-    202            bool nonce_mem_corrupt = false;
-    203            bool mic_mem_corrupt = false;
-    204            if ((data_struct.cnt_byte1 != MAGIC_NUM) || 
-    205                (data_struct.cnt_byte2 != MAGIC_NUM))
-    206            data_mem_corrupt = true;
-    207            if ((key_struct.cnt_byte1 != MAGIC_NUM) || 
-    208                (key_struct.cnt_byte2 != MAGIC_NUM))
-    209            key_mem_corrupt = true;
-    210            if ((nonce_struct.cnt_byte1 != MAGIC_NUM) || 
-    211                (nonce_struct.cnt_byte2 != MAGIC_NUM))
-    212            nonce_mem_corrupt = true;  
-    213            if ((mic_struct.cnt_byte1 != MAGIC_NUM) || 
-    214                (mic_struct.cnt_byte2 != MAGIC_NUM))
-    215            mic_mem_corrupt = true;  
-    216            
-    217            umsg("coder", "CCM coder corrupt data memory", data_mem_corrupt == false);
-    218            umsg("coder", "CCM coder corrupt key memory", key_mem_corrupt == false);
-    219            umsg("coder", "CCM coder corrupt nonce memory", nonce_mem_corrupt == false);
-    220            umsg("coder", "CCM coder corrupt mic memory", mic_mem_corrupt == false);
+    129                  LOG_ON("Coder test stub on m=%d f=%d c=%d", m, f, c);
+    130                  break;
+    131                }
+    132            umsg("coder", "CCM full coder test", res == true);
+    133            
+    134            res = single_enc_dec_test(data, 10, 10, 1, key, nonce, MIC);
+    135          }
+    136          
+    137          static void mem_control(void)
+    138          {
+    139            #define MEM_CNTR_SIZE 10
+    140            #define MAGIC_NUM 0x73
+    141            
+    142            uint8_t key[16] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
+    143            uint8_t nonce[16] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
+    144            
+    145            struct 
+    146            {
+    147              uint8_t cnt_byte1;
+    148              uint8_t data[MEM_CNTR_SIZE];
+    149              uint8_t cnt_byte2;
+    150            } __attribute__((packed)) data_struct;
+    151           
+    152              struct 
+    153            {
+    154              uint8_t cnt_byte1;
+    155              uint8_t key[16];
+    156              uint8_t cnt_byte2;
+    157            } __attribute__((packed)) key_struct;
+    158            
+    159            struct 
+    160            {
+    161              uint8_t cnt_byte1;
+    162              uint8_t nonce[16];
+    163              uint8_t cnt_byte2;
+    164            } __attribute__((packed)) nonce_struct;
+    165            
+    166            struct 
+    167            {
+    168              uint8_t cnt_byte1;
+    169              uint8_t MIC[16];
+    170              uint8_t cnt_byte2;
+    171            } __attribute__((packed)) mic_struct;
+    172            
+    173            AES_init();
+    174            TIM_init();
+    175            
+    176            data_struct.cnt_byte1 = MAGIC_NUM;
+    177            data_struct.cnt_byte2 = MAGIC_NUM;
+    178            key_struct.cnt_byte1 = MAGIC_NUM;  
+    179            key_struct.cnt_byte2 = MAGIC_NUM;
+    180            nonce_struct.cnt_byte1 = MAGIC_NUM;  
+    181            nonce_struct.cnt_byte2 = MAGIC_NUM;
+    182            mic_struct.cnt_byte1 = MAGIC_NUM;  
+    183            mic_struct.cnt_byte2 = MAGIC_NUM;
+    184            
+    185            memcpy(key_struct.key , key, 16);
+    186            memcpy(nonce_struct.nonce , nonce, 16);
+    187            for (uint8_t i = 0; i < MEM_CNTR_SIZE; i++)
+    188              data_struct.data[i] = i;
+    189          
+    190            for (uint8_t i = 0; i < 16; i++)
+    191            {
+    192              key_struct.key[i] = i + 100;
+    193              nonce_struct.nonce[i] = i + 200;
+    194            }
+    195            
+    196            AES_CCMEncrypt( data_struct.data, 5, MEM_CNTR_SIZE - 5, 1, key_struct.key,
+    197                           nonce_struct.nonce, mic_struct.MIC);  
+    198            
+    199            bool data_mem_corrupt = false;
+    200            bool key_mem_corrupt = false;
+    201            bool nonce_mem_corrupt = false;
+    202            bool mic_mem_corrupt = false;
+    203            if ((data_struct.cnt_byte1 != MAGIC_NUM) || 
+    204                (data_struct.cnt_byte2 != MAGIC_NUM))
+    205            data_mem_corrupt = true;
+    206            if ((key_struct.cnt_byte1 != MAGIC_NUM) || 
+    207                (key_struct.cnt_byte2 != MAGIC_NUM))
+    208            key_mem_corrupt = true;
+    209            if ((nonce_struct.cnt_byte1 != MAGIC_NUM) || 
+    210                (nonce_struct.cnt_byte2 != MAGIC_NUM))
+    211            nonce_mem_corrupt = true;  
+    212            if ((mic_struct.cnt_byte1 != MAGIC_NUM) || 
+    213                (mic_struct.cnt_byte2 != MAGIC_NUM))
+    214            mic_mem_corrupt = true;  
+    215            
+    216            umsg("coder", "CCM coder corrupt data memory", data_mem_corrupt == false);
+    217            umsg("coder", "CCM coder corrupt key memory", key_mem_corrupt == false);
+    218            umsg("coder", "CCM coder corrupt nonce memory", nonce_mem_corrupt == false);
+    219            umsg("coder", "CCM coder corrupt mic memory", mic_mem_corrupt == false);
+    220            
     221            
-    222            
-    223            data_struct.cnt_byte1 = MAGIC_NUM;
-    224            data_struct.cnt_byte2 = MAGIC_NUM;
-    225            key_struct.cnt_byte1 = MAGIC_NUM;  
-    226            key_struct.cnt_byte2 = MAGIC_NUM;
-    227            nonce_struct.cnt_byte1 = MAGIC_NUM;  
-    228            nonce_struct.cnt_byte2 = MAGIC_NUM;
-    229            mic_struct.cnt_byte1 = MAGIC_NUM;  
-    230            mic_struct.cnt_byte2 = MAGIC_NUM;
-    231            
-    232            bool res = AES_CCMDecrypt( data_struct.data, 5, MEM_CNTR_SIZE - 5, 1, key_struct.key,
-    233                           nonce_struct.nonce, mic_struct.MIC); 
-    234            
-    235            if ((data_struct.cnt_byte1 != MAGIC_NUM) || 
-    236                (data_struct.cnt_byte2 != MAGIC_NUM))
-    237            data_mem_corrupt = true;
-    238            if ((key_struct.cnt_byte1 != MAGIC_NUM) || 
-    239                (key_struct.cnt_byte2 != MAGIC_NUM))
-    240            key_mem_corrupt = true;
-    241            if ((nonce_struct.cnt_byte1 != MAGIC_NUM) || 
-    242                (nonce_struct.cnt_byte2 != MAGIC_NUM))
-    243            nonce_mem_corrupt = true;  
-    244            if ((mic_struct.cnt_byte1 != MAGIC_NUM) || 
-    245                (mic_struct.cnt_byte2 != MAGIC_NUM))
-    246            mic_mem_corrupt = true;
-    247          
-    248            umsg("coder", "CCM decoder corrupt data memory", data_mem_corrupt == false);
-    249            umsg("coder", "CCM decoder corrupt key memory", key_mem_corrupt == false);
-    250            umsg("coder", "CCM decoder corrupt nonce memory", nonce_mem_corrupt == false);
-    251            umsg("coder", "CCM decoder corrupt mic memory", mic_mem_corrupt == false);
-    252            
-    253            bool not_changed = true;
-    254            for (uint8_t i = 0; i < MEM_CNTR_SIZE; i++)
-    255              if (data_struct.data[i] != i)
-    256                not_changed = true;
-    257            umsg("coder", "CCM decoded data correct", not_changed == true);
-    258              
-    259            for (uint8_t i = 0; i < 16; i++)
-    260              if (key_struct.key[i] != i + 100)
-    261                not_changed = true;
-    262            umsg("coder", "CCM key data correct", not_changed == true);  
-    263           
-    264            for (uint8_t i = 0; i < 16; i++)
-    265              if (nonce_struct.nonce[i] != i + 200)
-    266                not_changed = true;
-    267            umsg("coder", "CCM nonce data correct", not_changed == true); 
-    268          }
-    269          
-    270          //  umsg("FChain", "TODO memory malloc and free", false);
-    271          void suite_coder(void)
-    272          {
-    273            umsg_line("coder module");
-    274          //  CCM_speed_test();
-    275            mem_control();
-    276            CCM_code_decode_test();
-    277            CCM_test();
-    278            aes_test();
-    279          }
+    222            data_struct.cnt_byte1 = MAGIC_NUM;
+    223            data_struct.cnt_byte2 = MAGIC_NUM;
+    224            key_struct.cnt_byte1 = MAGIC_NUM;  
+    225            key_struct.cnt_byte2 = MAGIC_NUM;
+    226            nonce_struct.cnt_byte1 = MAGIC_NUM;  
+    227            nonce_struct.cnt_byte2 = MAGIC_NUM;
+    228            mic_struct.cnt_byte1 = MAGIC_NUM;  
+    229            mic_struct.cnt_byte2 = MAGIC_NUM;
+    230            
+    231            bool res = AES_CCMDecrypt( data_struct.data, 5, MEM_CNTR_SIZE - 5, 1, key_struct.key,
+    232                           nonce_struct.nonce, mic_struct.MIC); 
+    233            
+    234            if ((data_struct.cnt_byte1 != MAGIC_NUM) || 
+    235                (data_struct.cnt_byte2 != MAGIC_NUM))
+    236            data_mem_corrupt = true;
+    237            if ((key_struct.cnt_byte1 != MAGIC_NUM) || 
+    238                (key_struct.cnt_byte2 != MAGIC_NUM))
+    239            key_mem_corrupt = true;
+    240            if ((nonce_struct.cnt_byte1 != MAGIC_NUM) || 
+    241                (nonce_struct.cnt_byte2 != MAGIC_NUM))
+    242            nonce_mem_corrupt = true;  
+    243            if ((mic_struct.cnt_byte1 != MAGIC_NUM) || 
+    244                (mic_struct.cnt_byte2 != MAGIC_NUM))
+    245            mic_mem_corrupt = true;
+    246          
+    247            umsg("coder", "CCM decoder corrupt data memory", data_mem_corrupt == false);
+    248            umsg("coder", "CCM decoder corrupt key memory", key_mem_corrupt == false);
+    249            umsg("coder", "CCM decoder corrupt nonce memory", nonce_mem_corrupt == false);
+    250            umsg("coder", "CCM decoder corrupt mic memory", mic_mem_corrupt == false);
+    251            
+    252            bool not_changed = true;
+    253            for (uint8_t i = 0; i < MEM_CNTR_SIZE; i++)
+    254              if (data_struct.data[i] != i)
+    255                not_changed = true;
+    256            umsg("coder", "CCM decoded data correct", not_changed == true);
+    257              
+    258            for (uint8_t i = 0; i < 16; i++)
+    259              if (key_struct.key[i] != i + 100)
+    260                not_changed = true;
+    261            umsg("coder", "CCM key data correct", not_changed == true);  
+    262           
+    263            for (uint8_t i = 0; i < 16; i++)
+    264              if (nonce_struct.nonce[i] != i + 200)
+    265                not_changed = true;
+    266            umsg("coder", "CCM nonce data correct", not_changed == true); 
+    267          }
+    268          
+    269          //  umsg("FChain", "TODO memory malloc and free", false);
+    270          void suite_coder(void)
+    271          {
+    272            umsg_line("coder module");
+    273          //  CCM_speed_test();
+    274            mem_control();
+    275            CCM_code_decode_test();
+    276            CCM_test();
+    277            aes_test();
+    278          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_delays.c
       1          #include "delays.h"
       2          #include "utest_suite.h"
@@ -3563,7 +3560,7 @@ Warning[Pe550]: variable "timer" was set but never used
      30          { 
      31            uint16_t *heap_ptr;
      32            heap_ptr = (uint16_t*)re_malloc(1);
-     33            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "HEAP_PTR = %d\r\n", (uint16_t)heap_ptr ); 
+     33            LOG_ON("HEAP_PTR = %d", (uint16_t)heap_ptr ); 
      34            re_free(heap_ptr);
      35          }
      36          
@@ -3590,113 +3587,119 @@ Warning[Pe177]: variable "nbr_bufs" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
+
+    uint8_t nbr_bufs, nbr_frames;
+                      ^
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",54  Warning[Pe550]: 
+          variable "nbr_frames" was set but never used
+          detected during compilation of secondary translation unit
+                    "\\vmware-host\Shared
+                    Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
      55            
-     56            LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-     57                "Frame_s size = %d. Fbuf data = %d. Full =%d\r\n",
-     58                fr_size, bf_size, bf_size+fr_size );
-     59            frame_delete(fr);
-     60            
-     61            while(true)
-     62            {  
-     63              nbr_frames = frame_getCount();
-     64              LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "nbr_frames = %d \r\n" ,nbr_frames );
-     65              
-     66              if (LLC_GetTaskLen() < 20)
-     67              {
-     68                fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
-     69                LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Create frame = %d.\r\n", (uint16_t)fr);    
-     70                LLC_AddTask(fr);
-     71                TS ++;
-     72                if (TS == 49)
-     73                TS = 0;
-     74              }   
-     75              if (*ptr_stack != 0xcd) // Контроль переполнения стека
-     76                while(1);
-     77             
-     78              heap =  heap_ptr(10);
-     79              if (heap > HEAP_PTR_MAX)
-     80              {
-     81                HEAP_PTR_MAX = heap;
-     82                LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-     83                "HEAP_PTR = %d\r\n", HEAP_PTR_MAX );
-     84              }
-     85            }
-     86          }
-     87          
-     88          static void find_mem_problem(void)
-     89          {
-     90            LLC_Init();
-     91            LLC_TimeAlloc(timealloc);
-     92            EA = 1;
-     93            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
+     56            LOG_ON("Frame_s size = %d. Fbuf data = %d. Full =%d",
+     57                fr_size, bf_size, bf_size+fr_size );
+     58            frame_delete(fr);
+     59            
+     60            while(true)
+     61            {  
+     62              nbr_frames = frame_getCount();
+     63              LOG_OFF("nbr_frames = %d" ,nbr_frames );
+     64              
+     65              if (LLC_GetTaskLen() < 20)
+     66              {
+     67                fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
+     68                LOG_OFF("Create frame = %d", (uint16_t)fr);    
+     69                LLC_AddTask(fr);
+     70                TS ++;
+     71                if (TS == 49)
+     72                TS = 0;
+     73              }   
+     74              if (*ptr_stack != 0xcd) // Контроль переполнения стека
+     75                while(1);
+     76             
+     77              heap =  heap_ptr(10);
+     78              if (heap > HEAP_PTR_MAX)
+     79              {
+     80                HEAP_PTR_MAX = heap;
+     81                LOG_ON("HEAP_PTR = %d", HEAP_PTR_MAX );
+     82              }
+     83            }
+     84          }
+     85          
+     86          static void find_mem_problem(void)
+     87          {
+     88            LLC_Init();
+     89            LLC_TimeAlloc(timealloc);
+     90            EA = 1;
+     91            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
+     92            
+     93            frame_s *fr;
      94            
-     95            frame_s *fr;
-     96            
-     97            uint16_t TS = 0;
-     98            uint8_t *ptr_stack = (uint8_t*)0x100;
-     99            
-    100            uint16_t HEAP_PTR_MAX = 0;
+     95            uint16_t TS = 0;
+     96            uint8_t *ptr_stack = (uint8_t*)0x100;
+     97            
+     98            uint16_t HEAP_PTR_MAX = 0;
                             ^
 Warning[Pe177]: variable "HEAP_PTR_MAX" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
-    101            uint16_t *heap_ptr;
+     99            uint16_t *heap_ptr;
                              ^
 Warning[Pe177]: variable "heap_ptr" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
-    102            
-    103            while(true)
-    104            {  
-    105              if (frame_getCount() == 0)
-    106              {
-    107                show_heap_ptr();
-    108                for (uint8_t i = 0; i < 20 ; i++)
-    109                {
-    110                    fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
-    111                    TS++;
-    112                    if (TS == 49)
-    113                      TS = 0;
-    114                    LLC_AddTask(fr);
-    115                }
-    116              }   
-    117              
-    118              if (*ptr_stack != 0xcd) // Контроль переполнения стека
-    119                while(1);
-    120            }
-    121            
-    122            
-    123          }
-    124          
-    125          // Тест на максимальное количество фреймов 
-    126          static void test_mem(void)
-    127          {
-    128            frame_s *FR[150];
+    100            
+    101            while(true)
+    102            {  
+    103              if (frame_getCount() == 0)
+    104              {
+    105                show_heap_ptr();
+    106                for (uint8_t i = 0; i < 20 ; i++)
+    107                {
+    108                    fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
+    109                    TS++;
+    110                    if (TS == 49)
+    111                      TS = 0;
+    112                    LLC_AddTask(fr);
+    113                }
+    114              }   
+    115              
+    116              if (*ptr_stack != 0xcd) // Контроль переполнения стека
+    117                while(1);
+    118            }
+    119            
+    120            
+    121          }
+    122          
+    123          // Тест на максимальное количество фреймов 
+    124          static void test_mem(void)
+    125          {
+    126            frame_s *FR[150];
                             ^
 Warning[Pe550]: variable "FR" was set but never used
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c"
-    129            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9}; 
-    130            
-    131            for (uint8_t i = 0; i < 105; i++) 
-    132              FR[i] = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, 5);
-    133          }
-    134          
-    135          
-    136          void suite_LLC_HW(void)
-    137          {
-    138           // umsg_line("LLC module");
-    139            
-    140            // Устанавливает и поддерживает в очереди 20 пакетов.
-    141            // Для приема пакетов испольуеться второй модуль с прошивкой RadioRecvTest1
-    142            test_create(); 
-    143           // test_mem();
-    144           // find_mem_problem();
-    145             
-    146          }
+    127            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9}; 
+    128            
+    129            for (uint8_t i = 0; i < 105; i++) 
+    130              FR[i] = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, 5);
+    131          }
+    132          
+    133          
+    134          void suite_LLC_HW(void)
+    135          {
+    136           // umsg_line("LLC module");
+    137            
+    138            // Устанавливает и поддерживает в очереди 20 пакетов.
+    139            // Для приема пакетов испольуеться второй модуль с прошивкой RadioRecvTest1
+    140            test_create(); 
+    141           // test_mem();
+    142           // find_mem_problem();
+    143             
+    144          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_MAC.c
       1          #include "utest_suite.h"
       2          #include "MAC.h"
@@ -3725,48 +3728,47 @@ Warning[Pe550]: variable "FR" was set but never used
      25            res = MAC_ACK_Send(fr);
      26            TIM_TimeStamp(&stop);
      27            uint32_t passed = TIM_passedTime(&start, &stop);
-     28            LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-     29                "MAC_ACK_Send time = %lu. Success %d \n", passed, res);
+     28            LOG_ON("MAC_ACK_Send time = %lu. Success %d", passed, res);
+     29          }
      30          }
-     31          }
-     32          
-     33          static void stub_se(uint8_t ts)
-     34          {
-     35          }
-     36          
-     37          static void test_TS_Send(void)
-     38          {
-     39            MAC_Init();
-     40            TIC_SetSECallback(stub_se);
-     41            EA = 1;
-     42            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
-     43            uint8_t TS = 5, attempts = 3;
-     44            
-     45            frame_s *fr; 
-     46            
-     47            while (true)
-     48            {
-     49              if (!MAC_GetTXState(TS))
-     50              {
-     51                fr = frame_create();
-     52                frame_addHeader(fr, DATA_SEND, sizeof(DATA_SEND));
-     53                fr->meta.SEND_TIME = 0;
-     54                fr->meta.TS = TS;
-     55                fr->meta.CH = CH11;
-     56                MAC_Send(fr, attempts);
-     57                LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Frame puted to MAC layer at %lu sec\n", TIC_GetRTC());
-     58              }
-     59            }
-     60          }
-     61          
-     62          void suite_MAC(void)
-     63          {
-     64            // test_TS_Send отсылает пакеты по расписанию тайм слотов
-     65            // Нужно запрограмировать второе устройство RadioRecvTest1
-     66            // тогда будет гореть светодиод при приеме сигнала
-     67            test_TS_Send(); 
-     68            test_ACK_SEND();
-     69          }
+     31          
+     32          static void stub_se(uint8_t ts)
+     33          {
+     34          }
+     35          
+     36          static void test_TS_Send(void)
+     37          {
+     38            MAC_Init();
+     39            TIC_SetSECallback(stub_se);
+     40            EA = 1;
+     41            uint8_t DATA_SEND[10] = {0,1,2,3,4,5,6,7,8,9};  
+     42            uint8_t TS = 5, attempts = 3;
+     43            
+     44            frame_s *fr; 
+     45            
+     46            while (true)
+     47            {
+     48              if (!MAC_GetTXState(TS))
+     49              {
+     50                fr = frame_create();
+     51                frame_addHeader(fr, DATA_SEND, sizeof(DATA_SEND));
+     52                fr->meta.SEND_TIME = 0;
+     53                fr->meta.TS = TS;
+     54                fr->meta.CH = CH11;
+     55                MAC_Send(fr, attempts);
+     56                LOG_ON("Frame puted to MAC layer at %lu sec", TIC_GetRTC());
+     57              }
+     58            }
+     59          }
+     60          
+     61          void suite_MAC(void)
+     62          {
+     63            // test_TS_Send отсылает пакеты по расписанию тайм слотов
+     64            // Нужно запрограмировать второе устройство RadioRecvTest1
+     65            // тогда будет гореть светодиод при приеме сигнала
+     66            test_TS_Send(); 
+     67            test_ACK_SEND();
+     68          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_malloc.c
       1          #include "utest_suite.h"
       2          #include "stdlib.h"
@@ -3910,27 +3912,25 @@ Warning[Pe550]: variable "FR" was set but never used
      16            
      17            uint32_t passed = TIM_passedTime(&start, &stop);
      18            
-     19            LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-     20                "String 1 len = %d. Print time = %lu us\n",
-     21                sizeof(test_string1), passed);
-     22            
-     23            TIM_TimeStamp(&start);
-     24            printf(test_string2);
-     25            TIM_TimeStamp(&stop);
-     26            
-     27            passed = TIM_passedTime(&start, &stop);
-     28            
-     29            LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-     30                "String 2 len = %d. Print time = %lu us.\n",
-     31                sizeof(test_string2), passed);  
-     32          }
-     33          
-     34          void suite_printf_uart(void)
-     35          {
-     36            umsg_line("printf speed uart");
-     37            test_1();
-     38            
-     39          }
+     19            LOG_ON("String 1 len = %d. Print time = %lu us",
+     20                sizeof(test_string1), passed);
+     21            
+     22            TIM_TimeStamp(&start);
+     23            printf(test_string2);
+     24            TIM_TimeStamp(&stop);
+     25            
+     26            passed = TIM_passedTime(&start, &stop);
+     27            
+     28            LOG_ON("String 2 len = %d. Print time = %lu us",
+     29                sizeof(test_string2), passed);  
+     30          }
+     31          
+     32          void suite_printf_uart(void)
+     33          {
+     34            umsg_line("printf speed uart");
+     35            test_1();
+     36            
+     37          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_radio.c
       1          #include "utest_suite.h"
       2          #include "RADIO.h"
@@ -4056,7 +4056,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
 
   static void find_mem_problem(void)
               ^
-"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",88  Warning[Pe177]: 
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",86  Warning[Pe177]: 
           function "find_mem_problem" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
@@ -4064,7 +4064,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
 
   static void test_mem(void)
               ^
-"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",126  Warning[Pe177]: 
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_LLC.c",124  Warning[Pe177]: 
           function "test_mem" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
@@ -4086,104 +4086,103 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
      97            
      98            uint32_t passed = TIM_passedTime(&start, &stop);
      99            uint16_t passed_sfd = fr->meta.TIMESTAMP;
-    100            LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-    101                "Data size = %d. Full time = %lu us. SFD time = %d us\n"
-    102                ,fr->len, passed, passed_sfd);
-    103           
-    104          }
-    105          static void speed_test(void)
-    106          {
-    107            uint8_t DATA_SEND[100];
-    108            uint8_t key[16] = {18,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17};
-    109            uint8_t nonce[16] = {18,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17};
-    110            uint8_t size_tests[] = {10, 50, 100, 125};
-    111            
-    112            TIM_init();
-    113            RI_init();
-    114            AES_init();
-    115            
-    116            RI_StreamCrypt(true);
-    117            RI_SetChannel(CH11);
-    118            RI_setKEY(key);
-    119            RI_setIV(nonce);
-    120            
-    121            // Подготовим данные к отправке
-    122            
-    123            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "SEND SPEED TEST WITH DATA ENCODE\n");  
-    124            for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
-    125            {
-    126              frame_s *fr = frame_create();
-    127              frame_addHeader(fr, DATA_SEND, size_tests[s]);
-    128              one_speed_test(fr);
-    129              frame_delete(fr);
-    130            }
-    131            
-    132            RI_StreamCrypt(false);
-    133            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "SEND SPEED TEST WITHOUT DATA ENCODE\n"); 
-    134            for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
-    135            {
-    136              frame_s *fr = frame_create();
-    137              frame_addHeader(fr, DATA_SEND, size_tests[s]);
-    138              one_speed_test(fr);
-    139              frame_delete(fr);
-    140            }
-    141            
-    142            RI_StreamCrypt(true);
-    143            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "SEND IN SEND_TIME 1000 ticks AFTER TS0\n"); 
-    144            for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
-    145            {
-    146              frame_s *fr = frame_create();
-    147              frame_addHeader(fr, DATA_SEND, size_tests[s]);
-    148              fr->meta.SEND_TIME = 1000;
-    149              TIC_Init(); // При иницилизации TS0 отсчитываеться с этого момента
-    150              one_speed_test(fr);
-    151              frame_delete(fr);
-    152            }  
-    153            
-    154          
-    155            RI_StreamCrypt(true);
-    156            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "SEND IN SEND_TIME 1000 ticks AFTER TS0\n"); 
-    157            for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
-    158            {
-    159              frame_s *fr = frame_create();
-    160              frame_addHeader(fr, DATA_SEND, size_tests[s]);
-    161              fr->meta.SEND_TIME = 1000;
-    162              TIC_Init(); // При иницилизации TS0 отсчитываеться с этого момента
-    163              one_speed_test(fr);
-    164              frame_delete(fr);
-    165            } 
-    166            
-    167            RI_StreamCrypt(true);
-    168            LOG(MSG_ON | MSG_INFO | MSG_TRACE, "SEND IN SEND_TIME 1000 ticks AFTER TS0\n"); 
-    169            for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
-    170            {
-    171              frame_s *fr = frame_create();
-    172              frame_addHeader(fr, DATA_SEND, size_tests[s]);
-    173              fr->meta.SEND_TIME = 1000;
-    174              TIC_Init(); // При иницилизации TS0 отсчитываеться с этого момента
-    175              one_speed_test(fr);
-    176              frame_delete(fr);
-    177            } 
-    178            
-    179          }
-    180          
-    181          // Тесты скорости
-    182          void suite_RADIO(void)
-    183          {
-    184            umsg_line("RADIO module");
-    185            speed_test();
-    186          }
-    187          // Для тестирования радио запрограмируй два узла. Первый узел RadioSendTest1();
-    188          // Второй узел RadioRecvTest1(); Первый будет раз в секунду передавать
-    189          // шифрованные данные. Второй при приеме и удачном декодировании включит
-    190          // светодиод.
-    191          void suite_RADIO_HW(void)
-    192          {
-    193            //umsg_line("NTMR module");
-    194            //RadioSendTest1();
-    195            //
-    196            RadioRecvTest1();
-    197          }
+    100            LOG_ON("Data size = %d. Full time = %lu us. SFD time = %d us"
+    101                ,fr->len, passed, passed_sfd);
+    102           
+    103          }
+    104          static void speed_test(void)
+    105          {
+    106            uint8_t DATA_SEND[100];
+    107            uint8_t key[16] = {18,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17};
+    108            uint8_t nonce[16] = {18,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17};
+    109            uint8_t size_tests[] = {10, 50, 100, 125};
+    110            
+    111            TIM_init();
+    112            RI_init();
+    113            AES_init();
+    114            
+    115            RI_StreamCrypt(true);
+    116            RI_SetChannel(CH11);
+    117            RI_setKEY(key);
+    118            RI_setIV(nonce);
+    119            
+    120            // Подготовим данные к отправке
+    121            
+    122            LOG_ON("SEND SPEED TEST WITH DATA ENCODE");  
+    123            for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
+    124            {
+    125              frame_s *fr = frame_create();
+    126              frame_addHeader(fr, DATA_SEND, size_tests[s]);
+    127              one_speed_test(fr);
+    128              frame_delete(fr);
+    129            }
+    130            
+    131            RI_StreamCrypt(false);
+    132            LOG_ON("SEND SPEED TEST WITHOUT DATA ENCODE"); 
+    133            for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
+    134            {
+    135              frame_s *fr = frame_create();
+    136              frame_addHeader(fr, DATA_SEND, size_tests[s]);
+    137              one_speed_test(fr);
+    138              frame_delete(fr);
+    139            }
+    140            
+    141            RI_StreamCrypt(true);
+    142            LOG_ON("SEND IN SEND_TIME 1000 ticks AFTER TS0"); 
+    143            for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
+    144            {
+    145              frame_s *fr = frame_create();
+    146              frame_addHeader(fr, DATA_SEND, size_tests[s]);
+    147              fr->meta.SEND_TIME = 1000;
+    148              TIC_Init(); // При иницилизации TS0 отсчитываеться с этого момента
+    149              one_speed_test(fr);
+    150              frame_delete(fr);
+    151            }  
+    152            
+    153          
+    154            RI_StreamCrypt(true);
+    155            LOG_ON("SEND IN SEND_TIME 1000 ticks AFTER TS0"); 
+    156            for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
+    157            {
+    158              frame_s *fr = frame_create();
+    159              frame_addHeader(fr, DATA_SEND, size_tests[s]);
+    160              fr->meta.SEND_TIME = 1000;
+    161              TIC_Init(); // При иницилизации TS0 отсчитываеться с этого момента
+    162              one_speed_test(fr);
+    163              frame_delete(fr);
+    164            } 
+    165            
+    166            RI_StreamCrypt(true);
+    167            LOG_ON("SEND IN SEND_TIME 1000 ticks AFTER TS0"); 
+    168            for (uint8_t s = 0; s < sizeof(size_tests) ; s++)
+    169            {
+    170              frame_s *fr = frame_create();
+    171              frame_addHeader(fr, DATA_SEND, size_tests[s]);
+    172              fr->meta.SEND_TIME = 1000;
+    173              TIC_Init(); // При иницилизации TS0 отсчитываеться с этого момента
+    174              one_speed_test(fr);
+    175              frame_delete(fr);
+    176            } 
+    177            
+    178          }
+    179          
+    180          // Тесты скорости
+    181          void suite_RADIO(void)
+    182          {
+    183            umsg_line("RADIO module");
+    184            speed_test();
+    185          }
+    186          // Для тестирования радио запрограмируй два узла. Первый узел RadioSendTest1();
+    187          // Второй узел RadioRecvTest1(); Первый будет раз в секунду передавать
+    188          // шифрованные данные. Второй при приеме и удачном декодировании включит
+    189          // светодиод.
+    190          void suite_RADIO_HW(void)
+    191          {
+    192            //umsg_line("NTMR module");
+    193            //RadioSendTest1();
+    194            //
+    195            RadioRecvTest1();
+    196          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_suite.c
       1          #include "stdio.h"
       2          #include "utest_suite.h"
@@ -4369,7 +4368,6 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0    188   -> AES_init
         0    188   -> TIM_init
         0    188   -> printf
-        0    192   -> printf
         0    194   -> printf
         0    194   -> single_enc_dec_test
         0    188   -> umsg
@@ -4382,36 +4380,32 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       0    109   CTR_enc_decrypt
         0     39   -> memcpy
         0     39   -> memset
-      0     28   Callback_execution
-        0     12   -> STACK_FAILURE
+      0     30   Callback_execution
         0     12   -> printf
-        0     16   -> printf
+        0     18   -> printf
       0     40   DelayCalibrate
         0     40   -> TIM_TimeStamp
         0     40   -> TIM_delay
         0     40   -> TIM_passedTime
       2      0   ETH_Init
         2      0   -> LLC_SetRXCallback
-      0     18   ETH_RX_HNDL
-        0     14   -> STACK_FAILURE
+      0     20   ETH_RX_HNDL
         0     14   -> extract_header
         0     14   -> frame_delete
         0     14   -> printf
-        0     18   -> printf
+        0     20   -> printf
         0     14   -> re_free
         0     14   -> send_ack
         0     14   -> strip_header
         0     14   -> validate
-      0     14   ETH_Set_RXCallback
-        0     10   -> STACK_FAILURE
+      0     16   ETH_Set_RXCallback
         0     10   -> printf
-        0     14   -> printf
+        0     16   -> printf
       0     54   Interval
       0     52   LED
       1     57   LLC_AddTask
-        0     14   -> STACK_FAILURE
         0     14   -> printf
-        0     18   -> printf
+        0     20   -> printf
         0     24   -> printf
         0     14   -> re_malloc
       2     33   LLC_GetTaskLen
@@ -4419,29 +4413,25 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         2      0   -> MAC_Init
         2      0   -> MAC_SetRXCallback
         2      0   -> TIC_SetSECallback
-      0     14   LLC_RX_HNDL
-        0     10   -> STACK_FAILURE
+      0     16   LLC_RX_HNDL
         0     10   -> printf
-        0     14   -> printf
+        0     16   -> printf
       0     18   LLC_RunTimeAlloc
       0      9   LLC_SE_HNDL
         0      9   -> LLC_RunTimeAlloc
         0      9   -> LLC_Shelduler
-      0     14   LLC_SetRXCallback
-        0     10   -> STACK_FAILURE
+      0     16   LLC_SetRXCallback
         0     10   -> printf
-        0     14   -> printf
-      0     29   LLC_Shelduler
+        0     16   -> printf
+      0     31   LLC_Shelduler
         0     16   -> MAC_GetTXState
         0     16   -> MAC_Send
-        0     16   -> STACK_FAILURE
         0     16   -> printf
-        0     20   -> printf
+        0     22   -> printf
         0     16   -> re_free
-      0     49   LLC_TimeAlloc
-        0     12   -> STACK_FAILURE
+      0     51   LLC_TimeAlloc
         0     12   -> printf
-        0     16   -> printf
+        0     18   -> printf
         0     12   -> re_malloc
       2     16   LoadTXData
       0      0   MAC_ACK_Recv
@@ -4449,19 +4439,16 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0      9   -> RI_Send
         0      9   -> RI_SetChannel
         0      9   -> frame_delete
-      1     14   MAC_CloseRXSlot
-        0     10   -> STACK_FAILURE
+      1     16   MAC_CloseRXSlot
         0     10   -> TIC_SetRXState
         0     10   -> printf
-        0     14   -> printf
-      0     14   MAC_GetRXState
-        0     10   -> STACK_FAILURE
+        0     16   -> printf
+      0     16   MAC_GetRXState
         0     10   -> printf
-        0     14   -> printf
-      0     38   MAC_GetTXState
-        0     10   -> STACK_FAILURE
+        0     16   -> printf
+      0     40   MAC_GetTXState
         0     10   -> printf
-        0     14   -> printf
+        0     16   -> printf
       0     52   MAC_Init
         0     10   -> AES_init
         0     10   -> RI_StreamCrypt
@@ -4473,55 +4460,49 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     10   -> TIC_SetTXCallback
         0     10   -> TIM_init
         0     12   -> memset
-      1     14   MAC_OpenRXSlot
-        0     10   -> STACK_FAILURE
+      1     16   MAC_OpenRXSlot
         0     10   -> TIC_SetRXState
         0     10   -> printf
-        0     14   -> printf
-      0     16   MAC_RX_HNDL
+        0     16   -> printf
+      0     18   MAC_RX_HNDL
         0     12   -> RI_Receive
         0     12   -> RI_SetChannel
-        0     12   -> STACK_FAILURE
         0     12   -> printf
-        0     16   -> printf
-      1     40   MAC_Send
-        0     12   -> STACK_FAILURE
+        0     18   -> printf
+      1     42   MAC_Send
         0     12   -> TIC_SetTXState
         0     12   -> printf
-        0     16   -> printf
+        0     18   -> printf
       2      0   MAC_SetRXCallback
       2      0   MAC_Set_isACK_OK_Callback
-      1     16   MAC_TX_HNDL
+      1     18   MAC_TX_HNDL
         0     12   -> RI_Receive
         0     12   -> RI_Send
         0     12   -> RI_SetChannel
-        0     12   -> STACK_FAILURE
         0     12   -> TIC_SetTXState
         0     12   -> TIM_delay
         0     12   -> frame_delete
         0     12   -> printf
-        0     16   -> printf
+        0     18   -> printf
       0     16   MyLowLevelPutchar
       0     48   NT_GetTime
         0     16   -> ReadTimer
       0     15   NT_IRQEnable
       2     52   NT_Init
         2      0   -> NT_IRQEnable
-      0     30   NT_SetCompare
+      0     32   NT_SetCompare
         0     12   -> NT_IRQEnable
-        0     12   -> STACK_FAILURE
         0     12   -> calcCompareTime
         0     12   -> loadTimerCompare
         0     12   -> printf
-        0     16   -> printf
+        0     18   -> printf
       2      9   NT_SetEventCallback
-      0     28   NT_SetTime
+      0     30   NT_SetTime
         0     14   -> NT_SetCompare
         0     14   -> ReadTimer
-        0     14   -> STACK_FAILURE
         0     14   -> isIRQEnable
         0     14   -> printf
-        0     18   -> printf
+        0     20   -> printf
       0     28   NT_WaitTime
       0     32   RI_BitRawCrypt
         0     16   -> AES_StreamCoder
@@ -4541,14 +4522,13 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     46   -> frame_create
         0     46   -> re_free
         0     46   -> re_malloc
-      0     72   RI_Send
+      0     74   RI_Send
         0     36   -> RI_cfg
-        0     36   -> STACK_FAILURE
         0     36   -> SendData
         0     36   -> TIM_TimeStamp
         0     36   -> TIM_passedTime
         0     36   -> printf
-        0     40   -> printf
+        0     42   -> printf
       2    148   RI_SetChannel
       2    148   RI_StreamCrypt
       3     47   RI_cfg
@@ -4580,41 +4560,40 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     32   -> TIM_TimeStamp
         0     32   -> TIM_passedTime
       0      0   SEC
-      0     36   STACK_FAILURE
-      0     56   SendData
+      0     16   STACK_FAILURE
+        0     10   -> printf
+        0     16   -> printf
+      0     58   SendData
         0     16   -> LoadTXData
         0     16   -> NT_GetTime
         0     16   -> NT_WaitTime
         0     16   -> RI_BitRawCrypt
-        0     16   -> STACK_FAILURE
         0     16   -> printf
-        0     20   -> printf
+        0     22   -> printf
         0     16   -> re_free
         0     16   -> re_malloc
         0     18   -> re_memcpy
       0      0   SetCPU32M
       2     12   TIC_GetNonce
       2     24   TIC_GetRTC
-      0     14   TIC_GetRXState
-        0     10   -> STACK_FAILURE
+      0     16   TIC_GetRXState
         0     10   -> printf
-        0     14   -> printf
-      0     14   TIC_GetTXState
-        0     10   -> STACK_FAILURE
+        0     16   -> printf
+      0     16   TIC_GetTXState
         0     10   -> printf
-        0     14   -> printf
+        0     16   -> printf
       0      0   TIC_GetTimeStampTS0
       2      0   TIC_GetTimer
         2      0   -> NT_GetTime
       2     12   TIC_GetUptime
-      0     16   TIC_HW_Timer_IRQ
+      0     18   TIC_HW_Timer_IRQ
         0     12   -> Callback_execution
         0     12   -> TIC_TDMAShelduler
         0     12   -> TIC_getCurrentTS
         0     12   -> TIM_TimeStamp
         0     12   -> clocks_update
         0     12   -> printf
-        0     16   -> printf
+        0     18   -> printf
       2    148   TIC_Init
         2      0   -> NT_SetCompare
         2      0   -> NT_SetEventCallback
@@ -4622,31 +4601,25 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         2      0   -> TIM_TimeStamp
       0     24   TIC_SetNonce
       0     24   TIC_SetRTC
-      0     26   TIC_SetRXCallback
-        0     10   -> STACK_FAILURE
+      0     28   TIC_SetRXCallback
         0     10   -> printf
-        0     14   -> printf
-      0     26   TIC_SetRXState
-        0     10   -> STACK_FAILURE
+        0     16   -> printf
+      0     28   TIC_SetRXState
         0     10   -> printf
-        0     14   -> printf
-      0     38   TIC_SetSECallback
-        0     10   -> STACK_FAILURE
+        0     16   -> printf
+      0     40   TIC_SetSECallback
         0     10   -> printf
-        0     14   -> printf
-      0     26   TIC_SetTXCallback
-        0     10   -> STACK_FAILURE
+        0     16   -> printf
+      0     28   TIC_SetTXCallback
         0     10   -> printf
-        0     14   -> printf
-      0     26   TIC_SetTXState
-        0     10   -> STACK_FAILURE
+        0     16   -> printf
+      0     28   TIC_SetTXState
         0     10   -> printf
-        0     14   -> printf
-      0     14   TIC_SetTimer
+        0     16   -> printf
+      0     16   TIC_SetTimer
         0     10   -> NT_SetTime
-        0     10   -> STACK_FAILURE
         0     10   -> printf
-        0     14   -> printf
+        0     16   -> printf
       3     13   TIC_TDMAShelduler
         2      1   -> incrementTS
         2      1   -> set_capture_time
@@ -4695,29 +4668,25 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       2     34   calcCompareTime
         0     22   -> ReadTimer
       0     24   clocks_update
-      0     32   extract_header
-        0     14   -> STACK_FAILURE
+      0     34   extract_header
         0     14   -> frame_len
         0     14   -> printf
-        0     18   -> printf
+        0     20   -> printf
         0     14   -> re_malloc
-      1    170   frame_addHeader
-        0     18   -> STACK_FAILURE
+      1    172   frame_addHeader
         0     18   -> printf
-        0     22   -> printf
+        0     24   -> printf
         0     18   -> re_free
         0     18   -> re_malloc
         0     20   -> re_memcpy
-      0    164   frame_create
-        0     12   -> STACK_FAILURE
+      0    166   frame_create
         0     14   -> memset
         0     12   -> printf
-        0     16   -> printf
-        0     12   -> re_malloc
-      1     18   frame_delHeader
-        0     14   -> STACK_FAILURE
-        0     14   -> printf
         0     18   -> printf
+        0     12   -> re_malloc
+      1     20   frame_delHeader
+        0     14   -> printf
+        0     20   -> printf
         0     14   -> re_free
         0     14   -> re_malloc
         0     16   -> re_memcpy
@@ -4742,10 +4711,10 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       0     14   isIRQEnable
       2     12   isNear
       0     28   loadTimerCompare
-      0      4   main
+      0      6   main
         0      0   -> nwDebugerInit
         0      0   -> printf
-        0      4   -> printf
+        0      6   -> printf
         0      0   -> suite_LLC_HW
         0      0   -> umsg_summary
         0      0   -> utestSigTraceInit
@@ -4772,7 +4741,8 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     32   -> RI_Send
         0     32   -> TIM_TimeStamp
         0     32   -> TIM_passedTime
-        0     36   -> printf
+        0     32   -> printf
+        0     38   -> printf
         0     40   -> printf
       0      9   random_core_init
         0      9   -> RI_cfg
@@ -4789,16 +4759,15 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0      9   -> bits_count
         0      9   -> getRNDByte
       0     14   send_ack
-      1     16   setFreq
-        0     11   -> STACK_FAILURE
+      1     18   setFreq
         0     11   -> printf
-        0     15   -> printf
+        0     17   -> printf
       0     10   set_capture_time
         0      9   -> NT_SetCompare
       0    214   single_enc_dec_test
         0     20   -> AES_CCMDecrypt
         0     20   -> AES_CCMEncrypt
-      0    152   speed_test
+      0    154   speed_test
         0    148   -> AES_init
         0    148   -> RI_SetChannel
         0    148   -> RI_StreamCrypt
@@ -4812,7 +4781,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0    148   -> frame_delete
         0    148   -> one_speed_test
         0    148   -> printf
-        0    152   -> printf
+        0    154   -> printf
       0     14   strip_header
       0      0   stub_se
       2      0   suite_Frames
@@ -4866,7 +4835,6 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     91   -> TIM_init
         0     91   -> TIM_passedTime
         0     91   -> printf
-        0     95   -> printf
         0     97   -> printf
       0     17   test_2
         0     17   -> frame_addHeader
@@ -4892,9 +4860,9 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     40   -> TIM_passedTime
         0     40   -> frame_addHeader
         0     40   -> frame_create
-        0     44   -> printf
+        0     40   -> printf
         0     46   -> printf
-      1     28   test_TS_Send
+      1     30   test_TS_Send
         0     24   -> MAC_GetTXState
         0     24   -> MAC_Init
         0     24   -> MAC_Send
@@ -4902,7 +4870,9 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     24   -> TIC_SetSECallback
         0     24   -> frame_addHeader
         0     24   -> frame_create
+        0     24   -> printf
         0     28   -> printf
+        0     30   -> printf
       1     39   test_create
         0     33   -> LLC_AddTask
         0     33   -> LLC_GetTaskLen
@@ -4913,8 +4883,8 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
         0     33   -> frame_len
         0     33   -> getFrame
         0     33   -> heap_ptr
+        0     33   -> printf
         0     35   -> printf
-        0     37   -> printf
         0     39   -> printf
       2     12   test_hw
         2     12   -> NT_Init
@@ -4949,41 +4919,27 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
 
    Bytes  Function/Label
    -----  --------------
+       1  ?<Constant "">
        5  ?<Constant "%s\r\n">
       41  ?<Constant "*********************...">
-      19  ?<Constant "*ASSERT* %s:%d -> ">
-      17  ?<Constant "*ASSERT* %s:%d->">
-      17  ?<Constant "*ASSERT* %s:%d->">_1
-      17  ?<Constant "*ASSERT* %s:%d->">_2
-      17  ?<Constant "*ASSERT* %s:%d->">_3
-      17  ?<Constant "*ASSERT* %s:%d->">_4
-      17  ?<Constant "*ASSERT* %s:%d->">_5
-      17  ?<Constant "*ASSERT* %s:%d->">_6
-      19  ?<Constant "*LOGGER* %s:%d -> ">
-      19  ?<Constant "*LOGGER* %s:%d -> ">_1
-      19  ?<Constant "*LOGGER* %s:%d -> ">_2
-      19  ?<Constant "*LOGGER* %s:%d -> ">_3
-      19  ?<Constant "*LOGGER* %s:%d -> ">_4
-      19  ?<Constant "*LOGGER* %s:%d -> ">_5
-      19  ?<Constant "*LOGGER* %s:%d -> ">_6
-      19  ?<Constant "*LOGGER* %s:%d -> ">_7
-       9  ?<Constant "*fr null">
-      27  ?<Constant ".Program execution ha...">
-      27  ?<Constant ".Program execution ha...">_1
-      27  ?<Constant ".Program execution ha...">_2
-      27  ?<Constant ".Program execution ha...">_3
-      27  ?<Constant ".Program execution ha...">_4
-      27  ?<Constant ".Program execution ha...">_5
-      27  ?<Constant ".Program execution ha...">_6
+      22  ?<Constant "*ASSERT* %s:%d:%s -> ">
+      22  ?<Constant "*ASSERT* %s:%d:%s -> ">_1
+      22  ?<Constant "*ASSERT* %s:%d:%s -> ">_2
+      22  ?<Constant "*ASSERT* %s:%d:%s -> ">_3
+      22  ?<Constant "*ASSERT* %s:%d:%s -> ">_4
+      22  ?<Constant "*ASSERT* %s:%d:%s -> ">_5
+      22  ?<Constant "*ASSERT* %s:%d:%s -> ">_6
+      19  ?<Constant "*LOG* %s:%d:%s -> ">
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_1
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_2
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_3
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_4
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_5
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_6
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_7
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_8
       10  ?<Constant "0123456789">
-      53  ?<Constant "Add task = %u, CH = %...">
-      13  ?<Constant "Assert fails">
-      13  ?<Constant "Assert fails">_1
-      13  ?<Constant "Assert fails">_2
-      13  ?<Constant "Assert fails">_3
-      13  ?<Constant "Assert fails">_4
-      13  ?<Constant "Assert fails">_5
-      13  ?<Constant "Assert fails">_6
+      51  ?<Constant "Add task = %u, CH = %...">
       30  ?<Constant "CCM coder corrupt dat...">
       29  ?<Constant "CCM coder corrupt key...">
       29  ?<Constant "CCM coder corrupt mic...">
@@ -4994,79 +4950,69 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       31  ?<Constant "CCM decoder corrupt m...">
       33  ?<Constant "CCM decoder corrupt n...">
       20  ?<Constant "CCM full coder test">
-      27  ?<Constant "CCM full size test 60...">
+      26  ?<Constant "CCM full size test 60...">
       21  ?<Constant "CCM key data correct">
       23  ?<Constant "CCM nonce data correct">
-      17  ?<Constant "Callback is NULL">
-      36  ?<Constant "Coder test stub on m=...">
+      34  ?<Constant "Coder test stub on m=...">
        7  ?<Constant "Create">
-      54  ?<Constant "Data size = %d. Full ...">
+      53  ?<Constant "Data size = %d. Full ...">
        7  ?<Constant "Delete">
       13  ?<Constant "FAILD : %d\r\n">
       13  ?<Constant "FAILED <----">
-      11  ?<Constant "Fn is NULL">
-      37  ?<Constant "Frame puted to MAC la...">
-      46  ?<Constant "Frame_s size = %d. Fb...">
+      36  ?<Constant "Frame puted to MAC la...">
+      44  ?<Constant "Frame_s size = %d. Fb...">
       14  ?<Constant "Frames module">
-      16  ?<Constant "HEAP_PTR = %d\r\n">
+      14  ?<Constant "HEAP_PTR = %d">
       11  ?<Constant "Header add">
       46  ?<Constant "Hello worldHello worl...">
       13  ?<Constant "Hello world\n">
-      13  ?<Constant "Incorrect TS">
-      20  ?<Constant "Incorrect TX_METHOD">
-      19  ?<Constant "Incorrect eth size">
-      24  ?<Constant "Incorrect radio channel">
-      16  ?<Constant "Incorrect ticks">
-      27  ?<Constant "LLC re_malloc for new...">
        6  ?<Constant "LLC.c">
        6  ?<Constant "MAC.c">
-      38  ?<Constant "MAC_ACK_Send time = %...">
+      36  ?<Constant "MAC_ACK_Send time = %...">
       20  ?<Constant "Memmory free test 1">
       20  ?<Constant "Memmory free test 2">
-      24  ?<Constant "Memory allocation fails">
       42  ?<Constant "Module: %-15s Name: %...">
        7  ?<Constant "NTMR.c">
-      23  ?<Constant "NULL pointer not allow">
-      23  ?<Constant "NULL pointer not allow">_1
-      10  ?<Constant "No memory">
-      10  ?<Constant "No memory">_1
-      10  ?<Constant "No memory">_2
        7  ?<Constant "PASSED">
       13  ?<Constant "PASSED: %d\r\n">
       13  ?<Constant "RADIO module">
        8  ?<Constant "RADIO.c">
-      21  ?<Constant "RXCallback func NULL">
-      19  ?<Constant "RXCallback is NULL">
-      40  ?<Constant "SEND IN SEND_TIME 100...">
-      34  ?<Constant "SEND SPEED TEST WITH ...">
-      37  ?<Constant "SEND SPEED TEST WITHO...">
-      40  ?<Constant "String 1 len = %d. Pr...">
-      41  ?<Constant "String 2 len = %d. Pr...">
-      22  ?<Constant "Striped_frame is NULL">
+      39  ?<Constant "SEND IN SEND_TIME 100...">
+      33  ?<Constant "SEND SPEED TEST WITH ...">
+      36  ?<Constant "SEND SPEED TEST WITHO...">
+      20  ?<Constant "STACK FAILURE. HALT">
+      39  ?<Constant "String 1 len = %d. Pr...">
+      39  ?<Constant "String 2 len = %d. Pr...">
        6  ?<Constant "TIC.c">
       30  ?<Constant "TIM_passedTimeNs meas...">
       12  ?<Constant "TS = 255 \r\n">
-      16  ?<Constant "TS not in range">
-      21  ?<Constant "Test assert output\r\n">
-      18  ?<Constant "Test log output\r\n">
+      11  ?<Constant "Test start">
       15  ?<Constant "Tests FAILED\r\n">
       15  ?<Constant "Tests PASSED\r\n">
-      19  ?<Constant "Ticks not in range">
       18  ?<Constant "Unit test symmary">
        3  ?<Constant "\r\n">
-      13  ?<Constant "attempts = 0">
+       3  ?<Constant "\r\n">_1
+       3  ?<Constant "\r\n">_10
+       3  ?<Constant "\r\n">_11
+       3  ?<Constant "\r\n">_12
+       3  ?<Constant "\r\n">_13
+       3  ?<Constant "\r\n">_2
+       3  ?<Constant "\r\n">_3
+       3  ?<Constant "\r\n">_4
+       3  ?<Constant "\r\n">_5
+       3  ?<Constant "\r\n">_6
+       3  ?<Constant "\r\n">_7
+       3  ?<Constant "\r\n">_8
+       3  ?<Constant "\r\n">_9
       13  ?<Constant "coder module">
        6  ?<Constant "coder">
       14  ?<Constant "delays module">
        7  ?<Constant "delays">
       11  ?<Constant "ethernet.c">
-       8  ?<Constant "fr NULL">
-       8  ?<Constant "fr NULL">_1
-      11  ?<Constant "fr is NULL">
       13  ?<Constant "frame module">
        6  ?<Constant "frame">
        8  ?<Constant "frame.c">
-      19  ?<Constant "isACK_OK func NULL">
+      12  ?<Constant "nwdebuger.c">
       14  ?<Constant "passed %lu \r\n">
       18  ?<Constant "printf speed uart">
        8  ?<Constant "utest.c">
@@ -5098,41 +5044,27 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        9  ?<Constant {5, 6, 7, 8, 9, 23, 56, 23, 6}>
       12  ?<Constant {5, 6, 7, 8, 9, 36, 85, 98, 23, 98,
        5  ?<Constant {5, 6, 7, 8, 9}>
+       1  ?<Initializer for <Constant "">>
        5  ?<Initializer for <Constant "%s\r\n">>
       41  ?<Initializer for <Constant "*****************
-      19  ?<Initializer for <Constant "*ASSERT* %s:%d ->
-      17  ?<Initializer for <Constant "*ASSERT* %s:%d->"
-      17  ?<Initializer for <Constant "*ASSERT* %s:%d->"_1
-      17  ?<Initializer for <Constant "*ASSERT* %s:%d->"_2
-      17  ?<Initializer for <Constant "*ASSERT* %s:%d->"_3
-      17  ?<Initializer for <Constant "*ASSERT* %s:%d->"_4
-      17  ?<Initializer for <Constant "*ASSERT* %s:%d->"_5
-      17  ?<Initializer for <Constant "*ASSERT* %s:%d->"_6
-      19  ?<Initializer for <Constant "*LOGGER* %s:%d ->
-      19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_1
-      19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_2
-      19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_3
-      19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_4
-      19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_5
-      19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_6
-      19  ?<Initializer for <Constant "*LOGGER* %s:%d ->_7
-       9  ?<Initializer for <Constant "*fr null">>
-      27  ?<Initializer for <Constant ".Program executio
-      27  ?<Initializer for <Constant ".Program executio_1
-      27  ?<Initializer for <Constant ".Program executio_2
-      27  ?<Initializer for <Constant ".Program executio_3
-      27  ?<Initializer for <Constant ".Program executio_4
-      27  ?<Initializer for <Constant ".Program executio_5
-      27  ?<Initializer for <Constant ".Program executio_6
+      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s
+      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_1
+      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_2
+      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_3
+      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_4
+      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_5
+      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_6
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_1
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_2
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_3
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_4
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_5
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_6
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_7
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_8
       10  ?<Initializer for <Constant "0123456789">>
-      53  ?<Initializer for <Constant "Add task = %u, CH
-      13  ?<Initializer for <Constant "Assert fails">>
-      13  ?<Initializer for <Constant "Assert fails">>_1
-      13  ?<Initializer for <Constant "Assert fails">>_2
-      13  ?<Initializer for <Constant "Assert fails">>_3
-      13  ?<Initializer for <Constant "Assert fails">>_4
-      13  ?<Initializer for <Constant "Assert fails">>_5
-      13  ?<Initializer for <Constant "Assert fails">>_6
+      51  ?<Initializer for <Constant "Add task = %u, CH
       30  ?<Initializer for <Constant "CCM coder corrupt
       29  ?<Initializer for <Constant "CCM coder corrupt_1
       31  ?<Initializer for <Constant "CCM coder corrupt_2
@@ -5143,79 +5075,69 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       33  ?<Initializer for <Constant "CCM decoder corru_2
       31  ?<Initializer for <Constant "CCM decoder corru_3
       20  ?<Initializer for <Constant "CCM full coder te
-      27  ?<Initializer for <Constant "CCM full size tes
+      26  ?<Initializer for <Constant "CCM full size tes
       21  ?<Initializer for <Constant "CCM key data corr
       23  ?<Initializer for <Constant "CCM nonce data co
-      17  ?<Initializer for <Constant "Callback is NULL"
-      36  ?<Initializer for <Constant "Coder test stub o
+      34  ?<Initializer for <Constant "Coder test stub o
        7  ?<Initializer for <Constant "Create">>
-      54  ?<Initializer for <Constant "Data size = %d. F
+      53  ?<Initializer for <Constant "Data size = %d. F
        7  ?<Initializer for <Constant "Delete">>
       13  ?<Initializer for <Constant "FAILD : %d\r\n">>
       13  ?<Initializer for <Constant "FAILED <----">>
-      11  ?<Initializer for <Constant "Fn is NULL">>
-      37  ?<Initializer for <Constant "Frame puted to MA
-      46  ?<Initializer for <Constant "Frame_s size = %d
+      36  ?<Initializer for <Constant "Frame puted to MA
+      44  ?<Initializer for <Constant "Frame_s size = %d
       14  ?<Initializer for <Constant "Frames module">>
-      16  ?<Initializer for <Constant "HEAP_PTR = %d\r\n
+      14  ?<Initializer for <Constant "HEAP_PTR = %d">>
       11  ?<Initializer for <Constant "Header add">>
       46  ?<Initializer for <Constant "Hello worldHello
       13  ?<Initializer for <Constant "Hello world\n">>
-      13  ?<Initializer for <Constant "Incorrect TS">>
-      20  ?<Initializer for <Constant "Incorrect TX_METH
-      19  ?<Initializer for <Constant "Incorrect eth siz
-      24  ?<Initializer for <Constant "Incorrect radio c
-      16  ?<Initializer for <Constant "Incorrect ticks">
-      27  ?<Initializer for <Constant "LLC re_malloc for
        6  ?<Initializer for <Constant "LLC.c">>
        6  ?<Initializer for <Constant "MAC.c">>
-      38  ?<Initializer for <Constant "MAC_ACK_Send time
+      36  ?<Initializer for <Constant "MAC_ACK_Send time
       20  ?<Initializer for <Constant "Memmory free test
       20  ?<Initializer for <Constant "Memmory free test_1
-      24  ?<Initializer for <Constant "Memory allocation
       42  ?<Initializer for <Constant "Module: %-15s Nam
        7  ?<Initializer for <Constant "NTMR.c">>
-      23  ?<Initializer for <Constant "NULL pointer not
-      23  ?<Initializer for <Constant "NULL pointer not _1
-      10  ?<Initializer for <Constant "No memory">>
-      10  ?<Initializer for <Constant "No memory">>_1
-      10  ?<Initializer for <Constant "No memory">>_2
        7  ?<Initializer for <Constant "PASSED">>
       13  ?<Initializer for <Constant "PASSED: %d\r\n">>
       13  ?<Initializer for <Constant "RADIO module">>
        8  ?<Initializer for <Constant "RADIO.c">>
-      21  ?<Initializer for <Constant "RXCallback func N
-      19  ?<Initializer for <Constant "RXCallback is NUL
-      40  ?<Initializer for <Constant "SEND IN SEND_TIME
-      34  ?<Initializer for <Constant "SEND SPEED TEST W
-      37  ?<Initializer for <Constant "SEND SPEED TEST W_1
-      40  ?<Initializer for <Constant "String 1 len = %d
-      41  ?<Initializer for <Constant "String 2 len = %d
-      22  ?<Initializer for <Constant "Striped_frame is
+      39  ?<Initializer for <Constant "SEND IN SEND_TIME
+      33  ?<Initializer for <Constant "SEND SPEED TEST W
+      36  ?<Initializer for <Constant "SEND SPEED TEST W_1
+      20  ?<Initializer for <Constant "STACK FAILURE. HA
+      39  ?<Initializer for <Constant "String 1 len = %d
+      39  ?<Initializer for <Constant "String 2 len = %d
        6  ?<Initializer for <Constant "TIC.c">>
       30  ?<Initializer for <Constant "TIM_passedTimeNs
       12  ?<Initializer for <Constant "TS = 255 \r\n">>
-      16  ?<Initializer for <Constant "TS not in range">
-      21  ?<Initializer for <Constant "Test assert outpu
-      18  ?<Initializer for <Constant "Test log output\r
+      11  ?<Initializer for <Constant "Test start">>
       15  ?<Initializer for <Constant "Tests FAILED\r\n"
       15  ?<Initializer for <Constant "Tests PASSED\r\n"
-      19  ?<Initializer for <Constant "Ticks not in rang
       18  ?<Initializer for <Constant "Unit test symmary
        3  ?<Initializer for <Constant "\r\n">>
-      13  ?<Initializer for <Constant "attempts = 0">>
+       3  ?<Initializer for <Constant "\r\n">>_1
+       3  ?<Initializer for <Constant "\r\n">>_10
+       3  ?<Initializer for <Constant "\r\n">>_11
+       3  ?<Initializer for <Constant "\r\n">>_12
+       3  ?<Initializer for <Constant "\r\n">>_13
+       3  ?<Initializer for <Constant "\r\n">>_2
+       3  ?<Initializer for <Constant "\r\n">>_3
+       3  ?<Initializer for <Constant "\r\n">>_4
+       3  ?<Initializer for <Constant "\r\n">>_5
+       3  ?<Initializer for <Constant "\r\n">>_6
+       3  ?<Initializer for <Constant "\r\n">>_7
+       3  ?<Initializer for <Constant "\r\n">>_8
+       3  ?<Initializer for <Constant "\r\n">>_9
       13  ?<Initializer for <Constant "coder module">>
        6  ?<Initializer for <Constant "coder">>
       14  ?<Initializer for <Constant "delays module">>
        7  ?<Initializer for <Constant "delays">>
       11  ?<Initializer for <Constant "ethernet.c">>
-       8  ?<Initializer for <Constant "fr NULL">>
-       8  ?<Initializer for <Constant "fr NULL">>_1
-      11  ?<Initializer for <Constant "fr is NULL">>
       13  ?<Initializer for <Constant "frame module">>
        6  ?<Initializer for <Constant "frame">>
        8  ?<Initializer for <Constant "frame.c">>
-      19  ?<Initializer for <Constant "isACK_OK func NUL
+      12  ?<Initializer for <Constant "nwdebuger.c">>
       14  ?<Initializer for <Constant "passed %lu \r\n">
       18  ?<Initializer for <Constant "printf speed uart
        8  ?<Initializer for <Constant "utest.c">>
@@ -5267,6 +5189,48 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        4  ?<Initializer for __Constant_ffff8000>
        4  ?<Initializer for __Constant_fffffe0c>
        4  ?<Initializer for __Constant_ffffff>
+      19  ?<Initializer for __FUNCTION__>
+      12  ?<Initializer for __FUNCTION__>_1
+      12  ?<Initializer for __FUNCTION__>_10
+      15  ?<Initializer for __FUNCTION__>_11
+      16  ?<Initializer for __FUNCTION__>_12
+       9  ?<Initializer for __FUNCTION__>_13
+      15  ?<Initializer for __FUNCTION__>_14
+      15  ?<Initializer for __FUNCTION__>_15
+      12  ?<Initializer for __FUNCTION__>_16
+      12  ?<Initializer for __FUNCTION__>_17
+      11  ?<Initializer for __FUNCTION__>_18
+      14  ?<Initializer for __FUNCTION__>_19
+      15  ?<Initializer for __FUNCTION__>_2
+      14  ?<Initializer for __FUNCTION__>_20
+       8  ?<Initializer for __FUNCTION__>_21
+       9  ?<Initializer for __FUNCTION__>_22
+       8  ?<Initializer for __FUNCTION__>_23
+      13  ?<Initializer for __FUNCTION__>_24
+      15  ?<Initializer for __FUNCTION__>_25
+      15  ?<Initializer for __FUNCTION__>_26
+      15  ?<Initializer for __FUNCTION__>_27
+      15  ?<Initializer for __FUNCTION__>_28
+      18  ?<Initializer for __FUNCTION__>_29
+      16  ?<Initializer for __FUNCTION__>_3
+      18  ?<Initializer for __FUNCTION__>_30
+      18  ?<Initializer for __FUNCTION__>_31
+      19  ?<Initializer for __FUNCTION__>_32
+      17  ?<Initializer for __FUNCTION__>_33
+       5  ?<Initializer for __FUNCTION__>_34
+      21  ?<Initializer for __FUNCTION__>_35
+      12  ?<Initializer for __FUNCTION__>_36
+      14  ?<Initializer for __FUNCTION__>_37
+      13  ?<Initializer for __FUNCTION__>_38
+       7  ?<Initializer for __FUNCTION__>_39
+      16  ?<Initializer for __FUNCTION__>_4
+      15  ?<Initializer for __FUNCTION__>_40
+      11  ?<Initializer for __FUNCTION__>_41
+      13  ?<Initializer for __FUNCTION__>_5
+      18  ?<Initializer for __FUNCTION__>_6
+      14  ?<Initializer for __FUNCTION__>_7
+      12  ?<Initializer for __FUNCTION__>_8
+      14  ?<Initializer for __FUNCTION__>_9
      476  AES_CCMDecrypt
        6  AES_CCMDecrypt::?relay
      446  AES_CCMEncrypt
@@ -5277,7 +5241,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  AES_init::?relay
      461  CBCMAC_buf_encrypt
        6  CBCMAC_buf_encrypt::?relay
-     397  CCM_code_decode_test
+     433  CCM_code_decode_test
        6  CCM_code_decode_test::?relay
      238  CCM_test
        6  CCM_test::?relay
@@ -5286,7 +5250,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        4  COMPARE_TIME
      600  CTR_enc_decrypt
        6  CTR_enc_decrypt::?relay
-      88  Callback_execution
+      87  Callback_execution
        6  Callback_execution::?relay
        4  DELAY_CALIBRATE_TICS
        1  DMA0CFGH
@@ -5302,9 +5266,9 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        1  ENCCS
       28  ETH_Init
        6  ETH_Init::?relay
-     322  ETH_RX_HNDL
+     319  ETH_RX_HNDL
        6  ETH_RX_HNDL::?relay
-      81  ETH_Set_RXCallback
+      80  ETH_Set_RXCallback
        6  ETH_Set_RXCallback::?relay
        2  EventCallback
        2  FirstTask
@@ -5317,23 +5281,23 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
       16  KEY
       37  LED
        6  LED::?relay
-     449  LLC_AddTask
+     465  LLC_AddTask
        6  LLC_AddTask::?relay
       16  LLC_GetTaskLen
        6  LLC_GetTaskLen::?relay
       50  LLC_Init
        6  LLC_Init::?relay
-      99  LLC_RX_HNDL
+      98  LLC_RX_HNDL
        6  LLC_RX_HNDL::?relay
       67  LLC_RunTimeAlloc
        6  LLC_RunTimeAlloc::?relay
       20  LLC_SE_HNDL
        6  LLC_SE_HNDL::?relay
-      81  LLC_SetRXCallback
+      80  LLC_SetRXCallback
        6  LLC_SetRXCallback::?relay
-     318  LLC_Shelduler
+     317  LLC_Shelduler
        6  LLC_Shelduler::?relay
-     149  LLC_TimeAlloc
+     148  LLC_TimeAlloc
        6  LLC_TimeAlloc::?relay
       50  LoadTXData
        6  LoadTXData::?relay
@@ -5342,26 +5306,26 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  MAC_ACK_Recv::?relay
       49  MAC_ACK_Send
        6  MAC_ACK_Send::?relay
-     122  MAC_CloseRXSlot
+     121  MAC_CloseRXSlot
        6  MAC_CloseRXSlot::?relay
-     111  MAC_GetRXState
+     110  MAC_GetRXState
        6  MAC_GetRXState::?relay
-     111  MAC_GetTXState
+     110  MAC_GetTXState
        6  MAC_GetTXState::?relay
       82  MAC_Init
        6  MAC_Init::?relay
-     165  MAC_OpenRXSlot
+     164  MAC_OpenRXSlot
        6  MAC_OpenRXSlot::?relay
-     152  MAC_RX_HNDL
+     151  MAC_RX_HNDL
        6  MAC_RX_HNDL::?relay
-     336  MAC_Send
+     334  MAC_Send
        6  MAC_Send::?relay
       19  MAC_SetRXCallback
        6  MAC_SetRXCallback::?relay
       19  MAC_Set_isACK_OK_Callback
        6  MAC_Set_isACK_OK_Callback::?relay
        4  MAC_TIMER_MAX
-     808  MAC_TX_HNDL
+     806  MAC_TX_HNDL
        6  MAC_TX_HNDL::?relay
       12  MyLowLevelPutchar
        6  MyLowLevelPutchar::?relay
@@ -5375,11 +5339,11 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  NT_IRQEnable::?relay
       54  NT_Init
        6  NT_Init::?relay
-     130  NT_SetCompare
+     129  NT_SetCompare
        6  NT_SetCompare::?relay
       19  NT_SetEventCallback
        6  NT_SetEventCallback::?relay
-     157  NT_SetTime
+     156  NT_SetTime
        6  NT_SetTime::?relay
      126  NT_WaitTime
        6  NT_WaitTime::?relay
@@ -5406,7 +5370,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  RI_GetUptime::?relay
      581  RI_Receive
        6  RI_Receive::?relay
-     217  RI_Send
+     216  RI_Send
        6  RI_Send::?relay
       32  RI_SetChannel
        6  RI_SetChannel::?relay
@@ -5440,10 +5404,10 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        1  ST0
        1  ST1
        1  ST2
-       2  STACK_FAILURE
+      70  STACK_FAILURE
        6  STACK_FAILURE::?relay
        1  STLOAD
-     287  SendData
+     286  SendData
        6  SendData::?relay
       12  SetCPU32M
        6  SetCPU32M::?relay
@@ -5456,9 +5420,9 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  TIC_GetNonce::?relay
       17  TIC_GetRTC
        6  TIC_GetRTC::?relay
-      99  TIC_GetRXState
+      98  TIC_GetRXState
        6  TIC_GetRXState::?relay
-      99  TIC_GetTXState
+      98  TIC_GetTXState
        6  TIC_GetTXState::?relay
        7  TIC_GetTimeStampTS0
        6  TIC_GetTimeStampTS0::?relay
@@ -5466,7 +5430,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  TIC_GetTimer::?relay
       17  TIC_GetUptime
        6  TIC_GetUptime::?relay
-     178  TIC_HW_Timer_IRQ
+     196  TIC_HW_Timer_IRQ
        6  TIC_HW_Timer_IRQ::?relay
       39  TIC_Init
        6  TIC_Init::?relay
@@ -5474,17 +5438,17 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  TIC_SetNonce::?relay
       40  TIC_SetRTC
        6  TIC_SetRTC::?relay
-      81  TIC_SetRXCallback
+      80  TIC_SetRXCallback
        6  TIC_SetRXCallback::?relay
-     129  TIC_SetRXState
+     128  TIC_SetRXState
        6  TIC_SetRXState::?relay
-      81  TIC_SetSECallback
+      80  TIC_SetSECallback
        6  TIC_SetSECallback::?relay
-      81  TIC_SetTXCallback
+      80  TIC_SetTXCallback
        6  TIC_SetTXCallback::?relay
-     129  TIC_SetTXState
+     128  TIC_SetTXState
        6  TIC_SetTXState::?relay
-      94  TIC_SetTimer
+      93  TIC_SetTimer
        6  TIC_SetTimer::?relay
       92  TIC_TDMAShelduler
        6  TIC_TDMAShelduler::?relay
@@ -5554,14 +5518,14 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  calcCompareTime::?relay
       94  clocks_update
        6  clocks_update::?relay
-     164  extract_header
+     162  extract_header
        6  extract_header::?relay
        1  finised
-     368  frame_addHeader
+     367  frame_addHeader
        6  frame_addHeader::?relay
-     169  frame_create
+     168  frame_create
        6  frame_create::?relay
-     216  frame_delHeader
+     215  frame_delHeader
        6  frame_delHeader::?relay
       71  frame_delete
        6  frame_delete::?relay
@@ -5593,7 +5557,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        1  led_stat
       70  loadTimerCompare
        6  loadTimerCompare::?relay
-     108  main
+     137  main
        6  main::?relay
       21  malloc
        6  malloc::?relay
@@ -5606,7 +5570,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        1  nbrTasks
       17  nwDebugerInit
        6  nwDebugerInit::?relay
-     165  one_speed_test
+     183  one_speed_test
        6  one_speed_test::?relay
       78  random_core_init
        6  random_core_init::?relay
@@ -5621,13 +5585,13 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        4  ret_val
        3  send_ack
        6  send_ack::?relay
-     121  setFreq
+     120  setFreq
        6  setFreq::?relay
       67  set_capture_time
        6  set_capture_time::?relay
      114  single_enc_dec_test
        6  single_enc_dec_test::?relay
-     745  speed_test
+     835  speed_test
        6  speed_test::?relay
        3  strip_header
        6  strip_header::?relay
@@ -5662,7 +5626,7 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        1  tasksBLOCK
       74  test_1
       76  test_1
-     271  test_1
+     307  test_1
        6  test_1::?relay
        6  test_1::?relay
        6  test_1::?relay
@@ -5672,11 +5636,11 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        6  test_3::?relay
      201  test_4
        6  test_4::?relay
-     194  test_ACK_SEND
+     212  test_ACK_SEND
        6  test_ACK_SEND::?relay
-     194  test_TS_Send
+     212  test_TS_Send
        6  test_TS_Send::?relay
-     410  test_create
+     446  test_create
        6  test_create::?relay
      143  test_hw
        6  test_hw::?relay
@@ -5696,21 +5660,22 @@ Warning[Pe177]: variable "ts0" was declared but never referenced
        4  val
        4  validate
        6  validate::?relay
+     580  -- Other
 
  
- 20 143 bytes in segment BANKED_CODE
+ 20 490 bytes in segment BANKED_CODE
   1 008 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
      60 bytes in segment NEAR_CODE
      35 bytes in segment SFR_AN
-  2 855 bytes in segment XDATA_I
-  2 855 bytes in segment XDATA_ID
+  2 803 bytes in segment XDATA_I
+  2 803 bytes in segment XDATA_ID
     695 bytes in segment XDATA_Z
  
-  3 837 bytes of CODE     memory (+ 89 bytes shared)
-      0 bytes of DATA     memory (+ 35 bytes shared)
- 20 099 bytes of HUGECODE memory (+ 44 bytes shared)
-  3 482 bytes of XDATA    memory (+ 68 bytes shared)
+  3 785 bytes of CODE     memory (+  89 bytes shared)
+      0 bytes of DATA     memory (+  35 bytes shared)
+ 20 378 bytes of HUGECODE memory (+ 112 bytes shared)
+  3 430 bytes of XDATA    memory (+  68 bytes shared)
 
 Errors: none
-Warnings: 14
+Warnings: 16

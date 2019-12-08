@@ -25,8 +25,7 @@ while(1)
   res = MAC_ACK_Send(fr);
   TIM_TimeStamp(&stop);
   uint32_t passed = TIM_passedTime(&start, &stop);
-  LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-      "MAC_ACK_Send time = %lu. Success %d \n", passed, res);
+  LOG_ON("MAC_ACK_Send time = %lu. Success %d", passed, res);
 }
 }
 
@@ -54,7 +53,7 @@ static void test_TS_Send(void)
       fr->meta.TS = TS;
       fr->meta.CH = CH11;
       MAC_Send(fr, attempts);
-      LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Frame puted to MAC layer at %lu sec\n", TIC_GetRTC());
+      LOG_ON("Frame puted to MAC layer at %lu sec", TIC_GetRTC());
     }
   }
 }

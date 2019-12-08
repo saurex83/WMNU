@@ -3,11 +3,7 @@
 #include "stdint.h"
 #include "stdio.h"
 
-
-#define UART_DEBUG // Если определено, то вывод в uart
-
-// Настройка выводов SIG и порта uart для отладки
-
+// Настройка порта uart для отладки
 static void uart_init(void)
 {
   // Выбор расположения UART на выводах
@@ -41,7 +37,7 @@ void nwDebugerInit(void)
 
 __attribute__((weak)) void STACK_FAILURE(char* msg)
 {
-  LOG(MSG_ON | MSG_ALARM | MSG_ALL, "STACK FAILURE. HALT\n");
+  LOG_ON("STACK FAILURE. HALT");
   while(1);
 }
 

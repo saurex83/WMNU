@@ -94,7 +94,7 @@ uint32_t TIC_TimeUsFromTS0()
 
 void TIC_SetTimer(uint16_t ticks)
 {
-  ASSERT_HALT(ticks < MAX_TICKS, "Ticks not in range");
+  ASSERT(ticks < MAX_TICKS);
   if (ticks >= MAX_TICKS)
     return ;
   
@@ -112,7 +112,7 @@ bool TIC_SetTXState(uint8_t TS, bool state)
   {
     return false;
   }
-  ASSERT_HALT(TS<MAX_TS, "TS not in range");
+  ASSERT(TS<MAX_TS);
   
   if (state)
     TSStateTable[TS] |= TS_TX;
@@ -128,7 +128,7 @@ bool TIC_SetRXState(uint8_t TS, bool state)
   {
     return false;
   }
-  ASSERT_HALT(TS<MAX_TS, "TS not in range");
+  ASSERT(TS<MAX_TS);
   
   if (state)
     TSStateTable[TS] |= TS_RX;
@@ -144,7 +144,7 @@ bool TIC_GetTXState(uint8_t TS)
   {
     return false;
   }
-  ASSERT_HALT(TS<MAX_TS, "TS not in range");
+  ASSERT(TS<MAX_TS);
   
   return (TSStateTable[TS] & TS_TX) ;
 }
@@ -155,26 +155,26 @@ bool TIC_GetRXState(uint8_t TS)
   {
     return false;
   }
-  ASSERT_HALT(TS<MAX_TS, "TS not in range");
+  ASSERT(TS<MAX_TS);
   
   return (TSStateTable[TS] & TS_RX) ;
 }
 
 void TIC_SetRXCallback(void (*fn)(uint8_t TS))
 {
-  ASSERT_HALT(fn != NULL, "Fn is NULL");
+  ASSERT(fn != NULL);
   RXCallback = fn;
 }
 
 void TIC_SetTXCallback(void (*fn)(uint8_t TS))
 {
-  ASSERT_HALT(fn != NULL, "Fn is NULL");
+  ASSERT(fn != NULL);
   TXCallback = fn;
 }
 
 void TIC_SetSECallback(void (*fn)(uint8_t TS))
 {
-  ASSERT_HALT(fn != NULL, "Fn is NULL");
+  ASSERT(fn != NULL);
   SECallback = fn;
 }
 
@@ -225,7 +225,7 @@ static inline void set_capture_time(uint8_t TS)
 {
   uint16_t ct = FULL_SLOT*(uint16_t)TS;
   
-  LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "Set compare = %d, TS = %d \r\n", ct, TS);
+  LOG_OFF("Set compare = %d, TS = %d \r\n", ct, TS);
   // Установка прерывания на нужный слот
   NT_SetCompare(FULL_SLOT*(uint16_t)TS);
 }
@@ -247,7 +247,7 @@ static void TIC_TDMAShelduler(uint8_t TS)
 static inline void Callback_execution(void (*fn)(uint8_t TS), uint8_t TS)
 {
   // Помошник вызова функций. Упрощает проверки
-  ASSERT_HALT(fn != NULL, "Callback is NULL");
+  ASSERT(fn != NULL);
   if (fn == NULL)
     return;
   fn(TS);
@@ -270,7 +270,7 @@ static void TIC_HW_Timer_IRQ(uint16_t ticks)
   if (c_TS == NO_TIME_SLOT)
   {
     TIC_TDMAShelduler(c_TS);
-    LOG(MSG_ON | MSG_INFO | MSG_TRACE, "TS = 255 \r\n");
+    LOG_ON("TS = 255 \r\n");
     return;
   }
     
