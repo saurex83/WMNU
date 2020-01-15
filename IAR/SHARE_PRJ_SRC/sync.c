@@ -7,6 +7,8 @@
 #include "TIC.h"
 #include "RADIO.h"
 #include "NTMR.h"
+#include "config.h"
+#include "ioCC2530.h" // ОТЛАДДКА
 
 void SY_Init(void);
 void SY_Reset(void);
@@ -14,6 +16,7 @@ void SY_setIV(void* ptr_IV);
 void SY_setKEY(void* ptr_KEY);
 bool SY_SYNC_NETWORK(uint16_t *panid,uint16_t timeout);
 void SY_Enable(bool en);
+uint32_t SY_sync_sended(void);
 
 static void SY_TS1_HNDL_MASTER(void);
 static void SY_TS1_HNDL_SLAVE(void);
@@ -22,9 +25,12 @@ static void SY_TIME_ALLOC_MASTER(void);
 static void BitRawDecrypt(uint8_t *src, uint8_t size);
 static void BitRawCrypt(uint8_t *src, uint8_t size);
 static frame_s* get_sync(uint16_t timeout);
+static bool send_sync(void);
 
 static uint32_t LAST_SYNC_TIME = 0; //!< Время последней синхр.
 static uint32_t NEXT_SYNC_TIME = 0; //!< Время следующей синхр.
+static uint32_t SYNC_SENDED = 0; //!< Количество успешно ретранслированых пакетов
+static bool NEED_SEND_SYNC = false; //!< Нужно отослать синхропакет
 static bool SY_ENABLE_MODULE = false;
 
 // Ключ потокового шифрования и вектор иницилизации
@@ -36,6 +42,7 @@ static uint16_t SYNC_ACCURATE_NETWORK_TIME;
 
 #define SYNC_TS 1 //!< Номер временного слота синхросигнала
 #define SYNC_RECV_TIMEOUT 2 // Время ожидания приема пакета в мс
+#define SYNC_TIMEOUT 110//!< Время в сек после которого сеть не синхронна
 
 typedef struct // Формат структуры пакета синхронизации
 {
@@ -43,12 +50,11 @@ typedef struct // Формат структуры пакета синхрони�
     uint32_t magic;
 } __attribute__((packed)) SYNC_s;
 
-#define SYNC_CHANNEL 28 // Номер канала с синхросигналами
 #define MAGIC 0x19833891 // Проверка что пакет действительно sync
-#define RAND_SYNC_RX_DELAY  2 // Случайная задержка приема
-#define RAND_SYNC_TX_DELAY  2 // Случайная задержка передачи rand()%10 + 5
+#define RAND_SYNC_RX_DELAY  9 // Фиксированое время приема rand()%10 + 5
+#define RAND_SYNC_TX_DELAY  10 // Фиксированное время передачи сигнала
 // Максимальное отклонение при приеме sync в тактах сети
-#define RAND_SYNC_TIME_DRIFT 35  
+#define SYNC_TIME_DRIFT 35  
 
 #ifdef GATEWAY
   #define SYNC_MASTER     // Если определено, то узел является шлюзом
@@ -56,6 +62,9 @@ typedef struct // Формат структуры пакета синхрони�
 
 void SY_Init(void)
 {
+  SYNC_SENDED = 0;
+  LAST_SYNC_TIME = 0;
+  NEXT_SYNC_TIME = 0;
   SY_ENABLE_MODULE = false;
   SYNC_ACCURATE_NETWORK_TIME = TIC_SlotTime(SYNC_TS) + TIC_SlotActivityTime()/2;
 #ifdef SYNC_MASTER
@@ -69,12 +78,24 @@ void SY_Init(void)
 
 void SY_Reset(void)
 {
+  SYNC_SENDED = 0;
+  LAST_SYNC_TIME = 0;
+  NEXT_SYNC_TIME = 0;
   SY_ENABLE_MODULE = false;
 }
 
 void SY_Enable(bool en)
 {
   SY_ENABLE_MODULE = en;
+}
+
+/**
+@brief Количество успешно переданных пакетов синхронизации
+@return Количечтво пакетов
+*/
+uint32_t SY_sync_sended(void)
+{
+  return SYNC_SENDED;
 }
 
 /**
@@ -103,12 +124,29 @@ static void SY_TIME_ALLOC_SLAVE(void)
   if (!SY_ENABLE_MODULE) // Модуль отключен
     return;  
   
+  // Потеря синхронизации
+  if ( (TIC_GetUptime() - LAST_SYNC_TIME) > SYNC_TIMEOUT)
+  {
+      LOG_ON("Network out of sync.");
+      return;
+  }
+  
   if (TIC_GetRXState(SYNC_TS)) // Если прием уже активен
     return;
   
-  if (TIC_GetRTC() > NEXT_SYNC_TIME)
+  // Ретрансляция синхропакета
+  if (NEED_SEND_SYNC)
+  {
+    LOG_OFF("Need to send resync");
+    TIC_SetRXState(SYNC_TS, true);
+    return;
+  }
+  
+  // Необходимо начать процесс синхронизации
+  if (TIC_GetUptime() > NEXT_SYNC_TIME)
   {
     LOG_ON("Begin resync");
+    P1_0 = !true; 
     TIC_SetRXState(SYNC_TS, true);
   }
 }
@@ -136,19 +174,35 @@ static void SY_TIME_ALLOC_MASTER(void)
   TIC_SetTXState(SYNC_TS,true); // Разрешаем передачу
    
    // Определяем следующее время передачи
-   sync_send_time += RAND_SYNC_TX_DELAY;
+   sync_send_time = now + RAND_SYNC_TX_DELAY;
 }
 
+/**
+@brief Вызывает при активности TS1 RX или TX
+@detail Выполняет две функции: синхронизацию с сетью или передачу синхр.
+*/
 static void SY_TS1_HNDL_SLAVE(void)
 {
   if (!SY_ENABLE_MODULE) // Модуль отключен
     return;
     
-  //  Ждем начала точного времени начала передачи сигнала заранее
-  NT_WaitTime(SYNC_ACCURATE_NETWORK_TIME - RAND_SYNC_TIME_DRIFT);
+  // Нужно отослать синхропакет
+  if (NEED_SEND_SYNC)
+  {
+    if (send_sync())
+      SYNC_SENDED++;
+    LOG_ON("Resync TX. CNT=%d",(uint16_t)SYNC_SENDED);
+    NEED_SEND_SYNC = false;
+    TIC_SetRXState(SYNC_TS, false);
+  }
+  
+  // Ждем начала точного времени начала передачи сигнала заранее
+  // Время в тактах сети
+  NT_WaitTime(SYNC_ACCURATE_NETWORK_TIME - SYNC_TIME_DRIFT);
  
-  RI_SetChannel(SYNC_CHANNEL);
-  frame_s *fr_SYNC = get_sync(SYNC_RECV_TIMEOUT); //SYNC_RECV_TIMEOUT
+  RI_SetChannel(CONFIG.sync_channel);
+  // Время в мс
+  frame_s *fr_SYNC = get_sync(SYNC_RECV_TIMEOUT); 
   
   if (!fr_SYNC)
     return;
@@ -157,22 +211,29 @@ static void SY_TS1_HNDL_SLAVE(void)
   sync = (SYNC_s*)fr_SYNC->payload;
   
   // Проверяем принадлежность пакета
-  if (( sync->panid != 0x123) && (sync->magic != MAGIC))
+  if (( sync->panid != CONFIG.panid) && (sync->magic != MAGIC))
   {
     frame_delete(fr_SYNC);
     return;
   }
   
   // Синхронизируемся
- // TIC_SetTimer(fr_SYNC->meta.TIMESTAMP);
+  // Время прошедшее с момента приема пакета в тактах сети
   uint16_t delta = TIC_GetTimer() - fr_SYNC->meta.TIMESTAMP;
-//  TIC_SetTimer(819 + delta);
+  TIC_SetTimer(SYNC_ACCURATE_NETWORK_TIME + delta);
   
-  LAST_SYNC_TIME = TIC_GetRTC();
+  LAST_SYNC_TIME = TIC_GetUptime();
   NEXT_SYNC_TIME = LAST_SYNC_TIME + RAND_SYNC_RX_DELAY; 
- // TIC_SetRXState(SYNC_TS, false);
-  LOG_ON("Node Synced. D= %d", fr_SYNC->meta.TIMESTAMP);
+  TIC_SetRXState(SYNC_TS, false);
+  LOG_ON("Node Synced. TS=%d, AT=%d, DEL=%d, AD=%d, RTC=%d, NRTC=%d",
+         fr_SYNC->meta.TIMESTAMP,SYNC_ACCURATE_NETWORK_TIME, delta,
+         SYNC_ACCURATE_NETWORK_TIME - fr_SYNC->meta.TIMESTAMP, 
+         (uint16_t)LAST_SYNC_TIME,
+         (uint16_t)NEXT_SYNC_TIME);
   frame_delete(fr_SYNC);
+  // После приема нужно ретранслировать синхропакет
+  NEED_SEND_SYNC = true; 
+P1_0 = !false; // ОТЛАДКА
 }
 
 /**
@@ -183,9 +244,24 @@ static void SY_TS1_HNDL_MASTER(void)
 {
   if (!SY_ENABLE_MODULE) // Модуль отключен
     return;  
+   
+P1_0 = !true; //ОТЛАДКА  
+  if (send_sync())
+    SYNC_SENDED++;
   
+  LOG_ON("Sync send."); 
+P1_0 = !false; //ОТЛАДКА
+  
+  TIC_SetTXState(SYNC_TS, false);
+}
+
+/**
+@brief Создать и отправить синхропакет
+*/
+static bool send_sync(void)
+{
   SYNC_s sync;
-  sync.panid = 0x123;
+  sync.panid = CONFIG.panid;
   sync.magic = MAGIC;
   
   frame_s *fr_SYNC = frame_create();
@@ -196,15 +272,12 @@ static void SY_TS1_HNDL_MASTER(void)
   BitRawCrypt(fr_SYNC->payload, fr_SYNC->len);
 #endif
   
-  RI_SetChannel(SYNC_CHANNEL);
+  RI_SetChannel(CONFIG.sync_channel);
   bool res = RI_Send(fr_SYNC);
- 
-  LOG_ON("Sync send T=%d", fr_SYNC->meta.TIMESTAMP); 
-  frame_delete(fr_SYNC);
   
-  TIC_SetTXState(SYNC_TS, false);
+  frame_delete(fr_SYNC);
+  return res;
 }
-
 
 /**
 @brief Прием пакет синхронизации
@@ -213,7 +286,7 @@ static void SY_TS1_HNDL_MASTER(void)
 */
 static frame_s* get_sync(uint16_t timeout)
 {
-  RI_SetChannel(SYNC_CHANNEL);
+  RI_SetChannel(CONFIG.sync_channel);
   frame_s *fr_SYNC = RI_Receive(timeout);
   
   // Если пакета нет, выходим из обработчика
@@ -246,7 +319,7 @@ bool SY_SYNC_NETWORK(uint16_t *panid,uint16_t timeout)
   // Или об этом будет заботиться верхний уровень?
   TIC_CloseAllState();
   
-  RI_SetChannel(SYNC_CHANNEL);
+  RI_SetChannel(CONFIG.sync_channel);
   
   TimeStamp_s begin, end;
   TIM_TimeStamp(&begin);
@@ -279,13 +352,15 @@ bool SY_SYNC_NETWORK(uint16_t *panid,uint16_t timeout)
     
     // Возвращаем результат
     *panid = sync->panid;
+    CONFIG.panid = sync->panid;
     net_found = true;
     
     // Синхронизируемся с сетью
-   // TIC_SetTimer(fr_SYNC->meta.TIMESTAMP);
+    // Время прошедшее с момента приема пакета в тактах сети
     uint16_t delta = TIC_GetTimer() - fr_SYNC->meta.TIMESTAMP;
-    TIC_SetTimer(819);
-    LAST_SYNC_TIME = TIC_GetRTC();
+    TIC_SetTimer(SYNC_ACCURATE_NETWORK_TIME + delta);
+    
+    LAST_SYNC_TIME = TIC_GetUptime();
     NEXT_SYNC_TIME = LAST_SYNC_TIME + RAND_SYNC_RX_DELAY; 
     frame_delete(fr_SYNC);
     break;

@@ -16,55 +16,18 @@
 #include "config.h"
 #include "ioCC2530.h"
 
-#define EASY_CASE_SET(NAME, VAL) case NAME: \
-                              MG_regs.NAME = VAL; break;
-#define EASY_CASE_GET(NAME)   case NAME: \
-                                return MG_regs.NAME;
-
-          
 static void MG_Init();
 static void MG_Reset();
 static void re_start();
 static bool network_discovery();
 
-static bool MG_MODULES_INITED = false;
+static bool MG_MODULES_INITED = false; //!< Были ли запущенны аппаратные модули
 
 // Публичные методы
-MG_state_e MG_Net_State();
 bool MG_Connect();
-void MG_Set_State(MG_state_e MG_state, bool state);
-bool MG_Get_State(MG_state_e MG_state);
 
 // Переменные модуля
-static struct
-{
-  // Состояния системы
-  bool MG_connected:1;
-  bool MG_disconnected:1;
-  bool MG_disable:1;    // Команда отключения модулей
-    
-} MG_regs;
 
-
-void MG_Set_State(MG_state_e MG_state, bool state)
-{
-  switch (MG_state)
-  {
-    EASY_CASE_SET(MG_connected, state);
-    EASY_CASE_SET(MG_disconnected, state);
-  }
-}
-
-bool MG_Get_State(MG_state_e MG_state)
-{
-  switch (MG_state)
-  {
-    EASY_CASE_GET(MG_connected);
-    EASY_CASE_GET(MG_disconnected);
-  default:
-    return false;
-  }
-}
 
 static void MG_Init()
 {

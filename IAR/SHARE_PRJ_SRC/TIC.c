@@ -342,9 +342,9 @@ static void TIC_HW_Timer_IRQ(uint16_t ticks)
   {
     TIM_TimeStamp(&TimeStampTS0); // Первым делом обновим отметку точного времени
     clocks_update();
-    P1_0 = !true;
-    LOG_ON("TS0");
-    P1_0 = !false;;
+ //   P1_0 = !true;
+    LOG_OFF("TS0");
+ //   P1_0 = !false;;
   }
   // Если что то пошло не так и мы промахнулись мимо слота
   // запускаем планировщик заново

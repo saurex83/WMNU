@@ -15,4 +15,6 @@ void CF_init()
   memcpy(CONFIG.stream_iv,  default_iv, 16);
   CONFIG.node_ver = NODE_VER;
   CONFIG.node_type = NODE_TYPE;
+  CONFIG.sync_channel = DEFAULT_SYNC_CHANNEL;
+  CONFIG.panid = DEFAULT_PANID;
 }

@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               01/Jan/2020  22:36:11
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               15/Jan/2020  20:35:21
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,7 +14,7 @@
 #    Source file        =  
 #        \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW6357.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW120B.tmp
 #        ("\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c" -lc
 #        "\\vmware-host\Shared
@@ -699,7 +699,14 @@
      15            memcpy(CONFIG.stream_iv,  default_iv, 16);
      16            CONFIG.node_ver = NODE_VER;
      17            CONFIG.node_type = NODE_TYPE;
-     18          }
+     18            CONFIG.sync_channel = DEFAULT_SYNC_CHANNEL;
+     19            CONFIG.panid = DEFAULT_PANID;
+                                  ^
+Warning[Pe069]: integer conversion resulted in truncation
+          detected during compilation of secondary translation unit
+                    "\\vmware-host\Shared
+                    Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\config.c"
+     20          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\delays.c
       1          /*!
       2          \file  Модуль измерения интервалов времени и функция задержки времени
@@ -1775,162 +1782,125 @@ Warning[Pe940]: missing return statement at end of non-void function
      16          #include "config.h"
      17          #include "ioCC2530.h"
      18          
-     19          #define EASY_CASE_SET(NAME, VAL) case NAME: \
-     20                                        MG_regs.NAME = VAL; break;
-     21          #define EASY_CASE_GET(NAME)   case NAME: \
-     22                                          return MG_regs.NAME;
+     19          static void MG_Init();
+     20          static void MG_Reset();
+     21          static void re_start();
+     22          static bool network_discovery();
      23          
-     24                    
-     25          static void MG_Init();
-     26          static void MG_Reset();
-     27          static void re_start();
-     28          static bool network_discovery();
-     29          
-     30          static bool MG_MODULES_INITED = false;
+     24          static bool MG_MODULES_INITED = false; //!< Были ли запущенны аппаратные модули
+     25          
+     26          // Публичные методы
+     27          bool MG_Connect();
+     28          
+     29          // Переменные модуля
+     30          
      31          
-     32          // Публичные методы
-     33          MG_state_e MG_Net_State();
-     34          bool MG_Connect();
-     35          void MG_Set_State(MG_state_e MG_state, bool state);
-     36          bool MG_Get_State(MG_state_e MG_state);
-     37          
-     38          // Переменные модуля
-     39          static struct
-     40          {
-     41            // Состояния системы
-     42            bool MG_connected:1;
-     43            bool MG_disconnected:1;
-     44            bool MG_disable:1;    // Команда отключения модулей
-     45              
-     46          } MG_regs;
-     47          
-     48          
-     49          void MG_Set_State(MG_state_e MG_state, bool state)
-     50          {
-     51            switch (MG_state)
-     52            {
-     53              EASY_CASE_SET(MG_connected, state);
-     54              EASY_CASE_SET(MG_disconnected, state);
-     55            }
-     56          }
-     57          
-     58          bool MG_Get_State(MG_state_e MG_state)
-     59          {
-     60            switch (MG_state)
-     61            {
-     62              EASY_CASE_GET(MG_connected);
-     63              EASY_CASE_GET(MG_disconnected);
-     64            default:
-     65              return false;
-     66            }
-     67          }
-     68          
-     69          static void MG_Init()
-     70          {
-     71            CF_init();
-     72            NT_Init();
-     73            TIM_init();
-     74            TIC_Init();
-     75            RI_init();
-     76            AES_init();
-     77            MAC_Init();
-     78            SY_Init();
-     79            LLC_Init();
-     80            // TODO Необходимо очищать все ранее выделеную память malloc
-     81          }
-     82          
-     83          static void MG_Reset()
-     84          {   
-     85            TIC_Reset();
-     86            MAC_Reset();
-     87            SY_Reset();
-     88            LLC_Reset();
-     89          }
-     90          
-     91          static void re_start()
-     92          {
-     93              if (!MG_MODULES_INITED)
-     94            {
-     95              MG_Init();
-     96              MG_MODULES_INITED = true;
-     97            }
-     98            else
-     99              MG_Reset(); 
-    100              
-    101            CF_init();
-    102            MAC_setIV(CONFIG.stream_iv);
-    103            MAC_setKEY(CONFIG.stream_key);
-    104            SY_setIV(CONFIG.stream_iv);
-    105            SY_setKEY(CONFIG.stream_key);
-    106          }
-    107          
-    108          /**
-    109          @brief Алгоритм подключения к сети
-    110          */
-    111          static bool network_discovery()
-    112          {
-    113            uint16_t panid;
-    114            bool con = false;
-    115            
-    116            // Тупой алгоритм поиска сети.
-    117            while (!con)
-    118            {
-    119              con = SY_SYNC_NETWORK(&panid, 5000);
-    120            }
-    121            return con;
-    122          }
-    123          
-    124          /**
-    125          @brief Создание сети в режиме шлюза
-    126          */
-    127          static bool master_mode()
-    128          {
-    129            // Включает обработку начала слота TS1 для программы собранной с ключом 
-    130            // GATEWAY. MAC_TS1_HNDL_MASTER будет создавать пакеты синхронизации.
-    131            MAC_Enable(true);
-    132            SY_Enable(true);
-    133            return true;
-    134          }
-    135          
-    136          /**
-    137          @brief Создание сети в режиме узла
-    138          */
-    139          static bool slave_mode()
-    140          {
-    141            // В режиме slave сначало нужно подключисться к сети
-    142            network_discovery();
-    143            
-    144            // После синхронизации с сетью разрешаем обработку временных слотов
-    145            // Программа собрана без ключа GATEWAY и активной функцией обработки TS1
-    146            // будет MAC_TS1_HNDL_SLAVE. Она отвечает за поддержание синхронизации
-    147            // и периодиескую ректрансляцию пакетов.
-    148            
-    149            MAC_Enable(true);
-    150            SY_Enable(true);
-    151            return true;
-    152          }
-    153          
-    154          bool MG_Connect()
-    155          {
-    156            EA = 0;
-    157            re_start();
-    158            EA = 1;
-    159            if (frame_getCount())
-    160            {
-    161              LOG_ON("Frame_s count: %d \r\n",frame_getCount());
-    162              return false;
-    163            }
-    164            
-    165          #ifdef GATEWAY
-    166              bool con = master_mode();
-    167          #else
-    168              bool con = slave_mode();  
-    169          #endif
-    170              
-    171              return con;
-    172          }
-    173           
-    174            
+     32          static void MG_Init()
+     33          {
+     34            CF_init();
+     35            NT_Init();
+     36            TIM_init();
+     37            TIC_Init();
+     38            RI_init();
+     39            AES_init();
+     40            MAC_Init();
+     41            SY_Init();
+     42            LLC_Init();
+     43            // TODO Необходимо очищать все ранее выделеную память malloc
+     44          }
+     45          
+     46          static void MG_Reset()
+     47          {   
+     48            TIC_Reset();
+     49            MAC_Reset();
+     50            SY_Reset();
+     51            LLC_Reset();
+     52          }
+     53          
+     54          static void re_start()
+     55          {
+     56              if (!MG_MODULES_INITED)
+     57            {
+     58              MG_Init();
+     59              MG_MODULES_INITED = true;
+     60            }
+     61            else
+     62              MG_Reset(); 
+     63              
+     64            CF_init();
+     65            MAC_setIV(CONFIG.stream_iv);
+     66            MAC_setKEY(CONFIG.stream_key);
+     67            SY_setIV(CONFIG.stream_iv);
+     68            SY_setKEY(CONFIG.stream_key);
+     69          }
+     70          
+     71          /**
+     72          @brief Алгоритм подключения к сети
+     73          */
+     74          static bool network_discovery()
+     75          {
+     76            uint16_t panid;
+     77            bool con = false;
+     78            
+     79            // Тупой алгоритм поиска сети.
+     80            while (!con)
+     81            {
+     82              con = SY_SYNC_NETWORK(&panid, 5000);
+     83            }
+     84            return con;
+     85          }
+     86          
+     87          /**
+     88          @brief Создание сети в режиме шлюза
+     89          */
+     90          static bool master_mode()
+     91          {
+     92            // Включает обработку начала слота TS1 для программы собранной с ключом 
+     93            // GATEWAY. MAC_TS1_HNDL_MASTER будет создавать пакеты синхронизации.
+     94            MAC_Enable(true);
+     95            SY_Enable(true);
+     96            return true;
+     97          }
+     98          
+     99          /**
+    100          @brief Создание сети в режиме узла
+    101          */
+    102          static bool slave_mode()
+    103          {
+    104            // В режиме slave сначало нужно подключисться к сети
+    105            network_discovery();
+    106            
+    107            // После синхронизации с сетью разрешаем обработку временных слотов
+    108            // Программа собрана без ключа GATEWAY и активной функцией обработки TS1
+    109            // будет MAC_TS1_HNDL_SLAVE. Она отвечает за поддержание синхронизации
+    110            // и периодиескую ректрансляцию пакетов.
+    111            
+    112            MAC_Enable(true);
+    113            SY_Enable(true);
+    114            return true;
+    115          }
+    116          
+    117          bool MG_Connect()
+    118          {
+    119            EA = 0;
+    120            re_start();
+    121            EA = 1;
+    122            if (frame_getCount())
+    123            {
+    124              LOG_ON("Frame_s count: %d \r\n",frame_getCount());
+    125              return false;
+    126            }
+    127            
+    128          #ifdef GATEWAY
+    129              bool con = master_mode();
+    130          #else
+    131              bool con = slave_mode();  
+    132          #endif
+    133              
+    134              return con;
+    135          }
+    136           
+    137            
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\mem.c
       1          #include "ioCC2530.h"
       2          #include "stdlib.h"
@@ -2624,7 +2594,7 @@ Warning[Pe550]: variable "timer" was set but never used
 
   static bool master_mode()
               ^
-"\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\manager.c",127  Warning[Pe177]: 
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\manager.c",90  Warning[Pe177]: 
           function "master_mode" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
@@ -2967,179 +2937,240 @@ Warning[Pe550]: variable "timer" was set but never used
       7          #include "TIC.h"
       8          #include "RADIO.h"
       9          #include "NTMR.h"
-     10          
-     11          void SY_Init(void);
-     12          void SY_Reset(void);
-     13          void SY_setIV(void* ptr_IV);
-     14          void SY_setKEY(void* ptr_KEY);
-     15          bool SY_SYNC_NETWORK(uint16_t *panid,uint16_t timeout);
-     16          void SY_Enable(bool en);
-     17          
-     18          static void SY_TS1_HNDL_MASTER(void);
-     19          static void SY_TS1_HNDL_SLAVE(void);
-     20          static void SY_TIME_ALLOC_SLAVE(void);
-     21          static void SY_TIME_ALLOC_MASTER(void);
-     22          static void BitRawDecrypt(uint8_t *src, uint8_t size);
-     23          static void BitRawCrypt(uint8_t *src, uint8_t size);
-     24          static frame_s* get_sync(uint16_t timeout);
-     25          
-     26          static uint32_t LAST_SYNC_TIME = 0; //!< Время последней синхр.
-     27          static uint32_t NEXT_SYNC_TIME = 0; //!< Время следующей синхр.
-     28          static bool SY_ENABLE_MODULE = false;
+     10          #include "config.h"
+     11          #include "ioCC2530.h" // ОТЛАДДКА
+     12          
+     13          void SY_Init(void);
+     14          void SY_Reset(void);
+     15          void SY_setIV(void* ptr_IV);
+     16          void SY_setKEY(void* ptr_KEY);
+     17          bool SY_SYNC_NETWORK(uint16_t *panid,uint16_t timeout);
+     18          void SY_Enable(bool en);
+     19          uint32_t SY_sync_sended(void);
+     20          
+     21          static void SY_TS1_HNDL_MASTER(void);
+     22          static void SY_TS1_HNDL_SLAVE(void);
+     23          static void SY_TIME_ALLOC_SLAVE(void);
+     24          static void SY_TIME_ALLOC_MASTER(void);
+     25          static void BitRawDecrypt(uint8_t *src, uint8_t size);
+     26          static void BitRawCrypt(uint8_t *src, uint8_t size);
+     27          static frame_s* get_sync(uint16_t timeout);
+     28          static bool send_sync(void);
      29          
-     30          // Ключ потокового шифрования и вектор иницилизации
-     31          static uint8_t KEY[16] = DEFAULT_KEY;
-     32          static uint8_t IV[16] = DEFAULT_IV;
-     33          //@brief Точное время приема/передачи пакета синхронизации времени
-     34          // Расчитывается при иницилизации
-     35          static uint16_t SYNC_ACCURATE_NETWORK_TIME; 
-     36          
-     37          #define SYNC_TS 1 //!< Номер временного слота синхросигнала
-     38          #define SYNC_RECV_TIMEOUT 2 // Время ожидания приема пакета в мс
-     39          
-     40          typedef struct // Формат структуры пакета синхронизации
-     41          {
-     42              uint16_t panid;
-     43              uint32_t magic;
-     44          } __attribute__((packed)) SYNC_s;
-     45          
-     46          #define SYNC_CHANNEL 28 // Номер канала с синхросигналами
-     47          #define MAGIC 0x19833891 // Проверка что пакет действительно sync
-     48          #define RAND_SYNC_RX_DELAY  2 // Случайная задержка приема
-     49          #define RAND_SYNC_TX_DELAY  2 // Случайная задержка передачи rand()%10 + 5
-     50          // Максимальное отклонение при приеме sync в тактах сети
-     51          #define RAND_SYNC_TIME_DRIFT 35  
+     30          static uint32_t LAST_SYNC_TIME = 0; //!< Время последней синхр.
+     31          static uint32_t NEXT_SYNC_TIME = 0; //!< Время следующей синхр.
+     32          static uint32_t SYNC_SENDED = 0; //!< Количество успешно ретранслированых пакетов
+     33          static bool NEED_SEND_SYNC = false; //!< Нужно отослать синхропакет
+     34          static bool SY_ENABLE_MODULE = false;
+     35          
+     36          // Ключ потокового шифрования и вектор иницилизации
+     37          static uint8_t KEY[16] = DEFAULT_KEY;
+     38          static uint8_t IV[16] = DEFAULT_IV;
+     39          //@brief Точное время приема/передачи пакета синхронизации времени
+     40          // Расчитывается при иницилизации
+     41          static uint16_t SYNC_ACCURATE_NETWORK_TIME; 
+     42          
+     43          #define SYNC_TS 1 //!< Номер временного слота синхросигнала
+     44          #define SYNC_RECV_TIMEOUT 2 // Время ожидания приема пакета в мс
+     45          #define SYNC_TIMEOUT 110//!< Время в сек после которого сеть не синхронна
+     46          
+     47          typedef struct // Формат структуры пакета синхронизации
+     48          {
+     49              uint16_t panid;
+     50              uint32_t magic;
+     51          } __attribute__((packed)) SYNC_s;
      52          
-     53          #ifdef GATEWAY
-     54            #define SYNC_MASTER     // Если определено, то узел является шлюзом
-     55          #endif
-     56          
-     57          void SY_Init(void)
-     58          {
-     59            SY_ENABLE_MODULE = false;
-     60            SYNC_ACCURATE_NETWORK_TIME = TIC_SlotTime(SYNC_TS) + TIC_SlotActivityTime()/2;
-     61          #ifdef SYNC_MASTER
-     62            TIC_SetTS1Callback(SY_TS1_HNDL_MASTER);
-     63            TIC_SetSyncTimeAllocCallback(SY_TIME_ALLOC_MASTER);
-     64          #else
-     65            TIC_SetTS1Callback(SY_TS1_HNDL_SLAVE);
-     66            TIC_SetSyncTimeAllocCallback(SY_TIME_ALLOC_SLAVE);
-     67          #endif
-     68          }
-     69          
-     70          void SY_Reset(void)
-     71          {
-     72            SY_ENABLE_MODULE = false;
-     73          }
-     74          
-     75          void SY_Enable(bool en)
-     76          {
-     77            SY_ENABLE_MODULE = en;
-     78          }
-     79          
-     80          /**
-     81          @brief Установить вектор иницилизации для шифрования
-     82          @param[in] ptr_IV указатель на 16 байтный вектор иницилизации
-     83          */
-     84          void SY_setIV(void* ptr_IV)
-     85          {
-     86            memcpy(IV, ptr_IV, 16);
-     87          }
-     88          
-     89          /**
-     90          @brief Установить ключ шифрования
-     91          @param[in] ptr_KEY указатель на 16 байтный ключ
-     92          */
-     93          void SY_setKEY(void* ptr_KEY)
-     94          {
-     95            memcpy(KEY, ptr_KEY, 16);
-     96          }
-     97          
-     98          /**
-     99          @brief Эта функция вызывается после каждого завершенного слота времени
-    100          */
-    101          static void SY_TIME_ALLOC_SLAVE(void)
-    102          { 
-    103            if (!SY_ENABLE_MODULE) // Модуль отключен
-    104              return;  
-    105            
-    106            if (TIC_GetRXState(SYNC_TS)) // Если прием уже активен
-    107              return;
-    108            
-    109            if (TIC_GetRTC() > NEXT_SYNC_TIME)
-    110            {
-    111              LOG_ON("Begin resync");
-    112              TIC_SetRXState(SYNC_TS, true);
-    113            }
-    114          }
-    115          
-    116          /**
-    117          @brief Эта функция вызывается после каждого завершенного слота времени
-    118          */
-    119          static void SY_TIME_ALLOC_MASTER(void)
-    120          { 
-    121            static uint32_t sync_send_time = 0;
-    122           
-    123            if (!SY_ENABLE_MODULE) // Модуль отключен
-    124            {
-    125              sync_send_time = 0;
-    126              return;  
-    127            }
-    128            
-    129            if (TIC_GetTXState(SYNC_TS)) // Если передача уже активна.
-    130              return;
-    131            
-    132            uint32_t now = TIC_GetUptime();
-    133            if ( now < sync_send_time) // Если время новой передачи не наступило
-    134              return;
-    135            
-    136            TIC_SetTXState(SYNC_TS,true); // Разрешаем передачу
-    137             
-    138             // Определяем следующее время передачи
-    139             sync_send_time += RAND_SYNC_TX_DELAY;
-    140          }
-    141          
-    142          static void SY_TS1_HNDL_SLAVE(void)
-    143          {
-    144            if (!SY_ENABLE_MODULE) // Модуль отключен
-    145              return;
-    146              
-    147            //  Ждем начала точного времени начала передачи сигнала заранее
-    148            NT_WaitTime(SYNC_ACCURATE_NETWORK_TIME - RAND_SYNC_TIME_DRIFT);
-    149           
-    150            RI_SetChannel(SYNC_CHANNEL);
-    151            frame_s *fr_SYNC = get_sync(SYNC_RECV_TIMEOUT); //SYNC_RECV_TIMEOUT
-    152            
-    153            if (!fr_SYNC)
-    154              return;
-    155            
-    156            SYNC_s *sync;
-    157            sync = (SYNC_s*)fr_SYNC->payload;
-    158            
-    159            // Проверяем принадлежность пакета
-    160            if (( sync->panid != 0x123) && (sync->magic != MAGIC))
-    161            {
-    162              frame_delete(fr_SYNC);
-    163              return;
-    164            }
-    165            
-    166            // Синхронизируемся
-    167           // TIC_SetTimer(fr_SYNC->meta.TIMESTAMP);
-    168            uint16_t delta = TIC_GetTimer() - fr_SYNC->meta.TIMESTAMP;
-    169          //  TIC_SetTimer(819 + delta);
-    170            
-    171            LAST_SYNC_TIME = TIC_GetRTC();
-    172            NEXT_SYNC_TIME = LAST_SYNC_TIME + RAND_SYNC_RX_DELAY; 
-    173           // TIC_SetRXState(SYNC_TS, false);
-    174            LOG_ON("Node Synced. D= %d", fr_SYNC->meta.TIMESTAMP);
-    175            frame_delete(fr_SYNC);
-    176          }
-    177          
-    178          /**
-    179          @brief Вызывает при активносм TS1 RX или TX
-    180          @detail Формирует кадр синхронизации и передает его в строго определенное время
-    181          */
-    182          static void SY_TS1_HNDL_MASTER(void)
+     53          #define MAGIC 0x19833891 // Проверка что пакет действительно sync
+     54          #define RAND_SYNC_RX_DELAY  9 // Фиксированое время приема rand()%10 + 5
+     55          #define RAND_SYNC_TX_DELAY  10 // Фиксированное время передачи сигнала
+     56          // Максимальное отклонение при приеме sync в тактах сети
+     57          #define SYNC_TIME_DRIFT 35  
+     58          
+     59          #ifdef GATEWAY
+     60            #define SYNC_MASTER     // Если определено, то узел является шлюзом
+     61          #endif
+     62          
+     63          void SY_Init(void)
+     64          {
+     65            SYNC_SENDED = 0;
+     66            LAST_SYNC_TIME = 0;
+     67            NEXT_SYNC_TIME = 0;
+     68            SY_ENABLE_MODULE = false;
+     69            SYNC_ACCURATE_NETWORK_TIME = TIC_SlotTime(SYNC_TS) + TIC_SlotActivityTime()/2;
+     70          #ifdef SYNC_MASTER
+     71            TIC_SetTS1Callback(SY_TS1_HNDL_MASTER);
+     72            TIC_SetSyncTimeAllocCallback(SY_TIME_ALLOC_MASTER);
+     73          #else
+     74            TIC_SetTS1Callback(SY_TS1_HNDL_SLAVE);
+     75            TIC_SetSyncTimeAllocCallback(SY_TIME_ALLOC_SLAVE);
+     76          #endif
+     77          }
+     78          
+     79          void SY_Reset(void)
+     80          {
+     81            SYNC_SENDED = 0;
+     82            LAST_SYNC_TIME = 0;
+     83            NEXT_SYNC_TIME = 0;
+     84            SY_ENABLE_MODULE = false;
+     85          }
+     86          
+     87          void SY_Enable(bool en)
+     88          {
+     89            SY_ENABLE_MODULE = en;
+     90          }
+     91          
+     92          /**
+     93          @brief Количество успешно переданных пакетов синхронизации
+     94          @return Количечтво пакетов
+     95          */
+     96          uint32_t SY_sync_sended(void)
+     97          {
+     98            return SYNC_SENDED;
+     99          }
+    100          
+    101          /**
+    102          @brief Установить вектор иницилизации для шифрования
+    103          @param[in] ptr_IV указатель на 16 байтный вектор иницилизации
+    104          */
+    105          void SY_setIV(void* ptr_IV)
+    106          {
+    107            memcpy(IV, ptr_IV, 16);
+    108          }
+    109          
+    110          /**
+    111          @brief Установить ключ шифрования
+    112          @param[in] ptr_KEY указатель на 16 байтный ключ
+    113          */
+    114          void SY_setKEY(void* ptr_KEY)
+    115          {
+    116            memcpy(KEY, ptr_KEY, 16);
+    117          }
+    118          
+    119          /**
+    120          @brief Эта функция вызывается после каждого завершенного слота времени
+    121          */
+    122          static void SY_TIME_ALLOC_SLAVE(void)
+    123          { 
+    124            if (!SY_ENABLE_MODULE) // Модуль отключен
+    125              return;  
+    126            
+    127            // Потеря синхронизации
+    128            if ( (TIC_GetUptime() - LAST_SYNC_TIME) > SYNC_TIMEOUT)
+    129            {
+    130                LOG_ON("Network out of sync.");
+    131                return;
+    132            }
+    133            
+    134            if (TIC_GetRXState(SYNC_TS)) // Если прием уже активен
+    135              return;
+    136            
+    137            // Ретрансляция синхропакета
+    138            if (NEED_SEND_SYNC)
+    139            {
+    140              LOG_OFF("Need to send resync");
+    141              TIC_SetRXState(SYNC_TS, true);
+    142              return;
+    143            }
+    144            
+    145            // Необходимо начать процесс синхронизации
+    146            if (TIC_GetUptime() > NEXT_SYNC_TIME)
+    147            {
+    148              LOG_ON("Begin resync");
+    149              P1_0 = !true; 
+    150              TIC_SetRXState(SYNC_TS, true);
+    151            }
+    152          }
+    153          
+    154          /**
+    155          @brief Эта функция вызывается после каждого завершенного слота времени
+    156          */
+    157          static void SY_TIME_ALLOC_MASTER(void)
+    158          { 
+    159            static uint32_t sync_send_time = 0;
+    160           
+    161            if (!SY_ENABLE_MODULE) // Модуль отключен
+    162            {
+    163              sync_send_time = 0;
+    164              return;  
+    165            }
+    166            
+    167            if (TIC_GetTXState(SYNC_TS)) // Если передача уже активна.
+    168              return;
+    169            
+    170            uint32_t now = TIC_GetUptime();
+    171            if ( now < sync_send_time) // Если время новой передачи не наступило
+    172              return;
+    173            
+    174            TIC_SetTXState(SYNC_TS,true); // Разрешаем передачу
+    175             
+    176             // Определяем следующее время передачи
+    177             sync_send_time = now + RAND_SYNC_TX_DELAY;
+    178          }
+    179          
+    180          /**
+    181          @brief Вызывает при активности TS1 RX или TX
+    182          @detail Выполняет две функции: синхронизацию с сетью или передачу синхр.
+    183          */
+    184          static void SY_TS1_HNDL_SLAVE(void)
+    185          {
+    186            if (!SY_ENABLE_MODULE) // Модуль отключен
+    187              return;
+    188              
+    189            // Нужно отослать синхропакет
+    190            if (NEED_SEND_SYNC)
+    191            {
+    192              if (send_sync())
+    193                SYNC_SENDED++;
+    194              LOG_ON("Resync TX. CNT=%d",(uint16_t)SYNC_SENDED);
+    195              NEED_SEND_SYNC = false;
+    196              TIC_SetRXState(SYNC_TS, false);
+    197            }
+    198            
+    199            // Ждем начала точного времени начала передачи сигнала заранее
+    200            // Время в тактах сети
+    201            NT_WaitTime(SYNC_ACCURATE_NETWORK_TIME - SYNC_TIME_DRIFT);
+    202           
+    203            RI_SetChannel(CONFIG.sync_channel);
+    204            // Время в мс
+    205            frame_s *fr_SYNC = get_sync(SYNC_RECV_TIMEOUT); 
+    206            
+    207            if (!fr_SYNC)
+    208              return;
+    209            
+    210            SYNC_s *sync;
+    211            sync = (SYNC_s*)fr_SYNC->payload;
+    212            
+    213            // Проверяем принадлежность пакета
+    214            if (( sync->panid != CONFIG.panid) && (sync->magic != MAGIC))
+    215            {
+    216              frame_delete(fr_SYNC);
+    217              return;
+    218            }
+    219            
+    220            // Синхронизируемся
+    221            // Время прошедшее с момента приема пакета в тактах сети
+    222            uint16_t delta = TIC_GetTimer() - fr_SYNC->meta.TIMESTAMP;
+    223            TIC_SetTimer(SYNC_ACCURATE_NETWORK_TIME + delta);
+    224            
+    225            LAST_SYNC_TIME = TIC_GetUptime();
+    226            NEXT_SYNC_TIME = LAST_SYNC_TIME + RAND_SYNC_RX_DELAY; 
+    227            TIC_SetRXState(SYNC_TS, false);
+    228            LOG_ON("Node Synced. TS=%d, AT=%d, DEL=%d, AD=%d, RTC=%d, NRTC=%d",
+    229                   fr_SYNC->meta.TIMESTAMP,SYNC_ACCURATE_NETWORK_TIME, delta,
+    230                   SYNC_ACCURATE_NETWORK_TIME - fr_SYNC->meta.TIMESTAMP, 
+    231                   (uint16_t)LAST_SYNC_TIME,
+    232                   (uint16_t)NEXT_SYNC_TIME);
+    233            frame_delete(fr_SYNC);
+    234            // После приема нужно ретранслировать синхропакет
+    235            NEED_SEND_SYNC = true; 
+    236          P1_0 = !false; // ОТЛАДКА
+    237          }
+    238          
+    239          /**
+    240          @brief Вызывает при активносм TS1 RX или TX
+    241          @detail Формирует кадр синхронизации и передает его в строго определенное время
+    242          */
+    243          static void SY_TS1_HNDL_MASTER(void)
                              ^
 Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
           detected during compilation of secondary translation unit
@@ -3148,145 +3179,159 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
 
   static void SY_TIME_ALLOC_MASTER(void)
               ^
-"\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\sync.c",119  Warning[Pe177]: 
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\sync.c",157  Warning[Pe177]: 
           function "SY_TIME_ALLOC_MASTER" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\sync.c"
-    183          {
-    184            if (!SY_ENABLE_MODULE) // Модуль отключен
-    185              return;  
-    186            
-    187            SYNC_s sync;
-    188            sync.panid = 0x123;
-    189            sync.magic = MAGIC;
-    190            
-    191            frame_s *fr_SYNC = frame_create();
-    192            frame_addHeader(fr_SYNC, &sync, sizeof(SYNC_s));
-    193            fr_SYNC->meta.SEND_TIME = SYNC_ACCURATE_NETWORK_TIME; // время в тактах сети. ((1/32768)*164)*1000
-    194              
-    195          #ifdef RARIO_STREAM_ENCRYPT
-    196            BitRawCrypt(fr_SYNC->payload, fr_SYNC->len);
-    197          #endif
-    198            
-    199            RI_SetChannel(SYNC_CHANNEL);
-    200            bool res = RI_Send(fr_SYNC);
-    201           
-    202            LOG_ON("Sync send T=%d", fr_SYNC->meta.TIMESTAMP); 
-    203            frame_delete(fr_SYNC);
-    204            
-    205            TIC_SetTXState(SYNC_TS, false);
-    206          }
-    207          
-    208          
-    209          /**
-    210          @brief Прием пакет синхронизации
-    211          @param[in] Время ожидания в мс
-    212          @return Указатель на пакет или NULL
-    213          */
-    214          static frame_s* get_sync(uint16_t timeout)
-    215          {
-    216            RI_SetChannel(SYNC_CHANNEL);
-    217            frame_s *fr_SYNC = RI_Receive(timeout);
-    218            
-    219            // Если пакета нет, выходим из обработчика
-    220            if (fr_SYNC == NULL)
-    221              return NULL;
-    222            
-    223            // Проверим размер пакета
-    224            if (fr_SYNC->len != sizeof(SYNC_s))
-    225            {
-    226              frame_delete(fr_SYNC);
-    227              return NULL;
-    228            }
-    229            
-    230            #ifdef RARIO_STREAM_ENCRYPT
-    231            BitRawDecrypt(fr_SYNC->payload, fr_SYNC->len);
-    232            #endif
-    233            return fr_SYNC;
-    234          }
-    235          
-    236          /**
-    237          @brief Процедура синхронизации с сетью
-    238          @detail Процедура изет сеть в течении времени timeout и синхронизируется с ней
-    239          @param[in] timeout время в милисекундах
-    240          @param[out] panid указатель на идентификатор найденой сети
-    241          @return true если сеть найдета
-    242          */
-    243          bool SY_SYNC_NETWORK(uint16_t *panid,uint16_t timeout)
     244          {
-    245            // TODO Нужно обнулить настройки всех модулей
-    246            // Или об этом будет заботиться верхний уровень?
-    247            TIC_CloseAllState();
-    248            
-    249            RI_SetChannel(SYNC_CHANNEL);
-    250            
-    251            TimeStamp_s begin, end;
-    252            TIM_TimeStamp(&begin);
-    253            TIM_TimeStamp(&end);
+    245            if (!SY_ENABLE_MODULE) // Модуль отключен
+    246              return;  
+    247             
+    248          P1_0 = !true; //ОТЛАДКА  
+    249            if (send_sync())
+    250              SYNC_SENDED++;
+    251            
+    252            LOG_ON("Sync send."); 
+    253          P1_0 = !false; //ОТЛАДКА
     254            
-    255            bool net_found = false;
-    256            uint32_t passed = 0;
-    257            frame_s *fr_SYNC;
-    258            SYNC_s *sync;
-    259            uint32_t timeout_us = timeout * 1000;
-    260            
-    261            while (passed < timeout_us)
-    262            {
-    263              fr_SYNC = get_sync(timeout);
-    264              if (fr_SYNC == NULL)
-    265              {
-    266                passed = TIM_passedTime(&begin, &end);
-    267                continue;
-    268              }
-    269              
-    270              // Приняли какойто пакет, декодируем.
-    271              sync = (SYNC_s*)fr_SYNC->payload;
-    272              
-    273              if (sync->magic != MAGIC)
-    274              { // Проверим что пакет именно тот а не эфирный мусор
-    275                frame_delete(fr_SYNC);
-    276                passed = TIM_passedTime(&begin, &end);
-    277                continue;
-    278              }   
-    279              
-    280              // Возвращаем результат
-    281              *panid = sync->panid;
-    282              net_found = true;
-    283              
-    284              // Синхронизируемся с сетью
-    285             // TIC_SetTimer(fr_SYNC->meta.TIMESTAMP);
-    286              uint16_t delta = TIC_GetTimer() - fr_SYNC->meta.TIMESTAMP;
-    287              TIC_SetTimer(819);
-    288              LAST_SYNC_TIME = TIC_GetRTC();
-    289              NEXT_SYNC_TIME = LAST_SYNC_TIME + RAND_SYNC_RX_DELAY; 
-    290              frame_delete(fr_SYNC);
-    291              break;
-    292            } 
-    293            
-    294            return net_found;
-    295          }
-    296          
-    297          /*!
-    298          \brief Расшифровка область памяти
-    299          \param[in,out] *src Указатель на начало области дешифрования
-    300          \param[in] size Размер расшифруемых данных
-    301          */
-    302          static void BitRawDecrypt(uint8_t *src, uint8_t size)
-    303          {
-    304            AES_StreamCoder(false, src, src, KEY, IV, size);
-    305          }
-    306          
-    307          /*!
-    308          \brief Шифрует область памяти
-    309          \param[in,out] *src Указатель на начало области шифрования
-    310          \param[in] size Размер шифруемых данных
-    311          */
-    312          static void BitRawCrypt(uint8_t *src, uint8_t size)
-    313          {
-    314            AES_StreamCoder(true, src, src, KEY, IV, size);
-    315          }
-    316          
+    255            TIC_SetTXState(SYNC_TS, false);
+    256          }
+    257          
+    258          /**
+    259          @brief Создать и отправить синхропакет
+    260          */
+    261          static bool send_sync(void)
+    262          {
+    263            SYNC_s sync;
+    264            sync.panid = CONFIG.panid;
+    265            sync.magic = MAGIC;
+    266            
+    267            frame_s *fr_SYNC = frame_create();
+    268            frame_addHeader(fr_SYNC, &sync, sizeof(SYNC_s));
+    269            fr_SYNC->meta.SEND_TIME = SYNC_ACCURATE_NETWORK_TIME; // время в тактах сети. ((1/32768)*164)*1000
+    270              
+    271          #ifdef RARIO_STREAM_ENCRYPT
+    272            BitRawCrypt(fr_SYNC->payload, fr_SYNC->len);
+    273          #endif
+    274            
+    275            RI_SetChannel(CONFIG.sync_channel);
+    276            bool res = RI_Send(fr_SYNC);
+    277            
+    278            frame_delete(fr_SYNC);
+    279            return res;
+    280          }
+    281          
+    282          /**
+    283          @brief Прием пакет синхронизации
+    284          @param[in] Время ожидания в мс
+    285          @return Указатель на пакет или NULL
+    286          */
+    287          static frame_s* get_sync(uint16_t timeout)
+    288          {
+    289            RI_SetChannel(CONFIG.sync_channel);
+    290            frame_s *fr_SYNC = RI_Receive(timeout);
+    291            
+    292            // Если пакета нет, выходим из обработчика
+    293            if (fr_SYNC == NULL)
+    294              return NULL;
+    295            
+    296            // Проверим размер пакета
+    297            if (fr_SYNC->len != sizeof(SYNC_s))
+    298            {
+    299              frame_delete(fr_SYNC);
+    300              return NULL;
+    301            }
+    302            
+    303            #ifdef RARIO_STREAM_ENCRYPT
+    304            BitRawDecrypt(fr_SYNC->payload, fr_SYNC->len);
+    305            #endif
+    306            return fr_SYNC;
+    307          }
+    308          
+    309          /**
+    310          @brief Процедура синхронизации с сетью
+    311          @detail Процедура изет сеть в течении времени timeout и синхронизируется с ней
+    312          @param[in] timeout время в милисекундах
+    313          @param[out] panid указатель на идентификатор найденой сети
+    314          @return true если сеть найдета
+    315          */
+    316          bool SY_SYNC_NETWORK(uint16_t *panid,uint16_t timeout)
+    317          {
+    318            // TODO Нужно обнулить настройки всех модулей
+    319            // Или об этом будет заботиться верхний уровень?
+    320            TIC_CloseAllState();
+    321            
+    322            RI_SetChannel(CONFIG.sync_channel);
+    323            
+    324            TimeStamp_s begin, end;
+    325            TIM_TimeStamp(&begin);
+    326            TIM_TimeStamp(&end);
+    327            
+    328            bool net_found = false;
+    329            uint32_t passed = 0;
+    330            frame_s *fr_SYNC;
+    331            SYNC_s *sync;
+    332            uint32_t timeout_us = timeout * 1000;
+    333            
+    334            while (passed < timeout_us)
+    335            {
+    336              fr_SYNC = get_sync(timeout);
+    337              if (fr_SYNC == NULL)
+    338              {
+    339                passed = TIM_passedTime(&begin, &end);
+    340                continue;
+    341              }
+    342              
+    343              // Приняли какойто пакет, декодируем.
+    344              sync = (SYNC_s*)fr_SYNC->payload;
+    345              
+    346              if (sync->magic != MAGIC)
+    347              { // Проверим что пакет именно тот а не эфирный мусор
+    348                frame_delete(fr_SYNC);
+    349                passed = TIM_passedTime(&begin, &end);
+    350                continue;
+    351              }   
+    352              
+    353              // Возвращаем результат
+    354              *panid = sync->panid;
+    355              CONFIG.panid = sync->panid;
+    356              net_found = true;
+    357              
+    358              // Синхронизируемся с сетью
+    359              // Время прошедшее с момента приема пакета в тактах сети
+    360              uint16_t delta = TIC_GetTimer() - fr_SYNC->meta.TIMESTAMP;
+    361              TIC_SetTimer(SYNC_ACCURATE_NETWORK_TIME + delta);
+    362              
+    363              LAST_SYNC_TIME = TIC_GetUptime();
+    364              NEXT_SYNC_TIME = LAST_SYNC_TIME + RAND_SYNC_RX_DELAY; 
+    365              frame_delete(fr_SYNC);
+    366              break;
+    367            } 
+    368            
+    369            return net_found;
+    370          }
+    371          
+    372          /*!
+    373          \brief Расшифровка область памяти
+    374          \param[in,out] *src Указатель на начало области дешифрования
+    375          \param[in] size Размер расшифруемых данных
+    376          */
+    377          static void BitRawDecrypt(uint8_t *src, uint8_t size)
+    378          {
+    379            AES_StreamCoder(false, src, src, KEY, IV, size);
+    380          }
+    381          
+    382          /*!
+    383          \brief Шифрует область памяти
+    384          \param[in,out] *src Указатель на начало области шифрования
+    385          \param[in] size Размер шифруемых данных
+    386          */
+    387          static void BitRawCrypt(uint8_t *src, uint8_t size)
+    388          {
+    389            AES_StreamCoder(true, src, src, KEY, IV, size);
+    390          }
+    391          
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\TIC.c
       1          #include "TIC.h"
       2          #include "NTMR.h"
@@ -3632,9 +3677,9 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
     342            {
     343              TIM_TimeStamp(&TimeStampTS0); // Первым делом обновим отметку точного времени
     344              clocks_update();
-    345              P1_0 = !true;
-    346              LOG_ON("TS0");
-    347              P1_0 = !false;;
+    345           //   P1_0 = !true;
+    346              LOG_OFF("TS0");
+    347           //   P1_0 = !false;;
     348            }
     349            // Если что то пошло не так и мы промахнулись мимо слота
     350            // запускаем планировщик заново
@@ -3692,24 +3737,28 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
       1          #include "utest_suite.h"
       2          #include "nwdebuger.h"
       3          #include "assert.h"
-      4          
-      5          extern void suite_GW(void);
-      6          extern void suite_NODE(void);
-      7          
-      8          int main()
-      9          {
-     10            nwDebugerInit();
-     11            utestSigTraceInit();
-     12            LOG_ON("");
-     13            LOG_ON("Test start");
-     14           
-     15            //suite_GW();
-     16            suite_NODE();
-     17          // Добавляем результаты тестов
-     18          	umsg_summary();
-     19           //     while(1);
-     20          	return 0;
-     21          }
+      4          #include "basic.h"
+      5          
+      6          extern void suite_GW(void);
+      7          extern void suite_NODE(void);
+      8          
+      9          int main()
+     10          {
+     11            nwDebugerInit();
+     12            utestSigTraceInit();
+     13            LOG_OFF("");
+     14            LOG_OFF("Test start");
+     15          
+     16          #ifdef GATEWAY
+     17            suite_GW();
+     18          #else
+     19            suite_NODE();
+     20          #endif
+     21          // Добавляем результаты тестов
+     22          	umsg_summary();
+     23           //     while(1);
+     24          	return 0;
+     25          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_GW.c
       1          #include "utest_suite.h"
       2          #include "manager.h"
@@ -3857,7 +3906,7 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
         0     53   -> generateAuthData
         0     53   -> memcpy
         0     53   -> memset
-      0     54   AES_StreamCoder
+      0     62   AES_StreamCoder
         0     36   -> memcpy
         0     36   -> memset
       2     12   AES_init
@@ -3921,6 +3970,7 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
         0     10   -> TIC_SetTXCallback
         0     12   -> memset
       1      9   MAC_OpenRXSlot
+        0      9   -> TIC_SetRXState
       0     18   MAC_RX_HNDL
         0     18   -> AES_StreamCoder
         0     14   -> RI_Receive
@@ -3959,6 +4009,7 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
         0     12   -> NT_SetTime
         0     12   -> RI_init
         0     12   -> SY_Init
+        0     12   -> SY_Reset
         0     12   -> SY_SYNC_NETWORK
         0     12   -> TIC_CloseAllState
         0     12   -> TIC_Init
@@ -3969,8 +4020,6 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
         0     12   -> printf
         0     14   -> printf
         0     18   -> printf
-      2      0   MG_Get_State
-      2      0   MG_Set_State
       0      0   MyLowLevelPutchar
       0     12   NT_GetTime
       2     12   NT_Init
@@ -3979,12 +4028,12 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
         0     24   -> printf
         0     30   -> printf
       2      0   NT_SetEventCallback
-      0     66   NT_SetTime
+      0     30   NT_SetTime
         0     12   -> NT_SetCompare
         0     12   -> ReadTimer
         0     12   -> printf
         0     18   -> printf
-      0     25   NT_WaitTime
+      0     34   NT_WaitTime
       2      0   RI_GetCCAReject
       2      0   RI_GetCRCError
       2      0   RI_GetUptime
@@ -3995,7 +4044,7 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
         0     61   -> frame_addHeader
         0     61   -> frame_create
         0     61   -> re_free
-      1     56   RI_Send
+      1     60   RI_Send
         0     32   -> RI_cfg
         0     32   -> SendData
         0     32   -> printf
@@ -4017,26 +4066,33 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
       0     28   SY_Init
         0     10   -> printf
         0     16   -> printf
-      2      0   SY_Reset
-      1     60   SY_SYNC_NETWORK
-        0     48   -> NT_SetTime
+      2     12   SY_Reset
+      2     60   SY_SYNC_NETWORK
         0     48   -> TIC_CloseAllState
+        0     48   -> TIC_SetTimer
         0     48   -> frame_delete
         0     48   -> get_sync
-      0     18   SY_TIME_ALLOC_SLAVE
+      2     18   SY_TIME_ALLOC_SLAVE
         0     12   -> printf
         0     18   -> printf
-      0     18   SY_TS1_HNDL_SLAVE
-        0     12   -> NT_WaitTime
-        0     12   -> frame_delete
-        0     12   -> get_sync
-        0     12   -> printf
-        0     14   -> printf
-        0     18   -> printf
+      2     34   SY_TS1_HNDL_SLAVE
+        0     26   -> AES_StreamCoder
+        0     22   -> NT_WaitTime
+        0     22   -> RI_Send
+        0     22   -> TIC_SetTimer
+        0     22   -> frame_addHeader
+        0     22   -> frame_create
+        0     22   -> frame_delete
+        0     22   -> get_sync
+        0     22   -> printf
+        0     24   -> printf
+        0     28   -> printf
+        0     34   -> printf
       0     12   SY_setIV
         0     12   -> memcpy
       0     12   SY_setKEY
         0     12   -> memcpy
+      2      0   SY_sync_sended
       0     45   SendData
         0     13   -> NT_WaitTime
       2     48   TIC_CloseAllState
@@ -4082,7 +4138,7 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
         0     10   -> printf
         0     16   -> printf
       2     18   TIC_SetTXState
-      0     16   TIC_SetTimer
+      0     64   TIC_SetTimer
         0     10   -> NT_SetTime
         0     10   -> printf
         0     16   -> printf
@@ -4118,8 +4174,8 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
         0     21   -> printf
         0     15   -> re_free
         0     17   -> re_memcpy
-      0     59   frame_delete
-        0     11   -> __xdata_free
+      0     58   frame_delete
+        0     10   -> re_free
       2      0   frame_getCount
       2      0   frame_len
       0     85   generateAuthData
@@ -4132,10 +4188,8 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
         0     12   -> __xdata_free
         0     12   -> __xdata_malloc
       0      0   heap_size
-      0      6   main
+      0      0   main
         0      0   -> nwDebugerInit
-        0      0   -> printf
-        0      6   -> printf
         0      0   -> suite_NODE
         0      0   -> umsg_summary
       0     11   memory_compare
@@ -4171,7 +4225,6 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
 
    Bytes  Function/Label
    -----  --------------
-       1  ?<Constant "">
        5  ?<Constant "%s\r\n">
       41  ?<Constant "*********************...">
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">
@@ -4188,7 +4241,6 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
       19  ?<Constant "*LOG* %s:%d:%s -> ">_4
       19  ?<Constant "*LOG* %s:%d:%s -> ">_5
       19  ?<Constant "*LOG* %s:%d:%s -> ">_6
-      19  ?<Constant "*LOG* %s:%d:%s -> ">_7
       51  ?<Constant "Add task = %u, CH = %...">
       13  ?<Constant "Begin resync">
       13  ?<Constant "FAILD : %d\r\n">
@@ -4201,16 +4253,16 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
       22  ?<Constant "Network connect faild">
       18  ?<Constant "Network created\r\n">
       26  ?<Constant "Network creation fail...">
+      21  ?<Constant "Network out of sync.">
       19  ?<Constant "Network sycronized">
-      19  ?<Constant "Node Synced. D= %d">
+      58  ?<Constant "Node Synced. TS=%d, A...">
        7  ?<Constant "PASSED">
       13  ?<Constant "PASSED: %d\r\n">
        8  ?<Constant "RADIO.c">
+      18  ?<Constant "Resync TX. CNT=%d">
       20  ?<Constant "STACK FAILURE. HALT">
        6  ?<Constant "TIC.c">
       12  ?<Constant "TS = 255 \r\n">
-       4  ?<Constant "TS0">
-      11  ?<Constant "Test start">
       15  ?<Constant "Tests FAILED\r\n">
       15  ?<Constant "Tests PASSED\r\n">
       18  ?<Constant "Unit test symmary">
@@ -4218,7 +4270,6 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        3  ?<Constant "\r\n">_1
        3  ?<Constant "\r\n">_10
        3  ?<Constant "\r\n">_11
-       3  ?<Constant "\r\n">_12
        3  ?<Constant "\r\n">_2
        3  ?<Constant "\r\n">_3
        3  ?<Constant "\r\n">_4
@@ -4232,10 +4283,8 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
       10  ?<Constant "manager.c">
       12  ?<Constant "nwdebuger.c">
        7  ?<Constant "sync.c">
-       8  ?<Constant "utest.c">
       11  ?<Constant "utest_GW.c">
       13  ?<Constant "utest_NODE.c">
-       1  ?<Initializer for <Constant "">>
        5  ?<Initializer for <Constant "%s\r\n">>
       41  ?<Initializer for <Constant "*****************
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s
@@ -4252,7 +4301,6 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
       19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_4
       19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_5
       19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_6
-      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_7
       51  ?<Initializer for <Constant "Add task = %u, CH
       13  ?<Initializer for <Constant "Begin resync">>
       13  ?<Initializer for <Constant "FAILD : %d\r\n">>
@@ -4265,16 +4313,16 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
       22  ?<Initializer for <Constant "Network connect f
       18  ?<Initializer for <Constant "Network created\r
       26  ?<Initializer for <Constant "Network creation
+      21  ?<Initializer for <Constant "Network out of sy
       19  ?<Initializer for <Constant "Network sycronize
-      19  ?<Initializer for <Constant "Node Synced. D= %
+      58  ?<Initializer for <Constant "Node Synced. TS=%
        7  ?<Initializer for <Constant "PASSED">>
       13  ?<Initializer for <Constant "PASSED: %d\r\n">>
        8  ?<Initializer for <Constant "RADIO.c">>
+      18  ?<Initializer for <Constant "Resync TX. CNT=%d
       20  ?<Initializer for <Constant "STACK FAILURE. HA
        6  ?<Initializer for <Constant "TIC.c">>
       12  ?<Initializer for <Constant "TS = 255 \r\n">>
-       4  ?<Initializer for <Constant "TS0">>
-      11  ?<Initializer for <Constant "Test start">>
       15  ?<Initializer for <Constant "Tests FAILED\r\n"
       15  ?<Initializer for <Constant "Tests PASSED\r\n"
       18  ?<Initializer for <Constant "Unit test symmary
@@ -4282,7 +4330,6 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        3  ?<Initializer for <Constant "\r\n">>_1
        3  ?<Initializer for <Constant "\r\n">>_10
        3  ?<Initializer for <Constant "\r\n">>_11
-       3  ?<Initializer for <Constant "\r\n">>_12
        3  ?<Initializer for <Constant "\r\n">>_2
        3  ?<Initializer for <Constant "\r\n">>_3
        3  ?<Initializer for <Constant "\r\n">>_4
@@ -4296,7 +4343,6 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
       10  ?<Initializer for <Constant "manager.c">>
       12  ?<Initializer for <Constant "nwdebuger.c">>
        7  ?<Initializer for <Constant "sync.c">>
-       8  ?<Initializer for <Constant "utest.c">>
       11  ?<Initializer for <Constant "utest_GW.c">>
       13  ?<Initializer for <Constant "utest_NODE.c">>
       16  ?<Initializer for IV>
@@ -4307,12 +4353,13 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        4  ?<Initializer for __Constant_19833891>
        4  ?<Initializer for __Constant_1>
        4  ?<Initializer for __Constant_1f4>
-       4  ?<Initializer for __Constant_2>
        4  ?<Initializer for __Constant_3d000000>
        4  ?<Initializer for __Constant_3e8>
        4  ?<Initializer for __Constant_447a0000>
+       4  ?<Initializer for __Constant_6f>
        4  ?<Initializer for __Constant_7fff>
        4  ?<Initializer for __Constant_8000>
+       4  ?<Initializer for __Constant_9>
        4  ?<Initializer for __Constant_ffff8000>
        4  ?<Initializer for __Constant_fffffe0c>
        4  ?<Initializer for __Constant_ffffff>
@@ -4342,9 +4389,8 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
       16  ?<Initializer for __FUNCTION__>_3
       19  ?<Initializer for __FUNCTION__>_30
       17  ?<Initializer for __FUNCTION__>_31
-       5  ?<Initializer for __FUNCTION__>_32
-       9  ?<Initializer for __FUNCTION__>_33
-      11  ?<Initializer for __FUNCTION__>_34
+       9  ?<Initializer for __FUNCTION__>_32
+      11  ?<Initializer for __FUNCTION__>_33
       16  ?<Initializer for __FUNCTION__>_4
       13  ?<Initializer for __FUNCTION__>_5
       18  ?<Initializer for __FUNCTION__>_6
@@ -4353,29 +4399,31 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
       14  ?<Initializer for __FUNCTION__>_9
       16  ?<Initializer for default_iv>
       16  ?<Initializer for default_key>
-       2  ??Subroutine64_0
-      19  ??Subroutine65_0
-       8  ??Subroutine66_0
-       4  ??Subroutine67_0
-       6  ??Subroutine68_0
-       2  ??Subroutine69_0
-       3  ??Subroutine70_0
-       5  ??Subroutine71_0
-       5  ??Subroutine72_0
-       4  ??Subroutine73_0
-       6  ??Subroutine74_0
-       3  ??Subroutine75_0
-       5  ??Subroutine76_0
-       6  ??Subroutine77_0
-       1  ??Subroutine78_0
-       5  ??Subroutine79_0
-       8  ??Subroutine80_0
-       1  ??Subroutine81_0
+       4  ??Subroutine100_0
+       6  ??Subroutine101_0
+       2  ??Subroutine77_0
+      19  ??Subroutine78_0
+       8  ??Subroutine79_0
+       4  ??Subroutine80_0
+       6  ??Subroutine81_0
        8  ??Subroutine82_0
-       7  ??Subroutine83_0
-       4  ??Subroutine84_0
-       4  ??Subroutine85_0
-       6  ??Subroutine86_0
+       6  ??Subroutine83_0
+       2  ??Subroutine84_0
+       3  ??Subroutine85_0
+       5  ??Subroutine86_0
+       4  ??Subroutine87_0
+       3  ??Subroutine88_0
+       5  ??Subroutine89_0
+       5  ??Subroutine90_0
+       1  ??Subroutine91_0
+       5  ??Subroutine92_0
+       8  ??Subroutine93_0
+       1  ??Subroutine94_0
+       4  ??Subroutine95_0
+       6  ??Subroutine96_0
+       7  ??Subroutine97_0
+       9  ??Subroutine98_0
+       4  ??Subroutine99_0
       21  ?Subroutine0
        7  ?Subroutine1
        4  ?Subroutine10
@@ -4387,57 +4435,70 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        5  ?Subroutine16
        6  ?Subroutine17
        5  ?Subroutine18
-       6  ?Subroutine19
+       5  ?Subroutine19
        7  ?Subroutine2
-       5  ?Subroutine20
-       3  ?Subroutine21
-      47  ?Subroutine22
-      25  ?Subroutine23
-      18  ?Subroutine24
-      16  ?Subroutine25
-      14  ?Subroutine26
-       5  ?Subroutine27
-      21  ?Subroutine28
-       6  ?Subroutine29
+       7  ?Subroutine20
+       6  ?Subroutine21
+       5  ?Subroutine22
+      20  ?Subroutine23
+       3  ?Subroutine24
+      47  ?Subroutine25
+      25  ?Subroutine26
+      18  ?Subroutine27
+      16  ?Subroutine28
+      14  ?Subroutine29
        2  ?Subroutine3
-      10  ?Subroutine30
-      17  ?Subroutine31
-      11  ?Subroutine32
-      11  ?Subroutine33
+       5  ?Subroutine30
+      21  ?Subroutine31
+       1  ?Subroutine32
+      10  ?Subroutine33
        6  ?Subroutine34
-       9  ?Subroutine35
-       3  ?Subroutine36
-      14  ?Subroutine37
+      17  ?Subroutine35
+      11  ?Subroutine36
+      11  ?Subroutine37
        6  ?Subroutine38
-       9  ?Subroutine39
-      15  ?Subroutine4
-       3  ?Subroutine40
-      10  ?Subroutine41
-       8  ?Subroutine42
-       8  ?Subroutine43
+       3  ?Subroutine39
+       9  ?Subroutine4
+       9  ?Subroutine40
+       3  ?Subroutine41
+      10  ?Subroutine42
+      14  ?Subroutine43
        6  ?Subroutine44
-       6  ?Subroutine45
-      10  ?Subroutine46
-       9  ?Subroutine47
-       9  ?Subroutine48
-      12  ?Subroutine49
+       9  ?Subroutine45
+       3  ?Subroutine46
+       7  ?Subroutine47
+      10  ?Subroutine48
+       5  ?Subroutine49
        5  ?Subroutine5
-       9  ?Subroutine50
-      19  ?Subroutine51
-      14  ?Subroutine52
-      12  ?Subroutine53
-      13  ?Subroutine54
+       8  ?Subroutine50
+      12  ?Subroutine51
+       6  ?Subroutine52
+       3  ?Subroutine53
+      10  ?Subroutine54
        7  ?Subroutine55
-       5  ?Subroutine56
-       3  ?Subroutine57
-      10  ?Subroutine58
-      13  ?Subroutine59
+       6  ?Subroutine56
+      11  ?Subroutine57
+       9  ?Subroutine58
+       9  ?Subroutine59
       22  ?Subroutine6
-      13  ?Subroutine60
-       4  ?Subroutine61
-       9  ?Subroutine62
-      11  ?Subroutine63
+       9  ?Subroutine60
+      19  ?Subroutine61
+      14  ?Subroutine62
+      12  ?Subroutine63
+      13  ?Subroutine64
+       7  ?Subroutine65
+       5  ?Subroutine66
+       9  ?Subroutine67
+       8  ?Subroutine68
+       3  ?Subroutine69
        5  ?Subroutine7
+      10  ?Subroutine70
+      13  ?Subroutine71
+       6  ?Subroutine72
+      13  ?Subroutine73
+      12  ?Subroutine74
+       9  ?Subroutine75
+      11  ?Subroutine76
        5  ?Subroutine8
        9  ?Subroutine9
      355  AES_CCMDecrypt
@@ -4450,12 +4511,12 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        6  AES_init::?relay
      260  CBCMAC_buf_encrypt
        6  CBCMAC_buf_encrypt::?relay
-      65  CF_init
+      75  CF_init
        6  CF_init::?relay
        1  CLKCONCMD
        1  CLKCONSTA
        4  COMPARE_TIME
-      34  CONFIG
+      36  CONFIG
      270  CTR_enc_decrypt
        6  CTR_enc_decrypt::?relay
       70  Callback_execution
@@ -4486,7 +4547,7 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        4  LAST_SYNC_TIME
       33  LED
        6  LED::?relay
-     403  LLC_AddTask
+     398  LLC_AddTask
        6  LLC_AddTask::?relay
       10  LLC_GetTaskLen
        6  LLC_GetTaskLen::?relay
@@ -4494,18 +4555,18 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        6  LLC_Init::?relay
       70  LLC_RX_HNDL
        6  LLC_RX_HNDL::?relay
-      40  LLC_Reset
+      35  LLC_Reset
        6  LLC_Reset::?relay
       45  LLC_SE_HNDL
        6  LLC_SE_HNDL::?relay
       69  LLC_SetRXCallback
        6  LLC_SetRXCallback::?relay
-     241  LLC_Shelduler
+     231  LLC_Shelduler
        6  LLC_Shelduler::?relay
      137  LLC_TimeAlloc
        6  LLC_TimeAlloc::?relay
      350  MACSlotTable
-      40  MAC_CloseRXSlot
+      36  MAC_CloseRXSlot
        6  MAC_CloseRXSlot::?relay
        1  MAC_ENABLE_MODULE
       14  MAC_Enable
@@ -4516,13 +4577,13 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        6  MAC_GetTXState::?relay
       26  MAC_Init
        6  MAC_Init::?relay
-      71  MAC_OpenRXSlot
+      54  MAC_OpenRXSlot
        6  MAC_OpenRXSlot::?relay
      185  MAC_RX_HNDL
        6  MAC_RX_HNDL::?relay
       37  MAC_Reset
        6  MAC_Reset::?relay
-     305  MAC_Send
+     298  MAC_Send
        6  MAC_Send::?relay
       10  MAC_SetRXCallback
        6  MAC_SetRXCallback::?relay
@@ -4532,17 +4593,13 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        6  MAC_setIV::?relay
       24  MAC_setKEY
        6  MAC_setKEY::?relay
-     315  MG_Connect
+     314  MG_Connect
        6  MG_Connect::?relay
-      32  MG_Get_State
-       6  MG_Get_State::?relay
        1  MG_MODULES_INITED
-      49  MG_Set_State
-       6  MG_Set_State::?relay
-       1  MG_regs
       12  MyLowLevelPutchar
        6  MyLowLevelPutchar::?relay
        1  NBR_FRAME
+       1  NEED_SEND_SYNC
        4  NEXT_SYNC_TIME
        4  NODE_NONCE
        4  NODE_RTC
@@ -4551,7 +4608,7 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        6  NT_GetTime::?relay
       48  NT_Init
        6  NT_Init::?relay
-     263  NT_SetCompare
+     262  NT_SetCompare
        6  NT_SetCompare::?relay
       10  NT_SetEventCallback
        6  NT_SetEventCallback::?relay
@@ -4569,13 +4626,13 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        1  RFST
        4  RI_CCA_REJECT
        4  RI_CRC_ERROR
-       9  RI_GetCCAReject
+      10  RI_GetCCAReject
        6  RI_GetCCAReject::?relay
-       9  RI_GetCRCError
+      10  RI_GetCRCError
        6  RI_GetCRCError::?relay
-       7  RI_GetUptime
+      10  RI_GetUptime
        6  RI_GetUptime::?relay
-     898  RI_Receive
+     893  RI_Receive
        6  RI_Receive::?relay
      349  RI_Send
        6  RI_Send::?relay
@@ -4601,24 +4658,27 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        6  STACK_FAILURE::?relay
        1  STLOAD
        2  SYNC_ACCURATE_NETWORK_TIME
+       4  SYNC_SENDED
        1  SY_ENABLE_MODULE
       10  SY_Enable
        6  SY_Enable::?relay
-     162  SY_Init
+     164  SY_Init
        6  SY_Init::?relay
-       5  SY_Reset
+       7  SY_Reset
        6  SY_Reset::?relay
-     517  SY_SYNC_NETWORK
+     572  SY_SYNC_NETWORK
        6  SY_SYNC_NETWORK::?relay
-     106  SY_TIME_ALLOC_SLAVE
+     211  SY_TIME_ALLOC_SLAVE
        6  SY_TIME_ALLOC_SLAVE::?relay
-     228  SY_TS1_HNDL_SLAVE
+     637  SY_TS1_HNDL_SLAVE
        6  SY_TS1_HNDL_SLAVE::?relay
       27  SY_setIV
        6  SY_setIV::?relay
       27  SY_setKEY
        6  SY_setKEY::?relay
-     163  SendData
+       7  SY_sync_sended
+       6  SY_sync_sended::?relay
+     155  SendData
        6  SendData::?relay
        2  SyncTimeAllocCallback
        1  T2CTRL
@@ -4642,7 +4702,7 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        6  TIC_GetTimer::?relay
       10  TIC_GetUptime
        6  TIC_GetUptime::?relay
-     355  TIC_HW_Timer_IRQ
+     286  TIC_HW_Timer_IRQ
        6  TIC_HW_Timer_IRQ::?relay
       20  TIC_Init
        6  TIC_Init::?relay
@@ -4706,12 +4766,13 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        4  __Constant_15180
        4  __Constant_19833891
        4  __Constant_1f4
-       4  __Constant_2
        4  __Constant_3d000000
        4  __Constant_3e8
        4  __Constant_447a0000
+       4  __Constant_6f
        4  __Constant_7fff
        4  __Constant_8000
+       4  __Constant_9
        4  __Constant_ffff8000
        4  __Constant_fffffe0c
        4  __Constant_ffffff
@@ -4724,9 +4785,9 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        6  frame_addHeader::?relay
      156  frame_create
        6  frame_create::?relay
-     213  frame_delHeader
+     209  frame_delHeader
        6  frame_delHeader::?relay
-      75  frame_delete
+      46  frame_delete
        6  frame_delete::?relay
        7  frame_getCount
        6  frame_getCount::?relay
@@ -4734,13 +4795,13 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        6  frame_len::?relay
      183  generateAuthData
        6  generateAuthData::?relay
-      98  get_sync
+     102  get_sync
        6  get_sync::?relay
       55  heap_ptr
        6  heap_ptr::?relay
        3  heap_size
        6  heap_size::?relay
-     130  main
+      12  main
        6  main::?relay
       67  memory_compare
        6  memory_compare::?relay
@@ -4748,13 +4809,13 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
       18  nwDebugerInit
        6  nwDebugerInit::?relay
        2  pACK
-      15  re_free
+      14  re_free
        6  re_free::?relay
-      20  re_malloc
+      18  re_malloc
        6  re_malloc::?relay
-      28  re_memcpy
+      25  re_memcpy
        6  re_memcpy::?relay
-      65  readRandom
+      64  readRandom
        6  readRandom::?relay
        4  ret_val
      114  suite_GW
@@ -4774,22 +4835,22 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        4  val
       56  xor_calc
        6  xor_calc::?relay
-     510  -- Other
+     505  -- Other
 
  
- 12 950 bytes in segment BANKED_CODE
-    714 bytes in segment BANK_RELAYS
+ 13 287 bytes in segment BANKED_CODE
+    708 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
     101 bytes in segment NEAR_CODE
      33 bytes in segment SFR_AN
-  1 535 bytes in segment XDATA_I
-  1 535 bytes in segment XDATA_ID
-    712 bytes in segment XDATA_Z
+  1 566 bytes in segment XDATA_I
+  1 566 bytes in segment XDATA_ID
+    718 bytes in segment XDATA_Z
  
-  2 292 bytes of CODE     memory (+ 61 bytes shared)
+  2 313 bytes of CODE     memory (+ 65 bytes shared)
       0 bytes of DATA     memory (+ 33 bytes shared)
- 12 884 bytes of HUGECODE memory (+ 66 bytes shared)
-  2 195 bytes of XDATA    memory (+ 52 bytes shared)
+ 13 221 bytes of HUGECODE memory (+ 66 bytes shared)
+  2 228 bytes of XDATA    memory (+ 56 bytes shared)
 
 Errors: none
-Warnings: 6
+Warnings: 7
