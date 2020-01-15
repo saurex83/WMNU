@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               15/Jan/2020  21:44:13
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               15/Jan/2020  22:05:36
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,7 +14,7 @@
 #    Source file        =  
 #        \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW1EDE.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EWB16F.tmp
 #        ("\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c" -lc
 #        "\\vmware-host\Shared
@@ -2597,10 +2597,10 @@ Warning[Pe550]: variable "timer" was set but never used
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\RADIO.c"
 
-  static bool slave_mode()
+  static bool master_mode()
               ^
-"\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\manager.c",102  Warning[Pe177]: 
-          function "slave_mode" was declared but never referenced
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\manager.c",90  Warning[Pe177]: 
+          function "master_mode" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\manager.c"
@@ -3121,19 +3121,6 @@ Warning[Pe550]: variable "timer" was set but never used
     186          @detail Выполняет две функции: синхронизацию с сетью или передачу синхр.
     187          */
     188          static void SY_TS1_HNDL_SLAVE(void)
-                             ^
-Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
-          detected during compilation of secondary translation unit
-                    "\\vmware-host\Shared
-                    Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\sync.c"
-
-  static void SY_TIME_ALLOC_SLAVE(void)
-              ^
-"\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\sync.c",125  Warning[Pe177]: 
-          function "SY_TIME_ALLOC_SLAVE" was declared but never referenced
-          detected during compilation of secondary translation unit
-                    "\\vmware-host\Shared
-                    Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\sync.c"
     189          {
     190            if (!SY_ENABLE_MODULE) // Модуль отключен
     191              return;
@@ -3194,6 +3181,19 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
     246          @detail Формирует кадр синхронизации и передает его в строго определенное время
     247          */
     248          static void SY_TS1_HNDL_MASTER(void)
+                             ^
+Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
+          detected during compilation of secondary translation unit
+                    "\\vmware-host\Shared
+                    Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\sync.c"
+
+  static void SY_TIME_ALLOC_MASTER(void)
+              ^
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\sync.c",161  Warning[Pe177]: 
+          function "SY_TIME_ALLOC_MASTER" was declared but never referenced
+          detected during compilation of secondary translation unit
+                    "\\vmware-host\Shared
+                    Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\sync.c"
     249          {
     250            if (!SY_ENABLE_MODULE) // Модуль отключен
     251              return;  
@@ -3797,23 +3797,29 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
       1          #include "utest_suite.h"
       2          #include "manager.h"
       3          #include "nwdebuger.h"
-      4          
-      5          // Собирать проект без ключем GATEWAY в файле basic.h
-      6          
-      7          void suite_NODE(void)
-      8          {
-      9             bool con = MG_Connect();
-     10            if (con)
-     11            {
-     12              LOG_ON("Network sycronized");
-     13            }  
-     14            else
-     15            {
-     16              LOG_ON("Network connect faild");
-     17            }
-     18            
-     19            while(1);
-     20          }
+      4          #include "ioCC2530.h"
+      5          
+      6          // Собирать проект без ключем GATEWAY в файле basic.h
+      7          
+      8          void suite_NODE(void)
+      9          {
+     10            SLEEPCMD |= 0x06; // Select PM2
+     11             bool con = MG_Connect();
+     12            if (con)
+     13            {
+     14              LOG_ON("Network sycronized");
+     15            }  
+     16            else
+     17            {
+     18              LOG_ON("Network connect faild");
+     19            }
+     20            
+     21            while(1)
+     22            {
+     23              LOG_ON("Go PM2");
+     24              PCON = 1;
+     25            };
+     26          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_suite.c
       1          #include "stdio.h"
       2          #include "utest_suite.h"
@@ -3917,12 +3923,12 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
         0     53   -> generateAuthData
         0     53   -> memcpy
         0     53   -> memset
-      0     88   AES_StreamCoder
+      0     70   AES_StreamCoder
         0     36   -> memcpy
         0     36   -> memset
-      2     10   AES_init
+      2     12   AES_init
       0    111   CBCMAC_buf_encrypt
-      0     22   CF_init
+      0     24   CF_init
         0     12   -> memcpy
       0    107   CTR_enc_decrypt
         0     36   -> memcpy
@@ -3949,7 +3955,7 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
         0     22   -> printf
         0     26   -> printf
       2      0   LLC_GetTaskLen
-      0     26   LLC_Init
+      0     28   LLC_Init
         0     10   -> printf
         0     16   -> printf
       0     16   LLC_RX_HNDL
@@ -3976,7 +3982,7 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
       2      0   MAC_Enable
       2      0   MAC_GetRXState
       2      0   MAC_GetTXState
-      0     22   MAC_Init
+      0     24   MAC_Init
         0     10   -> TIC_SetRXCallback
         0     10   -> TIC_SetTXCallback
         0     12   -> memset
@@ -3990,7 +3996,7 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
         0     14   -> frame_create
         0     14   -> frame_delete
         0     14   -> xor_calc
-      0     22   MAC_Reset
+      0     24   MAC_Reset
         0     10   -> frame_delete
         0     12   -> memset
       1     29   MAC_Send
@@ -4010,27 +4016,28 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
         0     12   -> memcpy
       0     12   MAC_setKEY
         0     12   -> memcpy
-      0     26   MG_Connect
-        0     10   -> AES_init
-        0     10   -> CF_init
-        0     10   -> LLC_Init
-        0     10   -> MAC_Init
-        0     10   -> MAC_Reset
-        0     10   -> NT_Init
-        0     10   -> RI_init
-        0     10   -> SY_Init
-        0     10   -> SY_Reset
-        0     10   -> TIC_Init
-        0     10   -> TIC_Reset
-        0     10   -> TIM_init
-        0     10   -> __xdata_free
-        0     12   -> memcpy
-        0     10   -> printf
+      0     28   MG_Connect
+        0     12   -> AES_init
+        0     12   -> CF_init
+        0     12   -> LLC_Init
+        0     12   -> MAC_Init
+        0     12   -> MAC_Reset
+        0     12   -> NT_Init
+        0     12   -> RI_init
+        0     12   -> SY_Init
+        0     12   -> SY_Reset
+        0     12   -> SY_SYNC_NETWORK
+        0     12   -> TIC_Init
+        0     12   -> TIC_Reset
+        0     12   -> TIM_init
+        0     12   -> __xdata_free
+        0     14   -> memcpy
         0     12   -> printf
-        0     16   -> printf
+        0     14   -> printf
+        0     18   -> printf
       0      0   MyLowLevelPutchar
       0     12   NT_GetTime
-      2     10   NT_Init
+      2     12   NT_Init
       0     42   NT_SetCompare
         0     24   -> ReadTimer
         0     24   -> printf
@@ -4041,18 +4048,18 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
         0     12   -> ReadTimer
         0     12   -> printf
         0     18   -> printf
-      0     25   NT_WaitTime
+      0     42   NT_WaitTime
       2      0   RI_GetCCAReject
       2      0   RI_GetCRCError
       2      0   RI_GetUptime
-      2    109   RI_Receive
+      2     79   RI_Receive
         0     61   -> RI_cfg
         0     61   -> ReadTimer
         0     61   -> __xdata_malloc
         0     61   -> frame_addHeader
         0     61   -> frame_create
         0     61   -> re_free
-      1     60   RI_Send
+      1     68   RI_Send
         0     32   -> RI_cfg
         0     32   -> SendData
         0     32   -> printf
@@ -4061,7 +4068,7 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
       0     77   RI_cfg
         0     10   -> printf
         0     16   -> printf
-      0     19   RI_init
+      0     21   RI_init
         0      9   -> RI_cfg
         0      9   -> rand
         0      9   -> readRandom
@@ -4071,25 +4078,31 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
         0     10   -> printf
         0     16   -> printf
       2      0   SY_Enable
-      0     26   SY_Init
+      0     28   SY_Init
         0     10   -> printf
         0     16   -> printf
-      2     10   SY_Reset
-      2     52   SY_SYNC_NETWORK
-        0     52   -> AES_StreamCoder
-        0     48   -> RI_Receive
+      2     12   SY_Reset
+      2     60   SY_SYNC_NETWORK
         0     48   -> TIC_CloseAllState
         0     48   -> TIC_SetTimer
         0     48   -> frame_delete
-      0     12   SY_TIME_ALLOC_MASTER
-      0     28   SY_TS1_HNDL_MASTER
-        0     26   -> AES_StreamCoder
-        0     22   -> RI_Send
-        0     22   -> frame_addHeader
-        0     22   -> frame_create
-        0     22   -> frame_delete
-        0     22   -> printf
-        0     28   -> printf
+        0     48   -> get_sync
+      2     18   SY_TIME_ALLOC_SLAVE
+        0     12   -> printf
+        0     18   -> printf
+      2     44   SY_TS1_HNDL_SLAVE
+        0     34   -> AES_StreamCoder
+        0     30   -> NT_WaitTime
+        0     30   -> RI_Send
+        0     30   -> TIC_SetTimer
+        0     30   -> frame_addHeader
+        0     30   -> frame_create
+        0     30   -> frame_delete
+        0     30   -> get_sync
+        0     30   -> printf
+        0     32   -> printf
+        0     36   -> printf
+        0     44   -> printf
       0     12   SY_setIV
         0     12   -> memcpy
       0     12   SY_setKEY
@@ -4111,12 +4124,12 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
         0     12   -> TIM_TimeStamp
         0     12   -> printf
         0     18   -> printf
-      2     10   TIC_Init
+      2     12   TIC_Init
         2      0   -> NT_SetCompare
         2      0   -> NT_SetTime
         2      0   -> TIC_CloseAllState
         2      0   -> TIM_TimeStamp
-      2     10   TIC_Reset
+      2     12   TIC_Reset
         2      0   -> NT_SetCompare
         2      0   -> NT_SetTime
         2      0   -> TIC_CloseAllState
@@ -4154,7 +4167,7 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
       0     12   TIM_copy
         0     12   -> memcpy
       1     64   TIM_delay
-      1     42   TIM_init
+      1     44   TIM_init
         0     32   -> TIM_delay
       0     20   TIM_passedTime
       0     17   TimerCompareInterrupt
@@ -4176,19 +4189,23 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
         0     21   -> printf
         0     15   -> re_free
         0     17   -> re_memcpy
-      0     59   frame_delete
-        0     11   -> __xdata_free
+      0     58   frame_delete
+        0     10   -> re_free
       2      0   frame_getCount
       2      0   frame_len
       0     85   generateAuthData
         0     16   -> memcpy
+      0     62   get_sync
+        0     14   -> AES_StreamCoder
+        0     10   -> RI_Receive
+        0     10   -> frame_delete
       0     12   heap_ptr
         0     12   -> __xdata_free
         0     12   -> __xdata_malloc
       0      0   heap_size
       0      0   main
         0      0   -> nwDebugerInit
-        0      0   -> suite_GW
+        0      0   -> suite_NODE
         0      0   -> umsg_summary
       0     11   memory_compare
       0      0   nwDebugerInit
@@ -4240,9 +4257,11 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
       19  ?<Constant "*LOG* %s:%d:%s -> ">_5
       19  ?<Constant "*LOG* %s:%d:%s -> ">_6
       51  ?<Constant "Add task = %u, CH = %...">
+      13  ?<Constant "Begin resync">
       13  ?<Constant "FAILD : %d\r\n">
       13  ?<Constant "FAILED <----">
       21  ?<Constant "Frame_s count: %d \r\n">
+       7  ?<Constant "Go PM2">
        6  ?<Constant "LLC.c">
        6  ?<Constant "MAC.c">
       42  ?<Constant "Module: %-15s Name: %...">
@@ -4250,12 +4269,14 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
       22  ?<Constant "Network connect faild">
       18  ?<Constant "Network created\r\n">
       26  ?<Constant "Network creation fail...">
+      21  ?<Constant "Network out of sync.">
       19  ?<Constant "Network sycronized">
+      67  ?<Constant "Node Synced. TS=%d, A...">
        7  ?<Constant "PASSED">
       13  ?<Constant "PASSED: %d\r\n">
        8  ?<Constant "RADIO.c">
+      18  ?<Constant "Resync TX. CNT=%d">
       20  ?<Constant "STACK FAILURE. HALT">
-      11  ?<Constant "Sync send.">
        6  ?<Constant "TIC.c">
       12  ?<Constant "TS = 255 \r\n">
       15  ?<Constant "Tests FAILED\r\n">
@@ -4297,9 +4318,11 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
       19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_5
       19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_6
       51  ?<Initializer for <Constant "Add task = %u, CH
+      13  ?<Initializer for <Constant "Begin resync">>
       13  ?<Initializer for <Constant "FAILD : %d\r\n">>
       13  ?<Initializer for <Constant "FAILED <----">>
       21  ?<Initializer for <Constant "Frame_s count: %d
+       7  ?<Initializer for <Constant "Go PM2">>
        6  ?<Initializer for <Constant "LLC.c">>
        6  ?<Initializer for <Constant "MAC.c">>
       42  ?<Initializer for <Constant "Module: %-15s Nam
@@ -4307,12 +4330,14 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
       22  ?<Initializer for <Constant "Network connect f
       18  ?<Initializer for <Constant "Network created\r
       26  ?<Initializer for <Constant "Network creation
+      21  ?<Initializer for <Constant "Network out of sy
       19  ?<Initializer for <Constant "Network sycronize
+      67  ?<Initializer for <Constant "Node Synced. TS=%
        7  ?<Initializer for <Constant "PASSED">>
       13  ?<Initializer for <Constant "PASSED: %d\r\n">>
        8  ?<Initializer for <Constant "RADIO.c">>
+      18  ?<Initializer for <Constant "Resync TX. CNT=%d
       20  ?<Initializer for <Constant "STACK FAILURE. HA
-      11  ?<Initializer for <Constant "Sync send.">>
        6  ?<Initializer for <Constant "TIC.c">>
       12  ?<Initializer for <Constant "TS = 255 \r\n">>
       15  ?<Initializer for <Constant "Tests FAILED\r\n"
@@ -4348,10 +4373,10 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
        4  ?<Initializer for __Constant_3d000000>
        4  ?<Initializer for __Constant_3e8>
        4  ?<Initializer for __Constant_447a0000>
+       4  ?<Initializer for __Constant_6f>
        4  ?<Initializer for __Constant_7fff>
        4  ?<Initializer for __Constant_8000>
        4  ?<Initializer for __Constant_9>
-       4  ?<Initializer for __Constant_a>
        4  ?<Initializer for __Constant_ffff8000>
        4  ?<Initializer for __Constant_fffffe0c>
        4  ?<Initializer for __Constant_ffffff>
@@ -4365,23 +4390,24 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
       14  ?<Initializer for __FUNCTION__>_15
        8  ?<Initializer for __FUNCTION__>_16
        8  ?<Initializer for __FUNCTION__>_17
-      19  ?<Initializer for __FUNCTION__>_18
-      13  ?<Initializer for __FUNCTION__>_19
+      20  ?<Initializer for __FUNCTION__>_18
+      18  ?<Initializer for __FUNCTION__>_19
       15  ?<Initializer for __FUNCTION__>_2
-      15  ?<Initializer for __FUNCTION__>_20
+      13  ?<Initializer for __FUNCTION__>_20
       15  ?<Initializer for __FUNCTION__>_21
       15  ?<Initializer for __FUNCTION__>_22
       15  ?<Initializer for __FUNCTION__>_23
-      19  ?<Initializer for __FUNCTION__>_24
-      18  ?<Initializer for __FUNCTION__>_25
-      29  ?<Initializer for __FUNCTION__>_26
-      18  ?<Initializer for __FUNCTION__>_27
+      15  ?<Initializer for __FUNCTION__>_24
+      19  ?<Initializer for __FUNCTION__>_25
+      18  ?<Initializer for __FUNCTION__>_26
+      29  ?<Initializer for __FUNCTION__>_27
       18  ?<Initializer for __FUNCTION__>_28
-      19  ?<Initializer for __FUNCTION__>_29
+      18  ?<Initializer for __FUNCTION__>_29
       16  ?<Initializer for __FUNCTION__>_3
-      17  ?<Initializer for __FUNCTION__>_30
-       9  ?<Initializer for __FUNCTION__>_31
-      11  ?<Initializer for __FUNCTION__>_32
+      19  ?<Initializer for __FUNCTION__>_30
+      17  ?<Initializer for __FUNCTION__>_31
+       9  ?<Initializer for __FUNCTION__>_32
+      11  ?<Initializer for __FUNCTION__>_33
       16  ?<Initializer for __FUNCTION__>_4
       13  ?<Initializer for __FUNCTION__>_5
       18  ?<Initializer for __FUNCTION__>_6
@@ -4390,42 +4416,42 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
       14  ?<Initializer for __FUNCTION__>_9
       16  ?<Initializer for default_iv>
       16  ?<Initializer for default_key>
-       2  ??Subroutine72_0
-      19  ??Subroutine73_0
-       8  ??Subroutine74_0
-       4  ??Subroutine75_0
-       6  ??Subroutine76_0
-       6  ??Subroutine77_0
-       2  ??Subroutine78_0
-       3  ??Subroutine79_0
-       5  ??Subroutine80_0
-       4  ??Subroutine81_0
+       2  ??Subroutine75_0
+      19  ??Subroutine76_0
+       8  ??Subroutine77_0
+       4  ??Subroutine78_0
+       6  ??Subroutine79_0
+       6  ??Subroutine80_0
+       2  ??Subroutine81_0
        3  ??Subroutine82_0
        5  ??Subroutine83_0
-       5  ??Subroutine84_0
-       6  ??Subroutine85_0
-       1  ??Subroutine86_0
+       4  ??Subroutine84_0
+       3  ??Subroutine85_0
+       5  ??Subroutine86_0
        5  ??Subroutine87_0
-       8  ??Subroutine88_0
-       4  ??Subroutine89_0
-       7  ??Subroutine90_0
-       9  ??Subroutine91_0
+       1  ??Subroutine88_0
+       5  ??Subroutine89_0
+       4  ??Subroutine90_0
+       1  ??Subroutine91_0
        4  ??Subroutine92_0
-       6  ??Subroutine93_0
+       7  ??Subroutine93_0
        1  ??Subroutine94_0
-       4  ??Subroutine95_0
+       6  ??Subroutine95_0
+       8  ??Subroutine96_0
+       9  ??Subroutine97_0
+       4  ??Subroutine98_0
       21  ?Subroutine0
        7  ?Subroutine1
        4  ?Subroutine10
        6  ?Subroutine11
        5  ?Subroutine12
-       6  ?Subroutine13
+       5  ?Subroutine13
        5  ?Subroutine14
-       5  ?Subroutine15
-       4  ?Subroutine16
+       4  ?Subroutine15
+       5  ?Subroutine16
        6  ?Subroutine17
-       6  ?Subroutine18
-       6  ?Subroutine19
+       5  ?Subroutine18
+       5  ?Subroutine19
        7  ?Subroutine2
        7  ?Subroutine20
        6  ?Subroutine21
@@ -4434,56 +4460,59 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
        3  ?Subroutine24
       47  ?Subroutine25
       25  ?Subroutine26
-      18  ?Subroutine27
-      16  ?Subroutine28
-      14  ?Subroutine29
+       9  ?Subroutine27
+      18  ?Subroutine28
+      16  ?Subroutine29
        2  ?Subroutine3
-       5  ?Subroutine30
-      21  ?Subroutine31
-      11  ?Subroutine32
-       6  ?Subroutine33
-      17  ?Subroutine34
-      11  ?Subroutine35
+      14  ?Subroutine30
+       5  ?Subroutine31
+      21  ?Subroutine32
+      11  ?Subroutine33
+       6  ?Subroutine34
+      17  ?Subroutine35
       11  ?Subroutine36
-       6  ?Subroutine37
-       9  ?Subroutine38
-       3  ?Subroutine39
+      11  ?Subroutine37
+       6  ?Subroutine38
+       9  ?Subroutine39
       15  ?Subroutine4
        3  ?Subroutine40
-      14  ?Subroutine41
-       6  ?Subroutine42
-       9  ?Subroutine43
-      12  ?Subroutine44
-       3  ?Subroutine45
-       7  ?Subroutine46
-       3  ?Subroutine47
-      10  ?Subroutine48
-       5  ?Subroutine49
+       3  ?Subroutine41
+       2  ?Subroutine42
+      14  ?Subroutine43
+       6  ?Subroutine44
+       9  ?Subroutine45
+      12  ?Subroutine46
+       7  ?Subroutine47
+       3  ?Subroutine48
+      10  ?Subroutine49
        5  ?Subroutine5
-       4  ?Subroutine50
-      10  ?Subroutine51
-      11  ?Subroutine52
-       9  ?Subroutine53
-       9  ?Subroutine54
-       9  ?Subroutine55
-      19  ?Subroutine56
-      14  ?Subroutine57
-      12  ?Subroutine58
-      13  ?Subroutine59
+       5  ?Subroutine50
+       6  ?Subroutine51
+      10  ?Subroutine52
+       7  ?Subroutine53
+       4  ?Subroutine54
+      11  ?Subroutine55
+       9  ?Subroutine56
+       9  ?Subroutine57
+      19  ?Subroutine58
+      14  ?Subroutine59
       22  ?Subroutine6
-       7  ?Subroutine60
-       5  ?Subroutine61
-       9  ?Subroutine62
-       8  ?Subroutine63
-       3  ?Subroutine64
-      10  ?Subroutine65
-      13  ?Subroutine66
-      13  ?Subroutine67
-       6  ?Subroutine68
-      12  ?Subroutine69
+      12  ?Subroutine60
+      13  ?Subroutine61
+       7  ?Subroutine62
+       5  ?Subroutine63
+       9  ?Subroutine64
+       8  ?Subroutine65
+       3  ?Subroutine66
+       5  ?Subroutine67
+      13  ?Subroutine68
+       6  ?Subroutine69
        5  ?Subroutine7
-       9  ?Subroutine70
-      11  ?Subroutine71
+      13  ?Subroutine70
+      12  ?Subroutine71
+       9  ?Subroutine72
+      11  ?Subroutine73
+       9  ?Subroutine74
        5  ?Subroutine8
        9  ?Subroutine9
      355  AES_CCMDecrypt
@@ -4494,7 +4523,7 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
        6  AES_StreamCoder::?relay
       76  AES_init
        6  AES_init::?relay
-     254  CBCMAC_buf_encrypt
+     260  CBCMAC_buf_encrypt
        6  CBCMAC_buf_encrypt::?relay
       75  CF_init
        6  CF_init::?relay
@@ -4560,7 +4589,7 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
        6  MAC_GetRXState::?relay
       19  MAC_GetTXState
        6  MAC_GetTXState::?relay
-      27  MAC_Init
+      26  MAC_Init
        6  MAC_Init::?relay
       54  MAC_OpenRXSlot
        6  MAC_OpenRXSlot::?relay
@@ -4568,7 +4597,7 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
        6  MAC_RX_HNDL::?relay
       37  MAC_Reset
        6  MAC_Reset::?relay
-     297  MAC_Send
+     298  MAC_Send
        6  MAC_Send::?relay
       10  MAC_SetRXCallback
        6  MAC_SetRXCallback::?relay
@@ -4578,12 +4607,13 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
        6  MAC_setIV::?relay
       24  MAC_setKEY
        6  MAC_setKEY::?relay
-     275  MG_Connect
+     293  MG_Connect
        6  MG_Connect::?relay
        1  MG_MODULES_INITED
       12  MyLowLevelPutchar
        6  MyLowLevelPutchar::?relay
        1  NBR_FRAME
+       1  NEED_SEND_SYNC
        4  NEXT_SYNC_TIME
        4  NODE_NONCE
        4  NODE_RTC
@@ -4602,6 +4632,7 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
        6  NT_WaitTime::?relay
        1  P0SEL
        1  P1DIR
+       1  PCON
        1  PERCFG
        3  RADIO_CFG
        1  RFD
@@ -4634,6 +4665,7 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
       22  ReadTimer
        6  ReadTimer::?relay
        2  SECallback
+       1  SLEEPCMD
        1  SLEEPSTA
        1  ST0
        1  ST1
@@ -4650,12 +4682,12 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
        6  SY_Init::?relay
        7  SY_Reset
        6  SY_Reset::?relay
-     680  SY_SYNC_NETWORK
+     597  SY_SYNC_NETWORK
        6  SY_SYNC_NETWORK::?relay
-      71  SY_TIME_ALLOC_MASTER
-       6  SY_TIME_ALLOC_MASTER::?relay
-     256  SY_TS1_HNDL_MASTER
-       6  SY_TS1_HNDL_MASTER::?relay
+     211  SY_TIME_ALLOC_SLAVE
+       6  SY_TIME_ALLOC_SLAVE::?relay
+     750  SY_TS1_HNDL_SLAVE
+       6  SY_TS1_HNDL_SLAVE::?relay
       27  SY_setIV
        6  SY_setIV::?relay
       27  SY_setKEY
@@ -4690,7 +4722,7 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
        6  TIC_HW_Timer_IRQ::?relay
       20  TIC_Init
        6  TIC_Init::?relay
-      28  TIC_Reset
+      10  TIC_Reset
        6  TIC_Reset::?relay
       24  TIC_SetNonce
        6  TIC_SetNonce::?relay
@@ -4753,10 +4785,10 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
        4  __Constant_3d000000
        4  __Constant_3e8
        4  __Constant_447a0000
+       4  __Constant_6f
        4  __Constant_7fff
        4  __Constant_8000
        4  __Constant_9
-       4  __Constant_a
        4  __Constant_ffff8000
        4  __Constant_fffffe0c
        4  __Constant_ffffff
@@ -4765,13 +4797,13 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
      162  buf
       16  default_iv
       16  default_key
-     348  frame_addHeader
+     351  frame_addHeader
        6  frame_addHeader::?relay
      156  frame_create
        6  frame_create::?relay
      219  frame_delHeader
        6  frame_delHeader::?relay
-      75  frame_delete
+      46  frame_delete
        6  frame_delete::?relay
        7  frame_getCount
        6  frame_getCount::?relay
@@ -4779,6 +4811,8 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
        6  frame_len::?relay
      183  generateAuthData
        6  generateAuthData::?relay
+     102  get_sync
+       6  get_sync::?relay
       55  heap_ptr
        6  heap_ptr::?relay
        3  heap_size
@@ -4793,7 +4827,7 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
        2  pACK
       14  re_free
        6  re_free::?relay
-      20  re_malloc
+      18  re_malloc
        6  re_malloc::?relay
       25  re_memcpy
        6  re_memcpy::?relay
@@ -4802,9 +4836,8 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
        4  ret_val
      114  suite_GW
        6  suite_GW::?relay
-     114  suite_NODE
+     179  suite_NODE
        6  suite_NODE::?relay
-       4  sync_send_time
        1  tasksBLOCK
       70  umsg
        6  umsg::?relay
@@ -4818,22 +4851,22 @@ Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
        4  val
       56  xor_calc
        6  xor_calc::?relay
-     486  -- Other
+     505  -- Other
 
  
- 12 839 bytes in segment BANKED_CODE
-    702 bytes in segment BANK_RELAYS
+ 13 543 bytes in segment BANKED_CODE
+    708 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
     101 bytes in segment NEAR_CODE
-     33 bytes in segment SFR_AN
-  1 448 bytes in segment XDATA_I
-  1 448 bytes in segment XDATA_ID
-    721 bytes in segment XDATA_Z
+     35 bytes in segment SFR_AN
+  1 582 bytes in segment XDATA_I
+  1 582 bytes in segment XDATA_ID
+    718 bytes in segment XDATA_Z
  
-  2 189 bytes of CODE     memory (+ 65 bytes shared)
-      0 bytes of DATA     memory (+ 33 bytes shared)
- 12 773 bytes of HUGECODE memory (+ 66 bytes shared)
-  2 113 bytes of XDATA    memory (+ 56 bytes shared)
+  2 329 bytes of CODE     memory (+ 65 bytes shared)
+      0 bytes of DATA     memory (+ 35 bytes shared)
+ 13 477 bytes of HUGECODE memory (+ 66 bytes shared)
+  2 244 bytes of XDATA    memory (+ 56 bytes shared)
 
 Errors: none
 Warnings: 7
