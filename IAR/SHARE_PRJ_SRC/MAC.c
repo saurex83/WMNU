@@ -33,6 +33,7 @@ static uint8_t IV[16] = DEFAULT_IV;
   
 #define RECV_TIMEOUT 3000UL // Время ожидания приема пакета в мкс с начала слота
 #define ACK_RECV_TIMEOUT 1000UL // Время ожидания приема подтверждения в мкс
+#define TX_DELAY 1*Tmsec // Смещение при передаче пакета. Защита от девиации времени
 
 typedef struct // Формат структуры пакета ACK
 {
@@ -279,7 +280,8 @@ static void MAC_RX_HNDL(uint8_t TS)
   if (fr == NULL)
     return;
   
-  // Пакеты во временные слоты 0..49 требуют подтверждения
+  // Пакеты во временные слоты 1..49 требуют подтверждения
+  // Слоты 0 и 1 для швс и синхронизации соответсвенно
   if (TS > 1)
     MAC_ACK_Send(fr);
  
@@ -314,6 +316,9 @@ static void MAC_TX_HNDL(uint8_t TS)
   
   RI_SetChannel(MACSlotTable[TS].TX.CH); // Устанавливаем канал передачи
 
+  // Задержка перед передачей данных необходима для учета отклонения
+  // времени между узлами из-за рассинхронизации узлов
+  TIM_delay(TX_DELAY);
   // Пробуем передать данные
   bool tx_success = RI_Send(MACSlotTable[TS].TX.fr); 
   bool send_success = false;  
