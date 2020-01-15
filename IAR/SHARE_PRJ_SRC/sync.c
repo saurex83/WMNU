@@ -47,6 +47,7 @@ static uint16_t SYNC_ACCURATE_NETWORK_TIME;
 typedef struct // Формат структуры пакета синхронизации
 {
     uint16_t panid;
+    uint32_t rtc;
     uint32_t magic;
 } __attribute__((packed)) SYNC_s;
 
@@ -117,7 +118,9 @@ void SY_setKEY(void* ptr_KEY)
 }
 
 /**
-@brief Эта функция вызывается после каждого завершенного слота времени
+@brief Функция вызывается после каждого завершенного слота времени
+@detail Детектирует потерю синхронизации, активирует процесс синхронизации
+ активирует слот для ретрансляцию сигнала
 */
 static void SY_TIME_ALLOC_SLAVE(void)
 { 
@@ -152,7 +155,8 @@ static void SY_TIME_ALLOC_SLAVE(void)
 }
 
 /**
-@brief Эта функция вызывается после каждого завершенного слота времени
+@brief Функция вызывается после каждого завершенного слота времени
+@detail Запускает процесс передачи синхросигнала в равные промежутки времени
 */
 static void SY_TIME_ALLOC_MASTER(void)
 { 
@@ -200,7 +204,6 @@ static void SY_TS1_HNDL_SLAVE(void)
   // Время в тактах сети
   NT_WaitTime(SYNC_ACCURATE_NETWORK_TIME - SYNC_TIME_DRIFT);
  
-  RI_SetChannel(CONFIG.sync_channel);
   // Время в мс
   frame_s *fr_SYNC = get_sync(SYNC_RECV_TIMEOUT); 
   
@@ -221,15 +224,17 @@ static void SY_TS1_HNDL_SLAVE(void)
   // Время прошедшее с момента приема пакета в тактах сети
   uint16_t delta = TIC_GetTimer() - fr_SYNC->meta.TIMESTAMP;
   TIC_SetTimer(SYNC_ACCURATE_NETWORK_TIME + delta);
+  TIC_SetRTC(sync->rtc);
   
   LAST_SYNC_TIME = TIC_GetUptime();
   NEXT_SYNC_TIME = LAST_SYNC_TIME + RAND_SYNC_RX_DELAY; 
   TIC_SetRXState(SYNC_TS, false);
-  LOG_ON("Node Synced. TS=%d, AT=%d, DEL=%d, AD=%d, RTC=%d, NRTC=%d",
+  LOG_ON("Node Synced. TS=%d, AT=%d, DEL=%d, AD=%d, RTC=%d, NRTC=%d, SRTC=%d",
          fr_SYNC->meta.TIMESTAMP,SYNC_ACCURATE_NETWORK_TIME, delta,
          SYNC_ACCURATE_NETWORK_TIME - fr_SYNC->meta.TIMESTAMP, 
          (uint16_t)LAST_SYNC_TIME,
-         (uint16_t)NEXT_SYNC_TIME);
+         (uint16_t)NEXT_SYNC_TIME,
+         (uint16_t)TIC_GetRTC());
   frame_delete(fr_SYNC);
   // После приема нужно ретранслировать синхропакет
   NEED_SEND_SYNC = true; 
@@ -262,6 +267,7 @@ static bool send_sync(void)
 {
   SYNC_s sync;
   sync.panid = CONFIG.panid;
+  sync.rtc = TIC_GetRTC();
   sync.magic = MAGIC;
   
   frame_s *fr_SYNC = frame_create();
@@ -359,7 +365,7 @@ bool SY_SYNC_NETWORK(uint16_t *panid,uint16_t timeout)
     // Время прошедшее с момента приема пакета в тактах сети
     uint16_t delta = TIC_GetTimer() - fr_SYNC->meta.TIMESTAMP;
     TIC_SetTimer(SYNC_ACCURATE_NETWORK_TIME + delta);
-    
+    TIC_SetRTC(sync->rtc);
     LAST_SYNC_TIME = TIC_GetUptime();
     NEXT_SYNC_TIME = LAST_SYNC_TIME + RAND_SYNC_RX_DELAY; 
     frame_delete(fr_SYNC);
