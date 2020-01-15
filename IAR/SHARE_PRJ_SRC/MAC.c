@@ -31,8 +31,8 @@ bool MAC_GetRXState(uint8_t TS);
 static uint8_t KEY[16] = DEFAULT_KEY;
 static uint8_t IV[16] = DEFAULT_IV;
   
-#define RECV_TIMEOUT 3000UL // Время ожидания приема пакета в мкс с начала слота
-#define ACK_RECV_TIMEOUT 1000UL // Время ожидания приема подтверждения в мкс
+#define RECV_TIMEOUT 2 // Время ожидания приема пакета в мс с начала слота
+#define ACK_RECV_TIMEOUT 1 // Время ожидания приема подтверждения в мс
 #define TX_DELAY 1*Tmsec // Смещение при передаче пакета. Защита от девиации времени
 
 typedef struct // Формат структуры пакета ACK

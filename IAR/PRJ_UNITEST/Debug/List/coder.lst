@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               15/Jan/2020  21:39:46
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               15/Jan/2020  21:44:13
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,7 +14,8 @@
 #    Source file        =  
 #        \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EWCDC.tmp ("\\vmware-host\Shared
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW1EDE.tmp
+#        ("\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c" -lc
 #        "\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\PRJ_UNITEST\Debug\List" -o
@@ -1422,8 +1423,8 @@ Warning[Pe940]: missing return statement at end of non-void function
      31          static uint8_t KEY[16] = DEFAULT_KEY;
      32          static uint8_t IV[16] = DEFAULT_IV;
      33            
-     34          #define RECV_TIMEOUT 3000UL // Время ожидания приема пакета в мкс с начала слота
-     35          #define ACK_RECV_TIMEOUT 1000UL // Время ожидания приема подтверждения в мкс
+     34          #define RECV_TIMEOUT 2 // Время ожидания приема пакета в мс с начала слота
+     35          #define ACK_RECV_TIMEOUT 1 // Время ожидания приема подтверждения в мс
      36          #define TX_DELAY 1*Tmsec // Смещение при передаче пакета. Защита от девиации времени
      37          
      38          typedef struct // Формат структуры пакета ACK
