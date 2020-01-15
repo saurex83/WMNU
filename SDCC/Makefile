@@ -312,6 +312,222 @@ core/TIC.c.s:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/TIC.c.s
 .PHONY : core/TIC.c.s
 
+core/coder.o: core/coder.c.o
+
+.PHONY : core/coder.o
+
+# target to build an object file
+core/coder.c.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/coder.c.o
+.PHONY : core/coder.c.o
+
+core/coder.i: core/coder.c.i
+
+.PHONY : core/coder.i
+
+# target to preprocess a source file
+core/coder.c.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/coder.c.i
+.PHONY : core/coder.c.i
+
+core/coder.s: core/coder.c.s
+
+.PHONY : core/coder.s
+
+# target to generate assembly for a file
+core/coder.c.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/coder.c.s
+.PHONY : core/coder.c.s
+
+core/config.o: core/config.c.o
+
+.PHONY : core/config.o
+
+# target to build an object file
+core/config.c.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/config.c.o
+.PHONY : core/config.c.o
+
+core/config.i: core/config.c.i
+
+.PHONY : core/config.i
+
+# target to preprocess a source file
+core/config.c.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/config.c.i
+.PHONY : core/config.c.i
+
+core/config.s: core/config.c.s
+
+.PHONY : core/config.s
+
+# target to generate assembly for a file
+core/config.c.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/config.c.s
+.PHONY : core/config.c.s
+
+core/delays.o: core/delays.c.o
+
+.PHONY : core/delays.o
+
+# target to build an object file
+core/delays.c.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/delays.c.o
+.PHONY : core/delays.c.o
+
+core/delays.i: core/delays.c.i
+
+.PHONY : core/delays.i
+
+# target to preprocess a source file
+core/delays.c.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/delays.c.i
+.PHONY : core/delays.c.i
+
+core/delays.s: core/delays.c.s
+
+.PHONY : core/delays.s
+
+# target to generate assembly for a file
+core/delays.c.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/delays.c.s
+.PHONY : core/delays.c.s
+
+core/ethernet.o: core/ethernet.c.o
+
+.PHONY : core/ethernet.o
+
+# target to build an object file
+core/ethernet.c.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/ethernet.c.o
+.PHONY : core/ethernet.c.o
+
+core/ethernet.i: core/ethernet.c.i
+
+.PHONY : core/ethernet.i
+
+# target to preprocess a source file
+core/ethernet.c.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/ethernet.c.i
+.PHONY : core/ethernet.c.i
+
+core/ethernet.s: core/ethernet.c.s
+
+.PHONY : core/ethernet.s
+
+# target to generate assembly for a file
+core/ethernet.c.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/ethernet.c.s
+.PHONY : core/ethernet.c.s
+
+core/fbuf.o: core/fbuf.c.o
+
+.PHONY : core/fbuf.o
+
+# target to build an object file
+core/fbuf.c.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/fbuf.c.o
+.PHONY : core/fbuf.c.o
+
+core/fbuf.i: core/fbuf.c.i
+
+.PHONY : core/fbuf.i
+
+# target to preprocess a source file
+core/fbuf.c.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/fbuf.c.i
+.PHONY : core/fbuf.c.i
+
+core/fbuf.s: core/fbuf.c.s
+
+.PHONY : core/fbuf.s
+
+# target to generate assembly for a file
+core/fbuf.c.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/fbuf.c.s
+.PHONY : core/fbuf.c.s
+
+core/frame.o: core/frame.c.o
+
+.PHONY : core/frame.o
+
+# target to build an object file
+core/frame.c.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/frame.c.o
+.PHONY : core/frame.c.o
+
+core/frame.i: core/frame.c.i
+
+.PHONY : core/frame.i
+
+# target to preprocess a source file
+core/frame.c.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/frame.c.i
+.PHONY : core/frame.c.i
+
+core/frame.s: core/frame.c.s
+
+.PHONY : core/frame.s
+
+# target to generate assembly for a file
+core/frame.c.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/frame.c.s
+.PHONY : core/frame.c.s
+
+core/manager.o: core/manager.c.o
+
+.PHONY : core/manager.o
+
+# target to build an object file
+core/manager.c.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/manager.c.o
+.PHONY : core/manager.c.o
+
+core/manager.i: core/manager.c.i
+
+.PHONY : core/manager.i
+
+# target to preprocess a source file
+core/manager.c.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/manager.c.i
+.PHONY : core/manager.c.i
+
+core/manager.s: core/manager.c.s
+
+.PHONY : core/manager.s
+
+# target to generate assembly for a file
+core/manager.c.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/manager.c.s
+.PHONY : core/manager.c.s
+
+core/mem.o: core/mem.c.o
+
+.PHONY : core/mem.o
+
+# target to build an object file
+core/mem.c.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/mem.c.o
+.PHONY : core/mem.c.o
+
+core/mem.i: core/mem.c.i
+
+.PHONY : core/mem.i
+
+# target to preprocess a source file
+core/mem.c.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/mem.c.i
+.PHONY : core/mem.c.i
+
+core/mem.s: core/mem.c.s
+
+.PHONY : core/mem.s
+
+# target to generate assembly for a file
+core/mem.c.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/mem.c.s
+.PHONY : core/mem.c.s
+
 core/nwdebuger.o: core/nwdebuger.c.o
 
 .PHONY : core/nwdebuger.o
@@ -338,6 +554,33 @@ core/nwdebuger.s: core/nwdebuger.c.s
 core/nwdebuger.c.s:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/nwdebuger.c.s
 .PHONY : core/nwdebuger.c.s
+
+core/sync.o: core/sync.c.o
+
+.PHONY : core/sync.o
+
+# target to build an object file
+core/sync.c.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/sync.c.o
+.PHONY : core/sync.c.o
+
+core/sync.i: core/sync.c.i
+
+.PHONY : core/sync.i
+
+# target to preprocess a source file
+core/sync.c.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/sync.c.i
+.PHONY : core/sync.c.i
+
+core/sync.s: core/sync.c.s
+
+.PHONY : core/sync.s
+
+# target to generate assembly for a file
+core/sync.c.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/sync.c.s
+.PHONY : core/sync.c.s
 
 tests/utest.o: tests/utest.c.o
 
@@ -366,60 +609,6 @@ tests/utest.c.s:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest.c.s
 .PHONY : tests/utest.c.s
 
-tests/utest_FChain.o: tests/utest_FChain.c.o
-
-.PHONY : tests/utest_FChain.o
-
-# target to build an object file
-tests/utest_FChain.c.o:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_FChain.c.o
-.PHONY : tests/utest_FChain.c.o
-
-tests/utest_FChain.i: tests/utest_FChain.c.i
-
-.PHONY : tests/utest_FChain.i
-
-# target to preprocess a source file
-tests/utest_FChain.c.i:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_FChain.c.i
-.PHONY : tests/utest_FChain.c.i
-
-tests/utest_FChain.s: tests/utest_FChain.c.s
-
-.PHONY : tests/utest_FChain.s
-
-# target to generate assembly for a file
-tests/utest_FChain.c.s:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_FChain.c.s
-.PHONY : tests/utest_FChain.c.s
-
-tests/utest_FItem.o: tests/utest_FItem.c.o
-
-.PHONY : tests/utest_FItem.o
-
-# target to build an object file
-tests/utest_FItem.c.o:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_FItem.c.o
-.PHONY : tests/utest_FItem.c.o
-
-tests/utest_FItem.i: tests/utest_FItem.c.i
-
-.PHONY : tests/utest_FItem.i
-
-# target to preprocess a source file
-tests/utest_FItem.c.i:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_FItem.c.i
-.PHONY : tests/utest_FItem.c.i
-
-tests/utest_FItem.s: tests/utest_FItem.c.s
-
-.PHONY : tests/utest_FItem.s
-
-# target to generate assembly for a file
-tests/utest_FItem.c.s:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_FItem.c.s
-.PHONY : tests/utest_FItem.c.s
-
 tests/utest_Frames.o: tests/utest_Frames.c.o
 
 .PHONY : tests/utest_Frames.o
@@ -446,6 +635,33 @@ tests/utest_Frames.s: tests/utest_Frames.c.s
 tests/utest_Frames.c.s:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_Frames.c.s
 .PHONY : tests/utest_Frames.c.s
+
+tests/utest_GW.o: tests/utest_GW.c.o
+
+.PHONY : tests/utest_GW.o
+
+# target to build an object file
+tests/utest_GW.c.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_GW.c.o
+.PHONY : tests/utest_GW.c.o
+
+tests/utest_GW.i: tests/utest_GW.c.i
+
+.PHONY : tests/utest_GW.i
+
+# target to preprocess a source file
+tests/utest_GW.c.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_GW.c.i
+.PHONY : tests/utest_GW.c.i
+
+tests/utest_GW.s: tests/utest_GW.c.s
+
+.PHONY : tests/utest_GW.s
+
+# target to generate assembly for a file
+tests/utest_GW.c.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_GW.c.s
+.PHONY : tests/utest_GW.c.s
 
 tests/utest_LLC.o: tests/utest_LLC.c.o
 
@@ -501,6 +717,33 @@ tests/utest_MAC.c.s:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_MAC.c.s
 .PHONY : tests/utest_MAC.c.s
 
+tests/utest_NODE.o: tests/utest_NODE.c.o
+
+.PHONY : tests/utest_NODE.o
+
+# target to build an object file
+tests/utest_NODE.c.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_NODE.c.o
+.PHONY : tests/utest_NODE.c.o
+
+tests/utest_NODE.i: tests/utest_NODE.c.i
+
+.PHONY : tests/utest_NODE.i
+
+# target to preprocess a source file
+tests/utest_NODE.c.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_NODE.c.i
+.PHONY : tests/utest_NODE.c.i
+
+tests/utest_NODE.s: tests/utest_NODE.c.s
+
+.PHONY : tests/utest_NODE.s
+
+# target to generate assembly for a file
+tests/utest_NODE.c.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_NODE.c.s
+.PHONY : tests/utest_NODE.c.s
+
 tests/utest_NTMR.o: tests/utest_NTMR.c.o
 
 .PHONY : tests/utest_NTMR.o
@@ -554,6 +797,195 @@ tests/utest_TIC.s: tests/utest_TIC.c.s
 tests/utest_TIC.c.s:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_TIC.c.s
 .PHONY : tests/utest_TIC.c.s
+
+tests/utest_coder.o: tests/utest_coder.c.o
+
+.PHONY : tests/utest_coder.o
+
+# target to build an object file
+tests/utest_coder.c.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_coder.c.o
+.PHONY : tests/utest_coder.c.o
+
+tests/utest_coder.i: tests/utest_coder.c.i
+
+.PHONY : tests/utest_coder.i
+
+# target to preprocess a source file
+tests/utest_coder.c.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_coder.c.i
+.PHONY : tests/utest_coder.c.i
+
+tests/utest_coder.s: tests/utest_coder.c.s
+
+.PHONY : tests/utest_coder.s
+
+# target to generate assembly for a file
+tests/utest_coder.c.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_coder.c.s
+.PHONY : tests/utest_coder.c.s
+
+tests/utest_delays.o: tests/utest_delays.c.o
+
+.PHONY : tests/utest_delays.o
+
+# target to build an object file
+tests/utest_delays.c.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_delays.c.o
+.PHONY : tests/utest_delays.c.o
+
+tests/utest_delays.i: tests/utest_delays.c.i
+
+.PHONY : tests/utest_delays.i
+
+# target to preprocess a source file
+tests/utest_delays.c.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_delays.c.i
+.PHONY : tests/utest_delays.c.i
+
+tests/utest_delays.s: tests/utest_delays.c.s
+
+.PHONY : tests/utest_delays.s
+
+# target to generate assembly for a file
+tests/utest_delays.c.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_delays.c.s
+.PHONY : tests/utest_delays.c.s
+
+tests/utest_fbuf.o: tests/utest_fbuf.c.o
+
+.PHONY : tests/utest_fbuf.o
+
+# target to build an object file
+tests/utest_fbuf.c.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_fbuf.c.o
+.PHONY : tests/utest_fbuf.c.o
+
+tests/utest_fbuf.i: tests/utest_fbuf.c.i
+
+.PHONY : tests/utest_fbuf.i
+
+# target to preprocess a source file
+tests/utest_fbuf.c.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_fbuf.c.i
+.PHONY : tests/utest_fbuf.c.i
+
+tests/utest_fbuf.s: tests/utest_fbuf.c.s
+
+.PHONY : tests/utest_fbuf.s
+
+# target to generate assembly for a file
+tests/utest_fbuf.c.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_fbuf.c.s
+.PHONY : tests/utest_fbuf.c.s
+
+tests/utest_frame.o: tests/utest_frame.c.o
+
+.PHONY : tests/utest_frame.o
+
+# target to build an object file
+tests/utest_frame.c.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_frame.c.o
+.PHONY : tests/utest_frame.c.o
+
+tests/utest_frame.i: tests/utest_frame.c.i
+
+.PHONY : tests/utest_frame.i
+
+# target to preprocess a source file
+tests/utest_frame.c.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_frame.c.i
+.PHONY : tests/utest_frame.c.i
+
+tests/utest_frame.s: tests/utest_frame.c.s
+
+.PHONY : tests/utest_frame.s
+
+# target to generate assembly for a file
+tests/utest_frame.c.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_frame.c.s
+.PHONY : tests/utest_frame.c.s
+
+tests/utest_malloc.o: tests/utest_malloc.c.o
+
+.PHONY : tests/utest_malloc.o
+
+# target to build an object file
+tests/utest_malloc.c.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_malloc.c.o
+.PHONY : tests/utest_malloc.c.o
+
+tests/utest_malloc.i: tests/utest_malloc.c.i
+
+.PHONY : tests/utest_malloc.i
+
+# target to preprocess a source file
+tests/utest_malloc.c.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_malloc.c.i
+.PHONY : tests/utest_malloc.c.i
+
+tests/utest_malloc.s: tests/utest_malloc.c.s
+
+.PHONY : tests/utest_malloc.s
+
+# target to generate assembly for a file
+tests/utest_malloc.c.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_malloc.c.s
+.PHONY : tests/utest_malloc.c.s
+
+tests/utest_printf_uart.o: tests/utest_printf_uart.c.o
+
+.PHONY : tests/utest_printf_uart.o
+
+# target to build an object file
+tests/utest_printf_uart.c.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_printf_uart.c.o
+.PHONY : tests/utest_printf_uart.c.o
+
+tests/utest_printf_uart.i: tests/utest_printf_uart.c.i
+
+.PHONY : tests/utest_printf_uart.i
+
+# target to preprocess a source file
+tests/utest_printf_uart.c.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_printf_uart.c.i
+.PHONY : tests/utest_printf_uart.c.i
+
+tests/utest_printf_uart.s: tests/utest_printf_uart.c.s
+
+.PHONY : tests/utest_printf_uart.s
+
+# target to generate assembly for a file
+tests/utest_printf_uart.c.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_printf_uart.c.s
+.PHONY : tests/utest_printf_uart.c.s
+
+tests/utest_radio.o: tests/utest_radio.c.o
+
+.PHONY : tests/utest_radio.o
+
+# target to build an object file
+tests/utest_radio.c.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_radio.c.o
+.PHONY : tests/utest_radio.c.o
+
+tests/utest_radio.i: tests/utest_radio.c.i
+
+.PHONY : tests/utest_radio.i
+
+# target to preprocess a source file
+tests/utest_radio.c.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_radio.c.i
+.PHONY : tests/utest_radio.c.i
+
+tests/utest_radio.s: tests/utest_radio.c.s
+
+.PHONY : tests/utest_radio.s
+
+# target to generate assembly for a file
+tests/utest_radio.c.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_radio.c.s
+.PHONY : tests/utest_radio.c.s
 
 tests/utest_suite.o: tests/utest_suite.c.o
 
@@ -612,33 +1044,81 @@ help:
 	@echo "... core/TIC.o"
 	@echo "... core/TIC.i"
 	@echo "... core/TIC.s"
+	@echo "... core/coder.o"
+	@echo "... core/coder.i"
+	@echo "... core/coder.s"
+	@echo "... core/config.o"
+	@echo "... core/config.i"
+	@echo "... core/config.s"
+	@echo "... core/delays.o"
+	@echo "... core/delays.i"
+	@echo "... core/delays.s"
+	@echo "... core/ethernet.o"
+	@echo "... core/ethernet.i"
+	@echo "... core/ethernet.s"
+	@echo "... core/fbuf.o"
+	@echo "... core/fbuf.i"
+	@echo "... core/fbuf.s"
+	@echo "... core/frame.o"
+	@echo "... core/frame.i"
+	@echo "... core/frame.s"
+	@echo "... core/manager.o"
+	@echo "... core/manager.i"
+	@echo "... core/manager.s"
+	@echo "... core/mem.o"
+	@echo "... core/mem.i"
+	@echo "... core/mem.s"
 	@echo "... core/nwdebuger.o"
 	@echo "... core/nwdebuger.i"
 	@echo "... core/nwdebuger.s"
+	@echo "... core/sync.o"
+	@echo "... core/sync.i"
+	@echo "... core/sync.s"
 	@echo "... tests/utest.o"
 	@echo "... tests/utest.i"
 	@echo "... tests/utest.s"
-	@echo "... tests/utest_FChain.o"
-	@echo "... tests/utest_FChain.i"
-	@echo "... tests/utest_FChain.s"
-	@echo "... tests/utest_FItem.o"
-	@echo "... tests/utest_FItem.i"
-	@echo "... tests/utest_FItem.s"
 	@echo "... tests/utest_Frames.o"
 	@echo "... tests/utest_Frames.i"
 	@echo "... tests/utest_Frames.s"
+	@echo "... tests/utest_GW.o"
+	@echo "... tests/utest_GW.i"
+	@echo "... tests/utest_GW.s"
 	@echo "... tests/utest_LLC.o"
 	@echo "... tests/utest_LLC.i"
 	@echo "... tests/utest_LLC.s"
 	@echo "... tests/utest_MAC.o"
 	@echo "... tests/utest_MAC.i"
 	@echo "... tests/utest_MAC.s"
+	@echo "... tests/utest_NODE.o"
+	@echo "... tests/utest_NODE.i"
+	@echo "... tests/utest_NODE.s"
 	@echo "... tests/utest_NTMR.o"
 	@echo "... tests/utest_NTMR.i"
 	@echo "... tests/utest_NTMR.s"
 	@echo "... tests/utest_TIC.o"
 	@echo "... tests/utest_TIC.i"
 	@echo "... tests/utest_TIC.s"
+	@echo "... tests/utest_coder.o"
+	@echo "... tests/utest_coder.i"
+	@echo "... tests/utest_coder.s"
+	@echo "... tests/utest_delays.o"
+	@echo "... tests/utest_delays.i"
+	@echo "... tests/utest_delays.s"
+	@echo "... tests/utest_fbuf.o"
+	@echo "... tests/utest_fbuf.i"
+	@echo "... tests/utest_fbuf.s"
+	@echo "... tests/utest_frame.o"
+	@echo "... tests/utest_frame.i"
+	@echo "... tests/utest_frame.s"
+	@echo "... tests/utest_malloc.o"
+	@echo "... tests/utest_malloc.i"
+	@echo "... tests/utest_malloc.s"
+	@echo "... tests/utest_printf_uart.o"
+	@echo "... tests/utest_printf_uart.i"
+	@echo "... tests/utest_printf_uart.s"
+	@echo "... tests/utest_radio.o"
+	@echo "... tests/utest_radio.i"
+	@echo "... tests/utest_radio.s"
 	@echo "... tests/utest_suite.o"
 	@echo "... tests/utest_suite.i"
 	@echo "... tests/utest_suite.s"

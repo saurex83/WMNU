@@ -29,7 +29,7 @@ static void SetCPU32M(void)
 
 void nwDebugerInit(void)
 {
-  SetCPU32M();
+ // SetCPU32M();
 #ifdef UART_DEBUG
   uart_init();
 #endif

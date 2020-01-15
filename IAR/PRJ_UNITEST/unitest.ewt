@@ -2100,10 +2100,19 @@
     <group>
         <name>share src</name>
         <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\basic.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\config.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\config.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\delays.c</name>
@@ -2136,6 +2145,12 @@
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\MAC.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\manager.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\manager.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\mem.c</name>
         </file>
         <file>
@@ -2166,6 +2181,12 @@
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\Radio_defs.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\sync.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\sync.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\TIC.c</name>
         </file>
         <file>
@@ -2175,37 +2196,10 @@
     <group>
         <name>test modules</name>
         <file>
-            <name>$PROJ_DIR$\src\utest_coder.c</name>
+            <name>$PROJ_DIR$\src\utest_GW.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\src\utest_delays.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_frame.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_Frames.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_LLC.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_MAC.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_malloc.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_NTMR.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_printf_uart.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_radio.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_TIC.c</name>
+            <name>$PROJ_DIR$\src\utest_NODE.c</name>
         </file>
     </group>
     <file>

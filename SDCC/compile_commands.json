@@ -36,8 +36,53 @@
 },
 {
   "directory": "/home/saurex83/Projects/WMNU/SDCC",
+  "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/core/coder.c.o   -c /home/saurex83/Projects/WMNU/SDCC/core/coder.c",
+  "file": "/home/saurex83/Projects/WMNU/SDCC/core/coder.c"
+},
+{
+  "directory": "/home/saurex83/Projects/WMNU/SDCC",
+  "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/core/config.c.o   -c /home/saurex83/Projects/WMNU/SDCC/core/config.c",
+  "file": "/home/saurex83/Projects/WMNU/SDCC/core/config.c"
+},
+{
+  "directory": "/home/saurex83/Projects/WMNU/SDCC",
+  "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/core/delays.c.o   -c /home/saurex83/Projects/WMNU/SDCC/core/delays.c",
+  "file": "/home/saurex83/Projects/WMNU/SDCC/core/delays.c"
+},
+{
+  "directory": "/home/saurex83/Projects/WMNU/SDCC",
+  "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/core/ethernet.c.o   -c /home/saurex83/Projects/WMNU/SDCC/core/ethernet.c",
+  "file": "/home/saurex83/Projects/WMNU/SDCC/core/ethernet.c"
+},
+{
+  "directory": "/home/saurex83/Projects/WMNU/SDCC",
+  "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/core/fbuf.c.o   -c /home/saurex83/Projects/WMNU/SDCC/core/fbuf.c",
+  "file": "/home/saurex83/Projects/WMNU/SDCC/core/fbuf.c"
+},
+{
+  "directory": "/home/saurex83/Projects/WMNU/SDCC",
+  "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/core/frame.c.o   -c /home/saurex83/Projects/WMNU/SDCC/core/frame.c",
+  "file": "/home/saurex83/Projects/WMNU/SDCC/core/frame.c"
+},
+{
+  "directory": "/home/saurex83/Projects/WMNU/SDCC",
+  "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/core/manager.c.o   -c /home/saurex83/Projects/WMNU/SDCC/core/manager.c",
+  "file": "/home/saurex83/Projects/WMNU/SDCC/core/manager.c"
+},
+{
+  "directory": "/home/saurex83/Projects/WMNU/SDCC",
+  "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/core/mem.c.o   -c /home/saurex83/Projects/WMNU/SDCC/core/mem.c",
+  "file": "/home/saurex83/Projects/WMNU/SDCC/core/mem.c"
+},
+{
+  "directory": "/home/saurex83/Projects/WMNU/SDCC",
   "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/core/nwdebuger.c.o   -c /home/saurex83/Projects/WMNU/SDCC/core/nwdebuger.c",
   "file": "/home/saurex83/Projects/WMNU/SDCC/core/nwdebuger.c"
+},
+{
+  "directory": "/home/saurex83/Projects/WMNU/SDCC",
+  "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/core/sync.c.o   -c /home/saurex83/Projects/WMNU/SDCC/core/sync.c",
+  "file": "/home/saurex83/Projects/WMNU/SDCC/core/sync.c"
 },
 {
   "directory": "/home/saurex83/Projects/WMNU/SDCC",
@@ -46,18 +91,13 @@
 },
 {
   "directory": "/home/saurex83/Projects/WMNU/SDCC",
-  "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/tests/utest_FChain.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_FChain.c",
-  "file": "/home/saurex83/Projects/WMNU/SDCC/tests/utest_FChain.c"
-},
-{
-  "directory": "/home/saurex83/Projects/WMNU/SDCC",
-  "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/tests/utest_FItem.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_FItem.c",
-  "file": "/home/saurex83/Projects/WMNU/SDCC/tests/utest_FItem.c"
-},
-{
-  "directory": "/home/saurex83/Projects/WMNU/SDCC",
   "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/tests/utest_Frames.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_Frames.c",
   "file": "/home/saurex83/Projects/WMNU/SDCC/tests/utest_Frames.c"
+},
+{
+  "directory": "/home/saurex83/Projects/WMNU/SDCC",
+  "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/tests/utest_GW.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_GW.c",
+  "file": "/home/saurex83/Projects/WMNU/SDCC/tests/utest_GW.c"
 },
 {
   "directory": "/home/saurex83/Projects/WMNU/SDCC",
@@ -71,6 +111,11 @@
 },
 {
   "directory": "/home/saurex83/Projects/WMNU/SDCC",
+  "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/tests/utest_NODE.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_NODE.c",
+  "file": "/home/saurex83/Projects/WMNU/SDCC/tests/utest_NODE.c"
+},
+{
+  "directory": "/home/saurex83/Projects/WMNU/SDCC",
   "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/tests/utest_NTMR.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_NTMR.c",
   "file": "/home/saurex83/Projects/WMNU/SDCC/tests/utest_NTMR.c"
 },
@@ -78,6 +123,41 @@
   "directory": "/home/saurex83/Projects/WMNU/SDCC",
   "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/tests/utest_TIC.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_TIC.c",
   "file": "/home/saurex83/Projects/WMNU/SDCC/tests/utest_TIC.c"
+},
+{
+  "directory": "/home/saurex83/Projects/WMNU/SDCC",
+  "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/tests/utest_coder.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_coder.c",
+  "file": "/home/saurex83/Projects/WMNU/SDCC/tests/utest_coder.c"
+},
+{
+  "directory": "/home/saurex83/Projects/WMNU/SDCC",
+  "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/tests/utest_delays.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_delays.c",
+  "file": "/home/saurex83/Projects/WMNU/SDCC/tests/utest_delays.c"
+},
+{
+  "directory": "/home/saurex83/Projects/WMNU/SDCC",
+  "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/tests/utest_fbuf.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_fbuf.c",
+  "file": "/home/saurex83/Projects/WMNU/SDCC/tests/utest_fbuf.c"
+},
+{
+  "directory": "/home/saurex83/Projects/WMNU/SDCC",
+  "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/tests/utest_frame.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_frame.c",
+  "file": "/home/saurex83/Projects/WMNU/SDCC/tests/utest_frame.c"
+},
+{
+  "directory": "/home/saurex83/Projects/WMNU/SDCC",
+  "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/tests/utest_malloc.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_malloc.c",
+  "file": "/home/saurex83/Projects/WMNU/SDCC/tests/utest_malloc.c"
+},
+{
+  "directory": "/home/saurex83/Projects/WMNU/SDCC",
+  "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/tests/utest_printf_uart.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_printf_uart.c",
+  "file": "/home/saurex83/Projects/WMNU/SDCC/tests/utest_printf_uart.c"
+},
+{
+  "directory": "/home/saurex83/Projects/WMNU/SDCC",
+  "command": "/usr/bin/cc  -I/home/saurex83/Projects/WMNU/SDCC/core -I/home/saurex83/Projects/WMNU/SDCC/tests    -o CMakeFiles/main.dir/tests/utest_radio.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_radio.c",
+  "file": "/home/saurex83/Projects/WMNU/SDCC/tests/utest_radio.c"
 },
 {
   "directory": "/home/saurex83/Projects/WMNU/SDCC",

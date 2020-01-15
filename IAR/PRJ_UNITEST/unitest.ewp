@@ -490,7 +490,7 @@
                 </option>
                 <option>
                     <name>CCOptLevel</name>
-                    <state>0</state>
+                    <state>3</state>
                 </option>
                 <option>
                     <name>CCOptStrategy</name>
@@ -499,7 +499,7 @@
                 </option>
                 <option>
                     <name>CCOptLevelSlave</name>
-                    <state>0</state>
+                    <state>3</state>
                 </option>
                 <option>
                     <name>CompilerMisraRules04</name>
@@ -545,7 +545,7 @@
                 <option>
                     <name>CCAllowList2</name>
                     <version>0</version>
-                    <state>0000000</state>
+                    <state>1111110</state>
                 </option>
                 <option>
                     <name>CCOptStrategySlave</name>
@@ -2229,10 +2229,19 @@
     <group>
         <name>share src</name>
         <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\basic.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\config.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\config.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\delays.c</name>
@@ -2265,6 +2274,12 @@
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\MAC.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\manager.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\manager.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\mem.c</name>
         </file>
         <file>
@@ -2295,6 +2310,12 @@
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\Radio_defs.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\sync.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\sync.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\TIC.c</name>
         </file>
         <file>
@@ -2304,37 +2325,10 @@
     <group>
         <name>test modules</name>
         <file>
-            <name>$PROJ_DIR$\src\utest_coder.c</name>
+            <name>$PROJ_DIR$\src\utest_GW.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\src\utest_delays.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_frame.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_Frames.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_LLC.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_MAC.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_malloc.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_NTMR.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_printf_uart.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_radio.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_TIC.c</name>
+            <name>$PROJ_DIR$\src\utest_NODE.c</name>
         </file>
     </group>
     <file>

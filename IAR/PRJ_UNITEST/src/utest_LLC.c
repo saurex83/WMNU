@@ -60,20 +60,21 @@ static void test_create()
   while(true)
   {  
     nbr_frames = frame_getCount();
-    LOG_OFF("nbr_frames = %d" ,nbr_frames );
+    LOG_ON("nbr_frames = %d" ,nbr_frames );
     
     if (LLC_GetTaskLen() < 20)
     {
       fr = getFrame(DATA_SEND, sizeof(DATA_SEND), CH11, TS);
-      LOG_OFF("Create frame = %d", (uint16_t)fr);    
+      LOG_ON("Create frame = %d", (uint16_t)fr);    
       LLC_AddTask(fr);
       TS ++;
       if (TS == 49)
       TS = 0;
     }   
-    if (*ptr_stack != 0xcd) // Контроль переполнения стека
-      while(1);
-   
+//    LOG_ON("END 3");
+//    if (*ptr_stack != 0xcd) // Контроль переполнения стека
+//      LOG_ON("END 4");
+//    LOG_ON("END 5");
     heap =  heap_ptr(10);
     if (heap > HEAP_PTR_MAX)
     {

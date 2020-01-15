@@ -18,6 +18,7 @@ void LLC_SetRXCallback(void (*fn)(frame_s *fr));
 void LLC_TimeAlloc(void (*fn)(void)); 
 bool LLC_AddTask(frame_s* fr);
 uint8_t LLC_GetTaskLen(void);
+void LLC_Reset(void);
 
 // Закрытые методы
 static void LLC_SE_HNDL(uint8_t TS); //!< Обработчик завешения слота TIC
@@ -75,7 +76,6 @@ static TimeAllocFunc HeadAllocFunc;
 */
 void LLC_Init(void)
 {  
-  MAC_Init();
   nbrTasks = 0; 
   tasksBLOCK = false;
   FirstTask = NULL;
@@ -83,6 +83,24 @@ void LLC_Init(void)
   // Регистрируем обработчики
   TIC_SetSECallback(LLC_SE_HNDL); // Завершение временного слота
   MAC_SetRXCallback(LLC_RX_HNDL); // Принято сообщение
+}
+
+/**
+@brief Сброс модуля
+@detail Удаяляем все пакеты в очереди. Аллокатор времени не трогаем
+*/
+void LLC_Reset(void)
+{
+  LLCTask *task = FirstTask;
+  LLCTask *next;
+  
+  while (task != NULL)
+  {
+    next = task;
+    re_free(task);
+    task = next;
+  }
+  
 }
 
 /**

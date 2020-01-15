@@ -6,90 +6,198 @@ CMakeFiles/main.dir/core/FChain.c.o
  /home/saurex83/Projects/WMNU/SDCC/core/FChain.h
  /home/saurex83/Projects/WMNU/SDCC/core/FItem.h
  /home/saurex83/Projects/WMNU/SDCC/core/nwdebuger.h
- /home/saurex83/Projects/WMNU/SDCC/core/sig_trace.h
- /home/saurex83/Projects/WMNU/SDCC/core/sig_trace_defs.h
 CMakeFiles/main.dir/core/FItem.c.o
  /home/saurex83/Projects/WMNU/SDCC/core/FItem.c
  /home/saurex83/Projects/WMNU/SDCC/core/FItem.h
  /home/saurex83/Projects/WMNU/SDCC/core/nwdebuger.h
- /home/saurex83/Projects/WMNU/SDCC/core/sig_trace.h
- /home/saurex83/Projects/WMNU/SDCC/core/sig_trace_defs.h
 CMakeFiles/main.dir/core/LLC.c.o
- /home/saurex83/Projects/WMNU/SDCC/core/FChain.h
- /home/saurex83/Projects/WMNU/SDCC/core/FItem.h
  /home/saurex83/Projects/WMNU/SDCC/core/LLC.c
+ /home/saurex83/Projects/WMNU/SDCC/core/LLC.h
+ /home/saurex83/Projects/WMNU/SDCC/core/MAC.h
+ /home/saurex83/Projects/WMNU/SDCC/core/RADIO.h
+ /home/saurex83/Projects/WMNU/SDCC/core/TIC.h
+ /home/saurex83/Projects/WMNU/SDCC/core/delays.h
+ /home/saurex83/Projects/WMNU/SDCC/core/frame.h
+ /home/saurex83/Projects/WMNU/SDCC/core/mem.h
+ /home/saurex83/Projects/WMNU/SDCC/core/nwdebuger.h
+CMakeFiles/main.dir/core/MAC.c.o
+ /home/saurex83/Projects/WMNU/SDCC/core/MAC.c
+ /home/saurex83/Projects/WMNU/SDCC/core/MAC.h
+ /home/saurex83/Projects/WMNU/SDCC/core/RADIO.h
+ /home/saurex83/Projects/WMNU/SDCC/core/TIC.h
+ /home/saurex83/Projects/WMNU/SDCC/core/basic.h
+ /home/saurex83/Projects/WMNU/SDCC/core/coder.h
+ /home/saurex83/Projects/WMNU/SDCC/core/delays.h
+ /home/saurex83/Projects/WMNU/SDCC/core/frame.h
+ /home/saurex83/Projects/WMNU/SDCC/core/nwdebuger.h
+CMakeFiles/main.dir/core/NTMR.c.o
+ /home/saurex83/Projects/WMNU/SDCC/core/NTMR.c
+ /home/saurex83/Projects/WMNU/SDCC/core/NTMR.h
+ /home/saurex83/Projects/WMNU/SDCC/core/nwdebuger.h
+CMakeFiles/main.dir/core/RADIO.c.o
+ /home/saurex83/Projects/WMNU/SDCC/core/NTMR.h
+ /home/saurex83/Projects/WMNU/SDCC/core/RADIO.c
+ /home/saurex83/Projects/WMNU/SDCC/core/RADIO.h
+ /home/saurex83/Projects/WMNU/SDCC/core/Radio_defs.h
+ /home/saurex83/Projects/WMNU/SDCC/core/TIC.h
+ /home/saurex83/Projects/WMNU/SDCC/core/delays.h
+ /home/saurex83/Projects/WMNU/SDCC/core/frame.h
+ /home/saurex83/Projects/WMNU/SDCC/core/mem.h
+ /home/saurex83/Projects/WMNU/SDCC/core/nwdebuger.h
+CMakeFiles/main.dir/core/TIC.c.o
+ /home/saurex83/Projects/WMNU/SDCC/core/NTMR.h
+ /home/saurex83/Projects/WMNU/SDCC/core/TIC.c
+ /home/saurex83/Projects/WMNU/SDCC/core/TIC.h
+ /home/saurex83/Projects/WMNU/SDCC/core/basic.h
+ /home/saurex83/Projects/WMNU/SDCC/core/delays.h
+ /home/saurex83/Projects/WMNU/SDCC/core/nwdebuger.h
+CMakeFiles/main.dir/core/coder.c.o
+ /home/saurex83/Projects/WMNU/SDCC/core/coder.c
+ /home/saurex83/Projects/WMNU/SDCC/core/coder.h
+ /home/saurex83/Projects/WMNU/SDCC/core/delays.h
+CMakeFiles/main.dir/core/config.c.o
+ /home/saurex83/Projects/WMNU/SDCC/core/basic.h
+ /home/saurex83/Projects/WMNU/SDCC/core/config.c
+ /home/saurex83/Projects/WMNU/SDCC/core/config.h
+CMakeFiles/main.dir/core/delays.c.o
+ /home/saurex83/Projects/WMNU/SDCC/core/delays.c
+ /home/saurex83/Projects/WMNU/SDCC/core/delays.h
+CMakeFiles/main.dir/core/ethernet.c.o
+ /home/saurex83/Projects/WMNU/SDCC/core/LLC.h
+ /home/saurex83/Projects/WMNU/SDCC/core/Net_frames.h
+ /home/saurex83/Projects/WMNU/SDCC/core/ethernet.c
+ /home/saurex83/Projects/WMNU/SDCC/core/frame.h
+ /home/saurex83/Projects/WMNU/SDCC/core/mem.h
+ /home/saurex83/Projects/WMNU/SDCC/core/nwdebuger.h
+CMakeFiles/main.dir/core/fbuf.c.o
+ /home/saurex83/Projects/WMNU/SDCC/core/Net_frames.h
+ /home/saurex83/Projects/WMNU/SDCC/core/fbuf.c
+ /home/saurex83/Projects/WMNU/SDCC/core/fbuf.h
+ /home/saurex83/Projects/WMNU/SDCC/core/mem.h
+ /home/saurex83/Projects/WMNU/SDCC/core/nwdebuger.h
+CMakeFiles/main.dir/core/frame.c.o
+ /home/saurex83/Projects/WMNU/SDCC/core/frame.c
+ /home/saurex83/Projects/WMNU/SDCC/core/frame.h
+ /home/saurex83/Projects/WMNU/SDCC/core/mem.h
+ /home/saurex83/Projects/WMNU/SDCC/core/nwdebuger.h
+CMakeFiles/main.dir/core/manager.c.o
  /home/saurex83/Projects/WMNU/SDCC/core/LLC.h
  /home/saurex83/Projects/WMNU/SDCC/core/MAC.h
  /home/saurex83/Projects/WMNU/SDCC/core/NTMR.h
  /home/saurex83/Projects/WMNU/SDCC/core/RADIO.h
  /home/saurex83/Projects/WMNU/SDCC/core/TIC.h
-CMakeFiles/main.dir/core/MAC.c.o
- /home/saurex83/Projects/WMNU/SDCC/core/FChain.h
- /home/saurex83/Projects/WMNU/SDCC/core/FItem.h
- /home/saurex83/Projects/WMNU/SDCC/core/Frames.h
- /home/saurex83/Projects/WMNU/SDCC/core/MAC.c
- /home/saurex83/Projects/WMNU/SDCC/core/MAC.h
- /home/saurex83/Projects/WMNU/SDCC/core/NTMR.h
- /home/saurex83/Projects/WMNU/SDCC/core/RADIO.h
- /home/saurex83/Projects/WMNU/SDCC/core/TIC.h
-CMakeFiles/main.dir/core/NTMR.c.o
- /home/saurex83/Projects/WMNU/SDCC/core/NTMR.c
- /home/saurex83/Projects/WMNU/SDCC/core/NTMR.h
-CMakeFiles/main.dir/core/RADIO.c.o
- /home/saurex83/Projects/WMNU/SDCC/core/FChain.h
- /home/saurex83/Projects/WMNU/SDCC/core/FItem.h
- /home/saurex83/Projects/WMNU/SDCC/core/RADIO.c
- /home/saurex83/Projects/WMNU/SDCC/core/RADIO.h
- /home/saurex83/Projects/WMNU/SDCC/core/Radio_defs.h
- /home/saurex83/Projects/WMNU/SDCC/core/ioCC2530.h
+ /home/saurex83/Projects/WMNU/SDCC/core/basic.h
+ /home/saurex83/Projects/WMNU/SDCC/core/coder.h
+ /home/saurex83/Projects/WMNU/SDCC/core/config.h
+ /home/saurex83/Projects/WMNU/SDCC/core/delays.h
+ /home/saurex83/Projects/WMNU/SDCC/core/ethernet.h
+ /home/saurex83/Projects/WMNU/SDCC/core/frame.h
+ /home/saurex83/Projects/WMNU/SDCC/core/manager.c
+ /home/saurex83/Projects/WMNU/SDCC/core/manager.h
  /home/saurex83/Projects/WMNU/SDCC/core/nwdebuger.h
- /home/saurex83/Projects/WMNU/SDCC/core/sig_trace.h
- /home/saurex83/Projects/WMNU/SDCC/core/sig_trace_defs.h
-CMakeFiles/main.dir/core/TIC.c.o
- /home/saurex83/Projects/WMNU/SDCC/core/NTMR.h
- /home/saurex83/Projects/WMNU/SDCC/core/TIC.c
- /home/saurex83/Projects/WMNU/SDCC/core/TIC.h
+ /home/saurex83/Projects/WMNU/SDCC/core/sync.h
+CMakeFiles/main.dir/core/mem.c.o
+ /home/saurex83/Projects/WMNU/SDCC/core/mem.c
  /home/saurex83/Projects/WMNU/SDCC/core/nwdebuger.h
- /home/saurex83/Projects/WMNU/SDCC/core/sig_trace.h
- /home/saurex83/Projects/WMNU/SDCC/core/sig_trace_defs.h
 CMakeFiles/main.dir/core/nwdebuger.c.o
  /home/saurex83/Projects/WMNU/SDCC/core/nwdebuger.c
  /home/saurex83/Projects/WMNU/SDCC/core/nwdebuger.h
- /home/saurex83/Projects/WMNU/SDCC/core/sig_trace.h
- /home/saurex83/Projects/WMNU/SDCC/core/sig_trace_defs.h
+CMakeFiles/main.dir/core/sync.c.o
+ /home/saurex83/Projects/WMNU/SDCC/core/NTMR.h
+ /home/saurex83/Projects/WMNU/SDCC/core/RADIO.h
+ /home/saurex83/Projects/WMNU/SDCC/core/TIC.h
+ /home/saurex83/Projects/WMNU/SDCC/core/basic.h
+ /home/saurex83/Projects/WMNU/SDCC/core/coder.h
+ /home/saurex83/Projects/WMNU/SDCC/core/delays.h
+ /home/saurex83/Projects/WMNU/SDCC/core/frame.h
+ /home/saurex83/Projects/WMNU/SDCC/core/nwdebuger.h
+ /home/saurex83/Projects/WMNU/SDCC/core/sync.c
 CMakeFiles/main.dir/tests/utest.c.o
  /home/saurex83/Projects/WMNU/SDCC/tests/utest.c
  /home/saurex83/Projects/WMNU/SDCC/tests/utest_suite.h
  core/nwdebuger.h
- core/sig_trace.h
- core/sig_trace_defs.h
-CMakeFiles/main.dir/tests/utest_FChain.c.o
- /home/saurex83/Projects/WMNU/SDCC/tests/utest_FChain.c
- /home/saurex83/Projects/WMNU/SDCC/tests/utest_suite.h
- core/FChain.h
- core/FItem.h
-CMakeFiles/main.dir/tests/utest_FItem.c.o
- /home/saurex83/Projects/WMNU/SDCC/tests/utest_FItem.c
- /home/saurex83/Projects/WMNU/SDCC/tests/utest_suite.h
- core/FItem.h
 CMakeFiles/main.dir/tests/utest_Frames.c.o
  /home/saurex83/Projects/WMNU/SDCC/tests/utest_Frames.c
  /home/saurex83/Projects/WMNU/SDCC/tests/utest_suite.h
- core/Frames.h
+ core/frame.h
+CMakeFiles/main.dir/tests/utest_GW.c.o
+ /home/saurex83/Projects/WMNU/SDCC/tests/utest_GW.c
+ /home/saurex83/Projects/WMNU/SDCC/tests/utest_suite.h
+ core/manager.h
+ core/nwdebuger.h
 CMakeFiles/main.dir/tests/utest_LLC.c.o
  /home/saurex83/Projects/WMNU/SDCC/tests/utest_LLC.c
  /home/saurex83/Projects/WMNU/SDCC/tests/utest_suite.h
+ core/LLC.h
+ core/NTMR.h
+ core/RADIO.h
+ core/TIC.h
+ core/delays.h
+ core/frame.h
+ core/mem.h
+ core/nwdebuger.h
 CMakeFiles/main.dir/tests/utest_MAC.c.o
  /home/saurex83/Projects/WMNU/SDCC/tests/utest_MAC.c
  /home/saurex83/Projects/WMNU/SDCC/tests/utest_suite.h
+ core/MAC.h
+ core/RADIO.h
+ core/TIC.h
+ core/delays.h
+ core/frame.h
+ core/nwdebuger.h
+CMakeFiles/main.dir/tests/utest_NODE.c.o
+ /home/saurex83/Projects/WMNU/SDCC/tests/utest_NODE.c
+ /home/saurex83/Projects/WMNU/SDCC/tests/utest_suite.h
+ core/manager.h
+ core/nwdebuger.h
 CMakeFiles/main.dir/tests/utest_NTMR.c.o
  /home/saurex83/Projects/WMNU/SDCC/tests/utest_NTMR.c
  /home/saurex83/Projects/WMNU/SDCC/tests/utest_suite.h
+ core/NTMR.h
 CMakeFiles/main.dir/tests/utest_TIC.c.o
  /home/saurex83/Projects/WMNU/SDCC/tests/utest_TIC.c
  /home/saurex83/Projects/WMNU/SDCC/tests/utest_suite.h
  core/NTMR.h
  core/TIC.h
+ core/delays.h
+CMakeFiles/main.dir/tests/utest_coder.c.o
+ /home/saurex83/Projects/WMNU/SDCC/tests/utest_coder.c
+ /home/saurex83/Projects/WMNU/SDCC/tests/utest_suite.h
+ core/coder.h
+ core/delays.h
+ core/nwdebuger.h
+CMakeFiles/main.dir/tests/utest_delays.c.o
+ /home/saurex83/Projects/WMNU/SDCC/tests/utest_delays.c
+ /home/saurex83/Projects/WMNU/SDCC/tests/utest_suite.h
+ core/delays.h
+CMakeFiles/main.dir/tests/utest_fbuf.c.o
+ /home/saurex83/Projects/WMNU/SDCC/tests/utest_fbuf.c
+ /home/saurex83/Projects/WMNU/SDCC/tests/utest_suite.h
+ core/Net_frames.h
+ core/fbuf.h
+CMakeFiles/main.dir/tests/utest_frame.c.o
+ /home/saurex83/Projects/WMNU/SDCC/tests/utest_frame.c
+ /home/saurex83/Projects/WMNU/SDCC/tests/utest_suite.h
+ core/frame.h
+ core/mem.h
+CMakeFiles/main.dir/tests/utest_malloc.c.o
+ /home/saurex83/Projects/WMNU/SDCC/tests/utest_malloc.c
+ /home/saurex83/Projects/WMNU/SDCC/tests/utest_suite.h
+CMakeFiles/main.dir/tests/utest_printf_uart.c.o
+ /home/saurex83/Projects/WMNU/SDCC/tests/utest_printf_uart.c
+ /home/saurex83/Projects/WMNU/SDCC/tests/utest_suite.h
+ core/delays.h
+ core/nwdebuger.h
+CMakeFiles/main.dir/tests/utest_radio.c.o
+ /home/saurex83/Projects/WMNU/SDCC/tests/utest_radio.c
+ /home/saurex83/Projects/WMNU/SDCC/tests/utest_suite.h
+ core/NTMR.h
+ core/RADIO.h
+ core/TIC.h
+ core/coder.h
+ core/delays.h
+ core/frame.h
+ core/nwdebuger.h
 CMakeFiles/main.dir/tests/utest_suite.c.o
  /home/saurex83/Projects/WMNU/SDCC/tests/utest_suite.c
  /home/saurex83/Projects/WMNU/SDCC/tests/utest_suite.h

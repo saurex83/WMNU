@@ -6,6 +6,8 @@
 #include "frame.h"
 
 void MAC_Init(void);
+void MAC_Reset(void);
+void MAC_Enable(bool en);
 void MAC_OpenRXSlot(uint8_t TS, uint8_t CH);
 void MAC_CloseRXSlot(uint8_t TS);
 void MAC_Send(frame_s *fr, uint8_t attempts);
@@ -14,3 +16,6 @@ void MAC_SetRXCallback(void (*fn)(frame_s *fr));
 void MAC_Set_isACK_OK_Callback(bool(*fn)(frame_s *fr, frame_s *fr_ack));
 bool MAC_GetTXState(uint8_t TS);
 bool MAC_GetRXState(uint8_t TS);
+void MAC_setIV(void* ptr_IV);
+void MAC_setKEY(void* ptr_KEY);
+bool MAC_SYNC_NETWORK(uint16_t *panid,uint16_t timeout);

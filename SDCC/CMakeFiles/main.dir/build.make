@@ -225,9 +225,201 @@ CMakeFiles/main.dir/core/TIC.c.o.provides: CMakeFiles/main.dir/core/TIC.c.o.requ
 CMakeFiles/main.dir/core/TIC.c.o.provides.build: CMakeFiles/main.dir/core/TIC.c.o
 
 
+CMakeFiles/main.dir/core/coder.c.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/core/coder.c.o: core/coder.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/main.dir/core/coder.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/core/coder.c.o   -c /home/saurex83/Projects/WMNU/SDCC/core/coder.c
+
+CMakeFiles/main.dir/core/coder.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/core/coder.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/saurex83/Projects/WMNU/SDCC/core/coder.c > CMakeFiles/main.dir/core/coder.c.i
+
+CMakeFiles/main.dir/core/coder.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/core/coder.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/saurex83/Projects/WMNU/SDCC/core/coder.c -o CMakeFiles/main.dir/core/coder.c.s
+
+CMakeFiles/main.dir/core/coder.c.o.requires:
+
+.PHONY : CMakeFiles/main.dir/core/coder.c.o.requires
+
+CMakeFiles/main.dir/core/coder.c.o.provides: CMakeFiles/main.dir/core/coder.c.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/coder.c.o.provides.build
+.PHONY : CMakeFiles/main.dir/core/coder.c.o.provides
+
+CMakeFiles/main.dir/core/coder.c.o.provides.build: CMakeFiles/main.dir/core/coder.c.o
+
+
+CMakeFiles/main.dir/core/config.c.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/core/config.c.o: core/config.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/main.dir/core/config.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/core/config.c.o   -c /home/saurex83/Projects/WMNU/SDCC/core/config.c
+
+CMakeFiles/main.dir/core/config.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/core/config.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/saurex83/Projects/WMNU/SDCC/core/config.c > CMakeFiles/main.dir/core/config.c.i
+
+CMakeFiles/main.dir/core/config.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/core/config.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/saurex83/Projects/WMNU/SDCC/core/config.c -o CMakeFiles/main.dir/core/config.c.s
+
+CMakeFiles/main.dir/core/config.c.o.requires:
+
+.PHONY : CMakeFiles/main.dir/core/config.c.o.requires
+
+CMakeFiles/main.dir/core/config.c.o.provides: CMakeFiles/main.dir/core/config.c.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/config.c.o.provides.build
+.PHONY : CMakeFiles/main.dir/core/config.c.o.provides
+
+CMakeFiles/main.dir/core/config.c.o.provides.build: CMakeFiles/main.dir/core/config.c.o
+
+
+CMakeFiles/main.dir/core/delays.c.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/core/delays.c.o: core/delays.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/main.dir/core/delays.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/core/delays.c.o   -c /home/saurex83/Projects/WMNU/SDCC/core/delays.c
+
+CMakeFiles/main.dir/core/delays.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/core/delays.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/saurex83/Projects/WMNU/SDCC/core/delays.c > CMakeFiles/main.dir/core/delays.c.i
+
+CMakeFiles/main.dir/core/delays.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/core/delays.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/saurex83/Projects/WMNU/SDCC/core/delays.c -o CMakeFiles/main.dir/core/delays.c.s
+
+CMakeFiles/main.dir/core/delays.c.o.requires:
+
+.PHONY : CMakeFiles/main.dir/core/delays.c.o.requires
+
+CMakeFiles/main.dir/core/delays.c.o.provides: CMakeFiles/main.dir/core/delays.c.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/delays.c.o.provides.build
+.PHONY : CMakeFiles/main.dir/core/delays.c.o.provides
+
+CMakeFiles/main.dir/core/delays.c.o.provides.build: CMakeFiles/main.dir/core/delays.c.o
+
+
+CMakeFiles/main.dir/core/ethernet.c.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/core/ethernet.c.o: core/ethernet.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/main.dir/core/ethernet.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/core/ethernet.c.o   -c /home/saurex83/Projects/WMNU/SDCC/core/ethernet.c
+
+CMakeFiles/main.dir/core/ethernet.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/core/ethernet.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/saurex83/Projects/WMNU/SDCC/core/ethernet.c > CMakeFiles/main.dir/core/ethernet.c.i
+
+CMakeFiles/main.dir/core/ethernet.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/core/ethernet.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/saurex83/Projects/WMNU/SDCC/core/ethernet.c -o CMakeFiles/main.dir/core/ethernet.c.s
+
+CMakeFiles/main.dir/core/ethernet.c.o.requires:
+
+.PHONY : CMakeFiles/main.dir/core/ethernet.c.o.requires
+
+CMakeFiles/main.dir/core/ethernet.c.o.provides: CMakeFiles/main.dir/core/ethernet.c.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/ethernet.c.o.provides.build
+.PHONY : CMakeFiles/main.dir/core/ethernet.c.o.provides
+
+CMakeFiles/main.dir/core/ethernet.c.o.provides.build: CMakeFiles/main.dir/core/ethernet.c.o
+
+
+CMakeFiles/main.dir/core/fbuf.c.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/core/fbuf.c.o: core/fbuf.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object CMakeFiles/main.dir/core/fbuf.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/core/fbuf.c.o   -c /home/saurex83/Projects/WMNU/SDCC/core/fbuf.c
+
+CMakeFiles/main.dir/core/fbuf.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/core/fbuf.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/saurex83/Projects/WMNU/SDCC/core/fbuf.c > CMakeFiles/main.dir/core/fbuf.c.i
+
+CMakeFiles/main.dir/core/fbuf.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/core/fbuf.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/saurex83/Projects/WMNU/SDCC/core/fbuf.c -o CMakeFiles/main.dir/core/fbuf.c.s
+
+CMakeFiles/main.dir/core/fbuf.c.o.requires:
+
+.PHONY : CMakeFiles/main.dir/core/fbuf.c.o.requires
+
+CMakeFiles/main.dir/core/fbuf.c.o.provides: CMakeFiles/main.dir/core/fbuf.c.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/fbuf.c.o.provides.build
+.PHONY : CMakeFiles/main.dir/core/fbuf.c.o.provides
+
+CMakeFiles/main.dir/core/fbuf.c.o.provides.build: CMakeFiles/main.dir/core/fbuf.c.o
+
+
+CMakeFiles/main.dir/core/frame.c.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/core/frame.c.o: core/frame.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/main.dir/core/frame.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/core/frame.c.o   -c /home/saurex83/Projects/WMNU/SDCC/core/frame.c
+
+CMakeFiles/main.dir/core/frame.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/core/frame.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/saurex83/Projects/WMNU/SDCC/core/frame.c > CMakeFiles/main.dir/core/frame.c.i
+
+CMakeFiles/main.dir/core/frame.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/core/frame.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/saurex83/Projects/WMNU/SDCC/core/frame.c -o CMakeFiles/main.dir/core/frame.c.s
+
+CMakeFiles/main.dir/core/frame.c.o.requires:
+
+.PHONY : CMakeFiles/main.dir/core/frame.c.o.requires
+
+CMakeFiles/main.dir/core/frame.c.o.provides: CMakeFiles/main.dir/core/frame.c.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/frame.c.o.provides.build
+.PHONY : CMakeFiles/main.dir/core/frame.c.o.provides
+
+CMakeFiles/main.dir/core/frame.c.o.provides.build: CMakeFiles/main.dir/core/frame.c.o
+
+
+CMakeFiles/main.dir/core/manager.c.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/core/manager.c.o: core/manager.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object CMakeFiles/main.dir/core/manager.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/core/manager.c.o   -c /home/saurex83/Projects/WMNU/SDCC/core/manager.c
+
+CMakeFiles/main.dir/core/manager.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/core/manager.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/saurex83/Projects/WMNU/SDCC/core/manager.c > CMakeFiles/main.dir/core/manager.c.i
+
+CMakeFiles/main.dir/core/manager.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/core/manager.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/saurex83/Projects/WMNU/SDCC/core/manager.c -o CMakeFiles/main.dir/core/manager.c.s
+
+CMakeFiles/main.dir/core/manager.c.o.requires:
+
+.PHONY : CMakeFiles/main.dir/core/manager.c.o.requires
+
+CMakeFiles/main.dir/core/manager.c.o.provides: CMakeFiles/main.dir/core/manager.c.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/manager.c.o.provides.build
+.PHONY : CMakeFiles/main.dir/core/manager.c.o.provides
+
+CMakeFiles/main.dir/core/manager.c.o.provides.build: CMakeFiles/main.dir/core/manager.c.o
+
+
+CMakeFiles/main.dir/core/mem.c.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/core/mem.c.o: core/mem.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object CMakeFiles/main.dir/core/mem.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/core/mem.c.o   -c /home/saurex83/Projects/WMNU/SDCC/core/mem.c
+
+CMakeFiles/main.dir/core/mem.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/core/mem.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/saurex83/Projects/WMNU/SDCC/core/mem.c > CMakeFiles/main.dir/core/mem.c.i
+
+CMakeFiles/main.dir/core/mem.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/core/mem.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/saurex83/Projects/WMNU/SDCC/core/mem.c -o CMakeFiles/main.dir/core/mem.c.s
+
+CMakeFiles/main.dir/core/mem.c.o.requires:
+
+.PHONY : CMakeFiles/main.dir/core/mem.c.o.requires
+
+CMakeFiles/main.dir/core/mem.c.o.provides: CMakeFiles/main.dir/core/mem.c.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/mem.c.o.provides.build
+.PHONY : CMakeFiles/main.dir/core/mem.c.o.provides
+
+CMakeFiles/main.dir/core/mem.c.o.provides.build: CMakeFiles/main.dir/core/mem.c.o
+
+
 CMakeFiles/main.dir/core/nwdebuger.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/core/nwdebuger.c.o: core/nwdebuger.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/main.dir/core/nwdebuger.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object CMakeFiles/main.dir/core/nwdebuger.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/core/nwdebuger.c.o   -c /home/saurex83/Projects/WMNU/SDCC/core/nwdebuger.c
 
 CMakeFiles/main.dir/core/nwdebuger.c.i: cmake_force
@@ -249,9 +441,33 @@ CMakeFiles/main.dir/core/nwdebuger.c.o.provides: CMakeFiles/main.dir/core/nwdebu
 CMakeFiles/main.dir/core/nwdebuger.c.o.provides.build: CMakeFiles/main.dir/core/nwdebuger.c.o
 
 
+CMakeFiles/main.dir/core/sync.c.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/core/sync.c.o: core/sync.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building C object CMakeFiles/main.dir/core/sync.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/core/sync.c.o   -c /home/saurex83/Projects/WMNU/SDCC/core/sync.c
+
+CMakeFiles/main.dir/core/sync.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/core/sync.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/saurex83/Projects/WMNU/SDCC/core/sync.c > CMakeFiles/main.dir/core/sync.c.i
+
+CMakeFiles/main.dir/core/sync.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/core/sync.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/saurex83/Projects/WMNU/SDCC/core/sync.c -o CMakeFiles/main.dir/core/sync.c.s
+
+CMakeFiles/main.dir/core/sync.c.o.requires:
+
+.PHONY : CMakeFiles/main.dir/core/sync.c.o.requires
+
+CMakeFiles/main.dir/core/sync.c.o.provides: CMakeFiles/main.dir/core/sync.c.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/core/sync.c.o.provides.build
+.PHONY : CMakeFiles/main.dir/core/sync.c.o.provides
+
+CMakeFiles/main.dir/core/sync.c.o.provides.build: CMakeFiles/main.dir/core/sync.c.o
+
+
 CMakeFiles/main.dir/tests/utest.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/tests/utest.c.o: tests/utest.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/main.dir/tests/utest.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building C object CMakeFiles/main.dir/tests/utest.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/tests/utest.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest.c
 
 CMakeFiles/main.dir/tests/utest.c.i: cmake_force
@@ -273,57 +489,9 @@ CMakeFiles/main.dir/tests/utest.c.o.provides: CMakeFiles/main.dir/tests/utest.c.
 CMakeFiles/main.dir/tests/utest.c.o.provides.build: CMakeFiles/main.dir/tests/utest.c.o
 
 
-CMakeFiles/main.dir/tests/utest_FChain.c.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/tests/utest_FChain.c.o: tests/utest_FChain.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/main.dir/tests/utest_FChain.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/tests/utest_FChain.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_FChain.c
-
-CMakeFiles/main.dir/tests/utest_FChain.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/tests/utest_FChain.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/saurex83/Projects/WMNU/SDCC/tests/utest_FChain.c > CMakeFiles/main.dir/tests/utest_FChain.c.i
-
-CMakeFiles/main.dir/tests/utest_FChain.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/tests/utest_FChain.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/saurex83/Projects/WMNU/SDCC/tests/utest_FChain.c -o CMakeFiles/main.dir/tests/utest_FChain.c.s
-
-CMakeFiles/main.dir/tests/utest_FChain.c.o.requires:
-
-.PHONY : CMakeFiles/main.dir/tests/utest_FChain.c.o.requires
-
-CMakeFiles/main.dir/tests/utest_FChain.c.o.provides: CMakeFiles/main.dir/tests/utest_FChain.c.o.requires
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_FChain.c.o.provides.build
-.PHONY : CMakeFiles/main.dir/tests/utest_FChain.c.o.provides
-
-CMakeFiles/main.dir/tests/utest_FChain.c.o.provides.build: CMakeFiles/main.dir/tests/utest_FChain.c.o
-
-
-CMakeFiles/main.dir/tests/utest_FItem.c.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/tests/utest_FItem.c.o: tests/utest_FItem.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/main.dir/tests/utest_FItem.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/tests/utest_FItem.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_FItem.c
-
-CMakeFiles/main.dir/tests/utest_FItem.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/tests/utest_FItem.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/saurex83/Projects/WMNU/SDCC/tests/utest_FItem.c > CMakeFiles/main.dir/tests/utest_FItem.c.i
-
-CMakeFiles/main.dir/tests/utest_FItem.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/tests/utest_FItem.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/saurex83/Projects/WMNU/SDCC/tests/utest_FItem.c -o CMakeFiles/main.dir/tests/utest_FItem.c.s
-
-CMakeFiles/main.dir/tests/utest_FItem.c.o.requires:
-
-.PHONY : CMakeFiles/main.dir/tests/utest_FItem.c.o.requires
-
-CMakeFiles/main.dir/tests/utest_FItem.c.o.provides: CMakeFiles/main.dir/tests/utest_FItem.c.o.requires
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_FItem.c.o.provides.build
-.PHONY : CMakeFiles/main.dir/tests/utest_FItem.c.o.provides
-
-CMakeFiles/main.dir/tests/utest_FItem.c.o.provides.build: CMakeFiles/main.dir/tests/utest_FItem.c.o
-
-
 CMakeFiles/main.dir/tests/utest_Frames.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/tests/utest_Frames.c.o: tests/utest_Frames.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object CMakeFiles/main.dir/tests/utest_Frames.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building C object CMakeFiles/main.dir/tests/utest_Frames.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/tests/utest_Frames.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_Frames.c
 
 CMakeFiles/main.dir/tests/utest_Frames.c.i: cmake_force
@@ -345,9 +513,33 @@ CMakeFiles/main.dir/tests/utest_Frames.c.o.provides: CMakeFiles/main.dir/tests/u
 CMakeFiles/main.dir/tests/utest_Frames.c.o.provides.build: CMakeFiles/main.dir/tests/utest_Frames.c.o
 
 
+CMakeFiles/main.dir/tests/utest_GW.c.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/tests/utest_GW.c.o: tests/utest_GW.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object CMakeFiles/main.dir/tests/utest_GW.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/tests/utest_GW.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_GW.c
+
+CMakeFiles/main.dir/tests/utest_GW.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/tests/utest_GW.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/saurex83/Projects/WMNU/SDCC/tests/utest_GW.c > CMakeFiles/main.dir/tests/utest_GW.c.i
+
+CMakeFiles/main.dir/tests/utest_GW.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/tests/utest_GW.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/saurex83/Projects/WMNU/SDCC/tests/utest_GW.c -o CMakeFiles/main.dir/tests/utest_GW.c.s
+
+CMakeFiles/main.dir/tests/utest_GW.c.o.requires:
+
+.PHONY : CMakeFiles/main.dir/tests/utest_GW.c.o.requires
+
+CMakeFiles/main.dir/tests/utest_GW.c.o.provides: CMakeFiles/main.dir/tests/utest_GW.c.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_GW.c.o.provides.build
+.PHONY : CMakeFiles/main.dir/tests/utest_GW.c.o.provides
+
+CMakeFiles/main.dir/tests/utest_GW.c.o.provides.build: CMakeFiles/main.dir/tests/utest_GW.c.o
+
+
 CMakeFiles/main.dir/tests/utest_LLC.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/tests/utest_LLC.c.o: tests/utest_LLC.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/main.dir/tests/utest_LLC.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building C object CMakeFiles/main.dir/tests/utest_LLC.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/tests/utest_LLC.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_LLC.c
 
 CMakeFiles/main.dir/tests/utest_LLC.c.i: cmake_force
@@ -371,7 +563,7 @@ CMakeFiles/main.dir/tests/utest_LLC.c.o.provides.build: CMakeFiles/main.dir/test
 
 CMakeFiles/main.dir/tests/utest_MAC.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/tests/utest_MAC.c.o: tests/utest_MAC.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object CMakeFiles/main.dir/tests/utest_MAC.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building C object CMakeFiles/main.dir/tests/utest_MAC.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/tests/utest_MAC.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_MAC.c
 
 CMakeFiles/main.dir/tests/utest_MAC.c.i: cmake_force
@@ -393,9 +585,33 @@ CMakeFiles/main.dir/tests/utest_MAC.c.o.provides: CMakeFiles/main.dir/tests/utes
 CMakeFiles/main.dir/tests/utest_MAC.c.o.provides.build: CMakeFiles/main.dir/tests/utest_MAC.c.o
 
 
+CMakeFiles/main.dir/tests/utest_NODE.c.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/tests/utest_NODE.c.o: tests/utest_NODE.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building C object CMakeFiles/main.dir/tests/utest_NODE.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/tests/utest_NODE.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_NODE.c
+
+CMakeFiles/main.dir/tests/utest_NODE.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/tests/utest_NODE.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/saurex83/Projects/WMNU/SDCC/tests/utest_NODE.c > CMakeFiles/main.dir/tests/utest_NODE.c.i
+
+CMakeFiles/main.dir/tests/utest_NODE.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/tests/utest_NODE.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/saurex83/Projects/WMNU/SDCC/tests/utest_NODE.c -o CMakeFiles/main.dir/tests/utest_NODE.c.s
+
+CMakeFiles/main.dir/tests/utest_NODE.c.o.requires:
+
+.PHONY : CMakeFiles/main.dir/tests/utest_NODE.c.o.requires
+
+CMakeFiles/main.dir/tests/utest_NODE.c.o.provides: CMakeFiles/main.dir/tests/utest_NODE.c.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_NODE.c.o.provides.build
+.PHONY : CMakeFiles/main.dir/tests/utest_NODE.c.o.provides
+
+CMakeFiles/main.dir/tests/utest_NODE.c.o.provides.build: CMakeFiles/main.dir/tests/utest_NODE.c.o
+
+
 CMakeFiles/main.dir/tests/utest_NTMR.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/tests/utest_NTMR.c.o: tests/utest_NTMR.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object CMakeFiles/main.dir/tests/utest_NTMR.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building C object CMakeFiles/main.dir/tests/utest_NTMR.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/tests/utest_NTMR.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_NTMR.c
 
 CMakeFiles/main.dir/tests/utest_NTMR.c.i: cmake_force
@@ -419,7 +635,7 @@ CMakeFiles/main.dir/tests/utest_NTMR.c.o.provides.build: CMakeFiles/main.dir/tes
 
 CMakeFiles/main.dir/tests/utest_TIC.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/tests/utest_TIC.c.o: tests/utest_TIC.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object CMakeFiles/main.dir/tests/utest_TIC.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building C object CMakeFiles/main.dir/tests/utest_TIC.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/tests/utest_TIC.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_TIC.c
 
 CMakeFiles/main.dir/tests/utest_TIC.c.i: cmake_force
@@ -441,9 +657,177 @@ CMakeFiles/main.dir/tests/utest_TIC.c.o.provides: CMakeFiles/main.dir/tests/utes
 CMakeFiles/main.dir/tests/utest_TIC.c.o.provides.build: CMakeFiles/main.dir/tests/utest_TIC.c.o
 
 
+CMakeFiles/main.dir/tests/utest_coder.c.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/tests/utest_coder.c.o: tests/utest_coder.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building C object CMakeFiles/main.dir/tests/utest_coder.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/tests/utest_coder.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_coder.c
+
+CMakeFiles/main.dir/tests/utest_coder.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/tests/utest_coder.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/saurex83/Projects/WMNU/SDCC/tests/utest_coder.c > CMakeFiles/main.dir/tests/utest_coder.c.i
+
+CMakeFiles/main.dir/tests/utest_coder.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/tests/utest_coder.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/saurex83/Projects/WMNU/SDCC/tests/utest_coder.c -o CMakeFiles/main.dir/tests/utest_coder.c.s
+
+CMakeFiles/main.dir/tests/utest_coder.c.o.requires:
+
+.PHONY : CMakeFiles/main.dir/tests/utest_coder.c.o.requires
+
+CMakeFiles/main.dir/tests/utest_coder.c.o.provides: CMakeFiles/main.dir/tests/utest_coder.c.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_coder.c.o.provides.build
+.PHONY : CMakeFiles/main.dir/tests/utest_coder.c.o.provides
+
+CMakeFiles/main.dir/tests/utest_coder.c.o.provides.build: CMakeFiles/main.dir/tests/utest_coder.c.o
+
+
+CMakeFiles/main.dir/tests/utest_delays.c.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/tests/utest_delays.c.o: tests/utest_delays.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building C object CMakeFiles/main.dir/tests/utest_delays.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/tests/utest_delays.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_delays.c
+
+CMakeFiles/main.dir/tests/utest_delays.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/tests/utest_delays.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/saurex83/Projects/WMNU/SDCC/tests/utest_delays.c > CMakeFiles/main.dir/tests/utest_delays.c.i
+
+CMakeFiles/main.dir/tests/utest_delays.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/tests/utest_delays.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/saurex83/Projects/WMNU/SDCC/tests/utest_delays.c -o CMakeFiles/main.dir/tests/utest_delays.c.s
+
+CMakeFiles/main.dir/tests/utest_delays.c.o.requires:
+
+.PHONY : CMakeFiles/main.dir/tests/utest_delays.c.o.requires
+
+CMakeFiles/main.dir/tests/utest_delays.c.o.provides: CMakeFiles/main.dir/tests/utest_delays.c.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_delays.c.o.provides.build
+.PHONY : CMakeFiles/main.dir/tests/utest_delays.c.o.provides
+
+CMakeFiles/main.dir/tests/utest_delays.c.o.provides.build: CMakeFiles/main.dir/tests/utest_delays.c.o
+
+
+CMakeFiles/main.dir/tests/utest_fbuf.c.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/tests/utest_fbuf.c.o: tests/utest_fbuf.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building C object CMakeFiles/main.dir/tests/utest_fbuf.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/tests/utest_fbuf.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_fbuf.c
+
+CMakeFiles/main.dir/tests/utest_fbuf.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/tests/utest_fbuf.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/saurex83/Projects/WMNU/SDCC/tests/utest_fbuf.c > CMakeFiles/main.dir/tests/utest_fbuf.c.i
+
+CMakeFiles/main.dir/tests/utest_fbuf.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/tests/utest_fbuf.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/saurex83/Projects/WMNU/SDCC/tests/utest_fbuf.c -o CMakeFiles/main.dir/tests/utest_fbuf.c.s
+
+CMakeFiles/main.dir/tests/utest_fbuf.c.o.requires:
+
+.PHONY : CMakeFiles/main.dir/tests/utest_fbuf.c.o.requires
+
+CMakeFiles/main.dir/tests/utest_fbuf.c.o.provides: CMakeFiles/main.dir/tests/utest_fbuf.c.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_fbuf.c.o.provides.build
+.PHONY : CMakeFiles/main.dir/tests/utest_fbuf.c.o.provides
+
+CMakeFiles/main.dir/tests/utest_fbuf.c.o.provides.build: CMakeFiles/main.dir/tests/utest_fbuf.c.o
+
+
+CMakeFiles/main.dir/tests/utest_frame.c.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/tests/utest_frame.c.o: tests/utest_frame.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building C object CMakeFiles/main.dir/tests/utest_frame.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/tests/utest_frame.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_frame.c
+
+CMakeFiles/main.dir/tests/utest_frame.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/tests/utest_frame.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/saurex83/Projects/WMNU/SDCC/tests/utest_frame.c > CMakeFiles/main.dir/tests/utest_frame.c.i
+
+CMakeFiles/main.dir/tests/utest_frame.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/tests/utest_frame.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/saurex83/Projects/WMNU/SDCC/tests/utest_frame.c -o CMakeFiles/main.dir/tests/utest_frame.c.s
+
+CMakeFiles/main.dir/tests/utest_frame.c.o.requires:
+
+.PHONY : CMakeFiles/main.dir/tests/utest_frame.c.o.requires
+
+CMakeFiles/main.dir/tests/utest_frame.c.o.provides: CMakeFiles/main.dir/tests/utest_frame.c.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_frame.c.o.provides.build
+.PHONY : CMakeFiles/main.dir/tests/utest_frame.c.o.provides
+
+CMakeFiles/main.dir/tests/utest_frame.c.o.provides.build: CMakeFiles/main.dir/tests/utest_frame.c.o
+
+
+CMakeFiles/main.dir/tests/utest_malloc.c.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/tests/utest_malloc.c.o: tests/utest_malloc.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building C object CMakeFiles/main.dir/tests/utest_malloc.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/tests/utest_malloc.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_malloc.c
+
+CMakeFiles/main.dir/tests/utest_malloc.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/tests/utest_malloc.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/saurex83/Projects/WMNU/SDCC/tests/utest_malloc.c > CMakeFiles/main.dir/tests/utest_malloc.c.i
+
+CMakeFiles/main.dir/tests/utest_malloc.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/tests/utest_malloc.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/saurex83/Projects/WMNU/SDCC/tests/utest_malloc.c -o CMakeFiles/main.dir/tests/utest_malloc.c.s
+
+CMakeFiles/main.dir/tests/utest_malloc.c.o.requires:
+
+.PHONY : CMakeFiles/main.dir/tests/utest_malloc.c.o.requires
+
+CMakeFiles/main.dir/tests/utest_malloc.c.o.provides: CMakeFiles/main.dir/tests/utest_malloc.c.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_malloc.c.o.provides.build
+.PHONY : CMakeFiles/main.dir/tests/utest_malloc.c.o.provides
+
+CMakeFiles/main.dir/tests/utest_malloc.c.o.provides.build: CMakeFiles/main.dir/tests/utest_malloc.c.o
+
+
+CMakeFiles/main.dir/tests/utest_printf_uart.c.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/tests/utest_printf_uart.c.o: tests/utest_printf_uart.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building C object CMakeFiles/main.dir/tests/utest_printf_uart.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/tests/utest_printf_uart.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_printf_uart.c
+
+CMakeFiles/main.dir/tests/utest_printf_uart.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/tests/utest_printf_uart.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/saurex83/Projects/WMNU/SDCC/tests/utest_printf_uart.c > CMakeFiles/main.dir/tests/utest_printf_uart.c.i
+
+CMakeFiles/main.dir/tests/utest_printf_uart.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/tests/utest_printf_uart.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/saurex83/Projects/WMNU/SDCC/tests/utest_printf_uart.c -o CMakeFiles/main.dir/tests/utest_printf_uart.c.s
+
+CMakeFiles/main.dir/tests/utest_printf_uart.c.o.requires:
+
+.PHONY : CMakeFiles/main.dir/tests/utest_printf_uart.c.o.requires
+
+CMakeFiles/main.dir/tests/utest_printf_uart.c.o.provides: CMakeFiles/main.dir/tests/utest_printf_uart.c.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_printf_uart.c.o.provides.build
+.PHONY : CMakeFiles/main.dir/tests/utest_printf_uart.c.o.provides
+
+CMakeFiles/main.dir/tests/utest_printf_uart.c.o.provides.build: CMakeFiles/main.dir/tests/utest_printf_uart.c.o
+
+
+CMakeFiles/main.dir/tests/utest_radio.c.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/tests/utest_radio.c.o: tests/utest_radio.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building C object CMakeFiles/main.dir/tests/utest_radio.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/tests/utest_radio.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_radio.c
+
+CMakeFiles/main.dir/tests/utest_radio.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/tests/utest_radio.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/saurex83/Projects/WMNU/SDCC/tests/utest_radio.c > CMakeFiles/main.dir/tests/utest_radio.c.i
+
+CMakeFiles/main.dir/tests/utest_radio.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/tests/utest_radio.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/saurex83/Projects/WMNU/SDCC/tests/utest_radio.c -o CMakeFiles/main.dir/tests/utest_radio.c.s
+
+CMakeFiles/main.dir/tests/utest_radio.c.o.requires:
+
+.PHONY : CMakeFiles/main.dir/tests/utest_radio.c.o.requires
+
+CMakeFiles/main.dir/tests/utest_radio.c.o.provides: CMakeFiles/main.dir/tests/utest_radio.c.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tests/utest_radio.c.o.provides.build
+.PHONY : CMakeFiles/main.dir/tests/utest_radio.c.o.provides
+
+CMakeFiles/main.dir/tests/utest_radio.c.o.provides.build: CMakeFiles/main.dir/tests/utest_radio.c.o
+
+
 CMakeFiles/main.dir/tests/utest_suite.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/tests/utest_suite.c.o: tests/utest_suite.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building C object CMakeFiles/main.dir/tests/utest_suite.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building C object CMakeFiles/main.dir/tests/utest_suite.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/tests/utest_suite.c.o   -c /home/saurex83/Projects/WMNU/SDCC/tests/utest_suite.c
 
 CMakeFiles/main.dir/tests/utest_suite.c.i: cmake_force
@@ -474,15 +858,31 @@ main_OBJECTS = \
 "CMakeFiles/main.dir/core/NTMR.c.o" \
 "CMakeFiles/main.dir/core/RADIO.c.o" \
 "CMakeFiles/main.dir/core/TIC.c.o" \
+"CMakeFiles/main.dir/core/coder.c.o" \
+"CMakeFiles/main.dir/core/config.c.o" \
+"CMakeFiles/main.dir/core/delays.c.o" \
+"CMakeFiles/main.dir/core/ethernet.c.o" \
+"CMakeFiles/main.dir/core/fbuf.c.o" \
+"CMakeFiles/main.dir/core/frame.c.o" \
+"CMakeFiles/main.dir/core/manager.c.o" \
+"CMakeFiles/main.dir/core/mem.c.o" \
 "CMakeFiles/main.dir/core/nwdebuger.c.o" \
+"CMakeFiles/main.dir/core/sync.c.o" \
 "CMakeFiles/main.dir/tests/utest.c.o" \
-"CMakeFiles/main.dir/tests/utest_FChain.c.o" \
-"CMakeFiles/main.dir/tests/utest_FItem.c.o" \
 "CMakeFiles/main.dir/tests/utest_Frames.c.o" \
+"CMakeFiles/main.dir/tests/utest_GW.c.o" \
 "CMakeFiles/main.dir/tests/utest_LLC.c.o" \
 "CMakeFiles/main.dir/tests/utest_MAC.c.o" \
+"CMakeFiles/main.dir/tests/utest_NODE.c.o" \
 "CMakeFiles/main.dir/tests/utest_NTMR.c.o" \
 "CMakeFiles/main.dir/tests/utest_TIC.c.o" \
+"CMakeFiles/main.dir/tests/utest_coder.c.o" \
+"CMakeFiles/main.dir/tests/utest_delays.c.o" \
+"CMakeFiles/main.dir/tests/utest_fbuf.c.o" \
+"CMakeFiles/main.dir/tests/utest_frame.c.o" \
+"CMakeFiles/main.dir/tests/utest_malloc.c.o" \
+"CMakeFiles/main.dir/tests/utest_printf_uart.c.o" \
+"CMakeFiles/main.dir/tests/utest_radio.c.o" \
 "CMakeFiles/main.dir/tests/utest_suite.c.o"
 
 # External object files for target main
@@ -495,19 +895,35 @@ main: CMakeFiles/main.dir/core/MAC.c.o
 main: CMakeFiles/main.dir/core/NTMR.c.o
 main: CMakeFiles/main.dir/core/RADIO.c.o
 main: CMakeFiles/main.dir/core/TIC.c.o
+main: CMakeFiles/main.dir/core/coder.c.o
+main: CMakeFiles/main.dir/core/config.c.o
+main: CMakeFiles/main.dir/core/delays.c.o
+main: CMakeFiles/main.dir/core/ethernet.c.o
+main: CMakeFiles/main.dir/core/fbuf.c.o
+main: CMakeFiles/main.dir/core/frame.c.o
+main: CMakeFiles/main.dir/core/manager.c.o
+main: CMakeFiles/main.dir/core/mem.c.o
 main: CMakeFiles/main.dir/core/nwdebuger.c.o
+main: CMakeFiles/main.dir/core/sync.c.o
 main: CMakeFiles/main.dir/tests/utest.c.o
-main: CMakeFiles/main.dir/tests/utest_FChain.c.o
-main: CMakeFiles/main.dir/tests/utest_FItem.c.o
 main: CMakeFiles/main.dir/tests/utest_Frames.c.o
+main: CMakeFiles/main.dir/tests/utest_GW.c.o
 main: CMakeFiles/main.dir/tests/utest_LLC.c.o
 main: CMakeFiles/main.dir/tests/utest_MAC.c.o
+main: CMakeFiles/main.dir/tests/utest_NODE.c.o
 main: CMakeFiles/main.dir/tests/utest_NTMR.c.o
 main: CMakeFiles/main.dir/tests/utest_TIC.c.o
+main: CMakeFiles/main.dir/tests/utest_coder.c.o
+main: CMakeFiles/main.dir/tests/utest_delays.c.o
+main: CMakeFiles/main.dir/tests/utest_fbuf.c.o
+main: CMakeFiles/main.dir/tests/utest_frame.c.o
+main: CMakeFiles/main.dir/tests/utest_malloc.c.o
+main: CMakeFiles/main.dir/tests/utest_printf_uart.c.o
+main: CMakeFiles/main.dir/tests/utest_radio.c.o
 main: CMakeFiles/main.dir/tests/utest_suite.c.o
 main: CMakeFiles/main.dir/build.make
 main: CMakeFiles/main.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Linking C executable main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/saurex83/Projects/WMNU/SDCC/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Linking C executable main"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/main.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -522,15 +938,31 @@ CMakeFiles/main.dir/requires: CMakeFiles/main.dir/core/MAC.c.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/core/NTMR.c.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/core/RADIO.c.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/core/TIC.c.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/core/coder.c.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/core/config.c.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/core/delays.c.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/core/ethernet.c.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/core/fbuf.c.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/core/frame.c.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/core/manager.c.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/core/mem.c.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/core/nwdebuger.c.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/core/sync.c.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/tests/utest.c.o.requires
-CMakeFiles/main.dir/requires: CMakeFiles/main.dir/tests/utest_FChain.c.o.requires
-CMakeFiles/main.dir/requires: CMakeFiles/main.dir/tests/utest_FItem.c.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/tests/utest_Frames.c.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/tests/utest_GW.c.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/tests/utest_LLC.c.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/tests/utest_MAC.c.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/tests/utest_NODE.c.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/tests/utest_NTMR.c.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/tests/utest_TIC.c.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/tests/utest_coder.c.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/tests/utest_delays.c.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/tests/utest_fbuf.c.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/tests/utest_frame.c.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/tests/utest_malloc.c.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/tests/utest_printf_uart.c.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/tests/utest_radio.c.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/tests/utest_suite.c.o.requires
 
 .PHONY : CMakeFiles/main.dir/requires

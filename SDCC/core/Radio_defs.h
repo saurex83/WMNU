@@ -1,11 +1,21 @@
+#include "ioCC2530.h"
 
 // Это Immediate Strobe instructions (ISxxx). Запись в командный регистр
 // приводит к немедленному исполнению. Команды записываются в RFST.
-// Если RFST = 0, то контроллер готов выполнять следующию инструкцию.
-enum RADIO_OPCODE {
-  OP_SRXON = 0xD3, OP_STXON = 0xD9, OP_STXONCCA = 0xDA, OP_SSAMPLECCA = 0xDB,
-  OP_SRFOFF = 0xDF, OP_SFLUSHRX = 0xDD, OP_SFLUSHTX = 0xDE
-};
+// Состояние RFST можно не проверять. Он при выполнении ISxxx равен 0xD0
+#define ISRXON()        RFST = 0xE3
+#define ISTXON()        RFST = 0xE9
+#define ISTXONCCA()     RFST = 0xEA
+#define ISSAMPLECCA()   RFST = 0xEB
+#define ISRFOFF()       RFST = 0xEF
+#define ISFLUSHRX()     RFST = 0xED
+#define ISFLUSHTX()     RFST = 0xEE
+
+
+// Флаги прерывания RFIRQF0, RFIRQF1,
+#define RFIRQF1_TXDONE      (1<<1)
+#define RFIRQF0_RXPKTDONE   (1<<6)
+#define RFIRQF0_SFD         (1<<1)
 
 union MDMCTRL0_u
 {
@@ -27,7 +37,7 @@ union MDMCTRL1_u
   } bits;
 };
 
-union MDMTEST1_u
+typedef union 
 {
   uint8_t value;
   struct {
@@ -35,7 +45,7 @@ union MDMTEST1_u
     uint8_t MODULATION_MODE:1;
     uint8_t RFC_SNIFF_EN:1;
   } bits;
-};
+} MDMTEST1_u;
 
 union FRMCTRL0_u
 {
@@ -70,13 +80,13 @@ union FREQTUNE_u // Можно слегка сместить частоту, ч�
 };
 
 
-union FREQCTRL_u
+typedef union 
 {
   uint8_t value;
   struct {
     uint8_t FREQ:7;    
   } bits;
-};
+} FREQCTRL_u;
 
 
 union FSMSTAT0_u
@@ -88,7 +98,7 @@ union FSMSTAT0_u
   } bits;
 };
 
-union FSMSTAT1_u
+typedef union 
 {
   uint8_t value;
   struct {
@@ -101,7 +111,7 @@ union FSMSTAT1_u
     uint8_t FIFOP:1;
     uint8_t FIFO:1;
   } bits;
-};
+} FSMSTAT1_u;
 
 union CCACTRL1_u
 {

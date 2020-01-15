@@ -1,34 +1,21 @@
 #include "utest_suite.h"
 #include "nwdebuger.h"
+#include "assert.h"
 
-extern void suite_FItem(void);
-extern void suite_FChain(void);
-extern void suite_TIC(void);
-extern void suite_MAC(void);
-extern void suite_LLC(void);
-extern void suite_NT(void);
-extern void suite_Frames(void);
+extern void suite_GW(void);
+extern void suite_NODE(void);
 
 int main()
 {
   nwDebugerInit();
-  
-  LOG(MSG_ON | MSG_INFO | MSG_TRACE, "Test log output\n");
-  ASSERT(false, "Test assert output\n");
-
-  // Вызов функций тестирования
-
-  suite_TIC();
-  suite_Frames();
-  suite_FItem();
-  suite_FChain();
-  
-	//run_utest_framepart();
-
-   
-
+  utestSigTraceInit();
+  LOG_ON("");
+  LOG_ON("Test start");
+ 
+  //suite_GW();
+  suite_NODE();
 // Добавляем результаты тестов
 	umsg_summary();
-      while(1);
+ //     while(1);
 	return 0;
 }

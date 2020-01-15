@@ -17,6 +17,3 @@ frame_s* RI_Receive(uint16_t timeout);
 uint32_t RI_GetCRCError(void);
 uint32_t RI_GetCCAReject(void);
 float RI_GetUptime(void);
-void RI_StreamCrypt(bool state);
-void RI_setKEY(void* ptr_KEY);
-void RI_setIV(void* ptr_IV);

@@ -44,7 +44,7 @@
 // чем считывать ST0-3
 
 
-//#define USE_OSC32K // Использовать внешний квац 32.768 кГц
+#define USE_OSC32K // Использовать внешний квац 32.768 кГц
 
 // Методы модуля
 bool NT_SetTime(uint16_t ticks);
@@ -78,11 +78,17 @@ void NT_Init(void)
   COMPARE_TIME = 0;
   EventCallback = NULL;
 
+  // Сначало нужно настроить кварц 32кГц только потом поднимать
+  // основной квар до 32 Мгц
   #ifdef USE_OSC32K
   CLKCONCMD &= ~(1<<7); // Сбрасываем бит OSC32K, будет выбран 32.768 кварц
   while (CLKCONSTA & (1<<7)); // Ждем пока бит не станет 0
   #endif
 
+  // Переходим на 32 Мгц
+  CLKCONCMD = (1<<3);
+  while (CLKCONSTA&(1<<6));
+  
   NT_IRQEnable(false);
 }
 

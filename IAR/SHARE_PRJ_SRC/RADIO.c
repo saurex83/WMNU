@@ -11,7 +11,6 @@
 #include "delays.h"
 #include "frame.h"
 #include "string.h"
-#include "coder.h"
 #include "NTMR.h"
 
 // Открытые методы модуля
@@ -22,24 +21,11 @@ frame_s* RI_Receive(uint16_t timeout);
 uint32_t RI_GetCRCError(void);
 uint32_t RI_GetCCAReject(void);
 float RI_GetUptime(void);
-void RI_StreamCrypt(bool state);
-void RI_setKEY(void* ptr_KEY);
-void RI_setIV(void* ptr_IV);
 
 // Приватные методы
 static void random_core_init(void);
 static void RI_cfg(void);
 
-// TODO можно добавть простой алгоритм перестановки для сокрытия данных 
-// при передаче RAW формата. Алгоритм должен быть достаточно простой и 
-// перестанавливать биты, смешивать их с ключом. Алгорим не производит 
-// контроль дешифровки с помощью цифровых подписей.
-// Шифрование можно включаеть/отключаеть
-// Возможно попробовать аппаратный модуль, так как к уже зашифрованому пакету
-// IP добавятся данные и зашифруются еще одним ключем, надежность возрастет.
-// Думаю это не будет являтся двойным шифрованием и будет устойчиво к взлому
-static void RI_BitRawCrypt(uint8_t *src, uint8_t size); // Шифрование передачи
-static void RI_BitRawDecrypt(uint8_t *src, uint8_t size); // Дешифрока приема
 static inline void setFreq(uint8_t CH); // Установка частоты передатчика
 static void LoadTXData(uint8_t *src, uint8_t len); // Загрузка данных в tx buf
 static void UnLoadRXData(uint8_t *src, uint8_t len);
@@ -50,8 +36,6 @@ static bool RecvData(uint32_t timeout_us, uint16_t *SFD_TimeStamp);
 static float RI_UPTIME = 0; // Время работы радио в мс. 49 дней максимум
 static uint32_t RI_CRC_ERROR = 0; // Количество ошибок CRC
 static uint32_t RI_CCA_REJECT = 0; // Количество отказов передач из-за CCA
-static uint8_t IV[16];  // Вектор иницилизации для кодирования
-static uint8_t KEY[16]; // Ключ для кодирования
 
 /*!
 \brief Константы для установки выходной мощности радиопередатчика.
@@ -88,29 +72,10 @@ enum TX_POWER_e
 /// Глобальные параметры модуля
 struct
 {
-  uint8_t CH;       //!< Номер канала с 11 до 26 включительно
+  uint8_t CH;       //!< Номер канала с 11 до 28 включительно
   uint8_t TX_POWER; //!< Мощность радиопередатчика по умолчанию. 7 бит
   bool MODULATION_MODE; //!< false - совместимость с IEEE 802.15.4
-  bool STREAM_CRYPT_ENABLE; //!< Шифрование выходного потока данных
 } RADIO_CFG;
-
-/**
-@brief Установить вектор иницилизации для шифрования
-@param[in] ptr_IV указатель на 16 байтный вектор иницилизации
-*/
-void RI_setIV(void* ptr_IV)
-{
-  memcpy(IV, ptr_IV, 16);
-}
-
-/**
-@brief Установить ключ шифрования
-@param[in] ptr_KEY указатель на 16 байтный ключ
-*/
-void RI_setKEY(void* ptr_KEY)
-{
-  memcpy(KEY, ptr_KEY, 16);
-}
 
 /*!
 \brief Иницилизация радио интерфейса
@@ -121,7 +86,6 @@ void RI_init(void)
   RADIO_CFG.CH = CH11;
   RADIO_CFG.TX_POWER = m0x5;
   RADIO_CFG.MODULATION_MODE = IEEE_MODE;
-  RADIO_CFG.STREAM_CRYPT_ENABLE = true;
   // Пост действия с радио
   random_core_init();
 }
@@ -155,12 +119,12 @@ of ~50 is typically the lowest quality frames detectable by CC2520.
 
 /*!
 \brief Устанавливает канал радиопередатчика.
-\param[in] CH Номера каналов [11..26]
+\param[in] CH Номера каналов [11..28]
 \return Возвращает true если аргументы верны
 */
 bool RI_SetChannel(uint8_t CH)
 {
-  if ((CH >=11) && (CH<=26))
+  if ((CH >=11) && (CH<=28))
   {
     RADIO_CFG.CH = CH;
     return true;
@@ -170,8 +134,7 @@ bool RI_SetChannel(uint8_t CH)
 
 /*!
 \brief Передает данные в эфир
-\details Функция может самостоятельно шифровать поток данных, увеличивает 
- RI_CCA_REJECT при невозможности отправки сообщения, расчитывает время работы 
+\details Увеличивает  RI_CCA_REJECT при невозможности отправки сообщения, расчитывает время работы 
  радио передатчика. Отправка сообщения в заданное сетевое время 
  fr->meta.SEND_TIME. Если равно 0, то отправка через случайноу время в мкс.
  Данные автоматически оборачиваются в LEN, CRC1,CRC2
@@ -215,24 +178,15 @@ static bool SendData(frame_s *fr)
 ////ts_rssistat, ts_istxon, ts_sfd, ts_stop;
   
 ////TIM_TimeStamp(&ts_start);  
-  
-  // Обязательно скопируем данные для отправки.
-  // Данные могут шифроваться и если их не отправили, то payload измениться.
-  uint8_t data_size = fr->len;
-  uint8_t *data = re_malloc(data_size);
-  ASSERT(data !=NULL);
-  re_memcpy(data, fr->payload, data_size);
-    
+      
 ////TIM_TimeStamp(&ts_frame_merge);  
   bool result = true;
   switch(true)
   {
     case true:
-      // Шифруем данные при необходимости
-      RI_BitRawCrypt(data, data_size);
 ////TIM_TimeStamp(&ts_crypt); 
       // Копируем данные в буфер. Очистка буфера автоматическая
-      LoadTXData(data, data_size);
+      LoadTXData(fr->payload, fr->len);
 ////TIM_TimeStamp(&ts_load_tx); 
       // Для начала передачи по команде STXONCCA нужно включить приемник
       ISRXON();
@@ -246,9 +200,10 @@ static bool SendData(frame_s *fr)
       // Время отправки сообщения измеряется в тактах сетевого времени NTMR
       // Он работатаеи намного лучше чем MAC таймер(меньше погрешность)
       // Отправка в обозначенное время или по факту готовности
+      //13 - поправка в тактах сети на передачу преамболы
       uint16_t timer = 0; // Для отлалки. 
       if (fr->meta.SEND_TIME != 0)
-        timer = NT_WaitTime(fr->meta.SEND_TIME);
+        timer = NT_WaitTime(fr->meta.SEND_TIME - 13); 
 
       // Начинаем передачу данных
       // Transmission of preamble begins 192 μs after the STXON or STXONCCA 
@@ -273,8 +228,7 @@ static bool SendData(frame_s *fr)
       break;
   }
 ////TIM_TimeStamp(&ts_stop);
-
-  re_free(data);
+  
   ISRFOFF();
 ////  LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
 ////"Merge = %lu. Crypt = %lu. Load TX = %lu. RSSI_OK = %lu. ISTXON = %lu. SFD = %lu. TX = %lu. FULL = %lu \n", 
@@ -327,7 +281,7 @@ static void UnLoadRXData(uint8_t *src, uint8_t len)
 
 static inline void setFreq(uint8_t CH)
 {
-  ASSERT( (CH >= 11) && (CH <= 26));
+  ASSERT( (CH >= 11) && (CH <= 28));
   // Устанавливаем частоту радиопередатчика
   FREQCTRL_u FRQ;
   FRQ.value = FRQ_CALC(RADIO_CFG.CH);
@@ -337,8 +291,7 @@ static inline void setFreq(uint8_t CH)
 /*!
 \brief Принимает данные из эфира
 \details Функция принимает данные из эфира. Проводит проверку CRC, увеличивает
-RI_CRC_ERROR. Дешифрует данные при необходимости. Отмечает время прихода SFD 
- в тактах сетевого времени .
+RI_CRC_ERROR. Отмечает время прихода SFD в тактах сетевого времени .
 \param[in] timeout Время ожидания данных в милисекундах
 \return Возвращает NULL если данных нет
 */
@@ -394,9 +347,7 @@ frame_s* RI_Receive(uint16_t timeout)
   
   // Создаем буфер, последнии два байта FCS1,2 и поле LEN не копируем
   frame_s *raw_frame = frame_create();
-  frame_addHeader(raw_frame, &frame_raw[1], frame_size - 2);
-  // Декодируем поток если нужно
-  RI_BitRawDecrypt(raw_frame->payload, raw_frame->len);
+  frame_addHeader(raw_frame, &frame_raw[1], frame_size - 3);
   
   // Копируем метку времени SFD
   raw_frame->meta.TIMESTAMP = SFD_TimeStamp;
@@ -571,37 +522,3 @@ static void random_core_init(void)
   rand(); 
 }
 
-/*!
-\brief Установка разрешения шифрования потока данных
-\param[in] true - включить шифрование
-*/
-void RI_StreamCrypt(bool state)
-{
-  RADIO_CFG.STREAM_CRYPT_ENABLE = state;
-}
-
-/*!
-\brief Шифрует область памяти если шифрование разрешено
-\param[in,out] *src Указатель на начало области шифрования
-\param[in] size Размер шифруемых данных
-*/
-static void RI_BitRawCrypt(uint8_t *src, uint8_t size)
-{
-  if (!RADIO_CFG.STREAM_CRYPT_ENABLE)
-    return;
-  
-  AES_StreamCoder(true, src, src, KEY, IV, size);
-}
-
-/*!
-\brief Расшифровка область памяти если шифрование разрешено
-\param[in,out] *src Указатель на начало области дешифрования
-\param[in] size Размер расшифруемых данных
-*/
-static void RI_BitRawDecrypt(uint8_t *src, uint8_t size)
-{
-   if (!RADIO_CFG.STREAM_CRYPT_ENABLE)
-    return;
-   
-  AES_StreamCoder(false, src, src, KEY, IV, size);
-}

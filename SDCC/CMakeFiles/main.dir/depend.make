@@ -5,90 +5,198 @@ CMakeFiles/main.dir/core/FChain.c.o: core/FChain.c
 CMakeFiles/main.dir/core/FChain.c.o: core/FChain.h
 CMakeFiles/main.dir/core/FChain.c.o: core/FItem.h
 CMakeFiles/main.dir/core/FChain.c.o: core/nwdebuger.h
-CMakeFiles/main.dir/core/FChain.c.o: core/sig_trace.h
-CMakeFiles/main.dir/core/FChain.c.o: core/sig_trace_defs.h
 
 CMakeFiles/main.dir/core/FItem.c.o: core/FItem.c
 CMakeFiles/main.dir/core/FItem.c.o: core/FItem.h
 CMakeFiles/main.dir/core/FItem.c.o: core/nwdebuger.h
-CMakeFiles/main.dir/core/FItem.c.o: core/sig_trace.h
-CMakeFiles/main.dir/core/FItem.c.o: core/sig_trace_defs.h
 
-CMakeFiles/main.dir/core/LLC.c.o: core/FChain.h
-CMakeFiles/main.dir/core/LLC.c.o: core/FItem.h
 CMakeFiles/main.dir/core/LLC.c.o: core/LLC.c
 CMakeFiles/main.dir/core/LLC.c.o: core/LLC.h
 CMakeFiles/main.dir/core/LLC.c.o: core/MAC.h
-CMakeFiles/main.dir/core/LLC.c.o: core/NTMR.h
 CMakeFiles/main.dir/core/LLC.c.o: core/RADIO.h
 CMakeFiles/main.dir/core/LLC.c.o: core/TIC.h
+CMakeFiles/main.dir/core/LLC.c.o: core/delays.h
+CMakeFiles/main.dir/core/LLC.c.o: core/frame.h
+CMakeFiles/main.dir/core/LLC.c.o: core/mem.h
+CMakeFiles/main.dir/core/LLC.c.o: core/nwdebuger.h
 
-CMakeFiles/main.dir/core/MAC.c.o: core/FChain.h
-CMakeFiles/main.dir/core/MAC.c.o: core/FItem.h
-CMakeFiles/main.dir/core/MAC.c.o: core/Frames.h
 CMakeFiles/main.dir/core/MAC.c.o: core/MAC.c
 CMakeFiles/main.dir/core/MAC.c.o: core/MAC.h
-CMakeFiles/main.dir/core/MAC.c.o: core/NTMR.h
 CMakeFiles/main.dir/core/MAC.c.o: core/RADIO.h
 CMakeFiles/main.dir/core/MAC.c.o: core/TIC.h
+CMakeFiles/main.dir/core/MAC.c.o: core/basic.h
+CMakeFiles/main.dir/core/MAC.c.o: core/coder.h
+CMakeFiles/main.dir/core/MAC.c.o: core/delays.h
+CMakeFiles/main.dir/core/MAC.c.o: core/frame.h
+CMakeFiles/main.dir/core/MAC.c.o: core/nwdebuger.h
 
 CMakeFiles/main.dir/core/NTMR.c.o: core/NTMR.c
 CMakeFiles/main.dir/core/NTMR.c.o: core/NTMR.h
+CMakeFiles/main.dir/core/NTMR.c.o: core/nwdebuger.h
 
-CMakeFiles/main.dir/core/RADIO.c.o: core/FChain.h
-CMakeFiles/main.dir/core/RADIO.c.o: core/FItem.h
+CMakeFiles/main.dir/core/RADIO.c.o: core/NTMR.h
 CMakeFiles/main.dir/core/RADIO.c.o: core/RADIO.c
 CMakeFiles/main.dir/core/RADIO.c.o: core/RADIO.h
 CMakeFiles/main.dir/core/RADIO.c.o: core/Radio_defs.h
-CMakeFiles/main.dir/core/RADIO.c.o: core/ioCC2530.h
+CMakeFiles/main.dir/core/RADIO.c.o: core/TIC.h
+CMakeFiles/main.dir/core/RADIO.c.o: core/delays.h
+CMakeFiles/main.dir/core/RADIO.c.o: core/frame.h
+CMakeFiles/main.dir/core/RADIO.c.o: core/mem.h
 CMakeFiles/main.dir/core/RADIO.c.o: core/nwdebuger.h
-CMakeFiles/main.dir/core/RADIO.c.o: core/sig_trace.h
-CMakeFiles/main.dir/core/RADIO.c.o: core/sig_trace_defs.h
 
 CMakeFiles/main.dir/core/TIC.c.o: core/NTMR.h
 CMakeFiles/main.dir/core/TIC.c.o: core/TIC.c
 CMakeFiles/main.dir/core/TIC.c.o: core/TIC.h
+CMakeFiles/main.dir/core/TIC.c.o: core/basic.h
+CMakeFiles/main.dir/core/TIC.c.o: core/delays.h
 CMakeFiles/main.dir/core/TIC.c.o: core/nwdebuger.h
-CMakeFiles/main.dir/core/TIC.c.o: core/sig_trace.h
-CMakeFiles/main.dir/core/TIC.c.o: core/sig_trace_defs.h
+
+CMakeFiles/main.dir/core/coder.c.o: core/coder.c
+CMakeFiles/main.dir/core/coder.c.o: core/coder.h
+CMakeFiles/main.dir/core/coder.c.o: core/delays.h
+
+CMakeFiles/main.dir/core/config.c.o: core/basic.h
+CMakeFiles/main.dir/core/config.c.o: core/config.c
+CMakeFiles/main.dir/core/config.c.o: core/config.h
+
+CMakeFiles/main.dir/core/delays.c.o: core/delays.c
+CMakeFiles/main.dir/core/delays.c.o: core/delays.h
+
+CMakeFiles/main.dir/core/ethernet.c.o: core/LLC.h
+CMakeFiles/main.dir/core/ethernet.c.o: core/Net_frames.h
+CMakeFiles/main.dir/core/ethernet.c.o: core/ethernet.c
+CMakeFiles/main.dir/core/ethernet.c.o: core/frame.h
+CMakeFiles/main.dir/core/ethernet.c.o: core/mem.h
+CMakeFiles/main.dir/core/ethernet.c.o: core/nwdebuger.h
+
+CMakeFiles/main.dir/core/fbuf.c.o: core/Net_frames.h
+CMakeFiles/main.dir/core/fbuf.c.o: core/fbuf.c
+CMakeFiles/main.dir/core/fbuf.c.o: core/fbuf.h
+CMakeFiles/main.dir/core/fbuf.c.o: core/mem.h
+CMakeFiles/main.dir/core/fbuf.c.o: core/nwdebuger.h
+
+CMakeFiles/main.dir/core/frame.c.o: core/frame.c
+CMakeFiles/main.dir/core/frame.c.o: core/frame.h
+CMakeFiles/main.dir/core/frame.c.o: core/mem.h
+CMakeFiles/main.dir/core/frame.c.o: core/nwdebuger.h
+
+CMakeFiles/main.dir/core/manager.c.o: core/LLC.h
+CMakeFiles/main.dir/core/manager.c.o: core/MAC.h
+CMakeFiles/main.dir/core/manager.c.o: core/NTMR.h
+CMakeFiles/main.dir/core/manager.c.o: core/RADIO.h
+CMakeFiles/main.dir/core/manager.c.o: core/TIC.h
+CMakeFiles/main.dir/core/manager.c.o: core/basic.h
+CMakeFiles/main.dir/core/manager.c.o: core/coder.h
+CMakeFiles/main.dir/core/manager.c.o: core/config.h
+CMakeFiles/main.dir/core/manager.c.o: core/delays.h
+CMakeFiles/main.dir/core/manager.c.o: core/ethernet.h
+CMakeFiles/main.dir/core/manager.c.o: core/frame.h
+CMakeFiles/main.dir/core/manager.c.o: core/manager.c
+CMakeFiles/main.dir/core/manager.c.o: core/manager.h
+CMakeFiles/main.dir/core/manager.c.o: core/nwdebuger.h
+CMakeFiles/main.dir/core/manager.c.o: core/sync.h
+
+CMakeFiles/main.dir/core/mem.c.o: core/mem.c
+CMakeFiles/main.dir/core/mem.c.o: core/nwdebuger.h
 
 CMakeFiles/main.dir/core/nwdebuger.c.o: core/nwdebuger.c
 CMakeFiles/main.dir/core/nwdebuger.c.o: core/nwdebuger.h
-CMakeFiles/main.dir/core/nwdebuger.c.o: core/sig_trace.h
-CMakeFiles/main.dir/core/nwdebuger.c.o: core/sig_trace_defs.h
+
+CMakeFiles/main.dir/core/sync.c.o: core/NTMR.h
+CMakeFiles/main.dir/core/sync.c.o: core/RADIO.h
+CMakeFiles/main.dir/core/sync.c.o: core/TIC.h
+CMakeFiles/main.dir/core/sync.c.o: core/basic.h
+CMakeFiles/main.dir/core/sync.c.o: core/coder.h
+CMakeFiles/main.dir/core/sync.c.o: core/delays.h
+CMakeFiles/main.dir/core/sync.c.o: core/frame.h
+CMakeFiles/main.dir/core/sync.c.o: core/nwdebuger.h
+CMakeFiles/main.dir/core/sync.c.o: core/sync.c
 
 CMakeFiles/main.dir/tests/utest.c.o: tests/utest.c
 CMakeFiles/main.dir/tests/utest.c.o: tests/utest_suite.h
 CMakeFiles/main.dir/tests/utest.c.o: core/nwdebuger.h
-CMakeFiles/main.dir/tests/utest.c.o: core/sig_trace.h
-CMakeFiles/main.dir/tests/utest.c.o: core/sig_trace_defs.h
-
-CMakeFiles/main.dir/tests/utest_FChain.c.o: tests/utest_FChain.c
-CMakeFiles/main.dir/tests/utest_FChain.c.o: tests/utest_suite.h
-CMakeFiles/main.dir/tests/utest_FChain.c.o: core/FChain.h
-CMakeFiles/main.dir/tests/utest_FChain.c.o: core/FItem.h
-
-CMakeFiles/main.dir/tests/utest_FItem.c.o: tests/utest_FItem.c
-CMakeFiles/main.dir/tests/utest_FItem.c.o: tests/utest_suite.h
-CMakeFiles/main.dir/tests/utest_FItem.c.o: core/FItem.h
 
 CMakeFiles/main.dir/tests/utest_Frames.c.o: tests/utest_Frames.c
 CMakeFiles/main.dir/tests/utest_Frames.c.o: tests/utest_suite.h
-CMakeFiles/main.dir/tests/utest_Frames.c.o: core/Frames.h
+CMakeFiles/main.dir/tests/utest_Frames.c.o: core/frame.h
+
+CMakeFiles/main.dir/tests/utest_GW.c.o: tests/utest_GW.c
+CMakeFiles/main.dir/tests/utest_GW.c.o: tests/utest_suite.h
+CMakeFiles/main.dir/tests/utest_GW.c.o: core/manager.h
+CMakeFiles/main.dir/tests/utest_GW.c.o: core/nwdebuger.h
 
 CMakeFiles/main.dir/tests/utest_LLC.c.o: tests/utest_LLC.c
 CMakeFiles/main.dir/tests/utest_LLC.c.o: tests/utest_suite.h
+CMakeFiles/main.dir/tests/utest_LLC.c.o: core/LLC.h
+CMakeFiles/main.dir/tests/utest_LLC.c.o: core/NTMR.h
+CMakeFiles/main.dir/tests/utest_LLC.c.o: core/RADIO.h
+CMakeFiles/main.dir/tests/utest_LLC.c.o: core/TIC.h
+CMakeFiles/main.dir/tests/utest_LLC.c.o: core/delays.h
+CMakeFiles/main.dir/tests/utest_LLC.c.o: core/frame.h
+CMakeFiles/main.dir/tests/utest_LLC.c.o: core/mem.h
+CMakeFiles/main.dir/tests/utest_LLC.c.o: core/nwdebuger.h
 
 CMakeFiles/main.dir/tests/utest_MAC.c.o: tests/utest_MAC.c
 CMakeFiles/main.dir/tests/utest_MAC.c.o: tests/utest_suite.h
+CMakeFiles/main.dir/tests/utest_MAC.c.o: core/MAC.h
+CMakeFiles/main.dir/tests/utest_MAC.c.o: core/RADIO.h
+CMakeFiles/main.dir/tests/utest_MAC.c.o: core/TIC.h
+CMakeFiles/main.dir/tests/utest_MAC.c.o: core/delays.h
+CMakeFiles/main.dir/tests/utest_MAC.c.o: core/frame.h
+CMakeFiles/main.dir/tests/utest_MAC.c.o: core/nwdebuger.h
+
+CMakeFiles/main.dir/tests/utest_NODE.c.o: tests/utest_NODE.c
+CMakeFiles/main.dir/tests/utest_NODE.c.o: tests/utest_suite.h
+CMakeFiles/main.dir/tests/utest_NODE.c.o: core/manager.h
+CMakeFiles/main.dir/tests/utest_NODE.c.o: core/nwdebuger.h
 
 CMakeFiles/main.dir/tests/utest_NTMR.c.o: tests/utest_NTMR.c
 CMakeFiles/main.dir/tests/utest_NTMR.c.o: tests/utest_suite.h
+CMakeFiles/main.dir/tests/utest_NTMR.c.o: core/NTMR.h
 
 CMakeFiles/main.dir/tests/utest_TIC.c.o: tests/utest_TIC.c
 CMakeFiles/main.dir/tests/utest_TIC.c.o: tests/utest_suite.h
 CMakeFiles/main.dir/tests/utest_TIC.c.o: core/NTMR.h
 CMakeFiles/main.dir/tests/utest_TIC.c.o: core/TIC.h
+CMakeFiles/main.dir/tests/utest_TIC.c.o: core/delays.h
+
+CMakeFiles/main.dir/tests/utest_coder.c.o: tests/utest_coder.c
+CMakeFiles/main.dir/tests/utest_coder.c.o: tests/utest_suite.h
+CMakeFiles/main.dir/tests/utest_coder.c.o: core/coder.h
+CMakeFiles/main.dir/tests/utest_coder.c.o: core/delays.h
+CMakeFiles/main.dir/tests/utest_coder.c.o: core/nwdebuger.h
+
+CMakeFiles/main.dir/tests/utest_delays.c.o: tests/utest_delays.c
+CMakeFiles/main.dir/tests/utest_delays.c.o: tests/utest_suite.h
+CMakeFiles/main.dir/tests/utest_delays.c.o: core/delays.h
+
+CMakeFiles/main.dir/tests/utest_fbuf.c.o: tests/utest_fbuf.c
+CMakeFiles/main.dir/tests/utest_fbuf.c.o: tests/utest_suite.h
+CMakeFiles/main.dir/tests/utest_fbuf.c.o: core/Net_frames.h
+CMakeFiles/main.dir/tests/utest_fbuf.c.o: core/fbuf.h
+
+CMakeFiles/main.dir/tests/utest_frame.c.o: tests/utest_frame.c
+CMakeFiles/main.dir/tests/utest_frame.c.o: tests/utest_suite.h
+CMakeFiles/main.dir/tests/utest_frame.c.o: core/frame.h
+CMakeFiles/main.dir/tests/utest_frame.c.o: core/mem.h
+
+CMakeFiles/main.dir/tests/utest_malloc.c.o: tests/utest_malloc.c
+CMakeFiles/main.dir/tests/utest_malloc.c.o: tests/utest_suite.h
+
+CMakeFiles/main.dir/tests/utest_printf_uart.c.o: tests/utest_printf_uart.c
+CMakeFiles/main.dir/tests/utest_printf_uart.c.o: tests/utest_suite.h
+CMakeFiles/main.dir/tests/utest_printf_uart.c.o: core/delays.h
+CMakeFiles/main.dir/tests/utest_printf_uart.c.o: core/nwdebuger.h
+
+CMakeFiles/main.dir/tests/utest_radio.c.o: tests/utest_radio.c
+CMakeFiles/main.dir/tests/utest_radio.c.o: tests/utest_suite.h
+CMakeFiles/main.dir/tests/utest_radio.c.o: core/NTMR.h
+CMakeFiles/main.dir/tests/utest_radio.c.o: core/RADIO.h
+CMakeFiles/main.dir/tests/utest_radio.c.o: core/TIC.h
+CMakeFiles/main.dir/tests/utest_radio.c.o: core/coder.h
+CMakeFiles/main.dir/tests/utest_radio.c.o: core/delays.h
+CMakeFiles/main.dir/tests/utest_radio.c.o: core/frame.h
+CMakeFiles/main.dir/tests/utest_radio.c.o: core/nwdebuger.h
 
 CMakeFiles/main.dir/tests/utest_suite.c.o: tests/utest_suite.c
 CMakeFiles/main.dir/tests/utest_suite.c.o: tests/utest_suite.h
