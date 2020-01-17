@@ -15,6 +15,7 @@
 #include "basic.h"
 #include "config.h"
 #include "ioCC2530.h"
+#include "dma.h"
 
 static void MG_Init();
 static void MG_Reset();
@@ -31,6 +32,7 @@ bool MG_Connect();
 
 static void MG_Init()
 {
+  DMA_init();
   CF_init();
   NT_Init();
   TIM_init();

@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               15/Jan/2020  22:05:36
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               16/Jan/2020  15:15:11
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,7 +14,7 @@
 #    Source file        =  
 #        \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EWB16F.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW7998.tmp
 #        ("\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c" -lc
 #        "\\vmware-host\Shared
@@ -25,8 +25,9 @@
 #        --place_constants=data --nr_virtual_regs 8 --dlib_config "C:\Program
 #        Files (x86)\IAR Systems\Embedded Workbench
 #        8.0\8051\LIB\DLIB\dl8051Normal.h" --no_path_in_file_macros -I
-#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\" -Oh
-#        --mfc "\\vmware-host\Shared
+#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\" -On
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_cross_call --mfc "\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\config.c"
 #        "\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\delays.c"
@@ -2060,7 +2061,7 @@ Warning[Pe940]: missing return statement at end of non-void function
      86            #endif
      87          
      88            // Переходим на 32 Мгц
-     89            CLKCONCMD = (1<<3);
+     89            CLKCONCMD = 0;// (1<<3);
      90            while (CLKCONSTA&(1<<6));
      91            
      92            NT_IRQEnable(false);
@@ -2295,7 +2296,7 @@ Warning[Pe940]: missing return statement at end of non-void function
      11            PERCFG |= (U0CFG<<0); 
      12            
      13            // U0UCR регистр настройки режима uart. меня устраивает по умолчанию
-     14            U0CSR = (1<<7); // Выбираем режим uart 
+     14            U0CSR = (1<<7); // Выбираем режим uart  
      15            
      16            // Настройка скорости передачи данных на 2М  
      17            U0BAUD = 0;  // табличные значения из pdf
@@ -2303,89 +2304,90 @@ Warning[Pe940]: missing return statement at end of non-void function
      19            
      20            // Включаем альтернативные функции выводов
      21            P0SEL = (1<<2)|(1<<3);
-     22          }
-     23          
-     24          static void SetCPU32M(void)
-     25          {
-     26            CLKCONCMD = 0x88;
-     27            while (CLKCONSTA&(1<<6));
-     28          }
-     29          
-     30          void nwDebugerInit(void)
-     31          {
-     32           // SetCPU32M();
-     33          #ifdef UART_DEBUG
-     34            uart_init();
-     35          #endif
-     36          }
-     37          
-     38          __attribute__((weak)) void STACK_FAILURE(char* msg)
-     39          {
-     40            LOG_ON("STACK FAILURE. HALT");
-     41            while(1);
-     42          }
-     43          
-     44          // Переопределяем функцию записи в порт
-     45          #ifdef UART_DEBUG
-     46          #include <yfuns.h>
-     47          
-     48          _STD_BEGIN
-     49          
-     50          #pragma module_name = "?__write"
-     51          
-     52          int MyLowLevelPutchar(int x);
-     53          
-     54          int MyLowLevelPutchar(int x){
-     55            while( U0CSR&(1<<0));
-     56            U0DBUF = x;
-     57            return x;
-     58          }
-     59          /*
-     60           * If the __write implementation uses internal buffering, uncomment
-     61           * the following line to ensure that we are called with "buffer" as 0
-     62           * (i.e. flush) when the application terminates.
-     63           */
-     64          
-     65          size_t __write(int handle, const unsigned char * buffer, size_t size)
-     66          {
-     67            /* Remove the #if #endif pair to enable the implementation */
-     68             
-     69          
-     70            size_t nChars = 0;
-     71          
-     72            if (buffer == 0)
-     73            {
-     74              /*
-     75               * This means that we should flush internal buffers.  Since we
-     76               * don't we just return.  (Remember, "handle" == -1 means that all
-     77               * handles should be flushed.)
-     78               */
-     79              return 0;
-     80            }
-     81          
-     82            /* This template only writes to "standard out" and "standard err",
-     83             * for all other file handles it returns failure. */
-     84            if (handle != _LLIO_STDOUT && handle != _LLIO_STDERR)
-     85            {
-     86              return _LLIO_ERROR;
-     87            }
-     88          
-     89            for (/* Empty */; size != 0; --size)
-     90            {
-     91              if (MyLowLevelPutchar(*buffer++) < 0)
-     92              {
-     93                return _LLIO_ERROR;
-     94              }
-     95          
-     96              ++nChars;
-     97            }
-     98          
-     99            return nChars;
-    100          
-    101          }
-    102          
-    103          _STD_END
-    104          #endif
+     22            U0CSR |= (1<<6);
+     23          }
+     24          
+     25          static void SetCPU32M(void)
+     26          {
+     27            CLKCONCMD = 0x88;
+     28            while (CLKCONSTA&(1<<6));
+     29          }
+     30          
+     31          void nwDebugerInit(void)
+     32          {
+     33           // SetCPU32M();
+     34          #ifdef UART_DEBUG
+     35            uart_init();
+     36          #endif
+     37          }
+     38          
+     39          __attribute__((weak)) void STACK_FAILURE(char* msg)
+     40          {
+     41            LOG_ON("STACK FAILURE. HALT");
+     42            while(1);
+     43          }
+     44          
+     45          // Переопределяем функцию записи в порт
+     46          #ifdef UART_DEBUG
+     47          #include <yfuns.h>
+     48          
+     49          _STD_BEGIN
+     50          
+     51          #pragma module_name = "?__write"
+     52          
+     53          int MyLowLevelPutchar(int x);
+     54          
+     55          int MyLowLevelPutchar(int x){
+     56            while( U0CSR&(1<<0));
+     57            U0DBUF = x;
+     58            return x;
+     59          }
+     60          /*
+     61           * If the __write implementation uses internal buffering, uncomment
+     62           * the following line to ensure that we are called with "buffer" as 0
+     63           * (i.e. flush) when the application terminates.
+     64           */
+     65          
+     66          size_t __write(int handle, const unsigned char * buffer, size_t size)
+     67          {
+     68            /* Remove the #if #endif pair to enable the implementation */
+     69             
+     70          
+     71            size_t nChars = 0;
+     72          
+     73            if (buffer == 0)
+     74            {
+     75              /*
+     76               * This means that we should flush internal buffers.  Since we
+     77               * don't we just return.  (Remember, "handle" == -1 means that all
+     78               * handles should be flushed.)
+     79               */
+     80              return 0;
+     81            }
+     82          
+     83            /* This template only writes to "standard out" and "standard err",
+     84             * for all other file handles it returns failure. */
+     85            if (handle != _LLIO_STDOUT && handle != _LLIO_STDERR)
+     86            {
+     87              return _LLIO_ERROR;
+     88            }
+     89          
+     90            for (/* Empty */; size != 0; --size)
+     91            {
+     92              if (MyLowLevelPutchar(*buffer++) < 0)
+     93              {
+     94                return _LLIO_ERROR;
+     95              }
+     96          
+     97              ++nChars;
+     98            }
+     99          
+    100            return nChars;
+    101          
+    102          }
+    103          
+    104          _STD_END
+    105          #endif
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\RADIO.c
       1          /*!
       2          \file 
@@ -2597,17 +2599,17 @@ Warning[Pe550]: variable "timer" was set but never used
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\RADIO.c"
 
-  static bool master_mode()
+  static bool slave_mode()
               ^
-"\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\manager.c",90  Warning[Pe177]: 
-          function "master_mode" was declared but never referenced
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\manager.c",102  Warning[Pe177]: 
+          function "slave_mode" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
                     Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\manager.c"
 
   static void SetCPU32M(void)
               ^
-"\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\nwdebuger.c",24  Warning[Pe177]: 
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\nwdebuger.c",25  Warning[Pe177]: 
           function "SetCPU32M" was declared but never referenced
           detected during compilation of secondary translation unit
                     "\\vmware-host\Shared
@@ -3121,6 +3123,19 @@ Warning[Pe550]: variable "timer" was set but never used
     186          @detail Выполняет две функции: синхронизацию с сетью или передачу синхр.
     187          */
     188          static void SY_TS1_HNDL_SLAVE(void)
+                             ^
+Warning[Pe177]: function "SY_TS1_HNDL_SLAVE" was declared but never referenced
+          detected during compilation of secondary translation unit
+                    "\\vmware-host\Shared
+                    Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\sync.c"
+
+  static void SY_TIME_ALLOC_SLAVE(void)
+              ^
+"\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\sync.c",125  Warning[Pe177]: 
+          function "SY_TIME_ALLOC_SLAVE" was declared but never referenced
+          detected during compilation of secondary translation unit
+                    "\\vmware-host\Shared
+                    Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\sync.c"
     189          {
     190            if (!SY_ENABLE_MODULE) // Модуль отключен
     191              return;
@@ -3181,19 +3196,6 @@ Warning[Pe550]: variable "timer" was set but never used
     246          @detail Формирует кадр синхронизации и передает его в строго определенное время
     247          */
     248          static void SY_TS1_HNDL_MASTER(void)
-                             ^
-Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
-          detected during compilation of secondary translation unit
-                    "\\vmware-host\Shared
-                    Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\sync.c"
-
-  static void SY_TIME_ALLOC_MASTER(void)
-              ^
-"\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\sync.c",161  Warning[Pe177]: 
-          function "SY_TIME_ALLOC_MASTER" was declared but never referenced
-          detected during compilation of secondary translation unit
-                    "\\vmware-host\Shared
-                    Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\sync.c"
     249          {
     250            if (!SY_ENABLE_MODULE) // Модуль отключен
     251              return;  
@@ -3774,25 +3776,65 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
       1          #include "utest_suite.h"
       2          #include "manager.h"
       3          #include "nwdebuger.h"
-      4          
-      5          // Собирать проект с ключем GATEWAY в файле basic.h
-      6          
-      7          
-      8          
-      9          void suite_GW(void)
-     10          {
-     11            bool con = MG_Connect();
-     12            if (con)
-     13            {
-     14              LOG_ON("Network created\r\n");
-     15            }  
-     16            else
-     17            {
-     18              LOG_ON("Network creation failed\r\n");
-     19            }
-     20            
-     21            while(1);
-     22          }
+      4          #include "ioCC2530.h"
+      5          
+      6          // Собирать проект с ключем GATEWAY в файле basic.h
+      7          void com_uart_init(void)
+      8          {
+      9            // Выбор расположения UART на выводах
+     10            uint8_t U0CFG = 0; // 0={TX=P0_3, RX=P0_2
+     11            PERCFG |= (U0CFG<<0); 
+     12            
+     13            // U0UCR регистр настройки режима uart. меня устраивает по умолчанию
+     14            U0CSR = (1<<7); // Выбираем режим uart  
+     15            
+     16            // Настройка скорости передачи данных на 2М  
+     17            U0BAUD = 0;  // табличные значения из pdf
+     18            U0GCR =  16;
+     19            
+     20            // Включаем альтернативные функции выводов
+     21            P0SEL = (1<<2)|(1<<3);
+     22            U0CSR |= (1<<6);
+     23          }
+     24          
+     25          void uart_putchar(char x){
+     26            while( U0CSR&(1<<0));
+     27            U0DBUF = x;
+     28          }
+     29          
+     30          char uart_getchar(void)
+     31          {
+     32            char x;
+     33            while( !(U0CSR&(1<<2)));
+     34            x = U0DBUF;
+     35            return x;
+     36          }
+     37          
+     38          
+     39          
+     40          void suite_GW(void)
+     41          {
+     42            bool con = MG_Connect();
+     43            com_uart_init();
+     44            char x;
+     45            
+     46            if (con)
+     47            {
+     48              LOG_ON("Network created\r\n");
+     49            }  
+     50            else
+     51            {
+     52              LOG_ON("Network creation failed\r\n");
+     53            }
+     54            
+     55            uart_putchar('F');
+     56            LOG_ON("Echo\r\n");
+     57            while(1)
+     58            {
+     59              x= uart_getchar();
+     60              uart_putchar(x);  
+     61            };
+     62          }
 \\vmware-host\Shared Folders\Projects\WMNU\IAR\PRJ_UNITEST\src\utest_NODE.c
       1          #include "utest_suite.h"
       2          #include "manager.h"
@@ -3911,329 +3953,459 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
 
    ISTACK XSTACK Function
    ------ ------ --------
-      1     77   AES_CCMDecrypt
-        0     67   -> CBCMAC_buf_encrypt
-        0     71   -> CTR_enc_decrypt
-        0     69   -> generateAuthData
-        0     69   -> memcpy
-        0     69   -> memset
-      1     61   AES_CCMEncrypt
-        0     51   -> CBCMAC_buf_encrypt
-        0     55   -> CTR_enc_decrypt
-        0     53   -> generateAuthData
-        0     53   -> memcpy
-        0     53   -> memset
-      0     70   AES_StreamCoder
-        0     36   -> memcpy
-        0     36   -> memset
-      2     12   AES_init
-      0    111   CBCMAC_buf_encrypt
-      0     24   CF_init
+      1     76   AES_CCMDecrypt
+        0     66   -> CBCMAC_buf_encrypt
+        0     70   -> CTR_enc_decrypt
+        0     68   -> generateAuthData
+        0     68   -> memcpy
+        0     68   -> memset
+      1     60   AES_CCMEncrypt
+        0     50   -> CBCMAC_buf_encrypt
+        0     54   -> CTR_enc_decrypt
+        0     52   -> generateAuthData
+        0     52   -> memcpy
+        0     52   -> memset
+      0     55   AES_StreamCoder
+        0     39   -> memcpy
+        0     39   -> memset
+      2      0   AES_init
+      0     28   BitRawCrypt
+        0     16   -> AES_StreamCoder
+      0     36   BitRawCrypt
+        0     16   -> AES_StreamCoder
+      0     28   BitRawDecrypt
+        0     16   -> AES_StreamCoder
+      0     28   BitRawDecrypt
+        0     16   -> AES_StreamCoder
+      0    116   CBCMAC_buf_encrypt
+        0     50   -> memcpy
+        0     50   -> memset
+      0     12   CF_init
         0     12   -> memcpy
-      0    107   CTR_enc_decrypt
-        0     36   -> memcpy
-        0     36   -> memset
-      0     28   Callback_execution
-        0     10   -> printf
-        0     16   -> printf
-      0     16   ETH_Init
-        0     10   -> printf
-        0     16   -> printf
-      0     22   ETH_RX_HNDL
-        0     16   -> __xdata_malloc
-        0     16   -> frame_delete
-        0     16   -> printf
-        0     22   -> printf
-        0     16   -> re_free
+      0    109   CTR_enc_decrypt
+        0     39   -> memcpy
+        0     39   -> memset
+      0     27   Callback_execution
+        0     12   -> printf
+        0     18   -> printf
+      0     40   DelayCalibrate
+        0     40   -> TIM_TimeStamp
+        0     40   -> TIM_delay
+        0     40   -> TIM_passedTime
+      2      0   ETH_Init
+        2      0   -> LLC_SetRXCallback
+      0     20   ETH_RX_HNDL
+        0     14   -> extract_header
+        0     14   -> frame_delete
+        0     14   -> printf
+        0     20   -> printf
+        0     14   -> re_free
+        0     14   -> send_ack
+        0     14   -> strip_header
+        0     14   -> validate
       0     16   ETH_Set_RXCallback
         0     10   -> printf
         0     16   -> printf
+      0     54   Interval
       0      0   LED
-      1     26   LLC_AddTask
-        0     16   -> __xdata_malloc
-        0     16   -> printf
-        0     22   -> printf
-        0     26   -> printf
+      1     18   LLC_AddTask
+        0     12   -> printf
+        0     18   -> printf
+        0     12   -> re_malloc
       2      0   LLC_GetTaskLen
-      0     28   LLC_Init
-        0     10   -> printf
-        0     16   -> printf
+      2      0   LLC_Init
+        2      0   -> MAC_SetRXCallback
+        2      0   -> TIC_SetSECallback
       0     16   LLC_RX_HNDL
         0     10   -> printf
         0     16   -> printf
-      0      9   LLC_Reset
-        0      9   -> __xdata_free
+      0     10   LLC_Reset
+        0     10   -> re_free
+      0     18   LLC_RunTimeAlloc
       0      9   LLC_SE_HNDL
+        0      9   -> LLC_RunTimeAlloc
         0      9   -> LLC_Shelduler
       0     16   LLC_SetRXCallback
         0     10   -> printf
         0     16   -> printf
-      0     28   LLC_Shelduler
-        0     13   -> MAC_Send
-        0     13   -> __xdata_free
-        0     13   -> printf
-        0     19   -> printf
+      0     31   LLC_Shelduler
+        0     16   -> MAC_GetTXState
+        0     16   -> MAC_Send
+        0     16   -> printf
+        0     22   -> printf
+        0     16   -> re_free
       0     18   LLC_TimeAlloc
-        0     12   -> __xdata_malloc
         0     12   -> printf
         0     18   -> printf
-      1      9   MAC_CloseRXSlot
-        0      9   -> TIC_SetRXState
+        0     12   -> re_malloc
+      2     12   LoadTXData
+      0     24   MAC_ACK_Recv
+        0     14   -> RI_Receive
+        0     14   -> frame_delete
+        0     14   -> xor_calc
+      0     24   MAC_ACK_Send
+        0     12   -> RI_Send
+        0     12   -> frame_addHeader
+        0     12   -> frame_create
+        0     12   -> frame_delete
+        0     12   -> xor_calc
+      1     16   MAC_CloseRXSlot
+        0     10   -> TIC_SetRXState
+        0     10   -> printf
+        0     16   -> printf
       2      0   MAC_Enable
-      2      0   MAC_GetRXState
-      2      0   MAC_GetTXState
-      0     24   MAC_Init
+      0     16   MAC_GetRXState
+        0     10   -> printf
+        0     16   -> printf
+      0     32   MAC_GetTXState
+        0     10   -> printf
+        0     16   -> printf
+      0     12   MAC_Init
         0     10   -> TIC_SetRXCallback
         0     10   -> TIC_SetTXCallback
         0     12   -> memset
-      1      9   MAC_OpenRXSlot
-        0      9   -> TIC_SetRXState
-      0     18   MAC_RX_HNDL
-        0     18   -> AES_StreamCoder
-        0     14   -> RI_Receive
-        0     14   -> RI_Send
-        0     14   -> frame_addHeader
-        0     14   -> frame_create
-        0     14   -> frame_delete
-        0     14   -> xor_calc
-      0     24   MAC_Reset
-        0     10   -> frame_delete
-        0     12   -> memset
-      1     29   MAC_Send
-        0     14   -> AES_StreamCoder
-        0     10   -> TIC_SetTXState
+      1     16   MAC_OpenRXSlot
+        0     10   -> TIC_SetRXState
         0     10   -> printf
         0     16   -> printf
+      0     18   MAC_RX_HNDL
+        0     12   -> BitRawDecrypt
+        0     12   -> MAC_ACK_Send
+        0     12   -> RI_Receive
+        0     12   -> RI_SetChannel
+        0     12   -> printf
+        0     18   -> printf
+      0     12   MAC_Reset
+        0     10   -> frame_delete
+        0     12   -> memset
+      1     34   MAC_Send
+        0     12   -> BitRawCrypt
+        0     12   -> TIC_SetTXState
+        0     12   -> printf
+        0     18   -> printf
       2      0   MAC_SetRXCallback
-      1     18   MAC_TX_HNDL
-        0     18   -> RI_Receive
-        0     18   -> RI_Send
-        0     18   -> TIC_SetTXState
-        0     18   -> TIM_delay
-        0     18   -> frame_delete
-        0     18   -> xor_calc
+      1     16   MAC_TX_HNDL
+        0     10   -> MAC_ACK_Recv
+        0     10   -> RI_Send
+        0     10   -> RI_SetChannel
+        0     10   -> TIC_SetTXState
+        0     10   -> TIM_delay
+        0     10   -> frame_delete
+        0     10   -> printf
+        0     16   -> printf
       0     12   MAC_setIV
         0     12   -> memcpy
       0     12   MAC_setKEY
         0     12   -> memcpy
-      0     28   MG_Connect
-        0     12   -> AES_init
-        0     12   -> CF_init
-        0     12   -> LLC_Init
-        0     12   -> MAC_Init
-        0     12   -> MAC_Reset
-        0     12   -> NT_Init
-        0     12   -> RI_init
-        0     12   -> SY_Init
-        0     12   -> SY_Reset
-        0     12   -> SY_SYNC_NETWORK
-        0     12   -> TIC_Init
-        0     12   -> TIC_Reset
-        0     12   -> TIM_init
-        0     12   -> __xdata_free
-        0     14   -> memcpy
+      2      9   MG_Connect
+        2      0   -> frame_getCount
+        2      0   -> master_mode
+        2      0   -> re_start
+      2      0   MG_Init
+        2      0   -> AES_init
+        2      0   -> CF_init
+        2      0   -> LLC_Init
+        2      0   -> MAC_Init
+        2      0   -> NT_Init
+        2      0   -> RI_init
+        2      0   -> SY_Init
+        2      0   -> TIC_Init
+        2      0   -> TIM_init
+      2      0   MG_Reset
+        2      0   -> LLC_Reset
+        2      0   -> MAC_Reset
+        2      0   -> SY_Reset
+        2      0   -> TIC_Reset
+      0     16   MyLowLevelPutchar
+      0     48   NT_GetTime
+        0     16   -> ReadTimer
+      0     15   NT_IRQEnable
+      2      0   NT_Init
+        2      0   -> NT_IRQEnable
+      0     32   NT_SetCompare
+        0     12   -> NT_IRQEnable
+        0     12   -> calcCompareTime
+        0     12   -> loadTimerCompare
         0     12   -> printf
-        0     14   -> printf
         0     18   -> printf
-      0      0   MyLowLevelPutchar
-      0     12   NT_GetTime
-      2     12   NT_Init
-      0     42   NT_SetCompare
-        0     24   -> ReadTimer
-        0     24   -> printf
-        0     30   -> printf
       2      0   NT_SetEventCallback
-      0     28   NT_SetTime
-        0     12   -> NT_SetCompare
-        0     12   -> ReadTimer
-        0     12   -> printf
-        0     18   -> printf
-      0     42   NT_WaitTime
+      0     30   NT_SetTime
+        0     14   -> NT_SetCompare
+        0     14   -> ReadTimer
+        0     14   -> isIRQEnable
+        0     14   -> printf
+        0     20   -> printf
+      0     24   NT_WaitTime
       2      0   RI_GetCCAReject
       2      0   RI_GetCRCError
       2      0   RI_GetUptime
-      2     79   RI_Receive
-        0     61   -> RI_cfg
-        0     61   -> ReadTimer
-        0     61   -> __xdata_malloc
-        0     61   -> frame_addHeader
-        0     61   -> frame_create
-        0     61   -> re_free
-      1     68   RI_Send
-        0     32   -> RI_cfg
-        0     32   -> SendData
-        0     32   -> printf
-        0     38   -> printf
-      2      0   RI_SetChannel
-      0     77   RI_cfg
-        0     10   -> printf
-        0     16   -> printf
-      0     21   RI_init
-        0      9   -> RI_cfg
-        0      9   -> rand
-        0      9   -> readRandom
-        0      9   -> srand
-      2     61   ReadTimer
-      0     16   STACK_FAILURE
-        0     10   -> printf
-        0     16   -> printf
-      2      0   SY_Enable
-      0     28   SY_Init
-        0     10   -> printf
-        0     16   -> printf
-      2     12   SY_Reset
-      2     60   SY_SYNC_NETWORK
-        0     48   -> TIC_CloseAllState
-        0     48   -> TIC_SetTimer
-        0     48   -> frame_delete
-        0     48   -> get_sync
-      2     18   SY_TIME_ALLOC_SLAVE
-        0     12   -> printf
-        0     18   -> printf
-      2     44   SY_TS1_HNDL_SLAVE
-        0     34   -> AES_StreamCoder
-        0     30   -> NT_WaitTime
-        0     30   -> RI_Send
-        0     30   -> TIC_SetTimer
-        0     30   -> frame_addHeader
-        0     30   -> frame_create
-        0     30   -> frame_delete
-        0     30   -> get_sync
-        0     30   -> printf
-        0     32   -> printf
+      1     60   RI_Receive
+        0     44   -> RI_cfg
+        0     46   -> RecvData
+        0     44   -> TIM_TimeStamp
+        0     44   -> TIM_passedTime
+        0     44   -> UnLoadRXData
+        0     44   -> frame_addHeader
+        0     44   -> frame_create
+        0     44   -> re_free
+        0     44   -> re_malloc
+      0     62   RI_Send
+        0     36   -> RI_cfg
+        0     36   -> SendData
+        0     36   -> TIM_TimeStamp
+        0     36   -> TIM_passedTime
         0     36   -> printf
-        0     44   -> printf
+        0     42   -> printf
+      2     44   RI_SetChannel
+      3     45   RI_cfg
+        2      1   -> setFreq
+      2      0   RI_init
+        2      0   -> random_core_init
+      2     22   ReadTimer
+      0     78   RecvData
+        0     32   -> NT_GetTime
+        0     32   -> TIM_TimeStamp
+        0     32   -> TIM_passedTime
+      0      0   STACK_FAILURE
+      2      0   SY_Enable
+      0     10   SY_Init
+        0     10   -> TIC_SetSyncTimeAllocCallback
+        0     10   -> TIC_SetTS1Callback
+        0     10   -> TIC_SlotActivityTime
+        0     10   -> TIC_SlotTime
+      2      0   SY_Reset
+      0     44   SY_SYNC_NETWORK
+        0     44   -> RI_SetChannel
+        0     44   -> TIC_CloseAllState
+        0     44   -> TIC_GetTimer
+        0     44   -> TIC_GetUptime
+        0     44   -> TIC_SetRTC
+        0     44   -> TIC_SetTimer
+        0     44   -> TIM_TimeStamp
+        0     44   -> TIM_passedTime
+        0     44   -> frame_delete
+        0     44   -> get_sync
+      0     16   SY_TIME_ALLOC_MASTER
+        0     16   -> TIC_GetTXState
+        0     16   -> TIC_GetUptime
+        0     16   -> TIC_SetTXState
+      0     12   SY_TS1_HNDL_MASTER
+        0     12   -> TIC_SetTXState
+        0     12   -> send_sync
       0     12   SY_setIV
         0     12   -> memcpy
       0     12   SY_setKEY
         0     12   -> memcpy
       2      0   SY_sync_sended
-      0     45   SendData
-        0     13   -> NT_WaitTime
-      2     48   TIC_CloseAllState
+      0     48   SendData
+        0     12   -> LoadTXData
+        0     12   -> NT_GetTime
+        0     12   -> NT_WaitTime
+      0     53   TIC_CloseAllState
+        0      9   -> TIC_SetRXState
+        0      9   -> TIC_SetTXState
       2      0   TIC_GetNonce
-      2      0   TIC_GetRTC
-      2      0   TIC_GetRXState
-      2      0   TIC_GetTXState
+      2     20   TIC_GetRTC
+      0     16   TIC_GetRXState
+        0     10   -> printf
+        0     16   -> printf
+      0     32   TIC_GetTXState
+        0     10   -> printf
+        0     16   -> printf
       0      0   TIC_GetTimeStampTS0
-      0     12   TIC_GetTimer
-      2      0   TIC_GetUptime
-      0     18   TIC_HW_Timer_IRQ
-        0     12   -> Callback_execution
-        0     12   -> TIC_TDMAShelduler
-        0     12   -> TIM_TimeStamp
-        0     12   -> printf
-        0     18   -> printf
-      2     12   TIC_Init
+      2     44   TIC_GetTimer
+        2      0   -> NT_GetTime
+      2     44   TIC_GetUptime
+      0      9   TIC_HW_Timer_IRQ
+        0      9   -> Callback_execution
+        0      9   -> TIC_TDMAShelduler
+        0      9   -> TIC_getCurrentTS
+        0      9   -> TIM_TimeStamp
+        0      9   -> clocks_update
+      2      0   TIC_Init
         2      0   -> NT_SetCompare
-        2      0   -> NT_SetTime
+        2      0   -> NT_SetEventCallback
         2      0   -> TIC_CloseAllState
+        2      0   -> TIC_SetTimer
         2      0   -> TIM_TimeStamp
-      2     12   TIC_Reset
+      2      0   TIC_Reset
         2      0   -> NT_SetCompare
-        2      0   -> NT_SetTime
         2      0   -> TIC_CloseAllState
+        2      0   -> TIC_SetTimer
         2      0   -> TIM_TimeStamp
       0     12   TIC_SetNonce
-      0     12   TIC_SetRTC
+      0     56   TIC_SetRTC
       0     26   TIC_SetRXCallback
         0     10   -> printf
         0     16   -> printf
-      2      9   TIC_SetRXState
+      0     26   TIC_SetRXState
+        0     10   -> printf
+        0     16   -> printf
       0     16   TIC_SetSECallback
         0     10   -> printf
         0     16   -> printf
-      0     16   TIC_SetSyncTimeAllocCallback
+      0     26   TIC_SetSyncTimeAllocCallback
         0     10   -> printf
         0     16   -> printf
-      0     16   TIC_SetTS1Callback
+      0     26   TIC_SetTS1Callback
         0     10   -> printf
         0     16   -> printf
       0     26   TIC_SetTXCallback
         0     10   -> printf
         0     16   -> printf
-      2     18   TIC_SetTXState
-      0     64   TIC_SetTimer
+      0     32   TIC_SetTXState
+        0     10   -> printf
+        0     16   -> printf
+      0     60   TIC_SetTimer
         0     10   -> NT_SetTime
         0     10   -> printf
         0     16   -> printf
       0      0   TIC_SleepTime
-      0      0   TIC_SlotActivityTime
-      0      0   TIC_SlotTime
-      0     21   TIC_TDMAShelduler
-        0      9   -> NT_SetCompare
-      1     24   TIC_TimeUsFromTS0
-      3     12   TIM_TimeStamp
-      0     12   TIM_copy
-        0     12   -> memcpy
-      1     64   TIM_delay
-      1     44   TIM_init
-        0     32   -> TIM_delay
-      0     20   TIM_passedTime
-      0     17   TimerCompareInterrupt
-      0     11   __write
-      1     88   frame_addHeader
-        0     21   -> __xdata_malloc
-        0     21   -> printf
-        0     27   -> printf
-        0     21   -> re_free
-        0     23   -> re_memcpy
-      0     79   frame_create
-        0     12   -> __xdata_malloc
+      0     10   TIC_SlotActivityTime
+      0     10   TIC_SlotTime
+      3     10   TIC_TDMAShelduler
+        2      1   -> incrementTS
+        2      1   -> set_capture_time
+      0     24   TIC_TimeUsFromTS0
+        0     24   -> TIM_TimeStamp
+        0     24   -> TIM_passedTime
+      0     19   TIC_getCurrentTS
+      3     44   TIM_TimeStamp
+      0     14   TIM_copy
+        0     14   -> memcpy
+      0     76   TIM_delay
+        0     36   -> Interval
+        0     36   -> TIM_TimeStamp
+      2      0   TIM_init
+        2      0   -> DelayCalibrate
+      0     62   TIM_passedTime
+        0     18   -> Interval
+      0     15   TimerCompareInterrupt
+        0     15   -> NT_GetTime
+        0     15   -> NT_IRQEnable
+      3     44   UnLoadRXData
+      0     18   __write
+        0     16   -> MyLowLevelPutchar
+      0      9   bits_count
+      2     34   calcCompareTime
+        0     22   -> ReadTimer
+      0     21   clocks_update
+      0      9   com_uart_init
+      0     34   extract_header
+        0     14   -> frame_len
+        0     14   -> printf
+        0     20   -> printf
+        0     14   -> re_malloc
+      1     68   frame_addHeader
+        0     18   -> printf
+        0     24   -> printf
+        0     18   -> re_free
+        0     18   -> re_malloc
+        0     20   -> re_memcpy
+      0     62   frame_create
         0     14   -> memset
         0     12   -> printf
         0     18   -> printf
-      1     21   frame_delHeader
-        0     15   -> __xdata_malloc
-        0     15   -> printf
-        0     21   -> printf
-        0     15   -> re_free
-        0     17   -> re_memcpy
-      0     58   frame_delete
+        0     12   -> re_malloc
+      1     20   frame_delHeader
+        0     14   -> printf
+        0     20   -> printf
+        0     14   -> re_free
+        0     14   -> re_malloc
+        0     16   -> re_memcpy
+      0     54   frame_delete
         0     10   -> re_free
       2      0   frame_getCount
-      2      0   frame_len
-      0     85   generateAuthData
-        0     16   -> memcpy
-      0     62   get_sync
-        0     14   -> AES_StreamCoder
-        0     10   -> RI_Receive
-        0     10   -> frame_delete
-      0     12   heap_ptr
-        0     12   -> __xdata_free
-        0     12   -> __xdata_malloc
+      2     14   frame_len
+      0     19   free
+        0      9   -> __xdata_free
+      0     86   generateAuthData
+        0     18   -> memcpy
+      2      9   getRNDByte
+      0     56   get_sync
+        0     12   -> BitRawDecrypt
+        0     12   -> RI_Receive
+        0     12   -> RI_SetChannel
+        0     12   -> frame_delete
+      0     14   heap_ptr
+        0     14   -> re_free
+        0     14   -> re_malloc
       0      0   heap_size
+      2      1   incrementTS
+      0     14   isIRQEnable
+      0     28   loadTimerCompare
       0      0   main
         0      0   -> nwDebugerInit
-        0      0   -> suite_NODE
+        0      0   -> suite_GW
         0      0   -> umsg_summary
+        0      0   -> utestSigTraceInit
+      0     23   malloc
+        0      9   -> __xdata_malloc
+      2      0   master_mode
+        2      0   -> MAC_Enable
+        2      0   -> SY_Enable
       0     11   memory_compare
-      0      0   nwDebugerInit
-      0     70   re_free
-        0      9   -> __xdata_free
-      0     10   re_malloc
-        0     10   -> __xdata_malloc
-      0     34   re_memcpy
-        0     11   -> memcpy
-      2      9   readRandom
-      0     16   suite_GW
-        0     10   -> MG_Connect
-        0     10   -> printf
-        0     16   -> printf
-      0     16   suite_NODE
-        0     10   -> MG_Connect
-        0     10   -> printf
-        0     16   -> printf
-      0     16   umsg
-        0     16   -> printf
+      2      0   nwDebugerInit
+        2      0   -> uart_init
+      0      9   random_core_init
+        0      9   -> RI_cfg
+        0      9   -> rand
+        0      9   -> readRandom
+        0      9   -> srand
+      0     54   re_free
+        0     10   -> free
+      0     58   re_malloc
+        0     14   -> malloc
+      0     36   re_memcpy
+        0     16   -> memcpy
+      2      0   re_start
+        2      0   -> CF_init
+        2      0   -> MAC_setIV
+        2      0   -> MAC_setKEY
+        2      0   -> MG_Init
+        2      0   -> MG_Reset
+        2      0   -> SY_setIV
+        2      0   -> SY_setKEY
+      0     18   readRandom
+        0      9   -> bits_count
+        0      9   -> getRNDByte
+      0     14   send_ack
+      0     32   send_sync
+        0     20   -> BitRawCrypt
+        0     20   -> RI_Send
+        0     20   -> RI_SetChannel
+        0     20   -> TIC_GetRTC
+        0     20   -> frame_addHeader
+        0     20   -> frame_create
+        0     20   -> frame_delete
+      1     18   setFreq
+        0     11   -> printf
+        0     17   -> printf
+      0     10   set_capture_time
+        0      9   -> NT_SetCompare
+      0     14   strip_header
+      0      9   suite_GW
+        0      9   -> MG_Connect
+        0      9   -> com_uart_init
+        0      9   -> uart_getchar
+        0      9   -> uart_putchar
+      2      0   suite_NODE
+        2      0   -> MG_Connect
+      0      9   uart_getchar
+      0      0   uart_init
+      0      9   uart_putchar
+      0     20   umsg
+        0     20   -> printf
       0     12   umsg_line
         0     10   -> printf
         0     12   -> printf
-      0     12   umsg_summary
-        0     10   -> printf
-        0     12   -> printf
+      2      2   umsg_summary
+        2      0   -> printf
+        2      2   -> printf
+        2      0   -> umsg_line
       0      0   utestSigTraceInit
-      0     27   xor_calc
+      0     14   validate
+      0     23   xor_calc
 
 
    Segment part sizes:
@@ -4249,58 +4421,28 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_4
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_5
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_6
-      19  ?<Constant "*LOG* %s:%d:%s -> ">
-      19  ?<Constant "*LOG* %s:%d:%s -> ">_1
-      19  ?<Constant "*LOG* %s:%d:%s -> ">_2
-      19  ?<Constant "*LOG* %s:%d:%s -> ">_3
-      19  ?<Constant "*LOG* %s:%d:%s -> ">_4
-      19  ?<Constant "*LOG* %s:%d:%s -> ">_5
-      19  ?<Constant "*LOG* %s:%d:%s -> ">_6
-      51  ?<Constant "Add task = %u, CH = %...">
-      13  ?<Constant "Begin resync">
       13  ?<Constant "FAILD : %d\r\n">
       13  ?<Constant "FAILED <----">
-      21  ?<Constant "Frame_s count: %d \r\n">
-       7  ?<Constant "Go PM2">
        6  ?<Constant "LLC.c">
        6  ?<Constant "MAC.c">
       42  ?<Constant "Module: %-15s Name: %...">
        7  ?<Constant "NTMR.c">
-      22  ?<Constant "Network connect faild">
-      18  ?<Constant "Network created\r\n">
-      26  ?<Constant "Network creation fail...">
-      21  ?<Constant "Network out of sync.">
-      19  ?<Constant "Network sycronized">
-      67  ?<Constant "Node Synced. TS=%d, A...">
        7  ?<Constant "PASSED">
       13  ?<Constant "PASSED: %d\r\n">
        8  ?<Constant "RADIO.c">
-      18  ?<Constant "Resync TX. CNT=%d">
-      20  ?<Constant "STACK FAILURE. HALT">
        6  ?<Constant "TIC.c">
-      12  ?<Constant "TS = 255 \r\n">
       15  ?<Constant "Tests FAILED\r\n">
       15  ?<Constant "Tests PASSED\r\n">
       18  ?<Constant "Unit test symmary">
        3  ?<Constant "\r\n">
        3  ?<Constant "\r\n">_1
-       3  ?<Constant "\r\n">_10
-       3  ?<Constant "\r\n">_11
        3  ?<Constant "\r\n">_2
        3  ?<Constant "\r\n">_3
        3  ?<Constant "\r\n">_4
        3  ?<Constant "\r\n">_5
        3  ?<Constant "\r\n">_6
-       3  ?<Constant "\r\n">_7
-       3  ?<Constant "\r\n">_8
-       3  ?<Constant "\r\n">_9
       11  ?<Constant "ethernet.c">
        8  ?<Constant "frame.c">
-      10  ?<Constant "manager.c">
-      12  ?<Constant "nwdebuger.c">
-       7  ?<Constant "sync.c">
-      11  ?<Constant "utest_GW.c">
-      13  ?<Constant "utest_NODE.c">
        5  ?<Initializer for <Constant "%s\r\n">>
       41  ?<Initializer for <Constant "*****************
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s
@@ -4310,104 +4452,75 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_4
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_5
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_6
-      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->
-      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_1
-      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_2
-      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_3
-      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_4
-      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_5
-      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_6
-      51  ?<Initializer for <Constant "Add task = %u, CH
-      13  ?<Initializer for <Constant "Begin resync">>
       13  ?<Initializer for <Constant "FAILD : %d\r\n">>
       13  ?<Initializer for <Constant "FAILED <----">>
-      21  ?<Initializer for <Constant "Frame_s count: %d
-       7  ?<Initializer for <Constant "Go PM2">>
        6  ?<Initializer for <Constant "LLC.c">>
        6  ?<Initializer for <Constant "MAC.c">>
       42  ?<Initializer for <Constant "Module: %-15s Nam
        7  ?<Initializer for <Constant "NTMR.c">>
-      22  ?<Initializer for <Constant "Network connect f
-      18  ?<Initializer for <Constant "Network created\r
-      26  ?<Initializer for <Constant "Network creation
-      21  ?<Initializer for <Constant "Network out of sy
-      19  ?<Initializer for <Constant "Network sycronize
-      67  ?<Initializer for <Constant "Node Synced. TS=%
        7  ?<Initializer for <Constant "PASSED">>
       13  ?<Initializer for <Constant "PASSED: %d\r\n">>
        8  ?<Initializer for <Constant "RADIO.c">>
-      18  ?<Initializer for <Constant "Resync TX. CNT=%d
-      20  ?<Initializer for <Constant "STACK FAILURE. HA
        6  ?<Initializer for <Constant "TIC.c">>
-      12  ?<Initializer for <Constant "TS = 255 \r\n">>
       15  ?<Initializer for <Constant "Tests FAILED\r\n"
       15  ?<Initializer for <Constant "Tests PASSED\r\n"
       18  ?<Initializer for <Constant "Unit test symmary
        3  ?<Initializer for <Constant "\r\n">>
        3  ?<Initializer for <Constant "\r\n">>_1
-       3  ?<Initializer for <Constant "\r\n">>_10
-       3  ?<Initializer for <Constant "\r\n">>_11
        3  ?<Initializer for <Constant "\r\n">>_2
        3  ?<Initializer for <Constant "\r\n">>_3
        3  ?<Initializer for <Constant "\r\n">>_4
        3  ?<Initializer for <Constant "\r\n">>_5
        3  ?<Initializer for <Constant "\r\n">>_6
-       3  ?<Initializer for <Constant "\r\n">>_7
-       3  ?<Initializer for <Constant "\r\n">>_8
-       3  ?<Initializer for <Constant "\r\n">>_9
       11  ?<Initializer for <Constant "ethernet.c">>
        8  ?<Initializer for <Constant "frame.c">>
-      10  ?<Initializer for <Constant "manager.c">>
-      12  ?<Initializer for <Constant "nwdebuger.c">>
-       7  ?<Initializer for <Constant "sync.c">>
-      11  ?<Initializer for <Constant "utest_GW.c">>
-      13  ?<Initializer for <Constant "utest_NODE.c">>
       16  ?<Initializer for IV>
       16  ?<Initializer for IV>_1
       16  ?<Initializer for KEY>
       16  ?<Initializer for KEY>_1
+       4  ?<Initializer for MAC_TIMER_MAX>
        4  ?<Initializer for __Constant_15180>
        4  ?<Initializer for __Constant_19833891>
        4  ?<Initializer for __Constant_1>
        4  ?<Initializer for __Constant_1f4>
+       4  ?<Initializer for __Constant_20>
        4  ?<Initializer for __Constant_3d000000>
        4  ?<Initializer for __Constant_3e8>
        4  ?<Initializer for __Constant_447a0000>
-       4  ?<Initializer for __Constant_6f>
        4  ?<Initializer for __Constant_7fff>
        4  ?<Initializer for __Constant_8000>
        4  ?<Initializer for __Constant_9>
+       4  ?<Initializer for __Constant_a>
        4  ?<Initializer for __Constant_ffff8000>
        4  ?<Initializer for __Constant_fffffe0c>
        4  ?<Initializer for __Constant_ffffff>
       19  ?<Initializer for __FUNCTION__>
       12  ?<Initializer for __FUNCTION__>_1
       12  ?<Initializer for __FUNCTION__>_10
-       9  ?<Initializer for __FUNCTION__>_11
-      11  ?<Initializer for __FUNCTION__>_12
-      11  ?<Initializer for __FUNCTION__>_13
-      14  ?<Initializer for __FUNCTION__>_14
-      14  ?<Initializer for __FUNCTION__>_15
-       8  ?<Initializer for __FUNCTION__>_16
-       8  ?<Initializer for __FUNCTION__>_17
-      20  ?<Initializer for __FUNCTION__>_18
-      18  ?<Initializer for __FUNCTION__>_19
+      15  ?<Initializer for __FUNCTION__>_11
+      16  ?<Initializer for __FUNCTION__>_12
+       9  ?<Initializer for __FUNCTION__>_13
+      15  ?<Initializer for __FUNCTION__>_14
+      15  ?<Initializer for __FUNCTION__>_15
+      12  ?<Initializer for __FUNCTION__>_16
+      12  ?<Initializer for __FUNCTION__>_17
+      11  ?<Initializer for __FUNCTION__>_18
+      14  ?<Initializer for __FUNCTION__>_19
       15  ?<Initializer for __FUNCTION__>_2
-      13  ?<Initializer for __FUNCTION__>_20
-      15  ?<Initializer for __FUNCTION__>_21
-      15  ?<Initializer for __FUNCTION__>_22
+       8  ?<Initializer for __FUNCTION__>_20
+       8  ?<Initializer for __FUNCTION__>_21
+      13  ?<Initializer for __FUNCTION__>_22
       15  ?<Initializer for __FUNCTION__>_23
       15  ?<Initializer for __FUNCTION__>_24
-      19  ?<Initializer for __FUNCTION__>_25
-      18  ?<Initializer for __FUNCTION__>_26
-      29  ?<Initializer for __FUNCTION__>_27
+      15  ?<Initializer for __FUNCTION__>_25
+      15  ?<Initializer for __FUNCTION__>_26
+      19  ?<Initializer for __FUNCTION__>_27
       18  ?<Initializer for __FUNCTION__>_28
-      18  ?<Initializer for __FUNCTION__>_29
+      29  ?<Initializer for __FUNCTION__>_29
       16  ?<Initializer for __FUNCTION__>_3
-      19  ?<Initializer for __FUNCTION__>_30
-      17  ?<Initializer for __FUNCTION__>_31
-       9  ?<Initializer for __FUNCTION__>_32
-      11  ?<Initializer for __FUNCTION__>_33
+      18  ?<Initializer for __FUNCTION__>_30
+      18  ?<Initializer for __FUNCTION__>_31
+      19  ?<Initializer for __FUNCTION__>_32
       16  ?<Initializer for __FUNCTION__>_4
       13  ?<Initializer for __FUNCTION__>_5
       18  ?<Initializer for __FUNCTION__>_6
@@ -4416,124 +4529,33 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
       14  ?<Initializer for __FUNCTION__>_9
       16  ?<Initializer for default_iv>
       16  ?<Initializer for default_key>
-       2  ??Subroutine75_0
-      19  ??Subroutine76_0
-       8  ??Subroutine77_0
-       4  ??Subroutine78_0
-       6  ??Subroutine79_0
-       6  ??Subroutine80_0
-       2  ??Subroutine81_0
-       3  ??Subroutine82_0
-       5  ??Subroutine83_0
-       4  ??Subroutine84_0
-       3  ??Subroutine85_0
-       5  ??Subroutine86_0
-       5  ??Subroutine87_0
-       1  ??Subroutine88_0
-       5  ??Subroutine89_0
-       4  ??Subroutine90_0
-       1  ??Subroutine91_0
-       4  ??Subroutine92_0
-       7  ??Subroutine93_0
-       1  ??Subroutine94_0
-       6  ??Subroutine95_0
-       8  ??Subroutine96_0
-       9  ??Subroutine97_0
-       4  ??Subroutine98_0
-      21  ?Subroutine0
-       7  ?Subroutine1
-       4  ?Subroutine10
-       6  ?Subroutine11
-       5  ?Subroutine12
-       5  ?Subroutine13
-       5  ?Subroutine14
-       4  ?Subroutine15
-       5  ?Subroutine16
-       6  ?Subroutine17
-       5  ?Subroutine18
-       5  ?Subroutine19
-       7  ?Subroutine2
-       7  ?Subroutine20
-       6  ?Subroutine21
-       5  ?Subroutine22
-      20  ?Subroutine23
-       3  ?Subroutine24
-      47  ?Subroutine25
-      25  ?Subroutine26
-       9  ?Subroutine27
-      18  ?Subroutine28
-      16  ?Subroutine29
-       2  ?Subroutine3
-      14  ?Subroutine30
-       5  ?Subroutine31
-      21  ?Subroutine32
-      11  ?Subroutine33
-       6  ?Subroutine34
-      17  ?Subroutine35
-      11  ?Subroutine36
-      11  ?Subroutine37
-       6  ?Subroutine38
-       9  ?Subroutine39
-      15  ?Subroutine4
-       3  ?Subroutine40
-       3  ?Subroutine41
-       2  ?Subroutine42
-      14  ?Subroutine43
-       6  ?Subroutine44
-       9  ?Subroutine45
-      12  ?Subroutine46
-       7  ?Subroutine47
-       3  ?Subroutine48
-      10  ?Subroutine49
-       5  ?Subroutine5
-       5  ?Subroutine50
-       6  ?Subroutine51
-      10  ?Subroutine52
-       7  ?Subroutine53
-       4  ?Subroutine54
-      11  ?Subroutine55
-       9  ?Subroutine56
-       9  ?Subroutine57
-      19  ?Subroutine58
-      14  ?Subroutine59
-      22  ?Subroutine6
-      12  ?Subroutine60
-      13  ?Subroutine61
-       7  ?Subroutine62
-       5  ?Subroutine63
-       9  ?Subroutine64
-       8  ?Subroutine65
-       3  ?Subroutine66
-       5  ?Subroutine67
-      13  ?Subroutine68
-       6  ?Subroutine69
-       5  ?Subroutine7
-      13  ?Subroutine70
-      12  ?Subroutine71
-       9  ?Subroutine72
-      11  ?Subroutine73
-       9  ?Subroutine74
-       5  ?Subroutine8
-       9  ?Subroutine9
-     355  AES_CCMDecrypt
+     476  AES_CCMDecrypt
        6  AES_CCMDecrypt::?relay
-     349  AES_CCMEncrypt
+     446  AES_CCMEncrypt
        6  AES_CCMEncrypt::?relay
-     270  AES_StreamCoder
+     600  AES_StreamCoder
        6  AES_StreamCoder::?relay
-      76  AES_init
+     239  AES_init
        6  AES_init::?relay
-     260  CBCMAC_buf_encrypt
+      58  BitRawCrypt
+      58  BitRawCrypt
+       6  BitRawCrypt::?relay
+       6  BitRawCrypt::?relay
+      58  BitRawDecrypt
+      58  BitRawDecrypt
+       6  BitRawDecrypt::?relay
+       6  BitRawDecrypt::?relay
+     461  CBCMAC_buf_encrypt
        6  CBCMAC_buf_encrypt::?relay
-      75  CF_init
+      88  CF_init
        6  CF_init::?relay
        1  CLKCONCMD
        1  CLKCONSTA
        4  COMPARE_TIME
       36  CONFIG
-     270  CTR_enc_decrypt
+     600  CTR_enc_decrypt
        6  CTR_enc_decrypt::?relay
-      70  Callback_execution
+      87  Callback_execution
        6  Callback_execution::?relay
        4  DELAY_CALIBRATE_TICS
        1  DMA0CFGH
@@ -4544,91 +4566,109 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        1  DMAREQ
        8  DMA_AES_DW
        8  DMA_AES_UP
+     147  DelayCalibrate
+       6  DelayCalibrate::?relay
        1  ENCCS
-      84  ETH_Init
+      28  ETH_Init
        6  ETH_Init::?relay
-     363  ETH_RX_HNDL
+     319  ETH_RX_HNDL
        6  ETH_RX_HNDL::?relay
-      69  ETH_Set_RXCallback
+      80  ETH_Set_RXCallback
        6  ETH_Set_RXCallback::?relay
        2  EventCallback
        2  FirstTask
        4  HeadAllocFunc
       16  IV
       16  IV
+     163  Interval
+       6  Interval::?relay
       16  KEY
       16  KEY
        4  LAST_SYNC_TIME
-      33  LED
+      37  LED
        6  LED::?relay
-     403  LLC_AddTask
+     310  LLC_AddTask
        6  LLC_AddTask::?relay
-      10  LLC_GetTaskLen
+      16  LLC_GetTaskLen
        6  LLC_GetTaskLen::?relay
-     102  LLC_Init
+      47  LLC_Init
        6  LLC_Init::?relay
-      70  LLC_RX_HNDL
+      98  LLC_RX_HNDL
        6  LLC_RX_HNDL::?relay
-      35  LLC_Reset
+      43  LLC_Reset
        6  LLC_Reset::?relay
-      41  LLC_SE_HNDL
+      67  LLC_RunTimeAlloc
+       6  LLC_RunTimeAlloc::?relay
+      20  LLC_SE_HNDL
        6  LLC_SE_HNDL::?relay
-      69  LLC_SetRXCallback
+      80  LLC_SetRXCallback
        6  LLC_SetRXCallback::?relay
-     239  LLC_Shelduler
+     317  LLC_Shelduler
        6  LLC_Shelduler::?relay
-     137  LLC_TimeAlloc
+     148  LLC_TimeAlloc
        6  LLC_TimeAlloc::?relay
+      50  LoadTXData
+       6  LoadTXData::?relay
      350  MACSlotTable
-      36  MAC_CloseRXSlot
+     111  MAC_ACK_Recv
+       6  MAC_ACK_Recv::?relay
+      91  MAC_ACK_Send
+       6  MAC_ACK_Send::?relay
+     124  MAC_CloseRXSlot
        6  MAC_CloseRXSlot::?relay
        1  MAC_ENABLE_MODULE
-      14  MAC_Enable
+      23  MAC_Enable
        6  MAC_Enable::?relay
-      21  MAC_GetRXState
+     113  MAC_GetRXState
        6  MAC_GetRXState::?relay
-      19  MAC_GetTXState
+     113  MAC_GetTXState
        6  MAC_GetTXState::?relay
-      26  MAC_Init
+      57  MAC_Init
        6  MAC_Init::?relay
-      54  MAC_OpenRXSlot
+     167  MAC_OpenRXSlot
        6  MAC_OpenRXSlot::?relay
-     185  MAC_RX_HNDL
+     195  MAC_RX_HNDL
        6  MAC_RX_HNDL::?relay
-      37  MAC_Reset
+     135  MAC_Reset
        6  MAC_Reset::?relay
-     298  MAC_Send
+     422  MAC_Send
        6  MAC_Send::?relay
-      10  MAC_SetRXCallback
+      19  MAC_SetRXCallback
        6  MAC_SetRXCallback::?relay
-     243  MAC_TX_HNDL
+       4  MAC_TIMER_MAX
+     595  MAC_TX_HNDL
        6  MAC_TX_HNDL::?relay
-      26  MAC_setIV
+      41  MAC_setIV
        6  MAC_setIV::?relay
-      24  MAC_setKEY
+      41  MAC_setKEY
        6  MAC_setKEY::?relay
-     293  MG_Connect
+      34  MG_Connect
        6  MG_Connect::?relay
+      38  MG_Init
+       6  MG_Init::?relay
        1  MG_MODULES_INITED
+      23  MG_Reset
+       6  MG_Reset::?relay
       12  MyLowLevelPutchar
        6  MyLowLevelPutchar::?relay
        1  NBR_FRAME
-       1  NEED_SEND_SYNC
        4  NEXT_SYNC_TIME
        4  NODE_NONCE
        4  NODE_RTC
        4  NODE_UPTIME
-      17  NT_GetTime
+      55  NT_GetTime
        6  NT_GetTime::?relay
-      48  NT_Init
+      19  NT_IRQEnable
+       6  NT_IRQEnable::?relay
+      72  NT_Init
        6  NT_Init::?relay
-     262  NT_SetCompare
+     129  NT_SetCompare
        6  NT_SetCompare::?relay
-      10  NT_SetEventCallback
+      19  NT_SetEventCallback
        6  NT_SetEventCallback::?relay
-     114  NT_SetTime
+     156  NT_SetTime
        6  NT_SetTime::?relay
-      94  NT_WaitTime
+     126  NT_WaitTime
        6  NT_WaitTime::?relay
        1  P0SEL
        1  P1DIR
@@ -4641,58 +4681,60 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        1  RFST
        4  RI_CCA_REJECT
        4  RI_CRC_ERROR
-      10  RI_GetCCAReject
+      17  RI_GetCCAReject
        6  RI_GetCCAReject::?relay
-      10  RI_GetCRCError
+      17  RI_GetCRCError
        6  RI_GetCRCError::?relay
-      10  RI_GetUptime
+      17  RI_GetUptime
        6  RI_GetUptime::?relay
-     893  RI_Receive
+     535  RI_Receive
        6  RI_Receive::?relay
-     349  RI_Send
+     216  RI_Send
        6  RI_Send::?relay
-      24  RI_SetChannel
+      32  RI_SetChannel
        6  RI_SetChannel::?relay
        4  RI_UPTIME
-     124  RI_cfg
+     109  RI_cfg
        6  RI_cfg::?relay
-      67  RI_init
+      32  RI_init
        6  RI_init::?relay
        2  RXCallback
        2  RXCallback
        2  RXCallback
        2  RXCallback
-      22  ReadTimer
+      59  ReadTimer
        6  ReadTimer::?relay
+     152  RecvData
+       6  RecvData::?relay
        2  SECallback
        1  SLEEPCMD
        1  SLEEPSTA
        1  ST0
        1  ST1
        1  ST2
-      66  STACK_FAILURE
+       2  STACK_FAILURE
        6  STACK_FAILURE::?relay
        1  STLOAD
        2  SYNC_ACCURATE_NETWORK_TIME
        4  SYNC_SENDED
        1  SY_ENABLE_MODULE
-      10  SY_Enable
+      23  SY_Enable
        6  SY_Enable::?relay
-     164  SY_Init
+     121  SY_Init
        6  SY_Init::?relay
-       7  SY_Reset
+      71  SY_Reset
        6  SY_Reset::?relay
-     597  SY_SYNC_NETWORK
+     501  SY_SYNC_NETWORK
        6  SY_SYNC_NETWORK::?relay
-     211  SY_TIME_ALLOC_SLAVE
-       6  SY_TIME_ALLOC_SLAVE::?relay
-     750  SY_TS1_HNDL_SLAVE
-       6  SY_TS1_HNDL_SLAVE::?relay
-      27  SY_setIV
+      99  SY_TIME_ALLOC_MASTER
+       6  SY_TIME_ALLOC_MASTER::?relay
+      48  SY_TS1_HNDL_MASTER
+       6  SY_TS1_HNDL_MASTER::?relay
+      41  SY_setIV
        6  SY_setIV::?relay
-      27  SY_setKEY
+      41  SY_setKEY
        6  SY_setKEY::?relay
-       7  SY_sync_sended
+      17  SY_sync_sended
        6  SY_sync_sended::?relay
      159  SendData
        6  SendData::?relay
@@ -4702,79 +4744,83 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        1  T2M1
        1  T2MOVF0
        1  T2MOVF1
-      27  TIC_CloseAllState
+      35  TIC_CloseAllState
        6  TIC_CloseAllState::?relay
-      10  TIC_GetNonce
+      17  TIC_GetNonce
        6  TIC_GetNonce::?relay
-      10  TIC_GetRTC
+      17  TIC_GetRTC
        6  TIC_GetRTC::?relay
-      21  TIC_GetRXState
+      98  TIC_GetRXState
        6  TIC_GetRXState::?relay
-      21  TIC_GetTXState
+      98  TIC_GetTXState
        6  TIC_GetTXState::?relay
        7  TIC_GetTimeStampTS0
        6  TIC_GetTimeStampTS0::?relay
-      17  TIC_GetTimer
+      14  TIC_GetTimer
        6  TIC_GetTimer::?relay
-      10  TIC_GetUptime
+      17  TIC_GetUptime
        6  TIC_GetUptime::?relay
-     343  TIC_HW_Timer_IRQ
+     198  TIC_HW_Timer_IRQ
        6  TIC_HW_Timer_IRQ::?relay
-      20  TIC_Init
+      42  TIC_Init
        6  TIC_Init::?relay
-      10  TIC_Reset
+      89  TIC_Reset
        6  TIC_Reset::?relay
-      24  TIC_SetNonce
+      26  TIC_SetNonce
        6  TIC_SetNonce::?relay
-      38  TIC_SetRTC
+      40  TIC_SetRTC
        6  TIC_SetRTC::?relay
-      69  TIC_SetRXCallback
+      80  TIC_SetRXCallback
        6  TIC_SetRXCallback::?relay
-      29  TIC_SetRXState
+     128  TIC_SetRXState
        6  TIC_SetRXState::?relay
-      66  TIC_SetSECallback
+      80  TIC_SetSECallback
        6  TIC_SetSECallback::?relay
-      69  TIC_SetSyncTimeAllocCallback
+      80  TIC_SetSyncTimeAllocCallback
        6  TIC_SetSyncTimeAllocCallback::?relay
-      69  TIC_SetTS1Callback
+      80  TIC_SetTS1Callback
        6  TIC_SetTS1Callback::?relay
-      68  TIC_SetTXCallback
+      80  TIC_SetTXCallback
        6  TIC_SetTXCallback::?relay
-      29  TIC_SetTXState
+     128  TIC_SetTXState
        6  TIC_SetTXState::?relay
-      71  TIC_SetTimer
+      93  TIC_SetTimer
        6  TIC_SetTimer::?relay
-       2  TIC_SleepTime
+       7  TIC_SleepTime
        6  TIC_SleepTime::?relay
-       0  TIC_SlotActivityTime
+       7  TIC_SlotActivityTime
        6  TIC_SlotActivityTime::?relay
-      18  TIC_SlotTime
+      28  TIC_SlotTime
        6  TIC_SlotTime::?relay
-      61  TIC_TDMAShelduler
+      92  TIC_TDMAShelduler
        6  TIC_TDMAShelduler::?relay
-     164  TIC_TimeUsFromTS0
+      66  TIC_TimeUsFromTS0
        6  TIC_TimeUsFromTS0::?relay
-      35  TIM_TimeStamp
+      61  TIC_getCurrentTS
+       6  TIC_getCurrentTS::?relay
+      61  TIM_TimeStamp
        6  TIM_TimeStamp::?relay
-      19  TIM_copy
+      45  TIM_copy
        6  TIM_copy::?relay
-     230  TIM_delay
+     133  TIM_delay
        6  TIM_delay::?relay
-     248  TIM_init
+      17  TIM_init
        6  TIM_init::?relay
-     136  TIM_passedTime
+      94  TIM_passedTime
        6  TIM_passedTime::?relay
        2  TOFFSET
        2  TS1Callback
       50  TSStateTable
        2  TXCallback
        8  TimeStampTS0
-     101  TimerCompareInterrupt
+      60  TimerCompareInterrupt
        3  TimerCompareInterrupt::??INTVEC 43
        1  U0BAUD
        1  U0CSR
        1  U0DBUF
        1  U0GCR
+      40  UnLoadRXData
+       6  UnLoadRXData::?relay
        1  _A_IEN0
        1  _A_IRCON
        1  _A_P1
@@ -4782,91 +4828,139 @@ Warning[Pe177]: function "SY_TS1_HNDL_MASTER" was declared but never referenced
        4  __Constant_15180
        4  __Constant_19833891
        4  __Constant_1f4
+       4  __Constant_20
        4  __Constant_3d000000
        4  __Constant_3e8
        4  __Constant_447a0000
-       4  __Constant_6f
        4  __Constant_7fff
        4  __Constant_8000
        4  __Constant_9
+       4  __Constant_a
        4  __Constant_ffff8000
        4  __Constant_fffffe0c
        4  __Constant_ffffff
-      97  __write
+     156  __write
        6  __write::?relay
+      34  bits_count
+       6  bits_count::?relay
      162  buf
+     189  calcCompareTime
+       6  calcCompareTime::?relay
+      94  clocks_update
+       6  clocks_update::?relay
+      23  com_uart_init
+       6  com_uart_init::?relay
       16  default_iv
       16  default_key
-     351  frame_addHeader
+     162  extract_header
+       6  extract_header::?relay
+     367  frame_addHeader
        6  frame_addHeader::?relay
-     156  frame_create
+     168  frame_create
        6  frame_create::?relay
-     219  frame_delHeader
+     215  frame_delHeader
        6  frame_delHeader::?relay
-      46  frame_delete
+      71  frame_delete
        6  frame_delete::?relay
-       7  frame_getCount
+      16  frame_getCount
        6  frame_getCount::?relay
-      13  frame_len
+      19  frame_len
        6  frame_len::?relay
-     183  generateAuthData
+      21  free
+       6  free::?relay
+     241  generateAuthData
        6  generateAuthData::?relay
-     102  get_sync
+      53  getRNDByte
+       6  getRNDByte::?relay
+      95  get_sync
        6  get_sync::?relay
-      55  heap_ptr
+      56  heap_ptr
        6  heap_ptr::?relay
-       3  heap_size
+       7  heap_size
        6  heap_size::?relay
-      12  main
+      36  incrementTS
+       6  incrementTS::?relay
+      11  isIRQEnable
+       6  isIRQEnable::?relay
+      70  loadTimerCompare
+       6  loadTimerCompare::?relay
+      19  main
        6  main::?relay
-      67  memory_compare
+      21  malloc
+       6  malloc::?relay
+      22  master_mode
+       6  master_mode::?relay
+      70  memory_compare
        6  memory_compare::?relay
        1  nbrTasks
-      18  nwDebugerInit
+      14  nwDebugerInit
        6  nwDebugerInit::?relay
        2  pACK
-      14  re_free
+      78  random_core_init
+       6  random_core_init::?relay
+      35  re_free
        6  re_free::?relay
-      18  re_malloc
+      49  re_malloc
        6  re_malloc::?relay
-      25  re_memcpy
+      65  re_memcpy
        6  re_memcpy::?relay
-      64  readRandom
+      62  re_start
+       6  re_start::?relay
+      54  readRandom
        6  readRandom::?relay
        4  ret_val
-     114  suite_GW
+       3  send_ack
+       6  send_ack::?relay
+     161  send_sync
+       6  send_sync::?relay
+     120  setFreq
+       6  setFreq::?relay
+      40  set_capture_time
+       6  set_capture_time::?relay
+       3  strip_header
+       6  strip_header::?relay
+      30  suite_GW
        6  suite_GW::?relay
-     179  suite_NODE
+      17  suite_NODE
        6  suite_NODE::?relay
+       4  sync_send_time
        1  tasksBLOCK
-      70  umsg
+      11  uart_getchar
+       6  uart_getchar::?relay
+      23  uart_init
+       6  uart_init::?relay
+      11  uart_putchar
+       6  uart_putchar::?relay
+     118  umsg
        6  umsg::?relay
-      37  umsg_line
+      45  umsg_line
        6  umsg_line::?relay
-      98  umsg_summary
+      82  umsg_summary
        6  umsg_summary::?relay
        6  utestSigTraceInit
        6  utestSigTraceInit::?relay
        4  utest_summary
        4  val
-      56  xor_calc
+       4  validate
+       6  validate::?relay
+      59  xor_calc
        6  xor_calc::?relay
-     505  -- Other
+     490  -- Other
 
  
- 13 543 bytes in segment BANKED_CODE
-    708 bytes in segment BANK_RELAYS
+ 15 862 bytes in segment BANKED_CODE
+    942 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
-    101 bytes in segment NEAR_CODE
+     60 bytes in segment NEAR_CODE
      35 bytes in segment SFR_AN
-  1 582 bytes in segment XDATA_I
-  1 582 bytes in segment XDATA_ID
-    718 bytes in segment XDATA_Z
+  1 059 bytes in segment XDATA_I
+  1 059 bytes in segment XDATA_ID
+    721 bytes in segment XDATA_Z
  
-  2 329 bytes of CODE     memory (+ 65 bytes shared)
+  1 983 bytes of CODE     memory (+ 81 bytes shared)
       0 bytes of DATA     memory (+ 35 bytes shared)
- 13 477 bytes of HUGECODE memory (+ 66 bytes shared)
-  2 244 bytes of XDATA    memory (+ 56 bytes shared)
+ 15 818 bytes of HUGECODE memory (+ 44 bytes shared)
+  1 720 bytes of XDATA    memory (+ 60 bytes shared)
 
 Errors: none
 Warnings: 7

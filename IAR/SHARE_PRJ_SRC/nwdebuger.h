@@ -5,7 +5,7 @@
 #include "stdio.h"
 
 #define UART_DEBUG // Если определено, то вывод в uart
-#define LOG_ENABLE
+//#define LOG_ENABLE
 #define ASSERT_ENABLE
 
 // Пример использования

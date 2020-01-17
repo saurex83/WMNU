@@ -7,6 +7,8 @@
 
 static uint8_t default_key[16] = DEFAULT_KEY;
 static uint8_t default_iv[16] = DEFAULT_IV;
+database_s CONFIG;
+
 
 void CF_init()
 {

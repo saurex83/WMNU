@@ -1,0 +1,153 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               17/Jan/2020  12:49:08
+# Copyright 2004-2017 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for 8051
+#
+#    Core               =  plain
+#    Code model         =  banked
+#    Data model         =  large
+#    Calling convention =  xdata reentrant
+#    Constant location  =  data
+#    Dptr setup         =  1,16
+#                          
+#    Source file        =  
+#        \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\mem.c
+#    Command line       =  
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW26DB.tmp
+#        ("\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\mem.c"
+#        -lcN "\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List" -o
+#        "\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj" -e --debug
+#        --core=plain --dptr=16,1 --data_model=large --code_model=banked
+#        --calling_convention=xdata_reentrant --place_constants=data
+#        --nr_virtual_regs 8 --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.0\8051\LIB\DLIB\dl8051Normal.h" -I
+#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\" -On
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_cross_call)
+#    Locale             =  Russian_Russia.1251
+#    List file          =  
+#        \\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List\mem.lst
+#    Object file        =  
+#        \\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\mem.r51
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\mem.c
+      1          #include "ioCC2530.h"
+      2          #include "stdlib.h"
+      3          #include "stdint.h"
+      4          #include "string.h"
+      5          #include "nwdebuger.h"
+      6          
+      7          void re_free(void* ptr);
+      8          void* re_malloc(size_t size);
+      9          uint16_t heap_ptr(size_t size);
+     10          void re_memcpy(void *dst, const void *src, size_t n);
+     11          
+     12          /**
+     13          @brief Возвращает адрес следующего свободного участка памяти
+     14          @detail Функция нужна для оценки использования стека
+     15          @param[in] size размер запрашиваемой области
+     16          @return если памяти нету возвращает 0, иначе адрес свободного участка.
+     17          */
+     18          uint16_t heap_ptr(size_t size)
+     19          {
+     20            unsigned short EA_save = EA;
+     21            EA = 0; 
+     22            uint16_t *heap_ptr;
+     23            heap_ptr = (uint16_t*)re_malloc(size);
+     24            re_free(heap_ptr);
+     25            EA = EA_save;
+     26            return (uint16_t)heap_ptr;
+     27          }
+     28          
+     29          /**
+     30          @brief Реентерабельное копирование памяти
+     31          */
+     32          void re_memcpy(void *dst, const void *src, size_t n)
+     33          {
+     34            unsigned short EA_save = EA;
+     35            EA = 0;
+     36            memcpy(dst, src, n);
+     37            EA = EA_save;  
+     38          }
+     39          
+     40          /**
+     41          @brief Реентерабельное выделение памяти
+     42          */
+     43          void* re_malloc(size_t size)
+     44          {
+     45            unsigned short EA_save = EA;
+     46            void* ptr; 
+     47            EA = 0;
+     48            ptr = malloc(size);
+     49            EA = EA_save;
+     50            //LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "malloc = %d, L= %d \r\n", (uint16_t)ptr, size);
+     51            return ptr;
+     52          }
+     53          
+     54          /**
+     55          @brief Реентерабельное освобождение памяти
+     56          */
+     57          void re_free(void* ptr)
+     58          {
+     59            unsigned short EA_save = EA;
+     60            EA = 0;
+     61            free(ptr);
+     62            EA = EA_save;
+     63            //LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "free = %d\r\n", (uint16_t)ptr);  
+     64          }
+
+   Maximum stack usage in bytes:
+
+   XSTACK Function
+   ------ --------
+     19   free
+        9   -> __xdata_free
+     14   heap_ptr
+       14   -> re_free
+       14   -> re_malloc
+     23   malloc
+        9   -> __xdata_malloc
+     24   re_free
+       10   -> free
+     28   re_malloc
+       14   -> malloc
+     18   re_memcpy
+       16   -> memcpy
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       1  _A_IEN0
+      21  free
+       6  free::?relay
+      56  heap_ptr
+       6  heap_ptr::?relay
+      21  malloc
+       6  malloc::?relay
+      35  re_free
+       6  re_free::?relay
+      49  re_malloc
+       6  re_malloc::?relay
+      65  re_memcpy
+       6  re_memcpy::?relay
+
+ 
+ 247 bytes in segment BANKED_CODE
+  36 bytes in segment BANK_RELAYS
+   1 byte  in segment SFR_AN
+ 
+  24 bytes of CODE     memory (+ 12 bytes shared)
+   0 bytes of DATA     memory (+  1 byte  shared)
+ 205 bytes of HUGECODE memory (+ 42 bytes shared)
+
+Errors: none
+Warnings: none

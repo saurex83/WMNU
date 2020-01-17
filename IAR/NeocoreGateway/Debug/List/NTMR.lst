@@ -1,0 +1,460 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               17/Jan/2020  12:49:08
+# Copyright 2004-2017 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for 8051
+#
+#    Core               =  plain
+#    Code model         =  banked
+#    Data model         =  large
+#    Calling convention =  xdata reentrant
+#    Constant location  =  data
+#    Dptr setup         =  1,16
+#                          
+#    Source file        =  
+#        \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\NTMR.c
+#    Command line       =  
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW2788.tmp
+#        ("\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\NTMR.c"
+#        -lcN "\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List" -o
+#        "\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj" -e --debug
+#        --core=plain --dptr=16,1 --data_model=large --code_model=banked
+#        --calling_convention=xdata_reentrant --place_constants=data
+#        --nr_virtual_regs 8 --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.0\8051\LIB\DLIB\dl8051Normal.h" -I
+#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\" -On
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_cross_call)
+#    Locale             =  Russian_Russia.1251
+#    List file          =  
+#        \\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List\NTMR.lst
+#    Object file        =  
+#        \\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\NTMR.r51
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\NTMR.c
+      1          #include "NTMR.h"
+      2          #include "stdlib.h"
+      3          #include "ioCC2530.h"
+      4          #include "nwdebuger.h"
+      5          
+      6          /**
+      7          @file 
+      8          @brief Модуль управления таймером сна
+      9          @details При создании обьекта с помощью NT_Create, производится иницилизация
+     10           аппаратного таймера сна и он переходит в активное состояние. Если установлено 
+     11           определение #define USE_OSC32K будет использван внешний кварц.
+     12           За установку глобального прерывания IE отвечает пользователь.
+     13           Для использования модуля необходимо установить обработчик прерывания
+     14           NT_SetEventCallback(..). Далее с помощью NT_SetCompare(..) установить
+     15           время срабатывания прерывания, она же включит прерывание таймера. 
+     16           Перед вызовом пользовательского обработчика, запрещается прерывание таймера,
+     17           пользователь должен установить его повторно на необходимое время.
+     18           Модуль сна пробуждает МК из режимов PM1,PM2, но не переводит их обратно.
+     19           После завершения обработки прерывание, продолжится выполнение основного 
+     20           потока программы. Пользователь самостоятельно должен перевести МК в режим сна.
+     21           Функция NT_SetTime(..) производит подстройку времени сети и корректирует время
+     22           срабатывания прерывания. Что бы было понятнее приведу пример: 
+     23           Время сети 400 и установленно прерывание на 700.
+     24           Пользователь корректирует время на 300, но из-за разной разрядности счетчиков
+     25           прерывание произойдет по "старым часам", так как NT_SetTime только изменит
+     26           переменную относительного смещения, а не непосредственно значение счетчика.
+     27           Поэтому необходимо пересчитать время прерывания 700 к новому смещению.
+     28           Из найденных особенностей: когда вызывается обработчик прерывания, значение
+     29           времени всегда больше на 2 тика. Предполагаю из за ожидания синхронизации при
+     30           чтении значения таймера. 
+     31          */
+     32          
+     33          
+     34          // После вызова EventCallback аппаратное прерывание завершается
+     35          // и управление передается в главный цикл main.
+     36          // Пользователь сам должен положить систему в сон
+     37          // Для работы используется sleep timer.
+     38          // Значение таймера изменить нельзя, он автоматически стартует после
+     39          // Включения микроконтроллера. Нам нужно выбрать XOSC вместо RCOSC,
+     40          // Но на отладочной плате нет резонатора
+     41          // Чтение значения ST2:ST1:ST0 первым из ST0
+     42          // Таймер работает во всех режимах кроме PM3
+     43          // После пробуждения нужно убеиться что SLEEPSTA.CLK32K бит установлен прежде 
+     44          // чем считывать ST0-3
+     45          
+     46          
+     47          #define USE_OSC32K // Использовать внешний квац 32.768 кГц
+     48          
+     49          // Методы модуля
+     50          bool NT_SetTime(uint16_t ticks);
+     51          void NT_SetCompare(uint16_t ticks);
+     52          void NT_SetEventCallback(void (*fn)(uint16_t ticks));
+     53          uint16_t NT_GetTime(void);
+     54          uint16_t NT_WaitTime(uint16_t ticks);
+     55          
+     56          // Приватные методы
+     57          static uint32_t ReadTimer(void);
+     58          static void loadTimerCompare(uint32_t ticks);
+     59          static inline bool isIRQEnable(void);
+     60          static inline void NT_IRQEnable(bool state);
+     61          
+     62          // Переменные модуля
+     63          static void (*EventCallback)(uint16_t ticks);
+     64          static uint32_t COMPARE_TIME; //!< Значение загруженное в регистр compare
+     65          
+     66          /**
+     67          @details Смещение времени сети относительно времени таймера.
+     68           NETWORK TIME = TIMER + TOFFSET
+     69          */
+     70          uint16_t TOFFSET; 
+     71          
+     72          /**
+     73          @brief Инизиализация таймера
+     74          */
+     75          void NT_Init(void)
+     76          {
+     77            TOFFSET = 0;
+     78            COMPARE_TIME = 0;
+     79            EventCallback = NULL;
+     80          
+     81            // Сначало нужно настроить кварц 32кГц только потом поднимать
+     82            // основной квар до 32 Мгц
+     83            #ifdef USE_OSC32K
+     84            CLKCONCMD &= ~(1<<7); // Сбрасываем бит OSC32K, будет выбран 32.768 кварц
+     85            while (CLKCONSTA & (1<<7)); // Ждем пока бит не станет 0
+     86            #endif
+     87          
+     88            // Переходим на 32 Мгц
+     89            CLKCONCMD = 0;// (1<<3);
+     90            while (CLKCONSTA&(1<<6));
+     91            
+     92            NT_IRQEnable(false);
+     93          }
+     94          
+     95          /**
+     96          @brief Устанавливаем текущее время сети и переустанавливает capture time
+     97          @param[in] ticks время от 0-32767. Один tick 1/32768
+     98          @return true если аргумент в диапазоне
+     99          */
+    100          bool NT_SetTime(uint16_t ticks)
+    101          {
+    102            ASSERT(ticks < 32768);
+    103            if (ticks > 32767)
+    104              return false;
+    105           
+    106            uint16_t timer = ReadTimer();
+    107            TOFFSET = ticks - timer;
+    108            TOFFSET &= 0x7FFF;
+    109          
+    110            // После установки времени нужно изменить compare time в таймере
+    111            // Но только в случаи если прерывание активно
+    112            if (isIRQEnable())
+    113            {
+    114              NT_SetCompare(COMPARE_TIME);
+    115            }
+    116          
+    117            return true;
+    118          }
+    119          
+    120          /**
+    121          @brief Вычисляет значение, которое нужно установить в регистр compare таймера.
+    122          @params[in] ticks время сети в тикак
+    123          */
+    124          static inline uint32_t calcCompareTime(uint16_t ticks)
+    125          {   
+    126              uint32_t timer = ReadTimer(); // Текущее значение счетчика
+    127              
+    128              //NETWORK TIME = TIMER + TOFFSET  
+    129              // Приводим такты к тактам таймера
+    130              uint16_t ticks_offset = (ticks - TOFFSET) & 0x7FFF;
+    131              
+    132              uint32_t cmp_time = timer & ~0x7FFF; // Убираем младшие 15 бит
+    133              cmp_time |= ticks_offset; // Вычисляем новое время
+    134              
+    135              if (cmp_time <= timer)
+    136              {
+    137                cmp_time += 0x8000;
+    138                cmp_time &=0xFFFFFF;
+    139              }
+    140                
+    141               LOG_OFF("Timer = %lu, Ticks = %d,CMP = %lu \r\n",
+    142                    timer, ticks, cmp_time );
+    143              return cmp_time;
+    144          }
+    145          
+    146          /**
+    147          @brief Устанавливает время прерывания
+    148          @details Время прерывания устанавливается относительно времени сети
+    149          ,к примеру, что бы проснуться в таймслот номер 0, нужно установить ticks = 0.
+    150          Процедура учитывает текущее значение таймера и перерасчитывает значение ticks. 
+    151          @params[in] ticks время сети в тиках когда нужно проснуться
+    152          */
+    153          void NT_SetCompare(uint16_t ticks)
+    154          {
+    155            ASSERT(ticks < 32768);
+    156            
+    157            COMPARE_TIME = ticks; // Сохраняем установленное значение
+    158           
+    159            uint32_t compare_time = calcCompareTime(ticks);
+    160           
+    161            loadTimerCompare(compare_time);
+    162            NT_IRQEnable(true);
+    163          }
+    164          
+    165          /**
+    166          @brief Разрешение прерываний таймера сна
+    167          @params[in] state = true - разрешить обработку прерываний
+    168          */
+    169          static inline void NT_IRQEnable(bool state)
+    170          {
+    171            STIF = 0;
+    172            if (state)
+    173            {
+    174              STIE = 1;
+    175            }
+    176            else
+    177            {
+    178              STIE = 0;
+    179            }
+    180          }
+    181          
+    182          /**
+    183          @brief Проверка активности прерывания таймера
+    184          @return true если прерывание установленно
+    185          */
+    186          static inline bool isIRQEnable(void)
+    187          {
+    188            if (STIE)
+    189              return true;
+    190            else 
+    191              return false;
+    192          }
+    193          
+    194          /**
+    195          @brief Устанавливает обработчик прерывания таймера
+    196          @param[in] fn(uint16_t ticks) указатель на функцию-обработчик
+    197          */
+    198          void NT_SetEventCallback(void (*fn)(uint16_t ticks))
+    199          {
+    200            EventCallback = fn;
+    201          }
+    202          
+    203          /**
+    204          @brief Возвращает время сети 
+    205          @return Время сети в тиках
+    206          */
+    207          uint16_t NT_GetTime(void)
+    208          {
+    209            uint32_t val = ReadTimer();
+    210            // TOFFSET = NETWORK TIME - TIMER
+    211            // NETWORK TIME = TIMER + TOFFSET
+    212            val +=TOFFSET;
+    213            val &= 0x7FFF; // Приводим значения таймера к 0-32767
+    214            return val;
+    215          }
+    216          
+    217          /**
+    218          @brief Обработчик прерывания таймера сна
+    219          */
+    220          #pragma vector=ST_VECTOR
+    221          __interrupt void TimerCompareInterrupt(void)
+    222          {  
+    223            uint16_t ticks = NT_GetTime();
+    224            if (EventCallback == NULL)
+    225              return;
+    226            // Отключаем прерывание таймера. Забота пользователя его включить
+    227            NT_IRQEnable(false); 
+    228            EventCallback(ticks); // Вызываем пользовательский обработчик
+    229            STIF = 0; // Очищаем флаг прерывания
+    230          }
+    231          
+    232          /**
+    233          @breif Ожидание наступления времени сети
+    234          @param[in] ticks время в тактах
+    235          @return фактическое время сети
+    236          */
+    237          uint16_t NT_WaitTime(uint16_t ticks)
+    238          {
+    239            static union 
+    240            {
+    241              uint32_t val;
+    242              uint8_t fild[4];
+    243            } val;
+    244            
+    245            val.val = 0;
+    246            // TOFFSET = NETWORK TIME - TIMER
+    247            // NETWORK TIME = TIMER + TOFFSET
+    248            
+    249            // Ждем синхронизацию таймера после пробуждения
+    250            while (!(SLEEPSTA & 0x01));
+    251            
+    252            do
+    253            {
+    254              // Соблюдаем порядок чтения регисторов ST  
+    255              val.fild[0] = ST0;
+    256              val.fild[1] = ST1;
+    257              val.fild[2] = ST2;
+    258              val.val +=TOFFSET;
+    259              val.val &= 0x7FFF; // Приводим значения таймера к 0-32767    
+    260            } while (val.val < ticks);
+    261            return val.val;
+    262          }
+    263          
+    264          /**
+    265          @brief Возвращает текущее значение таймера
+    266          @return Текущие ticks
+    267          */
+    268          static uint32_t ReadTimer(void)
+    269          {
+    270            static union 
+    271            {
+    272              uint32_t val;
+    273              uint8_t fild[4];
+    274            } ret_val;
+    275            
+    276            ret_val.val = 0;
+    277            
+    278            // Ждем синхронизацию таймера после пробуждения
+    279            while (!(SLEEPSTA & 0x01));
+    280            
+    281            // Соблюдаем порядок чтения регисторов ST  
+    282            ret_val.fild[0] = ST0;
+    283            ret_val.fild[1] = ST1;
+    284            ret_val.fild[2] = ST2;
+    285            return ret_val.val;
+    286          }
+    287          
+    288          /**
+    289          @brief Устанавливает время пробуждения микроконтролера
+    290          @params[in] ticks 24 битное значение времени пробуждения в ticks
+    291          */
+    292          static void loadTimerCompare(uint32_t ticks)
+    293          {
+    294            union 
+    295            {
+    296              uint32_t val;
+    297              uint8_t fild[4];
+    298            } value;
+    299            
+    300            value.val = ticks;
+    301            
+    302            // Ждем разрешения на запись нового значения
+    303            while (!(STLOAD & 0x01));
+    304            
+    305            // Регистр ST0 должен быть записан в последнию очередь
+    306            ST2 = value.fild[2];
+    307            ST1 = value.fild[1];
+    308            ST0 = value.fild[0];
+    309          }
+
+   Maximum stack usage in bytes:
+
+   ISTACK XSTACK Function
+   ------ ------ --------
+      0     31   NT_GetTime
+        0     16   -> ReadTimer
+      0     15   NT_IRQEnable
+      2      0   NT_Init
+        2      0   -> NT_IRQEnable
+      0     32   NT_SetCompare
+        0     12   -> NT_IRQEnable
+        0     12   -> calcCompareTime
+        0     12   -> loadTimerCompare
+        0     12   -> printf
+        0     18   -> printf
+      2      0   NT_SetEventCallback
+      0     20   NT_SetTime
+        0     14   -> NT_SetCompare
+        0     14   -> ReadTimer
+        0     14   -> isIRQEnable
+        0     14   -> printf
+        0     20   -> printf
+      0     12   NT_WaitTime
+      2     22   ReadTimer
+      0     15   TimerCompareInterrupt
+        0     15   -> NT_GetTime
+        0     15   -> NT_IRQEnable
+      2     34   calcCompareTime
+        0     22   -> ReadTimer
+      0     14   isIRQEnable
+      0     28   loadTimerCompare
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      22  ?<Constant "*ASSERT* %s:%d:%s -> ">
+      68  ?<Constant "\\\\vmware-host\\Shared ...">
+       3  ?<Constant "\r\n">
+      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s
+      68  ?<Initializer for <Constant "\\\\vmware-host\\
+       3  ?<Initializer for <Constant "\r\n">>
+       4  ?<Initializer for __Constant_7fff>
+       4  ?<Initializer for __Constant_8000>
+       4  ?<Initializer for __Constant_ffff8000>
+       4  ?<Initializer for __Constant_ffffff>
+      11  ?<Initializer for __FUNCTION__>
+      14  ?<Initializer for __FUNCTION__>_1
+       1  CLKCONCMD
+       1  CLKCONSTA
+       4  COMPARE_TIME
+       2  EventCallback
+      55  NT_GetTime
+       6  NT_GetTime::?relay
+      19  NT_IRQEnable
+       6  NT_IRQEnable::?relay
+      72  NT_Init
+       6  NT_Init::?relay
+     129  NT_SetCompare
+       6  NT_SetCompare::?relay
+      19  NT_SetEventCallback
+       6  NT_SetEventCallback::?relay
+     156  NT_SetTime
+       6  NT_SetTime::?relay
+     126  NT_WaitTime
+       6  NT_WaitTime::?relay
+      59  ReadTimer
+       6  ReadTimer::?relay
+       1  SLEEPSTA
+       1  ST0
+       1  ST1
+       1  ST2
+       1  STLOAD
+       2  TOFFSET
+      60  TimerCompareInterrupt
+       3  TimerCompareInterrupt::??INTVEC 43
+       1  _A_IEN0
+       1  _A_IRCON
+       4  __Constant_7fff
+       4  __Constant_8000
+       4  __Constant_ffff8000
+       4  __Constant_ffffff
+     189  calcCompareTime
+       6  calcCompareTime::?relay
+      11  isIRQEnable
+       6  isIRQEnable::?relay
+      70  loadTimerCompare
+       6  loadTimerCompare::?relay
+       4  ret_val
+       4  val
+      25  -- Other
+
+ 
+ 905 bytes in segment BANKED_CODE
+  66 bytes in segment BANK_RELAYS
+   3 bytes in segment INTVEC
+  60 bytes in segment NEAR_CODE
+   9 bytes in segment SFR_AN
+ 134 bytes in segment XDATA_I
+ 134 bytes in segment XDATA_ID
+  16 bytes in segment XDATA_Z
+ 
+ 244 bytes of CODE     memory (+ 19 bytes shared)
+   0 bytes of DATA     memory (+  9 bytes shared)
+ 905 bytes of HUGECODE memory
+ 134 bytes of XDATA    memory (+ 16 bytes shared)
+
+Errors: none
+Warnings: none

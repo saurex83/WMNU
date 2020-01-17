@@ -1,0 +1,635 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               17/Jan/2020  12:49:09
+# Copyright 2004-2017 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for 8051
+#
+#    Core               =  plain
+#    Code model         =  banked
+#    Data model         =  large
+#    Calling convention =  xdata reentrant
+#    Constant location  =  data
+#    Dptr setup         =  1,16
+#                          
+#    Source file        =  
+#        \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\TIC.c
+#    Command line       =  
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW2AF6.tmp
+#        ("\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\TIC.c"
+#        -lcN "\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List" -o
+#        "\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj" -e --debug
+#        --core=plain --dptr=16,1 --data_model=large --code_model=banked
+#        --calling_convention=xdata_reentrant --place_constants=data
+#        --nr_virtual_regs 8 --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.0\8051\LIB\DLIB\dl8051Normal.h" -I
+#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\" -On
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_cross_call)
+#    Locale             =  Russian_Russia.1251
+#    List file          =  
+#        \\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List\TIC.lst
+#    Object file        =  
+#        \\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\TIC.r51
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\TIC.c
+      1          #include "TIC.h"
+      2          #include "NTMR.h"
+      3          #include "stdlib.h"
+      4          #include "nwdebuger.h"
+      5          #include "delays.h"
+      6          #include "basic.h"
+      7          #include "ioCC2530.h" // ОТЛАДДКА
+      8          
+      9          /**
+     10          @file 
+     11          @brief 
+     12          @details
+     13          */
+     14          
+     15          // Публичные методы
+     16          void TIC_Init(void);
+     17          void TIC_Reset(void);
+     18          
+     19          // Методы класса
+     20          void TIC_SetTimer(uint16_t ticks);
+     21          uint16_t TIC_GetTimer(void);
+     22          bool TIC_SetTXState(uint8_t TS, bool state);
+     23          bool TIC_SetRXState(uint8_t TS, bool state);
+     24          bool TIC_GetTXState(uint8_t TS);
+     25          bool TIC_GetRXState(uint8_t TS);
+     26          void TIC_CloseAllState();
+     27          void TIC_SetRXCallback(void (*fn)(uint8_t TS));
+     28          void TIC_SetTXCallback(void (*fn)(uint8_t TS));
+     29          void TIC_SetSECallback(void (*fn)(uint8_t TS));
+     30          void TIC_SetTS1Callback(void (*fn)(void));
+     31          void TIC_SetSyncTimeAllocCallback(void (*fn)(void));
+     32          uint32_t TIC_GetUptime(void);
+     33          uint32_t TIC_GetRTC(void);
+     34          bool TIC_SetRTC(uint32_t RTC);
+     35          void TIC_SetNonce(uint32_t nonce);
+     36          uint32_t TIC_GetNonce(void);
+     37          uint32_t TIC_TimeUsFromTS0();
+     38          TimeStamp_s* TIC_GetTimeStampTS0(void);
+     39          uint16_t TIC_SleepTime(void);
+     40          uint16_t TIC_SlotActivityTime(void);
+     41          uint16_t TIC_SlotTime(uint8_t TS);
+     42          
+     43          // Приватные методы
+     44          static uint8_t TIC_getCurrentTS(uint16_t ticks);
+     45          static void TIC_TDMAShelduler(uint8_t TS);
+     46          static void TIC_HW_Timer_IRQ(uint16_t ticks);
+     47          static inline void set_capture_time(uint8_t TS);
+     48          static inline void Callback_execution(void (*fn)(uint8_t TS), uint8_t TS);
+     49          static inline void incrementTS(uint8_t *TS);
+     50          static void clocks_update(void);
+     51          
+     52          // Переменные модуля
+     53          
+     54          // Всего 50 слотов. (50 активных и 50 слотов сна)
+     55          // Кварц имеет 32768 тактов в секунду. После 100 слотов
+     56          // Остается 68 неучтеных тактов. Их нужно учитывать.
+     57          #define MAX_TS (uint8_t)50
+     58          #define TS_ACTIVE (uint16_t)327 // 9.979 мс
+     59          #define TS_SLEEP (uint16_t)327  // 2.075 мс
+     60          #define TS_UNACCOUNTED 68
+     61          // Целый цикл-это сумма времени активного периода и сна
+     62          #define FULL_SLOT  (TS_ACTIVE+TS_SLEEP)
+     63          #define NO_TIME_SLOT 0xFF
+     64          
+     65          #define TS_RX (uint8_t)(1<<0)
+     66          #define TS_TX (uint8_t)(1<<1)
+     67          #define DAILY_SEC (uint32_t)86400
+     68          #define MAX_TICKS (uint16_t)32768
+     69          
+     70          static uint32_t NODE_UPTIME = 0;
+     71          static uint32_t NODE_RTC = 0;
+     72          static uint32_t NODE_NONCE = 0;
+     73          static void (*RXCallback)(uint8_t TS);
+     74          static void (*TXCallback)(uint8_t TS);
+     75          static void (*SECallback)(uint8_t TS);
+     76          static void (*SyncTimeAllocCallback)(void);
+     77          static void (*TS1Callback)(void);
+     78          static uint8_t TSStateTable[MAX_TS];
+     79          static TimeStamp_s TimeStampTS0;
+     80          
+     81          
+     82          TimeStamp_s* TIC_GetTimeStampTS0(void)
+     83          {
+     84            return &TimeStampTS0;
+     85          }
+     86          
+     87          void TIC_Init(void)
+     88          {    
+     89            TIC_CloseAllState();
+     90            // Устанавливаем обработчик прерываний таймера
+     91            NT_SetEventCallback(TIC_HW_Timer_IRQ);
+     92            // Запускаем процесс планировщика
+     93            NT_SetCompare(0); 
+     94            TIC_SetTimer(0);
+     95            TIM_TimeStamp(&TimeStampTS0);
+     96          }
+     97          
+     98          /**
+     99          @brief Сброс настроек. 
+    100          @detail Модуль генерирует только SECallback и считает время RTC, UPTIME, NONCE.
+    101          Так как была переустановка времени, значение RTC не верное на 1с (плюс, минус)
+    102          */
+    103          void TIC_Reset(void)
+    104          {
+    105          #ifdef GATEWAY
+    106            NODE_RTC = 0;
+    107            NODE_NONCE = 0;
+    108            NODE_UPTIME = 0;
+    109          #endif
+    110            TIC_CloseAllState();  
+    111            NT_SetCompare(0); 
+    112            TIC_SetTimer(0);
+    113            TIM_TimeStamp(&TimeStampTS0);
+    114          }
+    115          
+    116          void TIC_CloseAllState()
+    117          {
+    118            for (uint8_t i = 0 ; i < 50; i++)
+    119            {
+    120              TIC_SetTXState(i, false);
+    121              TIC_SetRXState(i, false);
+    122            }
+    123          }
+    124          uint32_t TIC_TimeUsFromTS0()
+    125          {
+    126            uint32_t passed;
+    127            TimeStamp_s now;
+    128            TIM_TimeStamp(&now);
+    129            passed = TIM_passedTime(&TimeStampTS0, &now);
+    130            return passed;
+    131          }
+    132          
+    133          void TIC_SetTimer(uint16_t ticks)
+    134          {
+    135            ASSERT(ticks < MAX_TICKS);
+    136            if (ticks >= MAX_TICKS)
+    137              return ;
+    138            
+    139            NT_SetTime(ticks);
+    140          }
+    141          
+    142          uint16_t TIC_GetTimer(void)
+    143          {
+    144            return NT_GetTime();
+    145          }
+    146          
+    147          bool TIC_SetTXState(uint8_t TS, bool state)
+    148          {
+    149            if (TS>=MAX_TS)
+    150            {
+    151              return false;
+    152            }
+    153            ASSERT(TS<MAX_TS);
+    154            
+    155            if (state)
+    156              TSStateTable[TS] |= TS_TX;
+    157            else
+    158              TSStateTable[TS] &= ~TS_TX;
+    159            
+    160            return true;
+    161          }
+    162          
+    163          bool TIC_SetRXState(uint8_t TS, bool state)
+    164          {
+    165            if (TS>=MAX_TS)
+    166            {
+    167              return false;
+    168            }
+    169            ASSERT(TS<MAX_TS);
+    170            
+    171            if (state)
+    172              TSStateTable[TS] |= TS_RX;
+    173            else
+    174              TSStateTable[TS] &= ~TS_RX;
+    175            
+    176            return true;
+    177          }
+    178          
+    179          bool TIC_GetTXState(uint8_t TS)
+    180          {
+    181              if (TS>=MAX_TS)
+    182            {
+    183              return false;
+    184            }
+    185            ASSERT(TS<MAX_TS);
+    186            
+    187            return (TSStateTable[TS] & TS_TX) ;
+    188          }
+    189          
+    190          bool TIC_GetRXState(uint8_t TS)
+    191          {
+    192              if (TS>=MAX_TS)
+    193            {
+    194              return false;
+    195            }
+    196            ASSERT(TS<MAX_TS);
+    197            
+    198            return (TSStateTable[TS] & TS_RX) ;
+    199          }
+    200          
+    201          void TIC_SetTS1Callback(void (*fn)(void))
+    202          {
+    203            ASSERT (fn != NULL);
+    204            TS1Callback = fn;
+    205          }
+    206          
+    207          void TIC_SetRXCallback(void (*fn)(uint8_t TS))
+    208          {
+    209            ASSERT(fn != NULL);
+    210            RXCallback = fn;
+    211          }
+    212          
+    213          void TIC_SetSyncTimeAllocCallback(void (*fn)(void))
+    214          {
+    215            ASSERT(fn != NULL);
+    216            SyncTimeAllocCallback = fn;
+    217          }
+    218          
+    219          void TIC_SetTXCallback(void (*fn)(uint8_t TS))
+    220          {
+    221            ASSERT(fn != NULL);
+    222            TXCallback = fn;
+    223          }
+    224          
+    225          void TIC_SetSECallback(void (*fn)(uint8_t TS))
+    226          {
+    227            ASSERT(fn != NULL);
+    228            SECallback = fn;
+    229          }
+    230          
+    231          uint32_t TIC_GetUptime(void)
+    232          {
+    233            return NODE_UPTIME;
+    234          }
+    235          
+    236          uint32_t TIC_GetRTC(void)
+    237          {
+    238            return NODE_RTC;
+    239          }
+    240          
+    241          bool TIC_SetRTC(uint32_t RTC)
+    242          {
+    243            if (RTC >= DAILY_SEC)
+    244              return false;
+    245            
+    246            NODE_RTC = RTC;
+    247            return true;
+    248          }
+    249          
+    250          static uint8_t TIC_getCurrentTS(uint16_t ticks)
+    251          {
+    252            //uint16_t ticks = nt->NT_GetTime();
+    253            // Вычисляем количество целых циклов
+    254            uint8_t full_slot_num = ticks/FULL_SLOT;
+    255            
+    256            // Вычисляем остаток от деления. Остаток - смещение внутри
+    257            // временного слота.
+    258            uint16_t time_remainder = ticks % FULL_SLOT; 
+    259            // Если значение внутри интервала 0..TS_ACTIVE. 
+    260            if (time_remainder < TS_ACTIVE)
+    261              return full_slot_num;
+    262            
+    263            return NO_TIME_SLOT;
+    264          }
+    265          
+    266          static inline void incrementTS(uint8_t *TS)
+    267          {
+    268            // Выбираем следующий тайм слот
+    269            (*TS)++;
+    270            if (*TS >= MAX_TS)
+    271              *TS = 0;
+    272          }
+    273          
+    274          /**
+    275          @brief Время активного слота в тактах сети
+    276          @return время в тактах сети
+    277          */
+    278          uint16_t TIC_SlotActivityTime(void)
+    279          {
+    280            return TS_ACTIVE;
+    281          }
+    282          
+    283          /**
+    284          @brief Время неактивного слота в тактах сети
+    285          @return время в тактах сети
+    286          */
+    287          uint16_t TIC_SleepTime(void)
+    288          {
+    289            return TS_SLEEP;
+    290          }
+    291          
+    292          /**
+    293          @brief Время начала временного слота в тактах сети
+    294          @param[in] TS номер слота
+    295          @return время в тактах сети
+    296          */
+    297          uint16_t TIC_SlotTime(uint8_t TS)
+    298          {
+    299            return FULL_SLOT*(uint16_t)TS;
+    300          }
+    301          
+    302          static inline void set_capture_time(uint8_t TS)
+    303          {
+    304            //uint16_t ct = FULL_SLOT*(uint16_t)TS;
+    305            
+    306            LOG_OFF("Set compare = %d, TS = %d \r\n", ct, TS);
+    307            // Установка прерывания на нужный слот
+    308            NT_SetCompare(FULL_SLOT*(uint16_t)TS);
+    309          }
+    310          
+    311          static void TIC_TDMAShelduler(uint8_t TS)
+    312          {
+    313            // Устанавливает прерывание на ближайший активный слот
+    314            // Если слот 0 ближе, то на него. 
+    315            // Cлот - обработка секундных таймеров 
+    316            
+    317            // Ищем следующий активный слот или слот 0
+    318            incrementTS(&TS);
+    319            while ((TS != 0) && !TSStateTable[TS])  
+    320              incrementTS(&TS); 
+    321            
+    322            set_capture_time(TS);
+    323          }
+    324          
+    325          static inline void Callback_execution(void (*fn)(uint8_t TS), uint8_t TS)
+    326          {
+    327            // Помошник вызова функций. Упрощает проверки
+    328            ASSERT(fn != NULL);
+    329            if (fn == NULL)
+    330              return;
+    331            fn(TS);
+    332          }
+    333          
+    334          static void TIC_HW_Timer_IRQ(uint16_t ticks)
+    335          {
+    336            // TODO Обработка TS=0xFF
+    337            // Номер текущего слота 
+    338            uint8_t c_TS = TIC_getCurrentTS(ticks);
+    339            
+    340            // Обновляем часы NODE_RTC и NODE_UPTIME
+    341            if (c_TS == 0)
+    342            {
+    343              TIM_TimeStamp(&TimeStampTS0); // Первым делом обновим отметку точного времени
+    344              clocks_update();
+    345           //   P1_0 = !true;
+    346              LOG_OFF("TS0");
+    347           //   P1_0 = !false;;
+    348            }
+    349            // Если что то пошло не так и мы промахнулись мимо слота
+    350            // запускаем планировщик заново
+    351            if (c_TS == NO_TIME_SLOT)
+    352            {
+    353              TIC_TDMAShelduler(c_TS);
+    354              LOG_ON("TS = 255 \r\n");
+    355              return;
+    356            }
+    357              
+    358            // Вызываем один из указанных обработчиков.
+    359            // Передача имеет приоритет над приемом.
+    360            if (c_TS != 1)
+    361            {
+    362              if (TSStateTable[c_TS] & TS_TX) 
+    363                Callback_execution(TXCallback, c_TS);
+    364              else if (TSStateTable[c_TS] & TS_RX)
+    365                Callback_execution(RXCallback, c_TS);
+    366            }  
+    367            else // Для TS1 свой обработчик слота
+    368            {
+    369              if (TS1Callback != NULL)
+    370                TS1Callback();
+    371            }
+    372            
+    373            // Выделяем время протоколу синхронизации
+    374            if (SyncTimeAllocCallback)
+    375              SyncTimeAllocCallback();
+    376            
+    377            Callback_execution(SECallback, c_TS); // Вызываем обработчик завершения слота
+    378            
+    379            // Запускаем планировщик таймера
+    380            TIC_TDMAShelduler(c_TS);
+    381          }
+    382          
+    383          static void clocks_update(void)
+    384          {
+    385            NODE_UPTIME++;
+    386            NODE_RTC++;
+    387            NODE_NONCE++;
+    388            if (NODE_RTC >= DAILY_SEC)
+    389              NODE_RTC = 0;
+    390          }
+    391          
+    392          void TIC_SetNonce(uint32_t nonce)
+    393          {
+    394            NODE_NONCE = nonce;
+    395          }
+    396          
+    397          uint32_t TIC_GetNonce(void)
+    398          {
+    399            return NODE_NONCE;
+    400          }
+
+   Maximum stack usage in bytes:
+
+   ISTACK XSTACK Function
+   ------ ------ --------
+      0     27   Callback_execution
+        0     12   -> printf
+        0     18   -> printf
+      0      9   TIC_CloseAllState
+        0      9   -> TIC_SetRXState
+        0      9   -> TIC_SetTXState
+      2      0   TIC_GetNonce
+      2      0   TIC_GetRTC
+      0     16   TIC_GetRXState
+        0     10   -> printf
+        0     16   -> printf
+      0     16   TIC_GetTXState
+        0     10   -> printf
+        0     16   -> printf
+      0      0   TIC_GetTimeStampTS0
+      2      0   TIC_GetTimer
+        2      0   -> NT_GetTime
+      2      0   TIC_GetUptime
+      0      9   TIC_HW_Timer_IRQ
+        0      9   -> Callback_execution
+        0      9   -> TIC_TDMAShelduler
+        0      9   -> TIC_getCurrentTS
+        0      9   -> TIM_TimeStamp
+        0      9   -> clocks_update
+      2      0   TIC_Init
+        2      0   -> NT_SetCompare
+        2      0   -> NT_SetEventCallback
+        2      0   -> TIC_CloseAllState
+        2      0   -> TIC_SetTimer
+        2      0   -> TIM_TimeStamp
+      2      0   TIC_Reset
+        2      0   -> NT_SetCompare
+        2      0   -> TIC_CloseAllState
+        2      0   -> TIC_SetTimer
+        2      0   -> TIM_TimeStamp
+      0     12   TIC_SetNonce
+      0     12   TIC_SetRTC
+      0     16   TIC_SetRXCallback
+        0     10   -> printf
+        0     16   -> printf
+      0     25   TIC_SetRXState
+        0     10   -> printf
+        0     16   -> printf
+      0     16   TIC_SetSECallback
+        0     10   -> printf
+        0     16   -> printf
+      0     16   TIC_SetSyncTimeAllocCallback
+        0     10   -> printf
+        0     16   -> printf
+      0     16   TIC_SetTS1Callback
+        0     10   -> printf
+        0     16   -> printf
+      0     16   TIC_SetTXCallback
+        0     10   -> printf
+        0     16   -> printf
+      0     25   TIC_SetTXState
+        0     10   -> printf
+        0     16   -> printf
+      0     16   TIC_SetTimer
+        0     10   -> NT_SetTime
+        0     10   -> printf
+        0     16   -> printf
+      0      0   TIC_SleepTime
+      0      0   TIC_SlotActivityTime
+      0      0   TIC_SlotTime
+      3     10   TIC_TDMAShelduler
+        2      1   -> incrementTS
+        2      1   -> set_capture_time
+      0     24   TIC_TimeUsFromTS0
+        0     24   -> TIM_TimeStamp
+        0     24   -> TIM_passedTime
+      0     19   TIC_getCurrentTS
+      0     21   clocks_update
+      2      1   incrementTS
+      0     10   set_capture_time
+        0      9   -> NT_SetCompare
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      22  ?<Constant "*ASSERT* %s:%d:%s -> ">
+      67  ?<Constant "\\\\vmware-host\\Shared ...">
+       3  ?<Constant "\r\n">
+      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s
+      67  ?<Initializer for <Constant "\\\\vmware-host\\
+       3  ?<Initializer for <Constant "\r\n">>
+       4  ?<Initializer for __Constant_15180>
+       4  ?<Initializer for __Constant_1>
+      13  ?<Initializer for __FUNCTION__>
+      15  ?<Initializer for __FUNCTION__>_1
+      19  ?<Initializer for __FUNCTION__>_10
+      15  ?<Initializer for __FUNCTION__>_2
+      15  ?<Initializer for __FUNCTION__>_3
+      15  ?<Initializer for __FUNCTION__>_4
+      19  ?<Initializer for __FUNCTION__>_5
+      18  ?<Initializer for __FUNCTION__>_6
+      29  ?<Initializer for __FUNCTION__>_7
+      18  ?<Initializer for __FUNCTION__>_8
+      18  ?<Initializer for __FUNCTION__>_9
+      87  Callback_execution
+       6  Callback_execution::?relay
+       4  NODE_NONCE
+       4  NODE_RTC
+       4  NODE_UPTIME
+       2  RXCallback
+       2  SECallback
+       2  SyncTimeAllocCallback
+      35  TIC_CloseAllState
+       6  TIC_CloseAllState::?relay
+      17  TIC_GetNonce
+       6  TIC_GetNonce::?relay
+      17  TIC_GetRTC
+       6  TIC_GetRTC::?relay
+      98  TIC_GetRXState
+       6  TIC_GetRXState::?relay
+      98  TIC_GetTXState
+       6  TIC_GetTXState::?relay
+       7  TIC_GetTimeStampTS0
+       6  TIC_GetTimeStampTS0::?relay
+      14  TIC_GetTimer
+       6  TIC_GetTimer::?relay
+      17  TIC_GetUptime
+       6  TIC_GetUptime::?relay
+     198  TIC_HW_Timer_IRQ
+       6  TIC_HW_Timer_IRQ::?relay
+      42  TIC_Init
+       6  TIC_Init::?relay
+      89  TIC_Reset
+       6  TIC_Reset::?relay
+      26  TIC_SetNonce
+       6  TIC_SetNonce::?relay
+      40  TIC_SetRTC
+       6  TIC_SetRTC::?relay
+      80  TIC_SetRXCallback
+       6  TIC_SetRXCallback::?relay
+     128  TIC_SetRXState
+       6  TIC_SetRXState::?relay
+      80  TIC_SetSECallback
+       6  TIC_SetSECallback::?relay
+      80  TIC_SetSyncTimeAllocCallback
+       6  TIC_SetSyncTimeAllocCallback::?relay
+      80  TIC_SetTS1Callback
+       6  TIC_SetTS1Callback::?relay
+      80  TIC_SetTXCallback
+       6  TIC_SetTXCallback::?relay
+     128  TIC_SetTXState
+       6  TIC_SetTXState::?relay
+      93  TIC_SetTimer
+       6  TIC_SetTimer::?relay
+       7  TIC_SleepTime
+       6  TIC_SleepTime::?relay
+       7  TIC_SlotActivityTime
+       6  TIC_SlotActivityTime::?relay
+      28  TIC_SlotTime
+       6  TIC_SlotTime::?relay
+      92  TIC_TDMAShelduler
+       6  TIC_TDMAShelduler::?relay
+      66  TIC_TimeUsFromTS0
+       6  TIC_TimeUsFromTS0::?relay
+      61  TIC_getCurrentTS
+       6  TIC_getCurrentTS::?relay
+       2  TS1Callback
+      50  TSStateTable
+       2  TXCallback
+       8  TimeStampTS0
+       4  __Constant_1
+       4  __Constant_15180
+      94  clocks_update
+       6  clocks_update::?relay
+      36  incrementTS
+       6  incrementTS::?relay
+      40  set_capture_time
+       6  set_capture_time::?relay
+     194  -- Other
+
+ 
+ 1 965 bytes in segment BANKED_CODE
+   186 bytes in segment BANK_RELAYS
+   294 bytes in segment XDATA_I
+   294 bytes in segment XDATA_ID
+    80 bytes in segment XDATA_Z
+ 
+   472 bytes of CODE     memory (+ 8 bytes shared)
+ 1 965 bytes of HUGECODE memory
+   366 bytes of XDATA    memory (+ 8 bytes shared)
+
+Errors: none
+Warnings: none

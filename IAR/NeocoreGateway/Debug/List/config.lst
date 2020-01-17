@@ -1,0 +1,97 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               17/Jan/2020  12:49:06
+# Copyright 2004-2017 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for 8051
+#
+#    Core               =  plain
+#    Code model         =  banked
+#    Data model         =  large
+#    Calling convention =  xdata reentrant
+#    Constant location  =  data
+#    Dptr setup         =  1,16
+#                          
+#    Source file        =  
+#        \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\config.c
+#    Command line       =  
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW209C.tmp
+#        ("\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\config.c" -lcN
+#        "\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List" -o
+#        "\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj" -e --debug
+#        --core=plain --dptr=16,1 --data_model=large --code_model=banked
+#        --calling_convention=xdata_reentrant --place_constants=data
+#        --nr_virtual_regs 8 --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.0\8051\LIB\DLIB\dl8051Normal.h" -I
+#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\" -On
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_cross_call)
+#    Locale             =  Russian_Russia.1251
+#    List file          =  
+#        \\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List\config.lst
+#    Object file        =  
+#        \\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\config.r51
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\config.c
+      1          #include "stdint.h"
+      2          #include "string.h"
+      3          #include "stdbool.h"
+      4          #include "string.h"
+      5          #include "basic.h"
+      6          #include "config.h"
+      7          
+      8          static uint8_t default_key[16] = DEFAULT_KEY;
+      9          static uint8_t default_iv[16] = DEFAULT_IV;
+     10          database_s CONFIG;
+     11          
+     12          
+     13          void CF_init()
+     14          {
+     15            // Загрузка данных из различных источников
+     16            memcpy(CONFIG.stream_key, default_key, 16); 
+     17            memcpy(CONFIG.stream_iv,  default_iv, 16);
+     18            CONFIG.node_ver = NODE_VER;
+     19            CONFIG.node_type = NODE_TYPE;
+     20            CONFIG.sync_channel = DEFAULT_SYNC_CHANNEL;
+     21            CONFIG.panid = DEFAULT_PANID;
+     22          }
+
+   Maximum stack usage in bytes:
+
+   XSTACK Function
+   ------ --------
+     12   CF_init
+       12   -> memcpy
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      16  ?<Initializer for default_iv>
+      16  ?<Initializer for default_key>
+      88  CF_init
+       6  CF_init::?relay
+      36  CONFIG
+      16  default_iv
+      16  default_key
+
+ 
+ 88 bytes in segment BANKED_CODE
+  6 bytes in segment BANK_RELAYS
+ 32 bytes in segment XDATA_I
+ 32 bytes in segment XDATA_ID
+ 36 bytes in segment XDATA_Z
+ 
+ 38 bytes of CODE     memory
+ 88 bytes of HUGECODE memory
+ 68 bytes of XDATA    memory
+
+Errors: none
+Warnings: 1

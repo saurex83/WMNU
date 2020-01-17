@@ -1,0 +1,248 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               17/Jan/2020  12:49:06
+# Copyright 2004-2017 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for 8051
+#
+#    Core               =  plain
+#    Code model         =  banked
+#    Data model         =  large
+#    Calling convention =  xdata reentrant
+#    Constant location  =  data
+#    Dptr setup         =  1,16
+#                          
+#    Source file        =  
+#        \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\delays.c
+#    Command line       =  
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW211A.tmp
+#        ("\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\delays.c" -lcN
+#        "\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List" -o
+#        "\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj" -e --debug
+#        --core=plain --dptr=16,1 --data_model=large --code_model=banked
+#        --calling_convention=xdata_reentrant --place_constants=data
+#        --nr_virtual_regs 8 --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.0\8051\LIB\DLIB\dl8051Normal.h" -I
+#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\" -On
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_cross_call)
+#    Locale             =  Russian_Russia.1251
+#    List file          =  
+#        \\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List\delays.lst
+#    Object file        =  
+#        \\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\delays.r51
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\delays.c
+      1          /*!
+      2          \file  Модуль измерения интервалов времени и функция задержки времени
+      3          \brief Функции измерения времени и задержки
+      4          */
+      5          
+      6          #include "ioCC2530.h"
+      7          #include "delays.h"
+      8          #include "string.h"
+      9          
+     10          #define TICK_NS  31.25 // Количество нс в одном такте TIM2
+     11          #define TICK_US  0.03125 // Количество мкс в одном такте TIM2
+     12          #define TICK_PER_US 32 // Количество тактов в одной микросекунде
+     13          
+     14          // Максимальное кол-во тактов таймера. Константа 40 бит, 5 байт
+     15          static const uint32_t MAC_TIMER_MAX = 0xFFFFFFFFUL; 
+     16          static uint32_t DELAY_CALIBRATE_TICS; // Колибровка функции задержки
+     17          
+     18          // Публичные методы
+     19          void TIM_init(void);
+     20          void TIM_TimeStamp(TimeStamp_s* timestamp);
+     21          void TIM_delay(uint32_t delay);
+     22          uint32_t TIM_passedTime(TimeStamp_s* start, TimeStamp_s* stop);
+     23          void TIM_copy(TimeStamp_s *src, TimeStamp_s *dst);
+     24          
+     25          // Приватные
+     26          static inline uint32_t Interval(TimeStamp_s* start, TimeStamp_s* stop);
+     27          static void DelayCalibrate(void);
+     28          
+     29          /**
+     30          @brief Иницилизация таймера
+     31          @brief Используется таймер 2. MAC таймер
+     32          */
+     33          void TIM_init(void)
+     34          {
+     35            // Запускаем таймер, LATCH MODE = 1
+     36            // Latch mode фиксирует значение таймера переполнения при чтении T2M0
+     37            // ЗАпускаем MAC таймер без синхронизации с кварцем 32.768к
+     38            T2CTRL = (1<<0) | (1<<3); 
+     39            // Калибровка функции задержки
+     40            DelayCalibrate();
+     41          }
+     42          
+     43          /**
+     44          @brief Возвращает временую метку.
+     45          @params[out] timestamp указатель на временную метку 
+     46          */
+     47          void TIM_TimeStamp(TimeStamp_s* timestamp)
+     48          {
+     49            timestamp->byte[0] = T2M0;
+     50            timestamp->byte[1] = T2M1;
+     51            timestamp->byte[2] = T2MOVF0;
+     52            timestamp->byte[3] = T2MOVF1;
+     53          }
+     54          
+     55          /**
+     56          @brief Калибровка функции задержки TIM_delay
+     57          */
+     58          static void DelayCalibrate(void)
+     59          {
+     60            #define ACCURATE_VAL_US 500 
+     61            DELAY_CALIBRATE_TICS = 0;
+     62            TimeStamp_s start, stop;
+     63            uint32_t passed, cal;
+     64            
+     65            TIM_TimeStamp(&start);
+     66            TIM_delay(ACCURATE_VAL_US);
+     67            TIM_TimeStamp(&stop);
+     68            passed = TIM_passedTime(&start, &stop);
+     69            
+     70            cal = passed - ACCURATE_VAL_US;
+     71            DELAY_CALIBRATE_TICS = cal * TICK_PER_US; 
+     72          };
+     73          
+     74          /**
+     75          @brief Вычисляет количество тактов между двумя времеными метками
+     76          @return Количество тактов
+     77          */
+     78          static inline uint32_t Interval(TimeStamp_s* start, TimeStamp_s* stop)
+     79          {
+     80            uint32_t ret;
+     81          
+     82            if (stop->timer >= start->timer)
+     83              ret = stop->timer - start->timer;
+     84            else
+     85            { 
+     86              ret = (MAC_TIMER_MAX - start->timer) + stop->timer;
+     87            }
+     88            return ret;
+     89          }
+     90          
+     91          /**
+     92          @brief Вычисляет прошедшее время между двумя времеными метками
+     93          @return Время в мкс.
+     94          */
+     95          uint32_t TIM_passedTime(TimeStamp_s* start, TimeStamp_s* stop)
+     96          {
+     97            uint32_t ret = Interval(start, stop);
+     98            
+     99            ret = (uint32_t)((float)ret * TICK_US);
+    100            return ret;
+    101          }
+    102          
+    103          /**
+    104          @brief Задержка на заданное количество мкс. 
+    105          @details Погрешность около 20 мкс при значениях выше 150 мкс.
+    106           Рекомендуется использовать для организации задержек не менее 200 мкс.
+    107          @params[in] delay количество микросекунд. Не более 134217727 мкс (134.2 сек)
+    108          */
+    109          void TIM_delay(uint32_t delay)
+    110          {
+    111            uint32_t passed = 0;
+    112            TimeStamp_s start, now;
+    113            TIM_TimeStamp(&start);
+    114            
+    115            // Конвертируем мкс в такты и вносим поправку
+    116            delay = delay * TICK_PER_US; 
+    117            if (delay > DELAY_CALIBRATE_TICS)
+    118              delay -= DELAY_CALIBRATE_TICS;
+    119            
+    120            do
+    121            {
+    122              TIM_TimeStamp(&now);
+    123              passed = Interval(&start, &now);
+    124            } while (passed < delay);
+    125          }
+    126          
+    127          /**
+    128          @brief Копирование временной метки
+    129          @param[in] src указатель на исходную метку для копирование
+    130          @param[out] dst указатель на метку назначения
+    131          */
+    132          void TIM_copy(TimeStamp_s *src, TimeStamp_s *dst)
+    133          {
+    134            memcpy(src, dst, sizeof(TimeStamp_s));
+    135          }
+
+   Maximum stack usage in bytes:
+
+   ISTACK XSTACK Function
+   ------ ------ --------
+      0     40   DelayCalibrate
+        0     40   -> TIM_TimeStamp
+        0     40   -> TIM_delay
+        0     40   -> TIM_passedTime
+      0     54   Interval
+      3     40   TIM_TimeStamp
+      0     14   TIM_copy
+        0     14   -> memcpy
+      0     76   TIM_delay
+        0     36   -> Interval
+        0     36   -> TIM_TimeStamp
+      2      0   TIM_init
+        2      0   -> DelayCalibrate
+      0     58   TIM_passedTime
+        0     18   -> Interval
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ?<Initializer for MAC_TIMER_MAX>
+       4  ?<Initializer for __Constant_1f4>
+       4  ?<Initializer for __Constant_20>
+       4  ?<Initializer for __Constant_3d000000>
+       4  ?<Initializer for __Constant_fffffe0c>
+       4  DELAY_CALIBRATE_TICS
+     147  DelayCalibrate
+       6  DelayCalibrate::?relay
+     163  Interval
+       6  Interval::?relay
+       4  MAC_TIMER_MAX
+       1  T2CTRL
+       1  T2M0
+       1  T2M1
+       1  T2MOVF0
+       1  T2MOVF1
+      61  TIM_TimeStamp
+       6  TIM_TimeStamp::?relay
+      45  TIM_copy
+       6  TIM_copy::?relay
+     133  TIM_delay
+       6  TIM_delay::?relay
+      17  TIM_init
+       6  TIM_init::?relay
+      94  TIM_passedTime
+       6  TIM_passedTime::?relay
+       4  __Constant_1f4
+       4  __Constant_20
+       4  __Constant_3d000000
+       4  __Constant_fffffe0c
+
+ 
+ 660 bytes in segment BANKED_CODE
+  42 bytes in segment BANK_RELAYS
+   5 bytes in segment SFR_AN
+  20 bytes in segment XDATA_I
+  20 bytes in segment XDATA_ID
+   4 bytes in segment XDATA_Z
+ 
+  46 bytes of CODE     memory (+ 16 bytes shared)
+   0 bytes of DATA     memory (+  5 bytes shared)
+ 660 bytes of HUGECODE memory
+   8 bytes of XDATA    memory (+ 16 bytes shared)
+
+Errors: none
+Warnings: none

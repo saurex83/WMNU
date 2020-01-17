@@ -1,0 +1,250 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               17/Jan/2020  12:49:06
+# Copyright 2004-2017 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for 8051
+#
+#    Core               =  plain
+#    Code model         =  banked
+#    Data model         =  large
+#    Calling convention =  xdata reentrant
+#    Constant location  =  data
+#    Dptr setup         =  1,16
+#                          
+#    Source file        =  
+#        \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\frame.c
+#    Command line       =  
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW2292.tmp
+#        ("\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\frame.c" -lcN
+#        "\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List" -o
+#        "\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj" -e --debug
+#        --core=plain --dptr=16,1 --data_model=large --code_model=banked
+#        --calling_convention=xdata_reentrant --place_constants=data
+#        --nr_virtual_regs 8 --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.0\8051\LIB\DLIB\dl8051Normal.h" -I
+#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\" -On
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_cross_call)
+#    Locale             =  Russian_Russia.1251
+#    List file          =  
+#        \\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List\frame.lst
+#    Object file        =  
+#        \\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\frame.r51
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\frame.c
+      1          /**
+      2          @file Модуль описывает сетевой кадр и связанные с ним буферы данных
+      3          @brief Типы frame
+      4          */
+      5          
+      6          #include "frame.h"
+      7          #include "string.h"
+      8          #include "mem.h"
+      9          #include "nwdebuger.h"
+     10          #include "ioCC2530.h"
+     11          
+     12          frame_s* frame_create(void);
+     13          void frame_delete(frame_s *fr);
+     14          uint8_t frame_len(frame_s *fr);
+     15          uint8_t frame_getCount(void);
+     16          
+     17          static uint8_t NBR_FRAME = 0; //!< Количество фреймов в памяти
+     18          
+     19          /**
+     20          @brief Получить количество фреймов в памяти
+     21          @return Возвращает количество фреймов
+     22          */
+     23          uint8_t frame_getCount(void)
+     24          {
+     25            return NBR_FRAME;
+     26          }
+     27          
+     28          /**
+     29          @brief Добавить заголовок
+     30          @param[in] fr указатель на фрейм
+     31          @param[in] src данные для добавления
+     32          @param[in] len размер данных
+     33          */
+     34          void frame_addHeader(frame_s *fr, void *src, uint8_t len)
+     35          {
+     36            unsigned short EA_save = EA;
+     37            EA = 0; 
+     38            // Ранее небыло создано данных 
+     39            if (fr->payload == NULL)
+     40              {
+     41                fr->payload = re_malloc(len);
+     42                fr->len = len;
+     43                re_memcpy(fr->payload, src, len);
+     44                EA = EA_save;
+     45                return;
+     46              }
+     47            
+     48            uint8_t new_len = fr->len + len; // Новый размер
+     49            void *new_payload = re_malloc(new_len);
+     50            ASSERT(new_payload != NULL);
+     51            
+     52            // Копируем данные в конец области
+     53            re_memcpy((char*)new_payload + len, fr->payload, fr->len);
+     54            // Копируем данные спереди в свободную область
+     55            re_memcpy(new_payload, src, len);
+     56            // Уничтожаем старые данные
+     57            re_free(fr->payload);
+     58            fr->payload = new_payload;
+     59            fr->len = new_len;
+     60            EA = EA_save;
+     61          }
+     62          
+     63          /**
+     64          @brief Удалить заголовок
+     65          @param[in] fr указатель на фрейм
+     66          @param[in] len размер  удаляемых данных
+     67          */
+     68          void frame_delHeader(frame_s *fr, uint8_t len)
+     69          {
+     70            if (fr->payload == NULL)
+     71              return;
+     72          
+     73            if (fr->len <= len)
+     74              return;  
+     75            
+     76            uint8_t new_len = fr->len - len; // Новый размер
+     77            void *new_payload = re_malloc(new_len);
+     78            ASSERT(new_payload != NULL);
+     79            
+     80            // Копируем данные с пропуском первых len байт
+     81            re_memcpy((char*)new_payload, (char*)fr->payload + len, new_len);
+     82            
+     83            // Уничтожаем старые данные
+     84            re_free(fr->payload);
+     85            fr->payload = new_payload;
+     86            fr->len = new_len;
+     87          }
+     88          
+     89          /**
+     90          @brief Создание структуры frame
+     91          @return Указатель на структуру frame
+     92          */
+     93          frame_s* frame_create(void)
+     94          {
+     95              unsigned short EA_save = EA;
+     96              EA = 0; 
+     97              
+     98              frame_s* fr= (frame_s*)re_malloc(FRAME_S_SIZE);
+     99              ASSERT(fr != NULL);
+    100              
+    101              fr->payload = NULL;
+    102              fr->len = 0;
+    103              memset(&fr->meta, 0x00, META_S_SIZE);
+    104              NBR_FRAME++;
+    105              
+    106              EA = EA_save;
+    107              return fr;
+    108          };
+    109          
+    110          /**
+    111          @brief Удаление frame
+    112          @detail Проуедура так же удаляет все связанные с ней буфера fbuf
+    113          @param[in] fr указатель на структуру frame
+    114          */
+    115          void frame_delete(frame_s *fr)
+    116          {
+    117            unsigned short EA_save = EA;
+    118            EA = 0;  
+    119            
+    120            if (fr->payload != NULL)
+    121              re_free(fr->payload);
+    122           
+    123            NBR_FRAME--;
+    124            re_free(fr);
+    125            EA = EA_save;
+    126          }
+    127          
+    128          
+    129          /**
+    130          @brief Вычисляет размер цепочки fbuf
+    131          @param[in] fr указатель на frame_s
+    132          @return Количество байт в цепочке буферов
+    133          */
+    134          uint8_t frame_len(frame_s *fr)
+    135          {
+    136            return fr->len;
+    137          }
+
+   Maximum stack usage in bytes:
+
+   ISTACK XSTACK Function
+   ------ ------ --------
+      1     24   frame_addHeader
+        0     18   -> printf
+        0     24   -> printf
+        0     18   -> re_free
+        0     18   -> re_malloc
+        0     20   -> re_memcpy
+      0     18   frame_create
+        0     14   -> memset
+        0     12   -> printf
+        0     18   -> printf
+        0     12   -> re_malloc
+      1     20   frame_delHeader
+        0     14   -> printf
+        0     20   -> printf
+        0     14   -> re_free
+        0     14   -> re_malloc
+        0     16   -> re_memcpy
+      0     10   frame_delete
+        0     10   -> re_free
+      2      0   frame_getCount
+      2      0   frame_len
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      22  ?<Constant "*ASSERT* %s:%d:%s -> ">
+      69  ?<Constant "\\\\vmware-host\\Shared ...">
+       3  ?<Constant "\r\n">
+      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s
+      69  ?<Initializer for <Constant "\\\\vmware-host\\
+       3  ?<Initializer for <Constant "\r\n">>
+      16  ?<Initializer for __FUNCTION__>
+      16  ?<Initializer for __FUNCTION__>_1
+      13  ?<Initializer for __FUNCTION__>_2
+       1  NBR_FRAME
+       1  _A_IEN0
+     367  frame_addHeader
+       6  frame_addHeader::?relay
+     168  frame_create
+       6  frame_create::?relay
+     215  frame_delHeader
+       6  frame_delHeader::?relay
+      71  frame_delete
+       6  frame_delete::?relay
+      16  frame_getCount
+       6  frame_getCount::?relay
+      19  frame_len
+       6  frame_len::?relay
+      45  -- Other
+
+ 
+ 856 bytes in segment BANKED_CODE
+  36 bytes in segment BANK_RELAYS
+   1 byte  in segment SFR_AN
+ 139 bytes in segment XDATA_I
+ 139 bytes in segment XDATA_ID
+   1 byte  in segment XDATA_Z
+ 
+ 175 bytes of CODE     memory
+   0 bytes of DATA     memory (+ 1 byte shared)
+ 856 bytes of HUGECODE memory
+ 140 bytes of XDATA    memory
+
+Errors: none
+Warnings: none

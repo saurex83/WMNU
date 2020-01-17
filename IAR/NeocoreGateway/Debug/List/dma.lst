@@ -1,0 +1,94 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               17/Jan/2020  17:37:48
+# Copyright 2004-2017 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for 8051
+#
+#    Core               =  plain
+#    Code model         =  banked
+#    Data model         =  large
+#    Calling convention =  xdata reentrant
+#    Constant location  =  data
+#    Dptr setup         =  1,16
+#                          
+#    Source file        =  
+#        \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\dma.c
+#    Command line       =  
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW7319.tmp
+#        ("\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\dma.c"
+#        -lcN "\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List" -o
+#        "\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj" -e --debug
+#        --core=plain --dptr=16,1 --data_model=large --code_model=banked
+#        --calling_convention=xdata_reentrant --place_constants=data
+#        --nr_virtual_regs 8 --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.0\8051\LIB\DLIB\dl8051Normal.h" -I
+#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\" -On
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_cross_call)
+#    Locale             =  Russian_Russia.1251
+#    List file          =  
+#        \\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List\dma.lst
+#    Object file        =  
+#        \\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\dma.r51
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\dma.c
+      1          #include "dma.h"
+      2          #include "ioCC2530.h"
+      3          
+      4          DMA_s DMA_CH[5];
+      5          
+      6          /**
+      7          @brief Настройка DMA каналов.
+      8          @detail Согласно документации каналы 1-4 идут последовательно
+      9          */
+     10          void DMA_init()
+     11          {
+     12              // Настроим канал 0 DMA для загрузки данных в AES
+     13            uint16_t CONF_ADDR = (uint16_t)&DMA_CH[0];
+     14            DMA0CFGH = CONF_ADDR >> 8;
+     15            DMA0CFGL = CONF_ADDR & 0xFF;
+     16            
+     17            // Настроим канал 1 DMA для выгрузки данных из AES
+     18            CONF_ADDR = (uint16_t)&DMA_CH[1];
+     19            DMA1CFGH = CONF_ADDR >> 8;
+     20            DMA1CFGL = CONF_ADDR & 0xFF;
+     21          }
+
+   Maximum stack usage in bytes:
+
+   ISTACK Function
+   ------ --------
+      0   DMA_init
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       1  DMA0CFGH
+       1  DMA0CFGL
+       1  DMA1CFGH
+       1  DMA1CFGL
+      40  DMA_CH
+      37  DMA_init
+       6  DMA_init::?relay
+
+ 
+ 37 bytes in segment BANKED_CODE
+  6 bytes in segment BANK_RELAYS
+  4 bytes in segment SFR_AN
+ 40 bytes in segment XDATA_Z
+ 
+  6 bytes of CODE     memory
+  0 bytes of DATA     memory (+ 4 bytes shared)
+ 37 bytes of HUGECODE memory
+ 40 bytes of XDATA    memory
+
+Errors: none
+Warnings: none

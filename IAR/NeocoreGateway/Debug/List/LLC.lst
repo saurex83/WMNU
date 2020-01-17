@@ -1,0 +1,419 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               17/Jan/2020  12:49:07
+# Copyright 2004-2017 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for 8051
+#
+#    Core               =  plain
+#    Code model         =  banked
+#    Data model         =  large
+#    Calling convention =  xdata reentrant
+#    Constant location  =  data
+#    Dptr setup         =  1,16
+#                          
+#    Source file        =  
+#        \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\LLC.c
+#    Command line       =  
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW235E.tmp
+#        ("\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\LLC.c"
+#        -lcN "\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List" -o
+#        "\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj" -e --debug
+#        --core=plain --dptr=16,1 --data_model=large --code_model=banked
+#        --calling_convention=xdata_reentrant --place_constants=data
+#        --nr_virtual_regs 8 --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.0\8051\LIB\DLIB\dl8051Normal.h" -I
+#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\" -On
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_cross_call)
+#    Locale             =  Russian_Russia.1251
+#    List file          =  
+#        \\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List\LLC.lst
+#    Object file        =  
+#        \\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\LLC.r51
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\LLC.c
+      1          /**
+      2          @file 
+      3          @brief Модуль содержит реализацию интерфейса радио для приема/передачи данных.
+      4          */
+      5          
+      6          #include "LLC.h"
+      7          #include "MAC.h"
+      8          #include "TIC.h"
+      9          #include "mem.h"
+     10          #include "nwdebuger.h"
+     11          #include "ioCC2530.h"
+     12          
+     13          // Публичные методы
+     14          void LLC_Init(void);
+     15          
+     16          // Методы модуля
+     17          void LLC_SetRXCallback(void (*fn)(frame_s *fr));
+     18          void LLC_TimeAlloc(void (*fn)(void)); 
+     19          bool LLC_AddTask(frame_s* fr);
+     20          uint8_t LLC_GetTaskLen(void);
+     21          void LLC_Reset(void);
+     22          
+     23          // Закрытые методы
+     24          static void LLC_SE_HNDL(uint8_t TS); //!< Обработчик завешения слота TIC
+     25          static void LLC_Shelduler(uint8_t TS);
+     26          static void LLC_RX_HNDL(frame_s *fr); //!< Обработчик примема пакета
+     27          static void LLC_RunTimeAlloc(void);
+     28          
+     29          // Переменные модуля
+     30          #define UNICAST_SEND_ATEMPTS 5 //!< Количество попыток передачи пакета 
+     31          #define BROADCAST_SEND_ATEMPTS 3 //!< Количество попыток передачи пакета 
+     32          #define MAX_nbrTASKS 20 //!< Максимальное количество задач в очередях
+     33          
+     34          typedef struct LLCTask LLCTask;
+     35          typedef struct TimeAllocFunc TimeAllocFunc;
+     36          static bool tasksBLOCK; //!< блокировка доступа к LLCTask
+     37          
+     38          /**
+     39          @brief Описание задачи модуля LLC
+     40          */
+     41          struct LLCTask
+     42          {
+     43            LLCTask *next; //!< Указатель на следующую задачу. NULL - конец очереди
+     44            uint8_t TS; //!< Номер временого канала для передачи сообщения
+     45            uint8_t CH; //!< Номера радиоканала для передачи сообщения
+     46            frame_s *fr; //!< Указатель на данные для передачи
+     47          };
+     48          
+     49          /**
+     50          @brief Список функций вызываемых по завешению временного слота
+     51          */
+     52          struct TimeAllocFunc
+     53          {
+     54            TimeAllocFunc *next; //!< Указатель на следующую функцию. NULL - конец списка
+     55            void (*fn)(void); //!< Указатель на функцию. NULL - нет обработчика
+     56          };
+     57          
+     58          static LLCTask *FirstTask; //!< Указатель на первый элемент очереди задач
+     59          static uint8_t nbrTasks; // Количество задач в очереди
+     60          
+     61          /**
+     62          @brief Обратный вызов при приеме пакета данных
+     63          */
+     64          static void (*RXCallback)(frame_s *fr);
+     65          
+     66          /**
+     67          @brief Первый элемент обработчика конца временного слота
+     68          @details Элемент создается статически, все остальные задачи создаются re_malloc
+     69          и добавляются к HeadAllocFunc.
+     70          */
+     71          static TimeAllocFunc HeadAllocFunc;
+     72          
+     73          /**
+     74          @brief Инициализация модуля
+     75          @detail Иницилизирует MAC
+     76          */
+     77          void LLC_Init(void)
+     78          {  
+     79            nbrTasks = 0; 
+     80            tasksBLOCK = false;
+     81            FirstTask = NULL;
+     82            // TODO Очистить очередь HeadTask
+     83            // Регистрируем обработчики
+     84            TIC_SetSECallback(LLC_SE_HNDL); // Завершение временного слота
+     85            MAC_SetRXCallback(LLC_RX_HNDL); // Принято сообщение
+     86          }
+     87          
+     88          /**
+     89          @brief Сброс модуля
+     90          @detail Удаяляем все пакеты в очереди. Аллокатор времени не трогаем
+     91          */
+     92          void LLC_Reset(void)
+     93          {
+     94            LLCTask *task = FirstTask;
+     95            LLCTask *next;
+     96            
+     97            while (task != NULL)
+     98            {
+     99              next = task;
+    100              re_free(task);
+    101              task = next;
+    102            }
+    103            
+    104          }
+    105          
+    106          /**
+    107          @brief Количество задач в очереди
+    108          @return количество задач в очереди
+    109          */
+    110          uint8_t LLC_GetTaskLen(void)
+    111          {
+    112            return nbrTasks;
+    113          }
+    114          
+    115          void LLC_SetRXCallback(void (*fn)(frame_s *fr))
+    116          {
+    117            ASSERT(fn != NULL);
+    118            RXCallback = fn;
+    119          }
+    120          
+    121          /**
+    122          @brief Добавляет обработчик заверешения временого слота в список
+    123          */
+    124          void LLC_TimeAlloc(void (*fn)(void))
+    125          {
+    126            TimeAllocFunc *ta = re_malloc(sizeof(TimeAllocFunc));
+    127            ASSERT(ta != NULL);
+    128            ta->next = NULL;
+    129            ta->fn = fn;
+    130          
+    131            // Перебираемся в конец списка
+    132            TimeAllocFunc *next = &HeadAllocFunc;
+    133            while (next->next != NULL)
+    134              next = next->next;
+    135            
+    136            // Добавляем новый элемент
+    137            next->next = ta;
+    138          };
+    139          
+    140          /**
+    141          @brief Добавляем задачу в очередь
+    142          @brief Взовращает true если задача добавлена в очередь. false, если размер 
+    143           очереди достиг максимального размера.
+    144          */
+    145          bool LLC_AddTask(frame_s* fr)
+    146          {
+    147             ASSERT(fr != NULL);
+    148           
+    149              if (nbrTasks == MAX_nbrTASKS)
+    150                return false;
+    151              
+    152             // Ждем пока разблокируется доступ.
+    153             while (tasksBLOCK);
+    154             tasksBLOCK = true;
+    155          
+    156             // Создаем новую задачу
+    157             LLCTask *new_task = (LLCTask*)re_malloc(sizeof(LLCTask));
+    158             ASSERT(new_task !=NULL); 
+    159                
+    160             new_task->TS = fr->meta.TS;
+    161             new_task->CH = fr->meta.CH;
+    162             new_task->fr = fr;
+    163             
+    164            LOG_ON("Add task = %u, CH = %d, TS = %d, OTS = %d. fr = %d",
+    165                (uint16_t)new_task,new_task->CH, new_task->TS, fr->meta.TS, (uint16_t)fr);
+    166            
+    167             // Если в очереди нет задач, добавим первую
+    168             if (FirstTask == NULL) 
+    169             {
+    170               new_task->next = NULL;
+    171               FirstTask = new_task;
+    172             }
+    173             // Если в очереди были задачи то вставим новую в голову списка
+    174             else 
+    175             {
+    176               new_task->next = FirstTask;
+    177               FirstTask = new_task;  
+    178             }
+    179             
+    180             nbrTasks ++;
+    181             tasksBLOCK = false;
+    182          
+    183             return true;
+    184          }
+    185          
+    186          
+    187          
+    188          
+    189          /**
+    190          @brief Планировщик задач
+    191          @details Соотносит задачи в очереди и свободные временные слоты MAC уровня.
+    192          При освобождении временных слотов, планировщик устанавливает данные для 
+    193          передачи в MAC.
+    194          @param[in] TS номер текущего временого слота
+    195          */
+    196          static void LLC_Shelduler(uint8_t TS)
+    197          {
+    198            // Если работает функция добавления задачи, то обслуживание очереди не
+    199            // производится. Это может привести к необычным последствиям
+    200            if (tasksBLOCK)
+    201              return;
+    202            tasksBLOCK = true;
+    203            
+    204            // Перебираем попорядку весь список на отправку
+    205            // HeadTask только указатель на первый элемент, сам он не подлежит отправке
+    206            LLCTask *task = FirstTask;
+    207            LLCTask *last = FirstTask;
+    208            LLCTask *next = FirstTask;
+    209            
+    210            while (task != NULL)
+    211            {    
+    212              if (MAC_GetTXState(task->TS)) // Занят ли временой слот
+    213              {
+    214                // Если слот занят переходим к следующей задаче
+    215                last = task;
+    216                task = task->next;
+    217                continue; 
+    218              }
+    219              
+    220              //Выбераем количество попыток передачи в зависимости от типа пакета
+    221              uint8_t attempts;
+    222              if (task->fr->meta.TX_METHOD == UNICAST)
+    223                attempts = UNICAST_SEND_ATEMPTS;
+    224              else if (task->fr->meta.TX_METHOD == BROADCAST)
+    225                attempts = BROADCAST_SEND_ATEMPTS;
+    226              else
+    227                ASSERT(false);
+    228              
+    229              MAC_Send(task->fr, attempts);
+    230              
+    231              next = task->next; // Запомним следующую задачу
+    232              
+    233              // Удаляем текущую задачу из списка
+    234              if (task == FirstTask)
+    235              {
+    236              // Удаляемым элементом является указателем на голову
+    237                 FirstTask = next;
+    238                 last = FirstTask;
+    239              }
+    240              else
+    241              {
+    242                // Удаляемым элементом является промежуточный элемент
+    243                last->next = next;
+    244              }
+    245              
+    246              nbrTasks--;
+    247              LOG_OFF("Free task = %u, nbrTasks = %d\r\n",
+    248                  (uint16_t)task, nbrTasks); 
+    249              re_free(task);
+    250              task = next;
+    251            }
+    252            
+    253            tasksBLOCK = false;
+    254          }
+    255          
+    256          /**
+    257          @brief Обработчик заверешния временого слота
+    258          @details Обратный вызов из TIC. Обработчик вызывает планировщик задач очереди
+    259          и передает управление зарегистрированым функциям с помощью LLC_TimeAlloc.
+    260          @param[in] TS номер завершенного временого слота
+    261          */
+    262          static void LLC_SE_HNDL(uint8_t TS)
+    263          {
+    264            LLC_Shelduler(TS);
+    265            LLC_RunTimeAlloc();
+    266          }
+    267          
+    268          static void LLC_RX_HNDL(frame_s *fr)
+    269          {
+    270            ASSERT(RXCallback !=NULL);
+    271            RXCallback(fr);
+    272          }
+    273          
+    274          /**
+    275          @brief Передаем управление зарегистрированным функциям
+    276          */
+    277          static void LLC_RunTimeAlloc(void)
+    278          {
+    279              TimeAllocFunc *next = &HeadAllocFunc;
+    280            // HeadAllocFunc служит только для указания на первый элемент в очереди
+    281            // так что его нужно пропустить и переходить сразу к next
+    282            while (next->next != NULL)
+    283            {
+    284              next->next->fn();
+    285              next = next->next;
+    286            }
+    287          }
+
+   Maximum stack usage in bytes:
+
+   ISTACK XSTACK Function
+   ------ ------ --------
+      1     18   LLC_AddTask
+        0     12   -> printf
+        0     18   -> printf
+        0     12   -> re_malloc
+      2      0   LLC_GetTaskLen
+      2      0   LLC_Init
+        2      0   -> MAC_SetRXCallback
+        2      0   -> TIC_SetSECallback
+      0     16   LLC_RX_HNDL
+        0     10   -> printf
+        0     16   -> printf
+      0     10   LLC_Reset
+        0     10   -> re_free
+      0     18   LLC_RunTimeAlloc
+      0      9   LLC_SE_HNDL
+        0      9   -> LLC_RunTimeAlloc
+        0      9   -> LLC_Shelduler
+      0     16   LLC_SetRXCallback
+        0     10   -> printf
+        0     16   -> printf
+      0     31   LLC_Shelduler
+        0     16   -> MAC_GetTXState
+        0     16   -> MAC_Send
+        0     16   -> printf
+        0     22   -> printf
+        0     16   -> re_free
+      0     18   LLC_TimeAlloc
+        0     12   -> printf
+        0     18   -> printf
+        0     12   -> re_malloc
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      22  ?<Constant "*ASSERT* %s:%d:%s -> ">
+      67  ?<Constant "\\\\vmware-host\\Shared ...">
+       3  ?<Constant "\r\n">
+      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s
+      67  ?<Initializer for <Constant "\\\\vmware-host\\
+       3  ?<Initializer for <Constant "\r\n">>
+      18  ?<Initializer for __FUNCTION__>
+      14  ?<Initializer for __FUNCTION__>_1
+      12  ?<Initializer for __FUNCTION__>_2
+      14  ?<Initializer for __FUNCTION__>_3
+      12  ?<Initializer for __FUNCTION__>_4
+       2  FirstTask
+       4  HeadAllocFunc
+     310  LLC_AddTask
+       6  LLC_AddTask::?relay
+      16  LLC_GetTaskLen
+       6  LLC_GetTaskLen::?relay
+      47  LLC_Init
+       6  LLC_Init::?relay
+      98  LLC_RX_HNDL
+       6  LLC_RX_HNDL::?relay
+      43  LLC_Reset
+       6  LLC_Reset::?relay
+      67  LLC_RunTimeAlloc
+       6  LLC_RunTimeAlloc::?relay
+      20  LLC_SE_HNDL
+       6  LLC_SE_HNDL::?relay
+      80  LLC_SetRXCallback
+       6  LLC_SetRXCallback::?relay
+     317  LLC_Shelduler
+       6  LLC_Shelduler::?relay
+     148  LLC_TimeAlloc
+       6  LLC_TimeAlloc::?relay
+       2  RXCallback
+       1  nbrTasks
+       1  tasksBLOCK
+      70  -- Other
+
+ 
+ 1 146 bytes in segment BANKED_CODE
+    60 bytes in segment BANK_RELAYS
+   162 bytes in segment XDATA_I
+   162 bytes in segment XDATA_ID
+    10 bytes in segment XDATA_Z
+ 
+   222 bytes of CODE     memory
+ 1 146 bytes of HUGECODE memory
+   172 bytes of XDATA    memory
+
+Errors: none
+Warnings: none

@@ -1,0 +1,227 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               17/Jan/2020  12:49:06
+# Copyright 2004-2017 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for 8051
+#
+#    Core               =  plain
+#    Code model         =  banked
+#    Data model         =  large
+#    Calling convention =  xdata reentrant
+#    Constant location  =  data
+#    Dptr setup         =  1,16
+#                          
+#    Source file        =  
+#        \\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\ethernet.c
+#    Command line       =  
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW21D6.tmp
+#        ("\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\ethernet.c" -lcN
+#        "\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List" -o
+#        "\\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj" -e --debug
+#        --core=plain --dptr=16,1 --data_model=large --code_model=banked
+#        --calling_convention=xdata_reentrant --place_constants=data
+#        --nr_virtual_regs 8 --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.0\8051\LIB\DLIB\dl8051Normal.h" -I
+#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\" -On
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_cross_call)
+#    Locale             =  Russian_Russia.1251
+#    List file          =  
+#        \\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List\ethernet.lst
+#    Object file        =  
+#        \\vmware-host\Shared
+#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\ethernet.r51
+#
+###############################################################################
+
+\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\ethernet.c
+      1          #include "frame.h"
+      2          #include "Net_frames.h"
+      3          #include "stdint.h"
+      4          #include "nwdebuger.h"
+      5          #include "LLC.h"
+      6          #include "mem.h"
+      7          
+      8          void ETH_Send(frame_s *fr);
+      9          
+     10          static void ETH_RX_HNDL(frame_s *fr);
+     11          static void (*RXCallback)(frame_s *fr); //frame_s RAW_LAY, wthout ETH_LAY
+     12          static bool validate(ETH_LAY *eth);
+     13          static ETH_LAY* extract_header(frame_s *fr);
+     14          static void send_ack(ETH_LAY *eth);
+     15          static frame_s* strip_header(frame_s *fr);
+     16          
+     17          /**
+     18          @brief Иницилизация модуля
+     19          */
+     20          void ETH_Init(void)
+     21          {
+     22            RXCallback = NULL; 
+     23            LLC_SetRXCallback(ETH_RX_HNDL);
+     24          }
+     25          
+     26          /**
+     27          @brief Установка обработчика приема пакета ETH
+     28          */
+     29          void ETH_Set_RXCallback(void (*fn)(frame_s *fr))
+     30          {
+     31            ASSERT(fn != NULL);
+     32            RXCallback = fn;
+     33          }
+     34          
+     35          /**
+     36          @brief Обработка принятого пакет сети.
+     37          @detail После валидации пакета, уничтожается заголовок ETH и пакет передается
+     38           на дальнейшую обработку вверх по стеку с помощью обратного вызова RXCallback
+     39          */
+     40          static void ETH_RX_HNDL(frame_s *fr)
+     41          {
+     42            ASSERT(fr != NULL);
+     43            
+     44            bool valid;
+     45            frame_s *striped_frame;
+     46            
+     47            ETH_LAY* eth_h = extract_header(fr);
+     48            
+     49            // Извлечь заголовок не удалось
+     50            if (eth_h == NULL)
+     51              goto ERR_FRAME;
+     52            
+     53            valid = validate(eth_h);
+     54           
+     55            // Заголовок не верный
+     56            if (!valid)
+     57              goto ERR_FRAME;
+     58           
+     59            // Требуется отправить подтверждение приема пакета
+     60            if (eth_h->ETH_T.bits.ACK)
+     61              send_ack(eth_h);
+     62            
+     63            // Создаем новый пакет без заголовка и удаляем исходный
+     64            striped_frame = strip_header(fr);
+     65            frame_delete(fr);
+     66            ASSERT(striped_frame != NULL);
+     67            
+     68            // Передаем обработчику выше по стеку
+     69            ASSERT(RXCallback != NULL);
+     70            RXCallback(striped_frame);
+     71            
+     72            re_free(eth_h);
+     73            return;
+     74            
+     75          ERR_FRAME:
+     76            frame_delete(fr);
+     77            re_free(eth_h);
+     78            return;
+     79          }
+     80          
+     81          /**
+     82          @brief Создает новый пакет без заголовка ETH_H
+     83          @return указатель на новый frame_s*. NULL - не удалось создать пакет
+     84          */
+     85          static frame_s* strip_header(frame_s *fr)
+     86          {
+     87          }
+     88          
+     89          /**
+     90          @brief Подготавливает и отпправляет подтверждение приема пакета
+     91          */
+     92          static void send_ack(ETH_LAY *eth)
+     93          {
+     94           
+     95          }
+     96          
+     97          static bool validate(ETH_LAY *eth)
+     98          {
+     99            return true;
+    100          }
+    101          
+    102          static ETH_LAY* extract_header(frame_s *fr)
+    103          {
+    104            ETH_LAY* eth_h = (ETH_LAY*)re_malloc(ETH_LAY_SIZE);
+    105            ASSERT(eth_h != NULL);
+    106            
+    107            uint8_t len = frame_len(fr);
+    108            ASSERT(len >= ETH_LAY_SIZE);
+    109            
+    110            //fbuf_s *fb = frame_get_fbuf_head(fr);
+    111            //re_memcpy(eth_h, fb->payload, ETH_LAY_SIZE);
+    112            return eth_h;
+    113          }
+
+   Maximum stack usage in bytes:
+
+   ISTACK XSTACK Function
+   ------ ------ --------
+      2      0   ETH_Init
+        2      0   -> LLC_SetRXCallback
+      0     20   ETH_RX_HNDL
+        0     14   -> extract_header
+        0     14   -> frame_delete
+        0     14   -> printf
+        0     20   -> printf
+        0     14   -> re_free
+        0     14   -> send_ack
+        0     14   -> strip_header
+        0     14   -> validate
+      0     16   ETH_Set_RXCallback
+        0     10   -> printf
+        0     16   -> printf
+      0     34   extract_header
+        0     14   -> frame_len
+        0     14   -> printf
+        0     20   -> printf
+        0     14   -> re_malloc
+      0     14   send_ack
+      0     14   strip_header
+      0     14   validate
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      22  ?<Constant "*ASSERT* %s:%d:%s -> ">
+      72  ?<Constant "\\\\vmware-host\\Shared ...">
+       3  ?<Constant "\r\n">
+      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s
+      72  ?<Initializer for <Constant "\\\\vmware-host\\
+       3  ?<Initializer for <Constant "\r\n">>
+      19  ?<Initializer for __FUNCTION__>
+      12  ?<Initializer for __FUNCTION__>_1
+      15  ?<Initializer for __FUNCTION__>_2
+      28  ETH_Init
+       6  ETH_Init::?relay
+     319  ETH_RX_HNDL
+       6  ETH_RX_HNDL::?relay
+      80  ETH_Set_RXCallback
+       6  ETH_Set_RXCallback::?relay
+       2  RXCallback
+     162  extract_header
+       6  extract_header::?relay
+       3  send_ack
+       6  send_ack::?relay
+       3  strip_header
+       6  strip_header::?relay
+       4  validate
+       6  validate::?relay
+      46  -- Other
+
+ 
+ 599 bytes in segment BANKED_CODE
+  42 bytes in segment BANK_RELAYS
+ 143 bytes in segment XDATA_I
+ 143 bytes in segment XDATA_ID
+   2 bytes in segment XDATA_Z
+ 
+ 185 bytes of CODE     memory
+ 599 bytes of HUGECODE memory
+ 145 bytes of XDATA    memory
+
+Errors: none
+Warnings: 1

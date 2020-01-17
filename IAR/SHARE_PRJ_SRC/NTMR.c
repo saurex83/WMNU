@@ -86,7 +86,7 @@ void NT_Init(void)
   #endif
 
   // Переходим на 32 Мгц
-  CLKCONCMD = (1<<3);
+  CLKCONCMD = 0;// (1<<3);
   while (CLKCONSTA&(1<<6));
   
   NT_IRQEnable(false);
