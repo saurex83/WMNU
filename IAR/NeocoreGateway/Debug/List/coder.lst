@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               17/Jan/2020  17:37:48
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               17/Jan/2020  20:01:10
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,7 +14,7 @@
 #    Source file        =  
 #        \\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW71B1.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EWB6D7.tmp
 #        ("\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c" -lcN
 #        "\\vmware-host\Shared
@@ -449,7 +449,7 @@
     408                DMAARM |= 0x01;  
     409                // Активируем выгрузку только последнего блока
     410                if (!block_len && (block == nbrBlocks - 1))
-    411                  DMAARM = 0x03;
+    411                  DMAARM |= 0x03;
     412                
     413                DMAREQ |= 0x01;
     414                while (DMAARM&0x03);          

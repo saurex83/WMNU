@@ -552,7 +552,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 5 90 30 6 93 26 62 4 96 14 29 11 55 97 10</file>
+                    <file> 26 29 5 124 6 93 90 96 30 11 62 4 14 97 10 55</file>
                 </tool>
                 <tool>
                     <name>ICC8051</name>
@@ -575,11 +575,11 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 30 96 5 4 14 10 93 42 26 97 62 29 6 11</file>
+                    <file> 96 42 30 11 5 4 26 29 6 93 90 14 97 10 62</file>
                 </tool>
                 <tool>
                     <name>ICC8051</name>
-                    <file> 96 5 30 97 6 11 29 10 14 26 93 4</file>
+                    <file> 96 5 30 97 6 11 29 10 14 26 93 4 90</file>
                 </tool>
             </inputs>
         </file>

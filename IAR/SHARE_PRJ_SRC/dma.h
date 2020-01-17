@@ -20,7 +20,7 @@ typedef struct //!< Структура с настройками DMA
   uint8_t   VLEN        :3;
   };
   struct  {
-  uint8_t   LENL        :8;
+  uint8_t   LENL        ;
   };
   struct  {
   uint8_t   TRIG        :5;

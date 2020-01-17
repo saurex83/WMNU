@@ -1,37 +1,13 @@
 #include "nwdebuger.h"
 #include "ioCC2530.h"
 #include "stdint.h"
+#include "stdbool.h"
 #include "DMA.h"
 
-typedef struct //!< Структура с настройками DMA для UART 
-{
-  uint8_t  SRCADDRH;
-  uint8_t  SRCADDRL;
-  uint8_t  DSTADDRH;
-  uint8_t  DSTADDRL;
-  struct  {
-  uint8_t   LENH        :5;
-  uint8_t   VLEN        :3;
-  };
-  struct  {
-  uint8_t   LENL        :8;
-  };
-  struct  {
-  uint8_t   TRIG        :5;
-  uint8_t   TMODE       :2;
-  uint8_t   WORDSIZE    :1;
-  };
-  struct {
-  uint8_t   PRIORITY    :2;
-  uint8_t   M8          :1;
-  uint8_t   IRQMASK     :1;
-  uint8_t   DESTINC     :2;
-  uint8_t   SRCINC      :2;
-  };
-} __attribute__((packed)) DMA_UART_s;
+#define UART_RX_BUF_LEN 10 //!< Размер приемного буфера
+#define TRIG_URX0 14
+#define WAIT_THR 100//!< порог ожидания следующего байта в uart
 
-#define UART_RX_BUF_LEN 257 //!< Размер приемного буфера
-DMA_UART_s DMA_UART_DR; //!< DMA на чтение данных
 static uint8_t uart_rx_buff[UART_RX_BUF_LEN];
 
 static void uart_dma_init(void);
@@ -41,21 +17,37 @@ static void uart_dma_init(void)
   // Настроим канал 2 DMA для загрузки данных из uart
   // DMA0 и 1 заняты кодером AES
   
-  ST_DEF(DMA_CH[2], SRCADDRL, 0x70); //U0DBUF
-  ST_DEF(DMA_CH[2], SRCADDRH, 0xC1);
-  ST_DEF(DMA_CH[2], LENL, 16);
-  ST_DEF(DMA_CH[2], DSTADDRH, LADDR(uart_rx_buff)); // Пишем данные XENCDI = 0xB1 
-  ST_DEF(DMA_CH[2], DSTADDRL, HADDR(uart_rx_buff)); //  
+  ST_DEF(DMA_CH[2], SRCADDRL, 0xC1); //U0DBUF
+  ST_DEF(DMA_CH[2], SRCADDRH, 0x70);
+  ST_DEF(DMA_CH[2], LENL, UART_RX_BUF_LEN);
+  ST_DEF(DMA_CH[2], DSTADDRH, HADDR(uart_rx_buff)); // Пишем данные XENCDI = 0xB1 
+  ST_DEF(DMA_CH[2], DSTADDRL, LADDR(uart_rx_buff)); //  
   ST_DEF(DMA_CH[2], PRIORITY, 0x00); // Низкий приоритет
   ST_DEF(DMA_CH[2], M8, 0x00); // Используем 8 бит для счетика длинны
   ST_DEF(DMA_CH[2], IRQMASK, 0x00); // Запрещаем генерировать перывания
   ST_DEF(DMA_CH[2], DESTINC, 0x01); // Увеличиваем адресс назначения
   ST_DEF(DMA_CH[2], SRCINC, 0x00); // Не увеличиваем адресс источника
-  ST_DEF(DMA_CH[2], TRIG, 0); // Тригер по загрузке
+  ST_DEF(DMA_CH[2], TRIG, TRIG_URX0); // Тригер по приходу байта UART0
   ST_DEF(DMA_CH[2], WORDSIZE, 0x00); // Копируем по 1 байту
-  ST_DEF(DMA_CH[2], TMODE, 0x01); //  Блочное копирование по тригеру
+  ST_DEF(DMA_CH[2], TMODE, 0x00); //  Одиночное копирование по тригеру
   ST_DEF(DMA_CH[2], VLEN, 0x00); //  Количество байт определяет поле LEN  
   ST_DEF(DMA_CH[2], LENH, 0x00); 
+}
+
+/**
+@brief Прием команды по uart
+@param[out] size размер принятых данных
+@return указатель на начало данных или null
+*/
+uint8_t* uart_recv_cmd(uint8_t *size)
+{  
+  // Начинаем прием
+  DMAARM |= 0x04;
+  
+  while (DMAARM&0x04);
+  
+  *size = UART_RX_BUF_LEN;
+  return uart_rx_buff;
 }
 
 /**
@@ -78,7 +70,7 @@ void com_uart_init(void)
   // Включаем альтернативные функции выводов
   P0SEL = (1<<2)|(1<<3);
   U0CSR |= (1<<6);
-//  uart_dma_init();
+  uart_dma_init();
 }
 
 void uart_putchar(char x){

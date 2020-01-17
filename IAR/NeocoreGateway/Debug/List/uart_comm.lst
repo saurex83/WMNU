@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               17/Jan/2020  17:37:48
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               17/Jan/2020  20:05:17
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -15,7 +15,7 @@
 #        \\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\NeocoreGateway\src\uart_comm.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW7423.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW7BF8.tmp
 #        ("\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\NeocoreGateway\src\uart_comm.c" -lcN
 #        "\\vmware-host\Shared
@@ -43,136 +43,136 @@
       1          #include "nwdebuger.h"
       2          #include "ioCC2530.h"
       3          #include "stdint.h"
-      4          #include "DMA.h"
-      5          
-      6          typedef struct //!< Структура с настройками DMA для UART 
-      7          {
-      8            uint8_t  SRCADDRH;
-      9            uint8_t  SRCADDRL;
-     10            uint8_t  DSTADDRH;
-     11            uint8_t  DSTADDRL;
-     12            struct  {
-     13            uint8_t   LENH        :5;
-     14            uint8_t   VLEN        :3;
-     15            };
-     16            struct  {
-     17            uint8_t   LENL        :8;
-     18            };
-     19            struct  {
-     20            uint8_t   TRIG        :5;
-     21            uint8_t   TMODE       :2;
-     22            uint8_t   WORDSIZE    :1;
-     23            };
-     24            struct {
-     25            uint8_t   PRIORITY    :2;
-     26            uint8_t   M8          :1;
-     27            uint8_t   IRQMASK     :1;
-     28            uint8_t   DESTINC     :2;
-     29            uint8_t   SRCINC      :2;
-     30            };
-     31          } __attribute__((packed)) DMA_UART_s;
-     32          
-     33          #define UART_RX_BUF_LEN 257 //!< Размер приемного буфера
-     34          DMA_UART_s DMA_UART_DR; //!< DMA на чтение данных
-     35          static uint8_t uart_rx_buff[UART_RX_BUF_LEN];
+      4          #include "stdbool.h"
+      5          #include "DMA.h"
+      6          
+      7          #define UART_RX_BUF_LEN 10 //!< Размер приемного буфера
+      8          #define TRIG_URX0 14
+      9          #define WAIT_THR 100//!< порог ожидания следующего байта в uart
+     10          
+     11          static uint8_t uart_rx_buff[UART_RX_BUF_LEN];
+     12          
+     13          static void uart_dma_init(void);
+     14          
+     15          static void uart_dma_init(void)
+     16          {
+     17            // Настроим канал 2 DMA для загрузки данных из uart
+     18            // DMA0 и 1 заняты кодером AES
+     19            
+     20            ST_DEF(DMA_CH[2], SRCADDRL, 0xC1); //U0DBUF
+     21            ST_DEF(DMA_CH[2], SRCADDRH, 0x70);
+     22            ST_DEF(DMA_CH[2], LENL, UART_RX_BUF_LEN);
+     23            ST_DEF(DMA_CH[2], DSTADDRH, HADDR(uart_rx_buff)); // Пишем данные XENCDI = 0xB1 
+     24            ST_DEF(DMA_CH[2], DSTADDRL, LADDR(uart_rx_buff)); //  
+     25            ST_DEF(DMA_CH[2], PRIORITY, 0x00); // Низкий приоритет
+     26            ST_DEF(DMA_CH[2], M8, 0x00); // Используем 8 бит для счетика длинны
+     27            ST_DEF(DMA_CH[2], IRQMASK, 0x00); // Запрещаем генерировать перывания
+     28            ST_DEF(DMA_CH[2], DESTINC, 0x01); // Увеличиваем адресс назначения
+     29            ST_DEF(DMA_CH[2], SRCINC, 0x00); // Не увеличиваем адресс источника
+     30            ST_DEF(DMA_CH[2], TRIG, TRIG_URX0); // Тригер по приходу байта UART0
+     31            ST_DEF(DMA_CH[2], WORDSIZE, 0x00); // Копируем по 1 байту
+     32            ST_DEF(DMA_CH[2], TMODE, 0x00); //  Одиночное копирование по тригеру
+     33            ST_DEF(DMA_CH[2], VLEN, 0x00); //  Количество байт определяет поле LEN  
+     34            ST_DEF(DMA_CH[2], LENH, 0x00); 
+     35          }
      36          
-     37          static void uart_dma_init(void);
-     38          
-     39          static void uart_dma_init(void)
-     40          {
-     41            // Настроим канал 2 DMA для загрузки данных из uart
-     42            // DMA0 и 1 заняты кодером AES
-     43            
-     44            ST_DEF(DMA_CH[2], SRCADDRL, 0x70); //U0DBUF
-     45            ST_DEF(DMA_CH[2], SRCADDRH, 0xC1);
-     46            ST_DEF(DMA_CH[2], LENL, 16);
-     47            ST_DEF(DMA_CH[2], DSTADDRH, LADDR(uart_rx_buff)); // Пишем данные XENCDI = 0xB1 
-     48            ST_DEF(DMA_CH[2], DSTADDRL, HADDR(uart_rx_buff)); //  
-     49            ST_DEF(DMA_CH[2], PRIORITY, 0x00); // Низкий приоритет
-     50            ST_DEF(DMA_CH[2], M8, 0x00); // Используем 8 бит для счетика длинны
-     51            ST_DEF(DMA_CH[2], IRQMASK, 0x00); // Запрещаем генерировать перывания
-     52            ST_DEF(DMA_CH[2], DESTINC, 0x01); // Увеличиваем адресс назначения
-     53            ST_DEF(DMA_CH[2], SRCINC, 0x00); // Не увеличиваем адресс источника
-     54            ST_DEF(DMA_CH[2], TRIG, 0); // Тригер по загрузке
-     55            ST_DEF(DMA_CH[2], WORDSIZE, 0x00); // Копируем по 1 байту
-     56            ST_DEF(DMA_CH[2], TMODE, 0x01); //  Блочное копирование по тригеру
-     57            ST_DEF(DMA_CH[2], VLEN, 0x00); //  Количество байт определяет поле LEN  
-     58            ST_DEF(DMA_CH[2], LENH, 0x00); 
-     59          }
-     60          
-     61          /**
-     62          @brief Иницилизация uart с компьютером
-     63          @detail Скорость 2М бод. Частота микроконтроллера 32Мгц.
-     64          */
-     65          void com_uart_init(void)
-     66          {
-     67            // Выбор расположения UART на выводах
-     68            uint8_t U0CFG = 0; // 0={TX=P0_3, RX=P0_2
-     69            PERCFG |= (U0CFG<<0); 
-     70            
-     71            // U0UCR регистр настройки режима uart. меня устраивает по умолчанию
-     72            U0CSR = (1<<7); // Выбираем режим uart  
-     73            
-     74            // Настройка скорости передачи данных на 2М  
-     75            U0BAUD = 0;  // табличные значения из pdf
-     76            U0GCR =  16;
-     77            
-     78            // Включаем альтернативные функции выводов
-     79            P0SEL = (1<<2)|(1<<3);
-     80            U0CSR |= (1<<6);
-     81          //  uart_dma_init();
-     82          }
-     83          
-     84          void uart_putchar(char x){
-     85            while( U0CSR&(1<<0));
-     86            U0DBUF = x;
+     37          /**
+     38          @brief Прием команды по uart
+     39          @param[out] size размер принятых данных
+     40          @return указатель на начало данных или null
+     41          */
+     42          uint8_t* uart_recv_cmd(uint8_t *size)
+     43          {  
+     44            // Начинаем прием
+     45            DMAARM |= 0x04;
+     46            
+     47            while (DMAARM&0x04);
+     48            
+     49            *size = UART_RX_BUF_LEN;
+     50            return uart_rx_buff;
+     51          }
+     52          
+     53          /**
+     54          @brief Иницилизация uart с компьютером
+     55          @detail Скорость 2М бод. Частота микроконтроллера 32Мгц.
+     56          */
+     57          void com_uart_init(void)
+     58          {
+     59            // Выбор расположения UART на выводах
+     60            uint8_t U0CFG = 0; // 0={TX=P0_3, RX=P0_2
+     61            PERCFG |= (U0CFG<<0); 
+     62            
+     63            // U0UCR регистр настройки режима uart. меня устраивает по умолчанию
+     64            U0CSR = (1<<7); // Выбираем режим uart  
+     65            
+     66            // Настройка скорости передачи данных на 2М  
+     67            U0BAUD = 0;  // табличные значения из pdf
+     68            U0GCR =  16;
+     69            
+     70            // Включаем альтернативные функции выводов
+     71            P0SEL = (1<<2)|(1<<3);
+     72            U0CSR |= (1<<6);
+     73            uart_dma_init();
+     74          }
+     75          
+     76          void uart_putchar(char x){
+     77            while( U0CSR&(1<<0));
+     78            U0DBUF = x;
+     79          }
+     80          
+     81          char uart_getchar(void)
+     82          {
+     83            char x;
+     84            while( !(U0CSR&(1<<2)));
+     85            x = U0DBUF;
+     86            return x;
      87          }
-     88          
-     89          char uart_getchar(void)
-     90          {
-     91            char x;
-     92            while( !(U0CSR&(1<<2)));
-     93            x = U0DBUF;
-     94            return x;
-     95          }
 
    Maximum stack usage in bytes:
 
-   ISTACK Function
-   ------ --------
-      0   com_uart_init
-      0   uart_getchar
-      0   uart_putchar
+   ISTACK XSTACK Function
+   ------ ------ --------
+      0      9   com_uart_init
+        0      9   -> uart_dma_init
+      2      9   uart_dma_init
+      0      0   uart_getchar
+      0      0   uart_putchar
+      2      0   uart_recv_cmd
 
 
    Segment part sizes:
 
    Bytes  Function/Label
    -----  --------------
-       8  DMA_UART_DR
+       1  DMAARM
        1  P0SEL
        1  PERCFG
        1  U0BAUD
        1  U0CSR
        1  U0DBUF
        1  U0GCR
-      23  com_uart_init
+      33  com_uart_init
        6  com_uart_init::?relay
+     127  uart_dma_init
+       6  uart_dma_init::?relay
       11  uart_getchar
        6  uart_getchar::?relay
       11  uart_putchar
        6  uart_putchar::?relay
+      31  uart_recv_cmd
+       6  uart_recv_cmd::?relay
+      10  uart_rx_buff
 
  
- 45 bytes in segment BANKED_CODE
- 18 bytes in segment BANK_RELAYS
-  6 bytes in segment SFR_AN
-  8 bytes in segment XDATA_Z
+ 213 bytes in segment BANKED_CODE
+  30 bytes in segment BANK_RELAYS
+   7 bytes in segment SFR_AN
+  10 bytes in segment XDATA_Z
  
- 18 bytes of CODE     memory
-  0 bytes of DATA     memory (+ 6 bytes shared)
- 45 bytes of HUGECODE memory
-  8 bytes of XDATA    memory
+  30 bytes of CODE     memory
+   0 bytes of DATA     memory (+ 7 bytes shared)
+ 213 bytes of HUGECODE memory
+  10 bytes of XDATA    memory
 
 Errors: none
-Warnings: 2
+Warnings: 1

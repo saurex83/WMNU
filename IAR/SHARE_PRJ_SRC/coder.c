@@ -408,7 +408,7 @@ static void CBCMAC_buf_encrypt(uint8_t len, uint8_t *key, uint8_t *mac)
       DMAARM |= 0x01;  
       // Активируем выгрузку только последнего блока
       if (!block_len && (block == nbrBlocks - 1))
-        DMAARM = 0x03;
+        DMAARM |= 0x03;
       
       DMAREQ |= 0x01;
       while (DMAARM&0x03);          
