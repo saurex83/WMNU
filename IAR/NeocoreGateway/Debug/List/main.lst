@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               17/Jan/2020  20:04:00
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               19/Jan/2020  23:44:16
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -15,7 +15,7 @@
 #        \\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\NeocoreGateway\src\main.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW4C3C.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW1DC1.tmp
 #        ("\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\NeocoreGateway\src\main.c" -lcN
 #        "\\vmware-host\Shared
@@ -49,8 +49,8 @@
       7          // Собирать проект с ключем GATEWAY в файле basic.h
       8          void main(void)
       9          {
-     10           // bool con = MG_Connect();
-     11            bool con = true;
+     10            bool con = MG_Connect();
+     11           // bool con = true;
      12            CLKCONCMD &= ~(1<<7); // Сбрасываем бит OSC32K, будет выбран 32.768 кварц
      13            while (CLKCONSTA & (1<<7)); // Ждем пока бит не станет 0
      14            CLKCONCMD = 0;// (1<<3);
@@ -77,20 +77,20 @@
      35            {
      36              
      37              rcv = uart_recv_cmd(&sz);
-     38               
-     39              for (int i = 0; i < sz; i++)
-     40                uart_putchar(rcv[i]);  
-     41            };
-     42          }
+     38              uart_write((char*)&rcv[1], sz);
+     39            };
+     40          }
 
    Maximum stack usage in bytes:
 
    XSTACK Function
    ------ --------
       1   main
+        1   -> MG_Connect
         1   -> com_uart_init
         1   -> uart_putchar
         1   -> uart_recv_cmd
+        1   -> uart_write
 
 
    Segment part sizes:
@@ -99,17 +99,17 @@
    -----  --------------
        1  CLKCONCMD
        1  CLKCONSTA
-     103  main
+      73  main
        6  main::?relay
 
  
- 103 bytes in segment BANKED_CODE
-   6 bytes in segment BANK_RELAYS
-   2 bytes in segment SFR_AN
+ 73 bytes in segment BANKED_CODE
+  6 bytes in segment BANK_RELAYS
+  2 bytes in segment SFR_AN
  
-   6 bytes of CODE     memory
-   0 bytes of DATA     memory (+ 2 bytes shared)
- 103 bytes of HUGECODE memory
+  6 bytes of CODE     memory
+  0 bytes of DATA     memory (+ 2 bytes shared)
+ 73 bytes of HUGECODE memory
 
 Errors: none
 Warnings: 1

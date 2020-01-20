@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               17/Jan/2020  20:05:17
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               20/Jan/2020  09:00:08
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -15,8 +15,7 @@
 #        \\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\NeocoreGateway\src\uart_comm.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW7BF8.tmp
-#        ("\\vmware-host\Shared
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW87B.tmp ("\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\NeocoreGateway\src\uart_comm.c" -lcN
 #        "\\vmware-host\Shared
 #        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List" -o
@@ -46,87 +45,98 @@
       4          #include "stdbool.h"
       5          #include "DMA.h"
       6          
-      7          #define UART_RX_BUF_LEN 10 //!< Размер приемного буфера
+      7          #define UART_RX_BUF_LEN 0xff //!< Размер приемного буфера
       8          #define TRIG_URX0 14
-      9          #define WAIT_THR 100//!< порог ожидания следующего байта в uart
-     10          
-     11          static uint8_t uart_rx_buff[UART_RX_BUF_LEN];
-     12          
-     13          static void uart_dma_init(void);
-     14          
-     15          static void uart_dma_init(void)
-     16          {
-     17            // Настроим канал 2 DMA для загрузки данных из uart
-     18            // DMA0 и 1 заняты кодером AES
-     19            
-     20            ST_DEF(DMA_CH[2], SRCADDRL, 0xC1); //U0DBUF
-     21            ST_DEF(DMA_CH[2], SRCADDRH, 0x70);
-     22            ST_DEF(DMA_CH[2], LENL, UART_RX_BUF_LEN);
-     23            ST_DEF(DMA_CH[2], DSTADDRH, HADDR(uart_rx_buff)); // Пишем данные XENCDI = 0xB1 
-     24            ST_DEF(DMA_CH[2], DSTADDRL, LADDR(uart_rx_buff)); //  
-     25            ST_DEF(DMA_CH[2], PRIORITY, 0x00); // Низкий приоритет
-     26            ST_DEF(DMA_CH[2], M8, 0x00); // Используем 8 бит для счетика длинны
-     27            ST_DEF(DMA_CH[2], IRQMASK, 0x00); // Запрещаем генерировать перывания
-     28            ST_DEF(DMA_CH[2], DESTINC, 0x01); // Увеличиваем адресс назначения
-     29            ST_DEF(DMA_CH[2], SRCINC, 0x00); // Не увеличиваем адресс источника
-     30            ST_DEF(DMA_CH[2], TRIG, TRIG_URX0); // Тригер по приходу байта UART0
-     31            ST_DEF(DMA_CH[2], WORDSIZE, 0x00); // Копируем по 1 байту
-     32            ST_DEF(DMA_CH[2], TMODE, 0x00); //  Одиночное копирование по тригеру
-     33            ST_DEF(DMA_CH[2], VLEN, 0x00); //  Количество байт определяет поле LEN  
-     34            ST_DEF(DMA_CH[2], LENH, 0x00); 
-     35          }
-     36          
-     37          /**
-     38          @brief Прием команды по uart
-     39          @param[out] size размер принятых данных
-     40          @return указатель на начало данных или null
-     41          */
-     42          uint8_t* uart_recv_cmd(uint8_t *size)
-     43          {  
-     44            // Начинаем прием
-     45            DMAARM |= 0x04;
-     46            
-     47            while (DMAARM&0x04);
-     48            
-     49            *size = UART_RX_BUF_LEN;
-     50            return uart_rx_buff;
-     51          }
-     52          
-     53          /**
-     54          @brief Иницилизация uart с компьютером
-     55          @detail Скорость 2М бод. Частота микроконтроллера 32Мгц.
-     56          */
-     57          void com_uart_init(void)
-     58          {
-     59            // Выбор расположения UART на выводах
-     60            uint8_t U0CFG = 0; // 0={TX=P0_3, RX=P0_2
-     61            PERCFG |= (U0CFG<<0); 
-     62            
-     63            // U0UCR регистр настройки режима uart. меня устраивает по умолчанию
-     64            U0CSR = (1<<7); // Выбираем режим uart  
-     65            
-     66            // Настройка скорости передачи данных на 2М  
-     67            U0BAUD = 0;  // табличные значения из pdf
-     68            U0GCR =  16;
-     69            
-     70            // Включаем альтернативные функции выводов
-     71            P0SEL = (1<<2)|(1<<3);
-     72            U0CSR |= (1<<6);
-     73            uart_dma_init();
-     74          }
-     75          
-     76          void uart_putchar(char x){
-     77            while( U0CSR&(1<<0));
-     78            U0DBUF = x;
-     79          }
-     80          
-     81          char uart_getchar(void)
-     82          {
-     83            char x;
-     84            while( !(U0CSR&(1<<2)));
-     85            x = U0DBUF;
-     86            return x;
-     87          }
+      9          
+     10          static uint8_t uart_rx_buff[UART_RX_BUF_LEN]; //1 для поля длинны
+     11          
+     12          static void uart_dma_init(void);
+     13          void uart_putchar(char x);
+     14          void uart_write(const char *data, uint8_t size);
+     15          
+     16          static void uart_dma_init(void)
+     17          {
+     18            // Настроим канал 2 DMA для загрузки данных из uart
+     19            // DMA0 и 1 заняты кодером AES
+     20            
+     21            ST_DEF(DMA_CH[2], SRCADDRL, 0xC1); //U0DBUF
+     22            ST_DEF(DMA_CH[2], SRCADDRH, 0x70);
+     23            ST_DEF(DMA_CH[2], LENL, UART_RX_BUF_LEN); // Максимальный размер данных
+     24            ST_DEF(DMA_CH[2], DSTADDRH, HADDR(uart_rx_buff)); // Пишем данные XENCDI = 0xB1 
+     25            ST_DEF(DMA_CH[2], DSTADDRL, LADDR(uart_rx_buff)); //  
+     26            ST_DEF(DMA_CH[2], PRIORITY, 0x00); // Низкий приоритет
+     27            ST_DEF(DMA_CH[2], M8, 0x00); // Используем 8 бит для счетика длинны
+     28            ST_DEF(DMA_CH[2], IRQMASK, 0x00); // Запрещаем генерировать перывания
+     29            ST_DEF(DMA_CH[2], DESTINC, 0x01); // Увеличиваем адресс назначения
+     30            ST_DEF(DMA_CH[2], SRCINC, 0x00); // Не увеличиваем адресс источника
+     31            ST_DEF(DMA_CH[2], TRIG, TRIG_URX0); // Тригер по приходу байта UART0
+     32            ST_DEF(DMA_CH[2], WORDSIZE, 0x00); // Копируем по 1 байту
+     33            ST_DEF(DMA_CH[2], TMODE, 0x00); //  Одиночное копирование по тригеру
+     34            ST_DEF(DMA_CH[2], VLEN, 0x01); // Длинна данных определяется 1ым байтом  
+     35            ST_DEF(DMA_CH[2], LENH, 0x00); 
+     36          }
+     37          
+     38          /**
+     39          @brief Прием команды по uart
+     40          @param[out] size размер принятых данных
+     41          @return указатель на начало данных или null
+     42          */
+     43          uint8_t* uart_recv_cmd(uint8_t *size)
+     44          {  
+     45            // Начинаем прием
+     46            DMAARM |= 0x04;
+     47            
+     48            while (DMAARM&0x04);
+     49            
+     50            *size = uart_rx_buff[0];
+     51            return uart_rx_buff;
+     52          }
+     53          
+     54          /**
+     55          @brief Иницилизация uart с компьютером
+     56          @detail Скорость 115200 бод. Частота микроконтроллера 32Мгц.
+     57          */
+     58          void com_uart_init(void)
+     59          {
+     60            // Выбор расположения UART на выводах
+     61            uint8_t U0CFG = 0; // 0={TX=P0_3, RX=P0_2
+     62            PERCFG |= (U0CFG<<0); 
+     63            
+     64            // U0UCR регистр настройки режима uart. меня устраивает по умолчанию
+     65            U0CSR = (1<<7); // Выбираем режим uart  
+     66            
+     67            // Настройка скорости передачи данных на 115200  
+     68            U0BAUD = 216;  // табличные значения из pdf
+     69            U0GCR =  11; //16
+     70            
+     71            // Включаем альтернативные функции выводов
+     72            P0SEL = (1<<2)|(1<<3);
+     73            U0CSR |= (1<<6);
+     74            uart_dma_init();
+     75          }
+     76          
+     77          void uart_write(const char *data, uint8_t size)
+     78          {
+     79            for (uint8_t i = 0; i < size; i++)
+     80            {
+     81              uart_putchar((char)data[i]);
+     82           //   if (i % 10 != 0)
+     83           //     for (uint8_t j = 0 ; j < 100; j++);
+     84            }
+     85          };
+     86          
+     87          void uart_putchar(char x){
+     88            while( U0CSR&(1<<0));
+     89            U0DBUF = x;
+     90          }
+     91          
+     92          char uart_getchar(void)
+     93          {
+     94            char x;
+     95            while( !(U0CSR&(1<<2)));
+     96            x = U0DBUF;
+     97            return x;
+     98          }
 
    Maximum stack usage in bytes:
 
@@ -136,8 +146,10 @@
         0      9   -> uart_dma_init
       2      9   uart_dma_init
       0      0   uart_getchar
-      0      0   uart_putchar
-      2      0   uart_recv_cmd
+      0     10   uart_putchar
+      3      0   uart_recv_cmd
+      0     10   uart_write
+        0     10   -> uart_putchar
 
 
    Segment part sizes:
@@ -153,26 +165,28 @@
        1  U0GCR
       33  com_uart_init
        6  com_uart_init::?relay
-     127  uart_dma_init
+     132  uart_dma_init
        6  uart_dma_init::?relay
       11  uart_getchar
        6  uart_getchar::?relay
       11  uart_putchar
        6  uart_putchar::?relay
-      31  uart_recv_cmd
+      41  uart_recv_cmd
        6  uart_recv_cmd::?relay
-      10  uart_rx_buff
+     255  uart_rx_buff
+      48  uart_write
+       6  uart_write::?relay
 
  
- 213 bytes in segment BANKED_CODE
-  30 bytes in segment BANK_RELAYS
+ 276 bytes in segment BANKED_CODE
+  36 bytes in segment BANK_RELAYS
    7 bytes in segment SFR_AN
-  10 bytes in segment XDATA_Z
+ 255 bytes in segment XDATA_Z
  
-  30 bytes of CODE     memory
+  36 bytes of CODE     memory
    0 bytes of DATA     memory (+ 7 bytes shared)
- 213 bytes of HUGECODE memory
-  10 bytes of XDATA    memory
+ 276 bytes of HUGECODE memory
+ 255 bytes of XDATA    memory
 
 Errors: none
 Warnings: 1

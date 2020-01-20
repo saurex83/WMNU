@@ -7,8 +7,8 @@
 // Собирать проект с ключем GATEWAY в файле basic.h
 void main(void)
 {
- // bool con = MG_Connect();
-  bool con = true;
+  bool con = MG_Connect();
+ // bool con = true;
   CLKCONCMD &= ~(1<<7); // Сбрасываем бит OSC32K, будет выбран 32.768 кварц
   while (CLKCONSTA & (1<<7)); // Ждем пока бит не станет 0
   CLKCONCMD = 0;// (1<<3);
@@ -35,8 +35,6 @@ void main(void)
   {
     
     rcv = uart_recv_cmd(&sz);
-     
-    for (int i = 0; i < sz; i++)
-      uart_putchar(rcv[i]);  
+    uart_write((char*)&rcv[1], sz);
   };
 }

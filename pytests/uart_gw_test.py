@@ -1,12 +1,12 @@
 import serial
-
+import time
 
 
 def main():
 
     COM_PORT = '/dev/ttyUSB0'
-    BOUD = 2000000
-    WR_SYMB = b'123456789-'
+    BOUD = 115200#2000000
+    WR_SYMB = 254*b'x'
     INFO_CNT = 10
     WRITED = 0
 
@@ -19,8 +19,14 @@ def main():
         with serial.Serial(COM_PORT, BOUD, timeout=2) as ser:
             
             ser.flush()
-            ser.write(WR_SYMB)
-            char = ser.read(10)
+            # Добавляем размер
+            cmd = len(WR_SYMB)
+            cmd = cmd.to_bytes(1, byteorder='big') 
+            cmd = cmd + WR_SYMB
+            #ser.write(b'123')
+            #time.sleep(5)
+            ser.write(cmd)
+            char = ser.read(len(WR_SYMB))
             WRITED = WRITED + 1
             info = info + 1
             
@@ -28,7 +34,7 @@ def main():
                 err = err + 1
                 print('Принятый размер %d'%(len(char)))
                 print('Удачно записанно %d'%(WRITED))
-                print(WR_SYMB)
+                print(cmd)
                 print(char)
                 exit()
 
