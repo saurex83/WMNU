@@ -2223,8 +2223,65 @@
             <data />
         </settings>
     </configuration>
+    <mfc>
+        <configuration>Debug</configuration>
+    </mfc>
     <group>
         <name>gateway</name>
+        <file>
+            <name>$PROJ_DIR$\src\cmd_0x00.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\cmd_0x01.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\cmd_0x02.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\cmd_0x03.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\cmd_0x04.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\cmd_0x05.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\cmd_0x06.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\cmd_0x07.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\cmd_0x08.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\cmd_0x09.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\cmd_0x0A.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\cmd_0x0B.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\cmd_0x0C.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\cmd_0x0D.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\cmd_0x0E.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\cmd_index_list.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\cmd_parser.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\cmd_parser.h</name>
+        </file>
         <file>
             <name>$PROJ_DIR$\src\uart_comm.c</name>
         </file>

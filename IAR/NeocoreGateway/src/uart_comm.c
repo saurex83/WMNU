@@ -4,14 +4,20 @@
 #include "stdbool.h"
 #include "DMA.h"
 
+/**
+@file Настройка UART для приема команд от PC
+*/
+
 #define UART_RX_BUF_LEN 0xff //!< Размер приемного буфера
 #define TRIG_URX0 14
 
-static uint8_t uart_rx_buff[UART_RX_BUF_LEN]; //1 для поля длинны
-
 static void uart_dma_init(void);
-void uart_putchar(char x);
+
 void uart_write(const char *data, uint8_t size);
+uint8_t* uart_recv_cmd(uint8_t *size);
+
+static uint8_t uart_rx_buff[UART_RX_BUF_LEN]; //1 для поля длинны
+static void uart_putchar(char x);
 
 static void uart_dma_init(void)
 {
@@ -48,7 +54,7 @@ uint8_t* uart_recv_cmd(uint8_t *size)
   while (DMAARM&0x04);
   
   *size = uart_rx_buff[0];
-  return uart_rx_buff;
+  return &uart_rx_buff[1];
 }
 
 /**
@@ -74,22 +80,24 @@ void com_uart_init(void)
   uart_dma_init();
 }
 
+/**
+@brief Запись в uart
+@param[in] data указатель на начало массива данных
+@param[in] size размер передаваемых данных
+*/
 void uart_write(const char *data, uint8_t size)
 {
   for (uint8_t i = 0; i < size; i++)
-  {
     uart_putchar((char)data[i]);
- //   if (i % 10 != 0)
- //     for (uint8_t j = 0 ; j < 100; j++);
-  }
 };
 
-void uart_putchar(char x){
+
+static void uart_putchar(char x){
   while( U0CSR&(1<<0));
   U0DBUF = x;
 }
 
-char uart_getchar(void)
+static char uart_getchar(void)
 {
   char x;
   while( !(U0CSR&(1<<2)));

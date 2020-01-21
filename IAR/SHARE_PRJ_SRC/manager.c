@@ -23,6 +23,7 @@ static void re_start();
 static bool network_discovery();
 
 static bool MG_MODULES_INITED = false; //!< Были ли запущенны аппаратные модули
+static bool NETWORK_SEED = false; //!< Раздача сетишлюзом
 
 // Публичные методы
 bool MG_Connect();
@@ -87,14 +88,40 @@ static bool network_discovery()
 }
 
 /**
+@brief Начинаем раздачу сети
+@param[in] en true начать раздачу сети
+*/
+void network_seed_enable(bool en)
+{
+  if (en){
+    NETWORK_SEED = true;
+    MAC_Enable(true);
+    SY_Enable(true);
+  }
+  else{ 
+    NETWORK_SEED = false;
+    MAC_Enable(false);
+    SY_Enable(false);
+  }
+}
+
+/**
+@brief Возвращает состояние сети
+@return true если сеть раздается
+*/
+bool get_network_seed_status(void){
+  return NETWORK_SEED;
+}
+
+/**
 @brief Создание сети в режиме шлюза
 */
 static bool master_mode()
 {
   // Включает обработку начала слота TS1 для программы собранной с ключом 
   // GATEWAY. MAC_TS1_HNDL_MASTER будет создавать пакеты синхронизации.
-  MAC_Enable(true);
-  SY_Enable(true);
+  MAC_Enable(false);
+  SY_Enable(false);
   return true;
 }
 

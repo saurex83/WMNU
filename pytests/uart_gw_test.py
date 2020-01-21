@@ -6,7 +6,7 @@ def main():
 
     COM_PORT = '/dev/ttyUSB0'
     BOUD = 115200#2000000
-    WR_SYMB = 254*b'x'
+    WR_SYMB = b'\x001234'
     INFO_CNT = 10
     WRITED = 0
 
@@ -26,7 +26,8 @@ def main():
             #ser.write(b'123')
             #time.sleep(5)
             ser.write(cmd)
-            char = ser.read(len(WR_SYMB))
+            #char = ser.read(len(WR_SYMB))
+            char = ser.read(20)
             WRITED = WRITED + 1
             info = info + 1
             
