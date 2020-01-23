@@ -3,6 +3,7 @@
 #include "manager.h"
 #include "config.h"
 #include "string.h"
+#include "nwdebuger.h"
 
 #define ARGS_SIZE sizeof(cmd_args_s)
 
@@ -33,6 +34,7 @@ bool cmd_0x04(uint8_t *cmd, uint8_t size)
   cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
   memcpy(CONFIG.stream_iv,  args->IV, 16);   
  
+  LOG_ON("CMD 0x04. IV loaded");
   answ(no_err);
   return true;
 }

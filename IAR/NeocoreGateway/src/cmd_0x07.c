@@ -3,6 +3,7 @@
 #include "manager.h"
 #include "config.h"
 #include "MAC.h"
+#include "nwdebuger.h"
 
 #define ARGS_SIZE sizeof(cmd_args_s)
 
@@ -34,7 +35,7 @@ bool cmd_0x07(uint8_t *cmd, uint8_t size)
   cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
   
   MAC_OpenRXSlot(args->TS, args->CH);
-  
+  LOG_ON("CMD 0x07. Open slot");
   answ(no_err);
   return true;
 }

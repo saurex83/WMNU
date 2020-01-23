@@ -3,6 +3,7 @@
 #include "manager.h"
 #include "config.h"
 #include "MAC.h"
+#include "nwdebuger.h"
 
 #define ARGS_SIZE sizeof(cmd_args_s)
 
@@ -10,8 +11,6 @@ static void answ(uint8_t ans);
 
 typedef struct //!< Аргументы команды
 {
-  uint8_t TS;
-  uint8_t CH;
   uint16_t crc16;
 } cmd_args_s;
 
@@ -26,15 +25,13 @@ bool cmd_0x0C(uint8_t *cmd, uint8_t size)
   if (size != ARGS_SIZE) // Размер аргументов не верен
     return false;
   
-  if (!get_network_seed_status()){ // Сеть активна и менять ничего нельзя
+  if (!get_network_seed_status()){ // Сеть не работает
     answ(err_no_seeding);
     return true;
   }
   
-  cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
-  
-  MAC_OpenRXSlot(args->TS, args->CH);
-  
+  // TODO download rx frame
+  LOG_ON("CMD 0x0C. Download RX frame");
   answ(no_err);
   return true;
 }

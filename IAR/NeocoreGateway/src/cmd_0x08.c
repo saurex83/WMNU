@@ -3,6 +3,7 @@
 #include "manager.h"
 #include "config.h"
 #include "MAC.h"
+#include "nwdebuger.h"
 
 #define ARGS_SIZE sizeof(cmd_args_s)
 
@@ -11,7 +12,6 @@ static void answ(uint8_t ans);
 typedef struct //!< Аргументы команды
 {
   uint8_t TS;
-  uint8_t CH;
   uint16_t crc16;
 } cmd_args_s;
 
@@ -35,6 +35,7 @@ bool cmd_0x08(uint8_t *cmd, uint8_t size)
   
   MAC_CloseRXSlot(args->TS);
   
+  LOG_ON("CMD 0x08. Close TS slot");
   answ(no_err);
   return true;
 }

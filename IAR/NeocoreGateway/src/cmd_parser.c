@@ -3,6 +3,28 @@
 #include "cmd_index_list.h"
 #include "nwdebuger.h"
 
+/**
+@file Прием и парсинг команд по uart
+@detail Команда от PC имеет формат:
+ --------------------------
+ | 0 | 1 |  n |LEN-1| LEN | 
+ --------------------------
+ |LEN|CMD|ARGS|CRC16|CRC16|
+ --------------------------
+Ответ от МК имеет формат:
+ --------------------------
+ | 0 | 1 |  n |LEN-1| LEN | 
+ --------------------------
+ |LEN|TYP|DATA|CRC16|CRC16|
+ --------------------------
+Где TYP - тип ответа.
+TYP = 0x00 ответ от парсера в случаии ошибки.
+ DATA = 1 ошибка CRC16
+ DATA = 2 ошибка размера переданных аргументов
+ DATA = 3 команда отсутсвует
+TYP = 0x01 ответ от обработчика команды. см описание команд
+*/
+
 enum {answ_crc_err = 1, answ_args_err = 2, answ_no_cmd = 3}; //!< Коды ошибок
 
 //#define USE_CRC16_CHECK //!< Использовать проверку CRC
@@ -47,7 +69,7 @@ void parse_uart_stream(void)
       continue; 
     }
     
-    if (!CMD_LIST[iCmd](cmd, size)){ // Аргум. неверны.
+    if (!CMD_LIST[iCmd](&cmd[1], size - 1)){ // Аргум. неверны.
       cmd_answ(answ_args_err);
       continue;
     }
@@ -60,9 +82,15 @@ void parse_uart_stream(void)
 @param[in] err_code код ошибки
 */
 static void cmd_answ(uint8_t err_code){
-  uint8_t an[2];
-  an[0] = 0x00;  // Обозначет ответ парсера
-  an[1] = err_code;
+  uint8_t an[5];
+  unsigned short an_crc16;
+  
+  an[0] = 4;
+  an[1] = 0x00;  // Обозначет ответ парсера
+  an[2] = err_code;
+  an_crc16 = crc16(&an[1],2);
+  an[3] = an_crc16;
+  an[4] = an_crc16>>8;
   uart_write((char*)an, sizeof(an));
 }
 

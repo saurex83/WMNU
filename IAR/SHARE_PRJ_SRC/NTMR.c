@@ -90,6 +90,7 @@ void NT_Init(void)
   while (CLKCONSTA&(1<<6));
   
   NT_IRQEnable(false);
+  EA = 1;
 }
 
 /**

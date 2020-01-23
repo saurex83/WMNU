@@ -5,49 +5,6 @@
     <configuration>
         <name>Debug</name>
         <outputs>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\basic.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\config.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\config.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\delays.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\delays.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\ethernet.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\ethernet.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\frame.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\frame.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\LLC.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\LLC.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\MAC.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\MAC.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\manager.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\manager.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\mem.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\mem.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\Net_frames.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\NTMR.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\NTMR.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\nwdebuger.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\nwdebuger.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\Radio_defs.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\sync.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\sync.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\TIC.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\TIC.h</file>
-            <file>$PROJ_DIR$\src\utest_GW.c</file>
-            <file>$PROJ_DIR$\src\utest_NODE.c</file>
-            <file>$PROJ_DIR$\src\utest.c</file>
-            <file>$PROJ_DIR$\src\utest_suite.c</file>
-            <file>$PROJ_DIR$\src\utest_suite.h</file>
-            <file>$PROJ_DIR$\src\fbuf.c</file>
-            <file>$PROJ_DIR$\Debug\Obj\FItem.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\frame.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\fbuf.r51</file>
-            <file>$PROJ_DIR$\Debug\Obj\fbuf.pbi</file>
-            <file>$PROJ_DIR$\Debug\Obj\nwdebuger.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\utest_FItem.r51</file>
             <file>$TOOLKIT_DIR$\inc\dlib\c\ystdio.h</file>
             <file>$PROJ_DIR$\Debug\Obj\delays.__cstat.et</file>
             <file>$TOOLKIT_DIR$\inc\dlib\c\string.h</file>
@@ -111,6 +68,57 @@
             <file>$PROJ_DIR$\Debug\Obj\utest_malloc.pbi</file>
             <file>$PROJ_DIR$\Debug\Obj\NTMR.r51</file>
             <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\FChain.c</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\ysizet.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\MAC.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\MAC.pbi</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\DLib_Defaults.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\stddef.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\DLib_Threads.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\NTMR.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\LLC.__cstat.et</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\basic.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\config.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\config.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\delays.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\delays.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\ethernet.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\ethernet.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\frame.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\frame.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\LLC.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\LLC.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\MAC.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\MAC.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\manager.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\manager.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\mem.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\mem.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\Net_frames.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\NTMR.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\NTMR.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\nwdebuger.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\nwdebuger.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\Radio_defs.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\sync.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\sync.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\TIC.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\TIC.h</file>
+            <file>$PROJ_DIR$\src\utest_GW.c</file>
+            <file>$PROJ_DIR$\src\utest_NODE.c</file>
+            <file>$PROJ_DIR$\src\utest.c</file>
+            <file>$PROJ_DIR$\src\utest_suite.c</file>
+            <file>$PROJ_DIR$\src\utest_suite.h</file>
+            <file>$PROJ_DIR$\src\fbuf.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\FItem.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\frame.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\fbuf.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\fbuf.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\nwdebuger.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\utest_FItem.r51</file>
             <file>$PROJ_DIR$\Debug\Obj\manager.__cstat.et</file>
             <file>$PROJ_DIR$\Debug\Obj\config.__cstat.et</file>
             <file>$PROJ_DIR$\Debug\Obj\utest_GW.r51</file>
@@ -174,429 +182,47 @@
             <file>$PROJ_DIR$\Debug\Obj\fbuf.__cstat.et</file>
             <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\sig_trace_defs.h</file>
             <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\sig_trace.h</file>
-            <file>$TOOLKIT_DIR$\inc\dlib\c\ysizet.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\MAC.r51</file>
-            <file>$PROJ_DIR$\Debug\Obj\MAC.pbi</file>
-            <file>$TOOLKIT_DIR$\inc\dlib\c\DLib_Defaults.h</file>
-            <file>$TOOLKIT_DIR$\inc\dlib\c\stddef.h</file>
-            <file>$TOOLKIT_DIR$\inc\dlib\c\DLib_Threads.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\NTMR.pbi</file>
-            <file>$PROJ_DIR$\Debug\Obj\LLC.__cstat.et</file>
         </outputs>
         <file>
-            <name>[ROOT_NODE]</name>
+            <name>$PROJ_DIR$\Debug\Exe\unitest.d51</name>
             <outputs>
                 <tool>
                     <name>XLINK</name>
-                    <file> 71 61</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 119</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 116 122 75 148 66 94 65 170 134 120 104 56 89 126 84 129 108 138 102</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 101</file>
+                    <file> 18</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
-                    <name>BICOMP</name>
-                    <file> 123 99 55 51 53 45 157 59 6 86 172 174 2 169</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 55 86 99 53 172 51 157 123 174 59 45 169 47 43 125 111 173 117</file>
+                    <name>XLINK</name>
+                    <file> 17 26</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\config.c</name>
+            <name>$PROJ_DIR$\src\utest_coder.c</name>
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 74</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 75</file>
+                    <file> 162</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 107</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 169 53 99 123 157 45 51 86 55 172 174 0 4</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\delays.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 149</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 148</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 44</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 99 53 45 51 6 123 157 169 59 86 172 174</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\ethernet.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 67</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 66</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 150</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 123 99 157 55 12 53 86 51 43 19 23 18 172 174 10 47 169 125</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\frame.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 95</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 94</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 38</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 125 59 172 169 43 18 86 53 174 99 45 23 55 123 51 157 47 10</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\LLC.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 48</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 65</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 176</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 10 99 55 86 43 51 23 123 53 30 157 6 47 14 18 59 172 174 25 125 169 12</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\MAC.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 171</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 170</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 49</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 99 10 55 2 53 45 125 30 172 86 23 0 25 174 6 43 169 14 123 51 157 47</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\manager.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 135</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 134</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 106</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 59 10 86 25 55 53 99 123 157 30 6 14 28 0 51 43 2 8 12 21 4 23 172 174 47 169 16</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\mem.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 110</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 120</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 112</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 172 174 53 23 169 86 123 99 125 45 51 157 59 47 43</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\NTMR.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 175</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 104</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 50</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 53 169 43 59 86 172 174 99 47 125 23 55 123 51 157 21</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\nwdebuger.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 96</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 56</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 41</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 47 99 86 53 174 59 111 43 172 169 23 123 51 157</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 90</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 89</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 91</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 21 53 30 86 169 99 23 10 172 174 125 59 18 26 6 45 55 123 51 157 47 43 25</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\sync.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 62</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 126</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 124</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 53 21 99 23 51 55 86 10 30 59 169 123 157 0 45 2 25 4 172 174 43 125 47 6</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\TIC.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 146</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 84</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 145</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 53 86 99 6 51 43 125 59 123 157 21 23 0 55 172 174 169 47 30</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_GW.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 133</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 108</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 137</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 99 51 55 23 173 47 16 59 86 53 123 157 169 35 172 174 43</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_NODE.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 139</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 138</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 136</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 99 51 55 23 173 47 16 59 86 53 123 157 169 35 172 174 43</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
                     <file> 57</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 129</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 128</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 169 173 99 123 157 53 47 55 51 23 86 172 174 43 35 117 0</file>
+                    <file> 43 4 56 10 63 77 68 73 2 94 12 67 66 0 106 131 8 165</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\src\utest_suite.c</name>
+            <name>$PROJ_DIR$\src\utest_delays.c</name>
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 70</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 102</file>
+                    <file> 126</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
@@ -606,73 +232,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 99 59 169 172 55 35 53 43 174 173 47 123 51 157 86</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\fbuf.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 40</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 39</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Debug\Exe\unitest.d51</name>
-            <outputs>
-                <tool>
-                    <name>XLINK</name>
-                    <file> 61</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>XLINK</name>
-                    <file> 60 69</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_coder.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 154</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 100</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 86 47 99 53 169 6 174 2 45 23 55 173 172 43 35 123 51 157</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_delays.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 118</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 147</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 172 53 86 99 123 174 6 51 157 35 55 173 169</file>
+                    <file> 66 10 43 56 131 68 77 8 165 106 12 67 63</file>
                 </tool>
             </inputs>
         </file>
@@ -681,307 +241,7 @@
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 92</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 158</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 86 55 172 173 53 174 99 10 18 123 51 157 169 35 125</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_Frames.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 121</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 87</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 86 55 172 43 10 173 53 174 99 45 47 123 51 157 169 35</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_LLC.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 161</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 115</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 47 169 125 18 55 59 99 123 157 53 21 25 86 51 10 12 23 30 173 172 174 43 35 6</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_MAC.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 68</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 64</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 55 23 86 10 172 6 99 14 59 173 53 174 25 47 169 35 123 51 157 30 43</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_malloc.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 103</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 159</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 169 173 99 123 157 53 55 51 125 86 172 174 35</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_NTMR.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 163</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 88</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 99 157 86 123 59 169 21 55 173 53 51 35 172 174</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\FChain.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 97</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 58</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 72</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 169 86 99 167 142 172 174 53 125 55 47 23 45 123 51 157 168 43 140</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 55 86 99 53 172 51 157 123 174 47 169 43 125 45</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\utest_GW.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 133</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 108</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_printf_uart.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 156</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 114</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 99 51 47 169 123 157 55 35 53 43 172 174 86 23 6 173</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_radio.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 63</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 46</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 21 6 10 99 55 59 23 172 174 53 25 2 30 86 169 35 173 123 51 157 47 43</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_TIC.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 162</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 160</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 164</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 99 86 55 51 21 173 53 30 59 123 157 169 35 172 174 6</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\FItem.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 98</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 54</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 37</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 99 157 123 125 86 23 45 55 53 51 168 169 142 172 174 47 43 167</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 55 86 99 53 172 51 157 123 174 47 169 43 125 45</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_FChain.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 113</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 127</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 85</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 55 123 99 169 142 173 140 86 53 172 174 35 51 157</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 55 86 99 53 172 51 157 123 174 173 169</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\utest_FItem.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 52</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 42</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 73</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 99 172 86 51 53 123 142 55 173 157 35 174 169</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 55 86 99 53 172 51 157 123 174 173 169</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\fbuf.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 40</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 39</file>
+                    <file> 49</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
@@ -991,7 +251,747 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 53 125 99 23 18 86 172 169 45 19 55 123 174 47 152 51 157 43 168 167</file>
+                    <file> 43 12 66 67 10 68 56 81 89 131 8 165 63 106 133</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_Frames.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 129</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 44</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 43 12 66 0 81 67 10 68 56 2 4 131 8 165 63 106</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_LLC.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 169</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 123</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 4 63 133 89 12 16 56 131 165 10 92 96 43 8 81 83 94 101 67 66 68 0 106 77</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_MAC.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 25</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 21</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 12 94 43 81 66 77 56 85 16 67 10 68 96 4 63 106 131 8 165 101 0</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_malloc.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 60</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 167</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 63 67 56 131 165 10 12 8 133 43 66 68 106</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_NTMR.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 171</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 45</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 56 165 43 131 16 63 92 12 67 10 8 106 66 68</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\FChain.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 54</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 15</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 29</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 63 43 56 175 150 66 68 10 133 12 4 94 2 131 8 165 176 0 148</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 12 43 56 10 66 8 165 131 68 4 63 0 133 2</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 127</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 124 130 32 156 23 51 22 64 142 128 61 13 46 134 41 137 116 146 59</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 58</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 131 56 12 8 10 2 165 16 77 43 66 68 73 63</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 12 43 56 10 66 8 165 131 68 16 2 63 4 0 133 119 67 125</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\config.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 31</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 32</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 115</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 63 10 56 131 165 2 8 43 12 66 68 71 75</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\delays.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 157</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 156</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 1</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 56 10 2 8 77 131 165 63 16 43 66 68</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\ethernet.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 24</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 23</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 158</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 131 56 165 12 83 10 43 8 0 90 94 89 66 68 81 4 63 133</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\frame.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 52</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 51</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 109</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 133 16 66 63 0 89 43 10 68 56 2 94 12 131 8 165 4 81</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\LLC.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 5</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 22</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 70</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 81 56 12 43 0 8 94 131 10 101 165 77 4 85 89 16 66 68 96 133 63 83</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\MAC.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 65</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 64</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 6</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 56 81 12 73 10 2 133 101 66 43 94 71 96 68 77 0 63 85 131 8 165 4</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\manager.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 143</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 142</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 114</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 16 81 43 96 12 10 56 131 165 101 77 85 99 71 8 0 73 79 83 92 75 94 66 68 4 63 87</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\mem.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 118</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 128</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 120</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 66 68 10 94 63 43 131 56 133 2 8 165 16 4 0</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\NTMR.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 69</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 61</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 7</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 10 63 0 16 43 66 68 56 4 133 94 12 131 8 165 92</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\nwdebuger.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 53</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 13</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 112</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 4 56 43 10 68 16 119 0 66 63 94 131 8 165</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 47</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 46</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 48</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 92 10 101 43 63 56 94 81 66 68 133 16 89 97 77 2 12 131 8 165 4 0 96</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\sync.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 19</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 134</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 132</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 10 92 56 94 8 12 43 81 101 16 63 131 165 71 2 73 96 75 66 68 0 133 4 77</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\TIC.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 154</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 41</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 153</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 10 43 56 77 8 0 133 16 131 165 92 94 71 12 66 68 63 4 101</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_GW.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 141</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 116</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 145</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 56 8 12 94 67 4 87 16 43 10 131 165 63 106 66 68 0</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_NODE.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 147</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 146</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 144</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 56 8 12 94 67 4 87 16 43 10 131 165 63 106 66 68 0</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 14</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 137</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 136</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 63 67 56 131 165 10 4 12 8 94 43 66 68 0 106 125 71</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_suite.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 27</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 59</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 163</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 56 16 63 66 12 106 10 0 68 67 4 131 8 165 43</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\fbuf.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 111</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 110</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>[ROOT_NODE]</name>
+            <outputs>
+                <tool>
+                    <name>XLINK</name>
+                    <file> 28 18</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\utest_GW.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 141</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 116</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_printf_uart.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 164</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 122</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 56 8 4 63 131 165 12 106 10 0 66 68 43 94 77 67</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_radio.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 20</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 3</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 92 77 81 56 12 16 94 66 68 10 96 73 101 43 63 106 67 131 8 165 4 0</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_TIC.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 170</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 168</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 172</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 56 43 12 8 92 67 10 101 16 131 165 63 106 66 68 77</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\FItem.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 55</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 11</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 108</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 56 165 131 133 43 94 2 12 10 8 176 63 150 66 68 4 0 175</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 12 43 56 10 66 8 165 131 68 4 63 0 133 2</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_FChain.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 121</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 135</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 42</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 12 131 56 63 150 67 148 43 10 66 68 106 8 165</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 12 43 56 10 66 8 165 131 68 67 63</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\utest_FItem.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 9</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 113</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 30</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 56 66 43 8 10 131 150 12 67 165 106 68 63</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 12 43 56 10 66 8 165 131 68 67 63</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\fbuf.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 111</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 110</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 174</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 10 133 56 94 89 43 66 63 2 90 12 131 68 4 160 8 165 0 176 175</file>
                 </tool>
             </inputs>
         </file>
@@ -1000,20 +1000,48 @@
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 165</file>
+                    <file> 173</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 93</file>
+                    <file> 50</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 99 19 172 174 53 55 86 152 169 35 173 123 51 157</file>
+                    <file> 56 90 66 68 10 12 43 160 63 106 67 131 8 165</file>
                 </tool>
             </inputs>
         </file>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\src\utest_coder.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\src\utest_delays.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\src\utest_frame.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\src\utest_Frames.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\src\utest_LLC.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\src\utest_MAC.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\src\utest_NTMR.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
         <forcedrebuild>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\config.c</name>
             <tool>ICC8051</tool>
@@ -1080,34 +1108,6 @@
         </forcedrebuild>
         <forcedrebuild>
             <name>$PROJ_DIR$\src\utest_suite.c</name>
-            <tool>ICC8051</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\src\utest_coder.c</name>
-            <tool>ICC8051</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\src\utest_delays.c</name>
-            <tool>ICC8051</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\src\utest_frame.c</name>
-            <tool>ICC8051</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\src\utest_Frames.c</name>
-            <tool>ICC8051</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\src\utest_LLC.c</name>
-            <tool>ICC8051</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\src\utest_MAC.c</name>
-            <tool>ICC8051</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\src\utest_NTMR.c</name>
             <tool>ICC8051</tool>
         </forcedrebuild>
         <forcedrebuild>

@@ -18,21 +18,25 @@
 #include "dma.h"
 
 static void MG_Init();
-static void MG_Reset();
-static void re_start();
-static bool network_discovery();
 
 static bool MG_MODULES_INITED = false; //!< Были ли запущенны аппаратные модули
-static bool NETWORK_SEED = false; //!< Раздача сетишлюзом
+static bool NETWORK_SEED = false; //!< Раздача сети шлюзом
 
 // Публичные методы
+void neocore_hw_init();
+bool neocore_stack_reset();
+void network_seed_enable(bool en);
+bool network_discovery(uint8_t timeout_ms);
 bool MG_Connect();
 
 // Переменные модуля
 
-
+/**
+@brief Начальная иницилизация стека
+*/
 static void MG_Init()
 {
+  NETWORK_SEED = false;
   DMA_init();
   CF_init();
   NT_Init();
@@ -43,38 +47,49 @@ static void MG_Init()
   MAC_Init();
   SY_Init();
   LLC_Init();
+  
+  // Загрузка дефолтных параметров
+  MAC_setIV(CONFIG.stream_iv);
+  MAC_setKEY(CONFIG.stream_key);
+  SY_setIV(CONFIG.stream_iv);
+  SY_setKEY(CONFIG.stream_key);  
   // TODO Необходимо очищать все ранее выделеную память malloc
 }
 
-static void MG_Reset()
-{   
+/**
+@brief Иницилизация аппаратуры стека
+*/
+void neocore_hw_init()
+{
+  if (!MG_MODULES_INITED){
+    MG_Init();
+    MG_MODULES_INITED = true;
+  }  
+}
+
+/**
+@brief Сброс всех настроек стека и удаление пакетов
+*/
+bool neocore_stack_reset(){
   TIC_Reset();
   MAC_Reset();
   SY_Reset();
   LLC_Reset();
-}
-
-static void re_start()
-{
-    if (!MG_MODULES_INITED)
-  {
-    MG_Init();
-    MG_MODULES_INITED = true;
-  }
-  else
-    MG_Reset(); 
-    
-  CF_init();
-  MAC_setIV(CONFIG.stream_iv);
-  MAC_setKEY(CONFIG.stream_key);
-  SY_setIV(CONFIG.stream_iv);
-  SY_setKEY(CONFIG.stream_key);
+  network_seed_enable(false);
+  
+  // Проверим все ли пакеты уничтожены
+  uint8_t nbrF = frame_getCount(); 
+  ASSERT(nbrF == 0);
+  if (!nbrF)
+    return true;
+  return false;
 }
 
 /**
 @brief Алгоритм подключения к сети
+@param[in] timeout_ms время поиска сети
 */
-static bool network_discovery()
+bool network_discovery(uint8_t timeout_ms)
 {
   uint16_t panid;
   bool con = false;
@@ -82,7 +97,13 @@ static bool network_discovery()
   // Тупой алгоритм поиска сети.
   while (!con)
   {
-    con = SY_SYNC_NETWORK(&panid, 5000);
+    con = SY_SYNC_NETWORK(&panid, timeout_ms);
+  }
+  
+  if (con){ // После синх. разрешаем обработку слотов
+    NETWORK_SEED = true;
+    MAC_Enable(true);
+    SY_Enable(true);
   }
   return con;
 }
@@ -113,54 +134,5 @@ bool get_network_seed_status(void){
   return NETWORK_SEED;
 }
 
-/**
-@brief Создание сети в режиме шлюза
-*/
-static bool master_mode()
-{
-  // Включает обработку начала слота TS1 для программы собранной с ключом 
-  // GATEWAY. MAC_TS1_HNDL_MASTER будет создавать пакеты синхронизации.
-  MAC_Enable(false);
-  SY_Enable(false);
-  return true;
-}
-
-/**
-@brief Создание сети в режиме узла
-*/
-static bool slave_mode()
-{
-  // В режиме slave сначало нужно подключисться к сети
-  network_discovery();
-  
-  // После синхронизации с сетью разрешаем обработку временных слотов
-  // Программа собрана без ключа GATEWAY и активной функцией обработки TS1
-  // будет MAC_TS1_HNDL_SLAVE. Она отвечает за поддержание синхронизации
-  // и периодиескую ректрансляцию пакетов.
-  
-  MAC_Enable(true);
-  SY_Enable(true);
-  return true;
-}
-
-bool MG_Connect()
-{
-  EA = 0;
-  re_start();
-  EA = 1;
-  if (frame_getCount())
-  {
-    LOG_ON("Frame_s count: %d \r\n",frame_getCount());
-    return false;
-  }
-  
-#ifdef GATEWAY
-    bool con = master_mode();
-#else
-    bool con = slave_mode();  
-#endif
-    
-    return con;
-}
  
   

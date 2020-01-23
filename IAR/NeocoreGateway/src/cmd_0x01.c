@@ -2,6 +2,7 @@
 #include "cmd_parser.h"
 #include "manager.h"
 #include "config.h"
+#include "nwdebuger.h"
 
 #define ARGS_SIZE sizeof(cmd_args_s)
 
@@ -31,7 +32,7 @@ bool cmd_0x01(uint8_t *cmd, uint8_t size)
   cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
   
   CONFIG.panid =args->panid;
-  
+  LOG_ON("CMD 0x01. Set panid");
   answ(no_err);
   return true;
 }

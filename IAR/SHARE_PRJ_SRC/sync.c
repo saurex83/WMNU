@@ -44,6 +44,7 @@ static uint16_t SYNC_ACCURATE_NETWORK_TIME;
 #define SYNC_RECV_TIMEOUT 2 // Время ожидания приема пакета в мс
 #define SYNC_TIMEOUT 110//!< Время в сек после которого сеть не синхронна
 
+
 typedef struct // Формат структуры пакета синхронизации
 {
     uint16_t panid;

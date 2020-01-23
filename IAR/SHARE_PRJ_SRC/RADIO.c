@@ -515,10 +515,46 @@ static void random_core_init(void)
   rnd_core |= (unsigned int)readRandom()<<8;
   srand(rnd_core);
   
-  // Включаем демодулятор
+  // Выключаем демодулятор
   ISRFOFF();
   // Первая генерация случайного числа занимает много времени.
   // Влияло на работу радио, так как использовались случайные посылки
   rand(); 
+}
+
+/**
+@brief Измерение мощности сигнала
+@details Частота = 2394+fch. fch = [0..113]. 2394MHz to 2507MHz.
+ Устройство поддерживает частоты до 2507 МГц
+@param[in] fch номер ЧАСТОТНОГО канала
+@param[in] timeout_ms время сканирования в мс
+@param[out] Максимальная мощность сигнала за время сканирования
+@return true если успешно
+*/
+bool RI_Measure_POW(uint8_t fch, uint16_t timeout_ms, int8_t *RSSI_SIG){
+  
+  RI_cfg();
+  
+  if (fch > 113)
+    return false;
+  
+  //(2394+FREQCTRL.FREQ[6:0])
+  FREQCTRL = fch; // Выбираем не используемую частоту
+
+  // Включаем демодулятор
+  ISRXON();
+  
+  // Ждем пока статус RSSI_VALID станет true
+  while(!RSSISTAT);
+  FRMCTRL0 |= 1<<4; // включаем ENERGY_SCAN, детектор пикового сигнала
+  
+  // Ждем пока канал анализируется
+  TIM_delay(1000*timeout_ms);
+  
+  int8_t rssi = RSSI + RSSI_OFFSET;
+  *RSSI_SIG = rssi;
+  // Отключаем радио
+  ISRFOFF();
+  return true;
 }
 

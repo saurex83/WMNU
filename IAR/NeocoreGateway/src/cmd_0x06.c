@@ -3,6 +3,7 @@
 #include "manager.h"
 #include "config.h"
 #include "TIC.h"
+#include "nwdebuger.h"
 
 #define ARGS_SIZE sizeof(cmd_args_s)
 
@@ -26,7 +27,7 @@ bool cmd_0x06(uint8_t *cmd, uint8_t size)
     return false;
    
   answ(no_err);
-  
+  LOG_ON("CMD 0x06. HW reload");
   //TODO АППАПРАТНАЯ перезагрузка.
   
   return true;

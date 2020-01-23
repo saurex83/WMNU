@@ -17,3 +17,4 @@ frame_s* RI_Receive(uint16_t timeout);
 uint32_t RI_GetCRCError(void);
 uint32_t RI_GetCCAReject(void);
 float RI_GetUptime(void);
+bool RI_Measure_POW(uint8_t fch, uint16_t timeout_ms, int8_t *RSSI_SIG);
