@@ -23,9 +23,9 @@
 
 if ($debugfile -eq "")
 {
-& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\settings\neocoregw.Debug.general.xcl" --backend -f "\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\settings\neocoregw.Debug.driver.xcl" 
+& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "E:\WMNU\IAR\NeocoreGateway\settings\neocoregw.Debug.general.xcl" --backend -f "E:\WMNU\IAR\NeocoreGateway\settings\neocoregw.Debug.driver.xcl" 
 }
 else
 {
-& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\settings\neocoregw.Debug.general.xcl" --debug_file=$debugfile --backend -f "\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\settings\neocoregw.Debug.driver.xcl" 
+& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "E:\WMNU\IAR\NeocoreGateway\settings\neocoregw.Debug.general.xcl" --debug_file=$debugfile --backend -f "E:\WMNU\IAR\NeocoreGateway\settings\neocoregw.Debug.driver.xcl" 
 }

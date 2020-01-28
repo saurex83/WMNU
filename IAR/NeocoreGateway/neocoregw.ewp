@@ -175,7 +175,7 @@
                 </option>
                 <option>
                     <name>General Xdata Stack Size</name>
-                    <state>0xEFF</state>
+                    <state>0x12c</state>
                 </option>
                 <option>
                     <name>General Ext Stack Size</name>
@@ -183,7 +183,7 @@
                 </option>
                 <option>
                     <name>General Xdata Heap Size</name>
-                    <state>0xFF</state>
+                    <state>0x900</state>
                 </option>
                 <option>
                     <name>General Far Heap Size</name>
@@ -465,7 +465,7 @@
                 </option>
                 <option>
                     <name>CCIncludePath2</name>
-                    <state>\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC</state>
+                    <state>E:\WMNU\IAR\SHARE_PRJ_SRC</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -2379,6 +2379,12 @@
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\Radio_defs.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\rx_buff.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\rx_buff.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\sig_trace.h</name>
         </file>
         <file>
@@ -2400,4 +2406,7 @@
     <file>
         <name>$PROJ_DIR$\src\main.c</name>
     </file>
+    <mfc>
+        <configuration>Debug</configuration>
+    </mfc>
 </project>

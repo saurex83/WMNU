@@ -704,7 +704,7 @@
                     <item>U1CSR</item>
                     <item>U1UCR</item>
                     <item>P0DIR</item>
-                    <item></item>
+                    <item />
                 </expressions>
                 <col-names>
                     <item>Expression</item>

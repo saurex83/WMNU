@@ -6,6 +6,37 @@ BOUD = 115200   #2000000
 RX_TIMEOUT = 50e-3
 MAX_RX_BYTES = 255
 
+#Типы ответов
+ATYPE_PAR_ERR = 0
+ATYPE_CMD_ERR = 1
+ATYPE_CMD_OK = 2
+
+# Ошибки парсера
+PAR_CRC16 = 1
+PAR_NOCMD = 2
+
+# Ошибки команды
+CMD_LEN = 1
+CMD_ARG_VAL = 2
+CMD_SEEDING = 3
+CMD_NOSEEDING = 4
+CMD_TX_FULL = 5
+CMD_RX_EMPTY = 6 
+
+# Расшифровка ошибок
+BIND_PAR_ERR = {
+  PAR_CRC16 : 'Ошибка CRC16',
+  PAR_NOCMD : 'Команды не существует'  
+}
+
+BIND_CMD_ERR = {
+    CMD_LEN : 'Неверная длина аргументов',
+    CMD_ARG_VAL: 'Неверное значение аргумета',
+    CMD_SEEDING: 'Раздача сети должна быть отключена',
+    CMD_NOSEEDING: 'Раздача сети должна быть включена',
+    CMD_TX_FULL : 'Очередь на передачу полна',
+    CMD_RX_EMPTY : 'Буфер приемника пуст'
+}
 class Connector:
     def __init__(self):
         self.ser = serial.Serial(COM_PORT, BOUD, timeout = RX_TIMEOUT)
@@ -22,36 +53,49 @@ class Connector:
         self.ser.write(send_data)
 
     def _read(self):
+        RET = {'err' : '', 'data' : b''}
+
         # Читаем данные из порта
         data = self.ser.read(MAX_RX_BYTES)
         
         if (len(data) == 0):
-            return b''
+            RET['err'] = 'Нет данных'
+            return RET
 
-        # Размер не верен
+        # Размер указанный в первом байте не соответсвует фактическому
         if (data[0] != len(data) - 1):
-            return b''
+            RET['err'] = 'Неверная длина'
+            return RET
 
-        if (data[1] == 0x00): # Ответ от парсера об ошибке
-            print('Ошибка от парсера TYP: %d'%(data[2]))
-            return b''
+        # Ответ от парсера об ошибке
+        if (data[1] == ATYPE_PAR_ERR): 
+            RET['err'] = BIND_PAR_ERR[data[2]] 
+            return RET
 
-        if (data[1] == 0x01): # Ответ от обработчика команд
+        # Сообщение команды об ошибке
+        if (data[1] == ATYPE_CMD_ERR): 
+            RET['err'] = BIND_CMD_ERR[data[2]]
+            return RET
+
+        # Команда выполнена
+        if (data[1] == ATYPE_CMD_OK): 
             # Возвращаем данные без LEN, TYP и CRC16
-            return data[2:-2]
+            RET['data'] = data[2:-2]
+            return RET
 
     def cmd00_Status(self):
         self._write(b'\x00')
         answ = self._read()
-        if (len(answ) == 0):
-            print('Нет ответа')
+
+        if answ['err'] != '':
+            print(answ['err'])
             return False
 
-        if (answ == b'\x00'):
+        if (answ['data'] == b'\x00'):
             print('Трансивер не раздает сеть')
             return False
 
-        if (answ == b'\x01'):
+        if (answ['data'] == b'\x01'):
             print('Трансивер раздает сеть')
             return True
 
@@ -61,15 +105,11 @@ class Connector:
         self._write(cmd)
         answ = self._read()
         
-        if (len(answ) == 0):
-            print('Нет ответа')
+        if answ['err'] != '':
+            print(answ['err'])
             return False
 
-        if (answ == b'\x01'):
-            print('Нельзя поменять panid, так как раздается сеть')
-            return False
-
-        if (answ == b'\x00'):
+        if (answ['data'] == b''):
             print('Panid изменен!')
             return True
         
@@ -79,15 +119,11 @@ class Connector:
         self._write(cmd)
         answ = self._read()
         
-        if (len(answ) == 0):
-            print('Нет ответа')
+        if answ['err'] != '':
+            print(answ['err'])
             return False
 
-        if (answ == b'\x01'):
-            print('Нельзя поменять RTC, так как раздается сеть')
-            return False
-
-        if (answ == b'\x00'):
+        if (answ['data'] == b''):
             print('RTC изменен!')
             return True
 
@@ -101,11 +137,11 @@ class Connector:
         self._write(cmd)
         answ = self._read()
         
-        if (len(answ) == 0):
-            print('Нет ответа')
+        if answ['err'] != '':
+            print(answ['err'])
             return False
 
-        if (answ == b'\x00'):
+        if (answ['data'] == b''):
             if (on_off):
                 print('Раздача сети включена!')
             else:
@@ -119,16 +155,12 @@ class Connector:
         self._write(cmd)
         answ = self._read()
         
-        if (len(answ) == 0):
-            print('Нет ответа')
+        if answ['err'] != '':
+            print(answ['err'])
             return False
 
-        if (answ == b'\x00'):
+        if (answ['data'] == b''):
             print('Новый вектор IV загружен!')
-            return True
-
-        if (answ == b'\x01'):
-            print('Нельзя загрузить IV, так как раздается сеть')
             return True
 
     def cmd05_Set_KEY(self, KEY):
@@ -138,16 +170,12 @@ class Connector:
         self._write(cmd)
         answ = self._read()
         
-        if (len(answ) == 0):
-            print('Нет ответа')
+        if answ['err'] != '':
+            print(answ['err'])
             return False
 
-        if (answ == b'\x00'):
+        if (answ['data'] == b''):
             print('Новый KEY загружен!')
-            return True
-
-        if (answ == b'\x01'):
-            print('Нельзя загрузить KEY, так как раздается сеть')
             return True
 
     def cmd06_Reset(self):
@@ -157,11 +185,11 @@ class Connector:
         self._write(cmd)
         answ = self._read()
         
-        if (len(answ) == 0):
-            print('Нет ответа')
+        if answ['err'] != '':
+            print(answ['err'])
             return False
 
-        if (answ == b'\x00'):
+        if (answ['data'] == b''):
             print('Трансивер перезагружается!')
             return True
 
@@ -172,17 +200,13 @@ class Connector:
         self._write(cmd)
         answ = self._read()
         
-        if (len(answ) == 0):
-            print('Нет ответа')
+        if answ['err'] != '':
+            print(answ['err'])
             return False
 
-        if (answ == b'\x00'):
+        if (answ['data'] == b''):
             print('Открыт прием в TS = %d, канал = %d!'%(ts[0],ch[0]))
             return True
-        
-        if (answ == b'\x01'):
-            print('Сеть долна раздаваться для открытия приема')
-            return False
 
     def cmd08_CloseSlot(self, ts):
         #ts тип bytes размер по 1 байту
@@ -191,17 +215,13 @@ class Connector:
         self._write(cmd)
         answ = self._read()
         
-        if (len(answ) == 0):
-            print('Нет ответа')
+        if answ['err'] != '':
+            print(answ['err'])
             return False
 
-        if (answ == b'\x00'):
+        if (answ['data'] == b''):
             print('Закрыт прием в TS = %d!'%(ts[0]))
             return True
-        
-        if (answ == b'\x01'):
-            print('Сеть долна раздаваться для закрытия приема')
-            return False
 
     def cmd09_RX_buff_size(self):
         cmd = b'\x09'  
@@ -209,26 +229,53 @@ class Connector:
         self._write(cmd)
         answ = self._read()
         
-        if (len(answ) == 0):
-            print('Нет ответа')
-            return 0
+        if answ['err'] != '':
+            print(answ['err'])
+            return False
 
-        print('Принято пакетов в RX буфер = %d!'%(answ[0]))
-        return answ[0]
+        nbrItem = answ['data'][0]
+        print('Принято пакетов в RX буфер = %d!'%(nbrItem))
+        return nbrItem
 
     def cmd0A_TX_buff_size(self):
         cmd = b'\x0A'  
         
         self._write(cmd)
         answ = self._read()
-        
-        if (len(answ) == 0):
-            print('Нет ответа')
-            return 0
 
-        print('Пакетов на передачу TX буфер = %d!'%(answ[0]))
-        return answ[0]
+        if answ['err'] != '':
+            print(answ['err'])
+            return False
+
+        nbrItem = answ['data'][0]
+        print('Пакетов на передачу TX буфер = %d!'%(nbrItem))
+        return nbrItem
         
+    def cmd0B_tx_frame(self, frame):
+        # frame - бинарный пакет
+        cmd = b'\x0B' + frame
+        
+        self._write(cmd)
+        answ = self._read()
+        
+        if answ['err'] != '':
+            print(answ['err'])
+            return False
+        return True
+
+    def cmd0C_get_rx_frame(self):
+        cmd = b'\x0C'
+        
+        self._write(cmd)
+        answ = self._read()
+        
+        if answ['err'] != '':
+            print(answ['err'])
+            return False
+
+        print('Принят пакет из буфера RX длинной %d'%(len(answ['data'])))
+        return (answ['data'])
+
     def cmd0E_Set_SYNC_CH(self, ch):
         # ch byte
         cmd = b'\x0E' + ch  
@@ -236,17 +283,13 @@ class Connector:
         self._write(cmd)
         answ = self._read()
         
-        if (len(answ) == 0):
-            print('Нет ответа')
-            return 0
+        if answ['err'] != '':
+            print(answ['err'])
+            return False
 
-        if (answ == b'\x00'):
+        if (answ['data'] == b''):
             print('Установлен канал синхросигнала = %d!'%(ch[0]))
             return True
-        
-        if (answ == b'\x01'):
-            print('Сеть должна быть отключена для установки синхроканала')
-            return False
 
     def cmd0D_Energy_Scan(self, ch, timeout):
         # ch byte from 0 to 113 
@@ -258,11 +301,11 @@ class Connector:
 
         answ = self._read()
         
-        if (len(answ) == 0):
-            print('Нет ответа')
-            return 0
+        if answ['err'] != '':
+            print(answ['err'])
+            return False
         
-        tmp = answ[1:2]
+        tmp = answ['data']
         rssi = int.from_bytes(tmp, byteorder='big', signed=True)
 
         #print('Энергия в канале: %d'%(rssi))

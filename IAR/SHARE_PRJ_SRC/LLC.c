@@ -100,7 +100,6 @@ void LLC_Reset(void)
     re_free(task);
     task = next;
   }
-  
 }
 
 /**

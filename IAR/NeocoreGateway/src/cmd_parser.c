@@ -2,6 +2,7 @@
 #include "stdbool.h"
 #include "cmd_index_list.h"
 #include "nwdebuger.h"
+#include "cmd_parser.h"
 
 /**
 @file Прием и парсинг команд по uart
@@ -20,9 +21,11 @@
 Где TYP - тип ответа.
 TYP = 0x00 ответ от парсера в случаии ошибки.
  DATA = 1 ошибка CRC16
- DATA = 2 ошибка размера переданных аргументов
- DATA = 3 команда отсутсвует
-TYP = 0x01 ответ от обработчика команды. см описание команд
+ DATA = 2 команда отсутсвует
+TYP = 0x01 ответ от обработчика команды с ошибкой
+ DATA = 0x01 Ошибка размера аргументов
+ DATA = 0x02 Аргумент неверен.
+TYP = 0x02 Команда выполнена, следуют данные команды
 */
 
 enum {answ_crc_err = 1, answ_args_err = 2, answ_no_cmd = 3}; //!< Коды ошибок
@@ -32,7 +35,8 @@ enum {answ_crc_err = 1, answ_args_err = 2, answ_no_cmd = 3}; //!< Коды ош�
 
 static unsigned short crc16(unsigned char *pcBlock, unsigned short len);
 static bool check_cmd_frame(uint8_t *cmd, uint8_t size);
-static void cmd_answ(uint8_t err_code);
+void cmd_answer(uint8_t ATYPE, uint8_t *data, uint8_t len);
+void cmd_answer_err(uint8_t a_type, uint8_t err_code);
 
 typedef bool(*cmd_handler)(uint8_t *cmd, uint8_t size);
 
@@ -59,39 +63,48 @@ void parse_uart_stream(void)
   while (true){
     cmd = uart_recv_cmd(&size);
     if (!check_cmd_frame(cmd,size)){ // Кадр плохой
-      cmd_answ(answ_crc_err);
+      cmd_answer_err(ATYPE_PAR_ERR, PAR_CRC16);
       continue; 
     }
       
     iCmd = cmd[0];
     if (!(iCmd < MAX_CMD_INDEX)){ // Нет такой команды
-      cmd_answ(answ_no_cmd);
+      cmd_answer_err(ATYPE_PAR_ERR, PAR_NOCMD);
       continue; 
     }
     
-    if (!CMD_LIST[iCmd](&cmd[1], size - 1)){ // Аргум. неверны.
-      cmd_answ(answ_args_err);
-      continue;
-    }
+    if (!CMD_LIST[iCmd](&cmd[1], size - 1)) 
+      continue; // если были ошибки в выполнении команды.
+    
+    // Впринципе проверять не нужно как завершилась команда, но на будующее 
+    // оставлю этот функционал. 
     // Сюда приходим если нет проблем с командой
   }
 }
 
 /**
 @brief Ответ на команду с ошибкой
-@param[in] err_code код ошибки
+@param[in] ATYPE тип ответа
+@param[in] data указатель на данные
+@param[in] len размер данных
 */
-static void cmd_answ(uint8_t err_code){
-  uint8_t an[5];
-  unsigned short an_crc16;
-  
-  an[0] = 4;
-  an[1] = 0x00;  // Обозначет ответ парсера
-  an[2] = err_code;
-  an_crc16 = crc16(&an[1],2);
-  an[3] = an_crc16;
-  an[4] = an_crc16>>8;
+void cmd_answer(uint8_t ATYPE, uint8_t *data, uint8_t len){
+  // Отдаем заголовок
+  uint8_t full_len = len+3; // Байт TYPE + 2б CRC16
+  uint8_t an[2] = {full_len, ATYPE};
   uart_write((char*)an, sizeof(an));
+  
+  // Отдаем данные
+  uart_write((char*)data, len);
+  
+  unsigned short an_crc16 = crc16(data,len);
+  uart_write((char*)an_crc16, sizeof(an_crc16));  
+}
+
+void cmd_answer_err(uint8_t a_type, uint8_t err_code){
+  // Отдаем заголовок
+  uint8_t answ_err[] = {a_type, err_code};
+  stream_write(answ_err, sizeof(answ_err));
 }
 
 /**

@@ -1,34 +1,35 @@
-﻿\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\neocoregw.pbd
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x00.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x01.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x02.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x03.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x04.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x05.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x06.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x07.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x08.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x09.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x0A.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x0B.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x0C.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x0D.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x0E.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_parser.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\coder.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\config.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\delays.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\dma.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\ethernet.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\frame.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\LLC.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\MAC.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\main.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\manager.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\mem.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\NTMR.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\nwdebuger.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\RADIO.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\sync.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\TIC.pbi
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\uart_comm.pbi
+﻿E:\WMNU\IAR\NeocoreGateway\Debug\Obj\neocoregw.pbd
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x00.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x01.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x02.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x03.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x04.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x05.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x06.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x07.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x08.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x09.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x0A.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x0B.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x0C.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x0D.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x0E.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_parser.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\coder.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\config.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\delays.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\dma.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\ethernet.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\frame.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\LLC.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\MAC.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\main.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\manager.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\mem.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\NTMR.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\nwdebuger.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\RADIO.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\rx_buff.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\sync.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\TIC.pbi
+E:\WMNU\IAR\NeocoreGateway\Debug\Obj\uart_comm.pbi

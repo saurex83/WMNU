@@ -49,7 +49,7 @@
         <FreqHi>0</FreqHi>
     </Simulator>
     <DebugChecksum>
-        <Checksum>2114918720</Checksum>
+        <Checksum>359718816</Checksum>
     </DebugChecksum>
     <CallStack>
         <ShowArgs>0</ShowArgs>
@@ -57,6 +57,9 @@
     <Disassembly>
         <MixedMode>1</MixedMode>
     </Disassembly>
+    <array_types>
+        <Fmt0>uint8_t [255]	3	0</Fmt0>
+    </array_types>
     <watch_formats>
         <Fmt0>{W}1:P0DIR	1	0</Fmt0>
         <Fmt1>{W}1:U0CSR	1	0</Fmt1>
@@ -66,7 +69,7 @@
         <Fmt5>{W}1:crc16	4	0</Fmt5>
     </watch_formats>
     <Breakpoints>
-        <Bp0>_ "STD_CODE" "{$PROJ_DIR$\src\uart_comm.c}.104.3" 0 0 0 0 "" 0 ""</Bp0>
+        <Bp0>_ "STD_CODE" "{$PROJ_DIR$\..\NEOCOREGATEWAY\src\uart_comm.c}.104.3" 0 0 0 0 "" 0 ""</Bp0>
         <Count>1</Count>
     </Breakpoints>
     <ChipconEmu>

@@ -16,6 +16,7 @@
 #include "config.h"
 #include "ioCC2530.h"
 #include "dma.h"
+#include "rx_buff.h"
 
 static void MG_Init();
 
@@ -48,6 +49,10 @@ static void MG_Init()
   SY_Init();
   LLC_Init();
   
+#ifdef GATEWAY
+  RXB_Init();
+#endif
+  
   // Загрузка дефолтных параметров
   MAC_setIV(CONFIG.stream_iv);
   MAC_setKEY(CONFIG.stream_key);
@@ -75,6 +80,11 @@ bool neocore_stack_reset(){
   MAC_Reset();
   SY_Reset();
   LLC_Reset();
+
+#ifdef GATEWAY
+  RXB_Reset();
+#endif
+
   network_seed_enable(false);
   
   // Проверим все ли пакеты уничтожены

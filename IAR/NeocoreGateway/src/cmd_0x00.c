@@ -3,31 +3,26 @@
 #include "manager.h"
 #include "nwdebuger.h"
 
-enum {no_seed = 0, seeding = 1};
-enum {no_err = 0, err_seeding = 1};
+enum {NET_NOSEEDING = 0, NET_SEEDING = 1};
 
-static void answ(uint8_t err);
 
 /**
 @brief Статус приемника
+@detail Возвращает true, если идет раздача сети
 */
 bool cmd_0x00(uint8_t *cmd, uint8_t size)
 {
+  uint8_t answer;
+  
   if (get_network_seed_status()){
-    answ(seeding);
+    answer = NET_SEEDING;
     LOG_ON("CMD 0x00. Seeding");
   }
   else{
-    answ(no_seed);
+    answer = NET_NOSEEDING;
     LOG_ON("CMD 0x00. No seeding");
   }
     
+  cmd_answer(ATYPE_CMD_OK, &answer, sizeof(answer));
   return true;
-}
-
-static void answ(uint8_t ans){
-  uint8_t an[2];
-  an[0] = 0x01; // Результат команды
-  an[1] = ans;
-  stream_write(an, sizeof(an));  
 }

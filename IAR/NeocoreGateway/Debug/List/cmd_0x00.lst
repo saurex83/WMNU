@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               23/Jan/2020  21:37:48
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               28/Jan/2020  15:31:22
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -11,122 +11,79 @@
 #    Constant location  =  data
 #    Dptr setup         =  1,16
 #                          
-#    Source file        =  
-#        \\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c
+#    Source file        =  E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x00.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW9534.tmp
-#        ("\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c" -lcN
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List" -o
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj" -e --debug
-#        --core=plain --dptr=16,1 --data_model=large --code_model=banked
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW4648.tmp
+#        (E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x00.c -lcN
+#        E:\WMNU\IAR\NeocoreGateway\Debug\List -o
+#        E:\WMNU\IAR\NeocoreGateway\Debug\Obj -e --debug --core=plain
+#        --dptr=16,1 --data_model=large --code_model=banked
 #        --calling_convention=xdata_reentrant --place_constants=data
 #        --nr_virtual_regs 8 --dlib_config "C:\Program Files (x86)\IAR
 #        Systems\Embedded Workbench 8.0\8051\LIB\DLIB\dl8051Normal.h" -I
-#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\" -On
-#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
-#        --no_cross_call --mfc "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x01.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x02.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x03.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x04.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x05.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x06.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x07.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x08.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x09.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x0A.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x0B.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x0C.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x0D.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x0E.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_parser.c"
-#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\config.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\delays.c"
-#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\dma.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\ethernet.c"
-#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\frame.c"
-#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\LLC.c"
-#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\MAC.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\src\main.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\manager.c"
-#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\mem.c"
-#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\NTMR.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\nwdebuger.c"
-#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\RADIO.c"
-#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\sync.c"
-#        "\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\TIC.c"
-#        "\\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\src\uart_comm.c")
+#        E:\WMNU\IAR\SHARE_PRJ_SRC\ -On --no_cse --no_unroll --no_inline
+#        --no_code_motion --no_tbaa --no_cross_call --mfc
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x01.c
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x02.c
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x03.c
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x04.c
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x05.c
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x06.c
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x07.c
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x08.c
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x09.c
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0A.c
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0B.c
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0C.c
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0D.c
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0E.c
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_parser.c
+#        E:\WMNU\IAR\SHARE_PRJ_SRC\coder.c E:\WMNU\IAR\SHARE_PRJ_SRC\config.c
+#        E:\WMNU\IAR\SHARE_PRJ_SRC\delays.c E:\WMNU\IAR\SHARE_PRJ_SRC\dma.c
+#        E:\WMNU\IAR\SHARE_PRJ_SRC\ethernet.c E:\WMNU\IAR\SHARE_PRJ_SRC\frame.c
+#        E:\WMNU\IAR\SHARE_PRJ_SRC\LLC.c E:\WMNU\IAR\SHARE_PRJ_SRC\MAC.c
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\main.c
+#        E:\WMNU\IAR\SHARE_PRJ_SRC\manager.c E:\WMNU\IAR\SHARE_PRJ_SRC\mem.c
+#        E:\WMNU\IAR\SHARE_PRJ_SRC\NTMR.c E:\WMNU\IAR\SHARE_PRJ_SRC\nwdebuger.c
+#        E:\WMNU\IAR\SHARE_PRJ_SRC\RADIO.c E:\WMNU\IAR\SHARE_PRJ_SRC\rx_buff.c
+#        E:\WMNU\IAR\SHARE_PRJ_SRC\sync.c E:\WMNU\IAR\SHARE_PRJ_SRC\TIC.c
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c)
 #    Locale             =  Russian_Russia.1251
-#    List file          =  
-#        \\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\List\cmd_0x00.lst
-#    Object file        =  
-#        \\vmware-host\Shared
-#        Folders\Projects\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x00.r51
+#    List file          =  E:\WMNU\IAR\NeocoreGateway\Debug\List\cmd_0x00.lst
+#    Object file        =  E:\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x00.r51
 #
 ###############################################################################
 
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c
+E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x00.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
       4          #include "nwdebuger.h"
       5          
-      6          enum {no_seed = 0, seeding = 1};
-      7          enum {no_err = 0, err_seeding = 1};
+      6          enum {NET_NOSEEDING = 0, NET_SEEDING = 1};
+      7          
       8          
-      9          static void answ(uint8_t err);
-     10          
-     11          /**
-     12          @brief Статус приемника
-     13          */
-     14          bool cmd_0x00(uint8_t *cmd, uint8_t size)
-     15          {
-     16            if (get_network_seed_status()){
-     17              answ(seeding);
-     18              LOG_ON("CMD 0x00. Seeding");
-     19            }
-     20            else{
-     21              answ(no_seed);
-     22              LOG_ON("CMD 0x00. No seeding");
-     23            }
-     24              
-     25            return true;
-     26          }
-     27          
-     28          static void answ(uint8_t ans){
-     29            uint8_t an[2];
-     30            an[0] = 0x01; // Результат команды
-     31            an[1] = ans;
-     32            stream_write(an, sizeof(an));  
-     33          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x01.c
+      9          /**
+     10          @brief Статус приемника
+     11          @detail Возвращает true, если идет раздача сети
+     12          */
+     13          bool cmd_0x00(uint8_t *cmd, uint8_t size)
+     14          {
+     15            uint8_t answer;
+     16            
+     17            if (get_network_seed_status()){
+     18              answer = NET_SEEDING;
+     19              LOG_ON("CMD 0x00. Seeding");
+     20            }
+     21            else{
+     22              answer = NET_NOSEEDING;
+     23              LOG_ON("CMD 0x00. No seeding");
+     24            }
+     25              
+     26            cmd_answer(ATYPE_CMD_OK, &answer, sizeof(answer));
+     27            return true;
+     28          }
+E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x01.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -134,92 +91,75 @@
       5          #include "nwdebuger.h"
       6          
       7          #define ARGS_SIZE sizeof(cmd_args_s)
-      8          
-      9          static void answ(uint8_t ans);
-     10          
-     11          typedef struct //!< Аргументы команды
-     12          {
-     13            uint16_t panid;
-     14            uint16_t crc16;
-     15          } cmd_args_s;
-     16          
-     17          enum {no_err = 0, err_seeding = 1};
-     18          /**
-     19          @brief Установить panid
-     20          */
-     21          bool cmd_0x01(uint8_t *cmd, uint8_t size)
-     22          {
-     23            
-     24            if (size != ARGS_SIZE) // Размер аргументов не верен
-     25              return false;
+      8          typedef struct //!< Аргументы команды
+      9          {
+     10            uint16_t panid;
+     11            uint16_t crc16;
+     12          } cmd_args_s;
+     13          
+     14          /**
+     15          @brief Установить panid
+     16          */
+     17          bool cmd_0x01(uint8_t *cmd, uint8_t size)
+     18          {
+     19            if (size != ARGS_SIZE){ // Размер аргументов не верен
+     20              cmd_answer_err(ATYPE_CMD_ERR, CMD_LEN);
+     21              return false;
+     22            }
+     23              
+     24            if (get_network_seed_status()){ // Сеть активна и менять ничего нельзя
+     25              cmd_answer_err(ATYPE_CMD_ERR, CMD_SEEDING);
+     26              return false;
+     27            }
+     28            
+     29            cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
+     30            
+     31            CONFIG.panid =args->panid;
+     32            LOG_ON("CMD 0x01. Set panid");
+     33            
+     34            cmd_answer(ATYPE_CMD_OK, NULL, 0);
+     35            return true;
+     36          }
+E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x02.c
+      1          #include "stdint.h"
+      2          #include "cmd_parser.h"
+      3          #include "manager.h"
+      4          #include "config.h"
+      5          #include "TIC.h"
+      6          #include "nwdebuger.h"
+      7          
+      8          #define ARGS_SIZE sizeof(cmd_args_s)
+      9          typedef struct //!< Аргументы команды
+     10          {
+     11            uint32_t RTC;
+     12            uint16_t crc16;
+     13          } cmd_args_s;
+     14          
+     15          
+     16          /**
+     17          @brief Установить RTC
+     18          */
+     19          bool cmd_0x02(uint8_t *cmd, uint8_t size)
+     20          {
+     21            
+     22            if (size != ARGS_SIZE){ // Размер аргументов не верен
+     23              cmd_answer_err(ATYPE_CMD_ERR, CMD_LEN);
+     24              return false;
+     25            }
      26            
      27            if (get_network_seed_status()){ // Сеть активна и менять ничего нельзя
-     28              answ(err_seeding);
-     29              return true;
+     28              cmd_answer_err(ATYPE_CMD_ERR, CMD_SEEDING);
+     29              return false;
      30            }
      31            
      32            cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
      33            
-     34            CONFIG.panid =args->panid;
-     35            LOG_ON("CMD 0x01. Set panid");
-     36            answ(no_err);
+     34            TIC_SetRTC(args->RTC);
+     35            
+     36            cmd_answer(ATYPE_CMD_OK, NULL, 0);
      37            return true;
      38          }
-     39          
-     40          static void answ(uint8_t ans){
-     41            uint8_t an[2];
-     42            an[0] = 0x01; // Результат команды
-     43            an[1] = ans;
-     44            stream_write(an, sizeof(an));  
-     45          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x02.c
-      1          #include "stdint.h"
-      2          #include "cmd_parser.h"
-      3          #include "manager.h"
-      4          #include "config.h"
-      5          #include "TIC.h"
-      6          
-      7          #define ARGS_SIZE sizeof(cmd_args_s)
-      8          
-      9          static void answ(uint8_t ans);
-     10          
-     11          typedef struct //!< Аргументы команды
-     12          {
-     13            uint32_t RTC;
-     14            uint16_t crc16;
-     15          } cmd_args_s;
-     16          
-     17          enum {no_err = 0, err_seeding = 1};
-     18          
-     19          /**
-     20          @brief Установить RTC
-     21          */
-     22          bool cmd_0x02(uint8_t *cmd, uint8_t size)
-     23          {
-     24            
-     25            if (size != ARGS_SIZE) // Размер аргументов не верен
-     26              return false;
-     27            
-     28            if (get_network_seed_status()){ // Сеть активна и менять ничего нельзя
-     29              answ(err_seeding);
-     30              return true;
-     31            }
-     32            
-     33            cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
-     34            
-     35            TIC_SetRTC(args->RTC);
-     36            
-     37            answ(no_err);
-     38            return true;
-     39          }
-     40          
-     41          static void answ(uint8_t ans){
-     42            uint8_t an[2];
-     43            an[0] = 0x01; // Результат команды
-     44            an[1] = ans;
-     45            stream_write(an, sizeof(an));  
-     46          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x03.c
+E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x03.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -227,53 +167,43 @@
       5          #include "nwdebuger.h"
       6          
       7          #define ARGS_SIZE sizeof(cmd_args_s)
-      8          
-      9          static void answ(uint8_t ans);
-     10          
-     11          typedef struct //!< Аргументы команды
-     12          {
-     13            bool on_off;
-     14            uint16_t crc16;
-     15          } cmd_args_s;
-     16          
-     17          enum {no_err = 0};
-     18          
-     19          /**
-     20          @brief Включить или выключить сеть. true - вкл
-     21          */
-     22          bool cmd_0x03(uint8_t *cmd, uint8_t size)
-     23          {
+      8          typedef struct //!< Аргументы команды
+      9          {
+     10            bool on_off;
+     11            uint16_t crc16;
+     12          } cmd_args_s;
+     13          
+     14          /**
+     15          @brief Включить или выключить сеть. true - вкл
+     16          */
+     17          bool cmd_0x03(uint8_t *cmd, uint8_t size)
+     18          {
+     19            
+     20            if (size != ARGS_SIZE){ // Размер аргументов не верен
+     21              cmd_answer_err(ATYPE_CMD_ERR, CMD_LEN);
+     22              return false;
+     23            }
      24            
-     25            if (size != ARGS_SIZE) // Размер аргументов не верен
-     26              return false;
-     27              
-     28            cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
-     29            
-     30            bool res;
-     31            if (args->on_off){ // Просят включить сеть
-     32              res = neocore_stack_reset();
-     33              ASSERT(res == true);
-     34              network_seed_enable(true);
-     35              LOG_ON("CMD 0x03. Start network");
-     36            }
-     37            else
-     38            {
-     39              res = neocore_stack_reset();
-     40              ASSERT(res == true);
-     41              LOG_ON("CMD 0x03. Stop network");
-     42            }
-     43            
-     44            answ(no_err);
-     45            return true;
-     46          }
-     47          
-     48          static void answ(uint8_t ans){
-     49            uint8_t an[2];
-     50            an[0] = 0x01; // Результат команды
-     51            an[1] = ans;
-     52            stream_write(an, sizeof(an));  
-     53          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x04.c
+     25            cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
+     26            
+     27            bool res;
+     28            if (args->on_off){ // Просят включить сеть
+     29              res = neocore_stack_reset();
+     30              ASSERT(res == true);
+     31              network_seed_enable(true);
+     32              LOG_ON("CMD 0x03. Start network");
+     33            }
+     34            else
+     35            {
+     36              res = neocore_stack_reset();
+     37              ASSERT(res == true);
+     38              LOG_ON("CMD 0x03. Stop network");
+     39            }
+     40            
+     41            cmd_answer(ATYPE_CMD_OK, NULL, 0);
+     42            return true;
+     43          }
+E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x04.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -282,46 +212,36 @@
       6          #include "nwdebuger.h"
       7          
       8          #define ARGS_SIZE sizeof(cmd_args_s)
-      9          
-     10          static void answ(uint8_t ans);
-     11          
-     12          typedef struct //!< Аргументы команды
-     13          {
-     14            uint8_t IV[16];
-     15            uint16_t crc16;
-     16          } cmd_args_s;
-     17          
-     18          enum {no_err = 0, err_seeding = 1};
-     19          
-     20          /**
-     21          @brief Загрузка IV
-     22          */
-     23          bool cmd_0x04(uint8_t *cmd, uint8_t size)
-     24          {
-     25            
-     26            if (size != ARGS_SIZE) // Размер аргументов не верен
+      9          typedef struct //!< Аргументы команды
+     10          {
+     11            uint8_t IV[16];
+     12            uint16_t crc16;
+     13          } cmd_args_s;
+     14          
+     15          /**
+     16          @brief Загрузка IV
+     17          */
+     18          bool cmd_0x04(uint8_t *cmd, uint8_t size)
+     19          {
+     20            if (size != ARGS_SIZE){ // Размер аргументов не верен
+     21              cmd_answer_err(ATYPE_CMD_ERR, CMD_LEN);
+     22              return false;
+     23            }
+     24          
+     25            if (get_network_seed_status()){ // Сеть активна и менять ничего нельзя
+     26              cmd_answer_err(ATYPE_CMD_ERR, CMD_SEEDING);
      27              return false;
-     28          
-     29            if (get_network_seed_status()){ // Сеть активна и менять ничего нельзя
-     30              answ(err_seeding);
-     31              return true;
-     32            }
-     33             
-     34            cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
-     35            memcpy(CONFIG.stream_iv,  args->IV, 16);   
-     36           
-     37            LOG_ON("CMD 0x04. IV loaded");
-     38            answ(no_err);
-     39            return true;
-     40          }
-     41          
-     42          static void answ(uint8_t ans){
-     43            uint8_t an[2];
-     44            an[0] = 0x01; // Результат команды
-     45            an[1] = ans;
-     46            stream_write(an, sizeof(an));  
-     47          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x05.c
+     28            }
+     29             
+     30            cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
+     31            memcpy(CONFIG.stream_iv,  args->IV, 16);   
+     32           
+     33            LOG_ON("CMD 0x04. IV loaded");
+     34            
+     35            cmd_answer(ATYPE_CMD_OK, NULL, 0);
+     36            return true;
+     37          }
+E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x05.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -330,46 +250,36 @@
       6          #include "nwdebuger.h"
       7          
       8          #define ARGS_SIZE sizeof(cmd_args_s)
-      9          
-     10          static void answ(uint8_t ans);
-     11          
-     12          typedef struct //!< Аргументы команды
-     13          {
-     14            uint8_t KEY[16];
-     15            uint16_t crc16;
-     16          } cmd_args_s;
-     17          
-     18          enum {no_err = 0, err_seeding = 1};
-     19          
-     20          /**
-     21          @brief Загрузка KEY
-     22          */
-     23          bool cmd_0x05(uint8_t *cmd, uint8_t size)
-     24          {
-     25            
-     26            if (size != ARGS_SIZE) // Размер аргументов не верен
-     27              return false;
-     28          
-     29            if (get_network_seed_status()){ // Сеть активна и менять ничего нельзя
-     30              answ(err_seeding);
-     31              return true;
-     32            }
-     33             
-     34            cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
-     35            memcpy(CONFIG.stream_key,  args->KEY, 16);   
-     36           
-     37            LOG_ON("CMD 0x05. KEY loaded");
-     38            answ(no_err);
-     39            return true;
-     40          }
-     41          
-     42          static void answ(uint8_t ans){
-     43            uint8_t an[2];
-     44            an[0] = 0x01; // Результат команды
-     45            an[1] = ans;
-     46            stream_write(an, sizeof(an));  
-     47          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x06.c
+      9          typedef struct //!< Аргументы команды
+     10          {
+     11            uint8_t KEY[16];
+     12            uint16_t crc16;
+     13          } cmd_args_s;
+     14          
+     15          /**
+     16          @brief Загрузка KEY
+     17          */
+     18          bool cmd_0x05(uint8_t *cmd, uint8_t size)
+     19          {
+     20            
+     21            if (size != ARGS_SIZE){ // Размер аргументов не верен
+     22              cmd_answer_err(ATYPE_CMD_ERR, CMD_LEN);
+     23              return false;
+     24            }
+     25          
+     26            if (get_network_seed_status()){ // Сеть активна и менять ничего нельзя
+     27              cmd_answer_err(ATYPE_CMD_ERR, CMD_SEEDING);
+     28              return false;
+     29            }
+     30             
+     31            cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
+     32            memcpy(CONFIG.stream_key,  args->KEY, 16);   
+     33           
+     34            LOG_ON("CMD 0x05. KEY loaded");
+     35            cmd_answer(ATYPE_CMD_OK, NULL, 0);
+     36            return true;
+     37          }
+E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x06.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -378,218 +288,169 @@
       6          #include "nwdebuger.h"
       7          
       8          #define ARGS_SIZE sizeof(cmd_args_s)
-      9          
-     10          static void answ(uint8_t ans);
-     11          
-     12          typedef struct //!< Аргументы команды
-     13          {
-     14            uint8_t dont_use;
-     15            uint16_t crc16;
-     16          } cmd_args_s;
-     17          
-     18          enum {no_err = 0, err_seeding = 1};
-     19          
-     20          /**
-     21          @brief перезарузка
-     22          */
-     23          bool cmd_0x06(uint8_t *cmd, uint8_t size)
-     24          {
-     25            
-     26            if (size != ARGS_SIZE) // Размер аргументов не верен
-     27              return false;
-     28             
-     29            answ(no_err);
-     30            LOG_ON("CMD 0x06. HW reload");
-     31            //TODO АППАПРАТНАЯ перезагрузка.
-     32            
-     33            return true;
-     34          }
-     35          
-     36          static void answ(uint8_t ans){
-     37            uint8_t an[2];
-     38            an[0] = 0x01; // Результат команды
-     39            an[1] = ans;
-     40            stream_write(an, sizeof(an));  
-     41          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x07.c
-      1          #include "stdint.h"
-      2          #include "cmd_parser.h"
-      3          #include "manager.h"
-      4          #include "config.h"
-      5          #include "MAC.h"
-      6          #include "nwdebuger.h"
-      7          
-      8          #define ARGS_SIZE sizeof(cmd_args_s)
-      9          
-     10          static void answ(uint8_t ans);
-     11          
-     12          typedef struct //!< Аргументы команды
-     13          {
-     14            uint8_t TS;
-     15            uint8_t CH;
-     16            uint16_t crc16;
-     17          } cmd_args_s;
-     18          
-     19          enum {no_err = 0, err_no_seeding = 1};
-     20          
-     21          /**
-     22          @brief Открыть для приема слот TS на канале CH
-     23          */
-     24          bool cmd_0x07(uint8_t *cmd, uint8_t size)
-     25          {
-     26            
-     27            if (size != ARGS_SIZE) // Размер аргументов не верен
-     28              return false;
+      9          typedef struct //!< Аргументы команды
+     10          {
+     11            uint8_t dont_use;
+     12            uint16_t crc16;
+     13          } cmd_args_s;
+     14          
+     15          /**
+     16          @brief перезарузка
+     17          */
+     18          bool cmd_0x06(uint8_t *cmd, uint8_t size)
+     19          {
+     20            
+     21            if (size != ARGS_SIZE){ // Размер аргументов не верен
+     22              cmd_answer_err(ATYPE_CMD_ERR, CMD_LEN);
+     23              return false;
+     24            }
+     25             
+     26            cmd_answer(ATYPE_CMD_OK, NULL, 0);
+     27            LOG_ON("CMD 0x06. HW reload");
+     28            //TODO АППАПРАТНАЯ перезагрузка.
      29            
-     30            if (!get_network_seed_status()){ // Сеть активна и менять ничего нельзя
-     31              answ(err_no_seeding);
-     32              return true;
-     33            }
-     34            
-     35            cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
-     36            
-     37            MAC_OpenRXSlot(args->TS, args->CH);
-     38            LOG_ON("CMD 0x07. Open slot");
-     39            answ(no_err);
-     40            return true;
-     41          }
-     42          
-     43          static void answ(uint8_t ans){
-     44            uint8_t an[2];
-     45            an[0] = 0x01; // Результат команды
-     46            an[1] = ans;
-     47            stream_write(an, sizeof(an));  
-     48          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x08.c
-      1          #include "stdint.h"
-      2          #include "cmd_parser.h"
-      3          #include "manager.h"
-      4          #include "config.h"
-      5          #include "MAC.h"
-      6          #include "nwdebuger.h"
-      7          
-      8          #define ARGS_SIZE sizeof(cmd_args_s)
-      9          
-     10          static void answ(uint8_t ans);
-     11          
-     12          typedef struct //!< Аргументы команды
-     13          {
-     14            uint8_t TS;
-     15            uint16_t crc16;
-     16          } cmd_args_s;
-     17          
-     18          enum {no_err = 0, err_no_seeding = 1};
-     19          
-     20          /**
-     21          @brief Закрыть для приема слот TS
-     22          */
-     23          bool cmd_0x08(uint8_t *cmd, uint8_t size)
-     24          {
-     25            
-     26            if (size != ARGS_SIZE) // Размер аргументов не верен
-     27              return false;
-     28            
-     29            if (!get_network_seed_status()){ // Сеть активна и менять ничего нельзя
-     30              answ(err_no_seeding);
-     31              return true;
-     32            }
-     33            
-     34            cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
-     35            
-     36            MAC_CloseRXSlot(args->TS);
-     37            
-     38            LOG_ON("CMD 0x08. Close TS slot");
-     39            answ(no_err);
-     40            return true;
-     41          }
-     42          
-     43          static void answ(uint8_t ans){
-     44            uint8_t an[2];
-     45            an[0] = 0x01; // Результат команды
-     46            an[1] = ans;
-     47            stream_write(an, sizeof(an));  
-     48          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x09.c
-      1          #include "stdint.h"
-      2          #include "cmd_parser.h"
-      3          #include "manager.h"
-      4          #include "config.h"
-      5          #include "MAC.h"
-      6          #include "nwdebuger.h"
-      7          
-      8          #define ARGS_SIZE sizeof(cmd_args_s)
-      9          
-     10          static void answ(uint8_t ans);
-     11          
-     12          typedef struct //!< Аргументы команды
-     13          {
-     14            uint16_t crc16;
-     15          } cmd_args_s;
-     16          
-     17          
-     18          /**
-     19          @brief Количество принятых пакетов в буфере RX. Сеть вкл.
-     20          */
-     21          bool cmd_0x09(uint8_t *cmd, uint8_t size)
-     22          {
-     23            
-     24            if (size != ARGS_SIZE) // Размер аргументов не верен
-     25              return false;
-     26            
-     27           // cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
-     28            
-     29            answ(36);
-     30            
-     31            LOG_ON("CMD 0x09. RX frame count");
-     32            return true;
-     33          }
-     34          
-     35          static void answ(uint8_t ans){
-     36            uint8_t an[2];
-     37            an[0] = 0x01; // Результат команды
-     38            an[1] = ans;
-     39            stream_write(an, sizeof(an));  
-     40          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x0A.c
-      1          #include "stdint.h"
-      2          #include "cmd_parser.h"
-      3          #include "manager.h"
-      4          #include "config.h"
-      5          #include "MAC.h"
-      6          #include "nwdebuger.h"
-      7          
-      8          #define ARGS_SIZE sizeof(cmd_args_s)
-      9          
-     10          static void answ(uint8_t ans);
-     11          
-     12          typedef struct //!< Аргументы команды
-     13          {
-     14            uint16_t crc16;
-     15          } cmd_args_s;
-     16          
-     17          /**
-     18          @brief Количество пакетов в буфере TX. Сеть вкл.
-     19          */
-     20          bool cmd_0x0A(uint8_t *cmd, uint8_t size)
-     21          {
-     22            
-     23            if (size != ARGS_SIZE) // Размер аргументов не верен
-     24              return false;
-     25            
-     26           // cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
-     27            
-     28            LOG_ON("CMD 0x09. TX frame count");
-     29            answ(96);
      30            return true;
      31          }
-     32          
-     33          static void answ(uint8_t ans){
-     34            uint8_t an[2];
-     35            an[0] = 0x01; // Результат команды
-     36            an[1] = ans;
-     37            stream_write(an, sizeof(an));  
+E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x07.c
+      1          #include "stdint.h"
+      2          #include "cmd_parser.h"
+      3          #include "manager.h"
+      4          #include "config.h"
+      5          #include "MAC.h"
+      6          #include "nwdebuger.h"
+      7          
+      8          #define ARGS_SIZE sizeof(cmd_args_s)
+      9          typedef struct //!< Аргументы команды
+     10          {
+     11            uint8_t TS;
+     12            uint8_t CH;
+     13            uint16_t crc16;
+     14          } cmd_args_s;
+     15          
+     16          /**
+     17          @brief Открыть для приема слот TS на канале CH
+     18          */
+     19          bool cmd_0x07(uint8_t *cmd, uint8_t size)
+     20          {
+     21            
+     22            if (size != ARGS_SIZE){ // Размер аргументов не верен
+     23              cmd_answer_err(ATYPE_CMD_ERR, CMD_LEN);
+     24              return false;
+     25            }
+     26            
+     27            if (!get_network_seed_status()){ // Сеть отключена
+     28              cmd_answer_err(ATYPE_CMD_ERR, CMD_NOSEEDING);
+     29              return false;
+     30            }
+     31            
+     32            cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
+     33            
+     34            MAC_OpenRXSlot(args->TS, args->CH);
+     35            LOG_ON("CMD 0x07. Open slot");
+     36            cmd_answer(ATYPE_CMD_OK, NULL, 0);
+     37            return true;
      38          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x0B.c
+E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x08.c
+      1          #include "stdint.h"
+      2          #include "cmd_parser.h"
+      3          #include "manager.h"
+      4          #include "config.h"
+      5          #include "MAC.h"
+      6          #include "nwdebuger.h"
+      7          
+      8          #define ARGS_SIZE sizeof(cmd_args_s)
+      9          typedef struct //!< Аргументы команды
+     10          {
+     11            uint8_t TS;
+     12            uint16_t crc16;
+     13          } cmd_args_s;
+     14          
+     15          /**
+     16          @brief Закрыть для приема слот TS
+     17          */
+     18          bool cmd_0x08(uint8_t *cmd, uint8_t size)
+     19          {
+     20            if (size != ARGS_SIZE){ // Размер аргументов не верен
+     21              cmd_answer_err(ATYPE_CMD_ERR, CMD_LEN);
+     22              return false;
+     23            }
+     24            
+     25            if (!get_network_seed_status()){ // Сеть отключена
+     26              cmd_answer_err(ATYPE_CMD_ERR, CMD_NOSEEDING);
+     27              return true;
+     28            }
+     29            
+     30            cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
+     31            
+     32            MAC_CloseRXSlot(args->TS);
+     33            
+     34            LOG_ON("CMD 0x08. Close TS slot");
+     35            cmd_answer(ATYPE_CMD_OK, NULL, 0);
+     36            return true;
+     37          }
+E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x09.c
+      1          #include "stdint.h"
+      2          #include "cmd_parser.h"
+      3          #include "manager.h"
+      4          #include "config.h"
+      5          #include "MAC.h"
+      6          #include "nwdebuger.h"
+      7          #include "rx_buff.h"
+      8          
+      9          #define ARGS_SIZE sizeof(cmd_args_s)
+     10          typedef struct //!< Аргументы команды
+     11          {
+     12            uint16_t crc16;
+     13          } cmd_args_s;
+     14          
+     15          /**
+     16          @brief Количество принятых пакетов в буфере RX. Сеть вкл.
+     17          */
+     18          bool cmd_0x09(uint8_t *cmd, uint8_t size)
+     19          {
+     20            if (size != ARGS_SIZE){ // Размер аргументов не верен
+     21              cmd_answer_err(ATYPE_CMD_ERR, CMD_LEN);
+     22              return false;
+     23            }
+     24            
+     25            uint8_t nbItems = RXB_frame_count();
+     26            cmd_answer(ATYPE_CMD_OK, &nbItems, sizeof(nbItems));
+     27            
+     28            LOG_ON("CMD 0x09. RX frame count");
+     29            return true;
+     30          }
+E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0A.c
+      1          #include "stdint.h"
+      2          #include "cmd_parser.h"
+      3          #include "manager.h"
+      4          #include "config.h"
+      5          #include "MAC.h"
+      6          #include "nwdebuger.h"
+      7          #include "LLC.h"
+      8          
+      9          #define ARGS_SIZE sizeof(cmd_args_s)
+     10          typedef struct //!< Аргументы команды
+     11          {
+     12            uint16_t crc16;
+     13          } cmd_args_s;
+     14          
+     15          /**
+     16          @brief Количество пакетов в буфере TX. Сеть вкл.
+     17          */
+     18          bool cmd_0x0A(uint8_t *cmd, uint8_t size)
+     19          {
+     20            if (size != ARGS_SIZE){ // Размер аргументов не верен
+     21              cmd_answer_err(ATYPE_CMD_ERR, CMD_LEN);
+     22              return false;
+     23            }
+     24          
+     25            uint8_t nbItems = LLC_GetTaskLen();
+     26            cmd_answer(ATYPE_CMD_OK, &nbItems, sizeof(nbItems));
+     27            
+     28            LOG_ON("CMD 0x09. TX frame count");
+     29            return true;
+     30          }
+E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0B.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -601,103 +462,128 @@
       9          #include "LLC.h"
      10          
      11          #define ARGS_SIZE sizeof(cmd_args_s)
-     12          
-     13          static void answ(uint8_t ans);
-     14          
-     15          typedef struct //!< Аргументы команды
-     16          {
-     17            meta_s meta;
-     18            uint8_t len;
-     19            uint8_t offset_payload;
-     20          } cmd_args_s;
-     21          
-     22          enum {no_err = 0, err_no_seeding = 1};
-     23          
-     24          /**
-     25          @brief Поставить пакет в очередь на отправку TX LLC. Сеть вкл.
-     26          */
-     27          bool cmd_0x0B(uint8_t *cmd, uint8_t size)
-     28          {
-     29            // Длинна sz{meta} + sz{len} + len(payload) + 2(CRC16)
-     30            if (size > ARGS_SIZE ) // Прежде чем извлеч проверим мин. размер
-     31              return false;
-     32            
-     33            cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
-     34            
-     35            if (size != ARGS_SIZE + args->len) // Проверим точный размер
-     36              return false;
-     37            
-     38            if (!get_network_seed_status()){ // Если сеть отключена ничего отпр. ненадо
-     39              answ(err_no_seeding);
-     40              return true;
-     41            }
-     42            
-     43            frame_s* tx_frame = frame_create(); // Создаем фрейм
-     44            re_memcpy(&tx_frame->meta, &args->meta, sizeof(meta_s)); //Копируем метаданные
-     45            
-     46            uint8_t *ptr = &args->offset_payload; // Начало содержимого
-     47            frame_addHeader(tx_frame, ptr, args->len);
-     48            
-     49            // Ставим в очередь на отправку
-     50            bool res = LLC_AddTask(tx_frame);
-     51            
-     52            LOG_ON("CMD 0x0B. Frame to TX");
-     53            answ(no_err);
-     54            return true;
-     55          }
-     56          
-     57          static void answ(uint8_t ans){
-     58            uint8_t an[2];
-     59            an[0] = 0x01; // Результат команды
-     60            an[1] = ans;
-     61            stream_write(an, sizeof(an));  
-     62          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x0C.c
+     12          typedef struct //!< Аргументы команды
+     13          {
+     14            meta_s meta;
+     15            uint8_t len;
+     16            uint8_t offset_payload; //!< это указатель на первый байт payload
+     17          } cmd_args_s;
+     18          
+     19          /**
+     20          @brief Поставить пакет в очередь на отправку TX LLC. Сеть вкл.
+     21          */
+     22          bool cmd_0x0B(uint8_t *cmd, uint8_t size)
+     23          {
+     24            // Длинна sz{meta} + sz{len} + len(payload) + 2(CRC16)
+     25            if (size - 2 < ARGS_SIZE ){ // Прежде чем извлеч проверим мин. размер
+     26              cmd_answer_err(ATYPE_CMD_ERR, CMD_LEN);
+     27              return false;
+     28            }
+     29            
+     30            cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
+     31            uint8_t xx= ARGS_SIZE;
+     32            if (size - 2 != ARGS_SIZE + args->len - 1){ // Проверим точный размер
+     33              cmd_answer_err(ATYPE_CMD_ERR, CMD_LEN);
+     34              return false;
+     35            }
+     36              
+     37            if (!get_network_seed_status()){ // Если отключена. Ошибка
+     38              cmd_answer_err(ATYPE_CMD_ERR, CMD_NOSEEDING);
+     39              return true;
+     40            }
+     41            
+     42            // TODO проверить значения аргументов
+     43            //cmd_answer_err(ATYPE_CMD_ERR, CMD_ARG_VAL); 
+     44            
+     45            frame_s* tx_frame = frame_create(); // Создаем фрейм
+     46            re_memcpy(&tx_frame->meta, &args->meta, sizeof(meta_s)); //Копируем метаданные
+     47            
+     48            uint8_t *ptr = &args->offset_payload; // Начало содержимого
+     49            frame_addHeader(tx_frame, ptr, args->len);
+     50            
+     51            // Ставим в очередь на отправку
+     52            bool res = LLC_AddTask(tx_frame);
+     53            
+     54            if (!res){ // Буфер полон 
+     55              cmd_answer_err(ATYPE_CMD_ERR, CMD_TX_FULL);
+     56              LOG_ON("CMD 0x0B. TX buff full");
+     57              return false;
+     58            }
+     59            
+     60            LOG_ON("CMD 0x0B. Frame add to LLC");
+     61            cmd_answer(ATYPE_CMD_OK, NULL, 0);
+     62            return true;
+     63          }
+E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0C.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
       4          #include "config.h"
       5          #include "MAC.h"
       6          #include "nwdebuger.h"
-      7          
-      8          #define ARGS_SIZE sizeof(cmd_args_s)
+      7          #include "rx_buff.h"
+      8          #include "mem.h"
       9          
-     10          static void answ(uint8_t ans);
+     10          static void upload_frame(frame_s *fr);
      11          
-     12          typedef struct //!< Аргументы команды
-     13          {
-     14            uint16_t crc16;
-     15          } cmd_args_s;
-     16          
-     17          enum {no_err = 0, err_no_seeding = 1};
-     18          
-     19          /**
-     20          @brief Загрузить принятый пакет из буфера RX. Сеть вкл.
-     21          */
-     22          bool cmd_0x0C(uint8_t *cmd, uint8_t size)
-     23          {
-     24            
-     25            if (size != ARGS_SIZE) // Размер аргументов не верен
-     26              return false;
+     12          #define ARGS_SIZE sizeof(cmd_args_s)
+     13          typedef struct //!< Аргументы команды
+     14          {
+     15            uint16_t crc16;
+     16          } cmd_args_s;
+     17          
+     18          /**
+     19          @brief Отправить на PC принятый пакет из буфера RX. Сеть вкл.
+     20          */
+     21          bool cmd_0x0C(uint8_t *cmd, uint8_t size)
+     22          {
+     23            if (size != ARGS_SIZE){ // Размер аргументов не верен
+     24              cmd_answer_err(ATYPE_CMD_ERR, CMD_LEN);
+     25              return false;
+     26            }
      27            
-     28            if (!get_network_seed_status()){ // Сеть не работает
-     29              answ(err_no_seeding);
-     30              return true;
+     28            if (!get_network_seed_status()){ // Сеть должна работать
+     29              cmd_answer_err(ATYPE_CMD_ERR, CMD_NOSEEDING);
+     30              return false;
      31            }
      32            
-     33            // TODO download rx frame
-     34            LOG_ON("CMD 0x0C. Download RX frame");
-     35            answ(no_err);
-     36            return true;
-     37          }
-     38          
-     39          static void answ(uint8_t ans){
-     40            uint8_t an[2];
-     41            an[0] = 0x01; // Результат команды
-     42            an[1] = ans;
-     43            stream_write(an, sizeof(an));  
+     33            frame_s *rx_frame = RXB_get_frame();
+     34            
+     35            if (rx_frame == NULL){ // В буфере ничего нет
+     36              cmd_answer_err(ATYPE_CMD_ERR, CMD_RX_EMPTY);
+     37              return false;
+     38            }
+     39            
+     40            upload_frame(rx_frame);
+     41            
+     42            LOG_ON("CMD 0x0C. Upload RX frame");
+     43            return true;
      44          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x0D.c
+     45          
+     46          /**
+     47          @brief Выгрузить фрейм в uart
+     48          @detail Порядок выгрузки meta, byte len, payload[len]
+     49          */
+     50          static void upload_frame(frame_s *fr){
+     51          /*  Заполнение массива upload
+     52                    -----------------------
+     53                    |META|LEN|   PAYLOAD  |
+     54                    -----------------------
+     55                         ^   ^<- fr.len ->^
+     56          sizeof(meta_s)-|   |
+     57          sizeof(meta_s)+1  -| 
+     58          */
+     59            // Пакет буду собирать в массиве upload иначе crc считать неудобно
+     60            uint8_t upload[sizeof(meta_s) + 1 + 127]; // Размер мета+1 байт длинны+пакет
+     61            uint8_t answ_len = sizeof(meta_s) + 1 + fr->len; // Суммарный размер пакета
+     62            
+     63            re_memcpy(upload, &fr->meta, sizeof(meta_s));
+     64            upload[sizeof(meta_s)] = fr->len; // byte len
+     65            re_memcpy(&upload[sizeof(meta_s) + 1], fr->payload, fr->len);
+     66            
+     67            cmd_answer(ATYPE_CMD_OK, upload, answ_len);
+     68          }
+E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0D.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -706,60 +592,40 @@
       6          #include "nwdebuger.h"
       7          
       8          #define ARGS_SIZE sizeof(cmd_args_s)
-      9          
-     10          static void answ(uint8_t ans);
-     11          static void answ_data(int8_t rssi);
-     12          
-     13          typedef struct //!< Аргументы команды
-     14          {
-     15            uint8_t FCH;
-     16            uint16_t MS;
-     17            uint16_t crc16;
-     18          } cmd_args_s;
-     19          
-     20          enum {no_err = 0, err_seeding = 1};
-     21          
-     22          /**
-     23          @brief Скан канала CH в течении time_ms. Сеть выкл.
-     24          @detail Ответ после завершения сканирования
-     25          */
-     26          bool cmd_0x0D(uint8_t *cmd, uint8_t size)
-     27          {
-     28            
-     29            if (size != ARGS_SIZE) // Размер аргументов не верен
-     30              return false;
+      9          typedef struct //!< Аргументы команды
+     10          {
+     11            uint8_t FCH;
+     12            uint16_t MS;
+     13            uint16_t crc16;
+     14          } cmd_args_s;
+     15          
+     16          /**
+     17          @brief Скан канала CH в течении time_ms. Сеть выкл.
+     18          @detail Ответ после завершения сканирования
+     19          */
+     20          bool cmd_0x0D(uint8_t *cmd, uint8_t size)
+     21          {
+     22            if (size != ARGS_SIZE){ // Размер аргументов не верен
+     23              cmd_answer_err(ATYPE_CMD_ERR, CMD_LEN);
+     24              return false;
+     25            }
+     26            
+     27            if (get_network_seed_status()){ // Сеть активна сканировать нельзя
+     28              cmd_answer_err(ATYPE_CMD_ERR, CMD_SEEDING);
+     29              return false;
+     30            }
      31            
-     32            if (get_network_seed_status()){ // Сеть активна сканировать нельзя
-     33              answ(err_seeding);
-     34              return true;
-     35            }
+     32            cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
+     33            
+     34            int8_t rssi;
+     35            bool res = RI_Measure_POW(args->FCH, args->MS, &rssi);
      36            
-     37            cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
+     37            LOG_ON("CMD 0x0D. RSSI scan");
      38            
-     39            int8_t rssi;
-     40            bool res = RI_Measure_POW(args->FCH, args->MS, &rssi);
-     41            
-     42            LOG_ON("CMD 0x0D. RSSI scan");
-     43            answ_data(rssi);
-     44            
-     45            return true;
-     46          }
-     47          
-     48          static void answ(uint8_t ans){
-     49            uint8_t an[2];
-     50            an[0] = 0x01; // Результат команды
-     51            an[1] = ans;
-     52            stream_write(an, sizeof(an));  
-     53          }
-     54          
-     55          static void answ_data(int8_t rssi){
-     56            uint8_t an[3];
-     57            an[0] = 0x01; // Результат команды
-     58            an[1] = no_err;  
-     59            an[2] = rssi;
-     60            stream_write(an, sizeof(an));
-     61          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_0x0E.c
+     39            cmd_answer(ATYPE_CMD_OK, (uint8_t*)&rssi, sizeof(rssi));
+     40            return true;
+     41          }
+E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0E.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -768,200 +634,202 @@
       6          #include "nwdebuger.h"
       7          
       8          #define ARGS_SIZE sizeof(cmd_args_s)
-      9          
-     10          static void answ(uint8_t ans);
-     11          
-     12          typedef struct //!< Аргументы команды
-     13          {
-     14            uint8_t CH;
-     15            uint16_t crc16;
-     16          } cmd_args_s;
-     17          
-     18          enum {no_err = 0, err_seeding = 1};
-     19          
-     20          /**
-     21          @brief Установить канал для синхросигнала. Сеть выкл.
-     22          */
-     23          bool cmd_0x0E(uint8_t *cmd, uint8_t size)
-     24          {
-     25            
-     26            if (size != ARGS_SIZE) // Размер аргументов не верен
-     27              return false;
-     28            
-     29            if (get_network_seed_status()){ // Сеть должна быть отключенна
-     30              answ(err_seeding);
-     31              return true;
-     32            }
-     33            
-     34            cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
-     35            CONFIG.sync_channel = args->CH;
-     36            
-     37            LOG_ON("CMD 0x0E. Set SYNC CH");
-     38            answ(no_err);
-     39            return true;
-     40          }
-     41          
-     42          static void answ(uint8_t ans){
-     43            uint8_t an[2];
-     44            an[0] = 0x01; // Результат команды
-     45            an[1] = ans;
-     46            stream_write(an, sizeof(an));  
-     47          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\src\cmd_parser.c
+      9          typedef struct //!< Аргументы команды
+     10          {
+     11            uint8_t CH;
+     12            uint16_t crc16;
+     13          } cmd_args_s;
+     14          
+     15          /**
+     16          @brief Установить канал для синхросигнала. Сеть выкл.
+     17          */
+     18          bool cmd_0x0E(uint8_t *cmd, uint8_t size)
+     19          {
+     20            if (size != ARGS_SIZE){ // Размер аргументов не верен
+     21              cmd_answer_err(ATYPE_CMD_ERR, CMD_LEN);
+     22              return false;
+     23            }
+     24            
+     25            if (get_network_seed_status()){ // Сеть должна быть отключенна
+     26              cmd_answer_err(ATYPE_CMD_ERR, CMD_SEEDING);
+     27              return true;
+     28            }
+     29            
+     30            cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
+     31            CONFIG.sync_channel = args->CH;
+     32            
+     33            LOG_ON("CMD 0x0E. Set SYNC CH");
+     34            cmd_answer(ATYPE_CMD_OK, NULL, 0);
+     35            return true;
+     36          }
+E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_parser.c
       1          #include "uart_comm.h"
       2          #include "stdbool.h"
       3          #include "cmd_index_list.h"
       4          #include "nwdebuger.h"
-      5          
-      6          /**
-      7          @file Прием и парсинг команд по uart
-      8          @detail Команда от PC имеет формат:
-      9           --------------------------
-     10           | 0 | 1 |  n |LEN-1| LEN | 
-     11           --------------------------
-     12           |LEN|CMD|ARGS|CRC16|CRC16|
-     13           --------------------------
-     14          Ответ от МК имеет формат:
-     15           --------------------------
-     16           | 0 | 1 |  n |LEN-1| LEN | 
-     17           --------------------------
-     18           |LEN|TYP|DATA|CRC16|CRC16|
-     19           --------------------------
-     20          Где TYP - тип ответа.
-     21          TYP = 0x00 ответ от парсера в случаии ошибки.
-     22           DATA = 1 ошибка CRC16
-     23           DATA = 2 ошибка размера переданных аргументов
-     24           DATA = 3 команда отсутсвует
-     25          TYP = 0x01 ответ от обработчика команды. см описание команд
-     26          */
-     27          
-     28          enum {answ_crc_err = 1, answ_args_err = 2, answ_no_cmd = 3}; //!< Коды ошибок
-     29          
-     30          //#define USE_CRC16_CHECK //!< Использовать проверку CRC
-     31          #define MAX_CMD_INDEX sizeof(CMD_LIST) //!< Все номера команд меньше этого числа
+      5          #include "cmd_parser.h"
+      6          
+      7          /**
+      8          @file Прием и парсинг команд по uart
+      9          @detail Команда от PC имеет формат:
+     10           --------------------------
+     11           | 0 | 1 |  n |LEN-1| LEN | 
+     12           --------------------------
+     13           |LEN|CMD|ARGS|CRC16|CRC16|
+     14           --------------------------
+     15          Ответ от МК имеет формат:
+     16           --------------------------
+     17           | 0 | 1 |  n |LEN-1| LEN | 
+     18           --------------------------
+     19           |LEN|TYP|DATA|CRC16|CRC16|
+     20           --------------------------
+     21          Где TYP - тип ответа.
+     22          TYP = 0x00 ответ от парсера в случаии ошибки.
+     23           DATA = 1 ошибка CRC16
+     24           DATA = 2 команда отсутсвует
+     25          TYP = 0x01 ответ от обработчика команды с ошибкой
+     26           DATA = 0x01 Ошибка размера аргументов
+     27           DATA = 0x02 Аргумент неверен.
+     28          TYP = 0x02 Команда выполнена, следуют данные команды
+     29          */
+     30          
+     31          enum {answ_crc_err = 1, answ_args_err = 2, answ_no_cmd = 3}; //!< Коды ошибок
      32          
-     33          static unsigned short crc16(unsigned char *pcBlock, unsigned short len);
-     34          static bool check_cmd_frame(uint8_t *cmd, uint8_t size);
-     35          static void cmd_answ(uint8_t err_code);
-     36          
-     37          typedef bool(*cmd_handler)(uint8_t *cmd, uint8_t size);
-     38          
-     39          // Список обработчиков. Номер команды = индекс в массиве
-     40          static cmd_handler CMD_LIST[] = { 
-     41            cmd_0x00, cmd_0x01, cmd_0x02, cmd_0x03, cmd_0x04, cmd_0x05, cmd_0x06,
-     42            cmd_0x07, cmd_0x08, cmd_0x09, cmd_0x0A, cmd_0x0B, cmd_0x0C, cmd_0x0D,
-     43            cmd_0x0E
-     44          };    
-     45           
-     46          
-     47          
-     48          /**
-     49          @brief Разбор входящих команд от PC
-     50          @detail После приема следует ответ если есть ошибки CRC, args, len.
-     51           Если ошибок нет, то ответ формирует команда.
-     52          */
-     53          void parse_uart_stream(void)
-     54          {
-     55            uint8_t* cmd;
-     56            uint8_t size;
-     57            uint8_t iCmd;
-     58            
-     59            while (true){
-     60              cmd = uart_recv_cmd(&size);
-     61              if (!check_cmd_frame(cmd,size)){ // Кадр плохой
-     62                cmd_answ(answ_crc_err);
-     63                continue; 
-     64              }
-     65                
-     66              iCmd = cmd[0];
-     67              if (!(iCmd < MAX_CMD_INDEX)){ // Нет такой команды
-     68                cmd_answ(answ_no_cmd);
-     69                continue; 
-     70              }
-     71              
-     72              if (!CMD_LIST[iCmd](&cmd[1], size - 1)){ // Аргум. неверны.
-     73                cmd_answ(answ_args_err);
-     74                continue;
-     75              }
-     76              // Сюда приходим если нет проблем с командой
-     77            }
-     78          }
-     79          
-     80          /**
-     81          @brief Ответ на команду с ошибкой
-     82          @param[in] err_code код ошибки
-     83          */
-     84          static void cmd_answ(uint8_t err_code){
-     85            uint8_t an[5];
-     86            unsigned short an_crc16;
-     87            
-     88            an[0] = 4;
-     89            an[1] = 0x00;  // Обозначет ответ парсера
-     90            an[2] = err_code;
-     91            an_crc16 = crc16(&an[1],2);
-     92            an[3] = an_crc16;
-     93            an[4] = an_crc16>>8;
-     94            uart_write((char*)an, sizeof(an));
-     95          }
-     96          
-     97          /**
-     98          @brief Отправляем данные в PC. 
-     99          @brief Формирует байт размера и добавляет CRC16
-    100          */
-    101          void stream_write(uint8_t *data, uint8_t size)
-    102          {
-    103            ASSERT(size > 0 && size < 253) // +2 CRC +1 LEN +252 DATA = 255 максимум
-    104            uint8_t nsize = size + 2; // Два байта CRC
-    105            unsigned short data_crc16 = crc16(data, size);
-    106            uart_write((char*)&nsize, 1);
-    107            uart_write((char*)data, size);
-    108            uart_write((char*)&data_crc16 , 2);
-    109          }
-    110          
-    111          /**
-    112          @brief Проверка коректности принятого пакета
+     33          //#define USE_CRC16_CHECK //!< Использовать проверку CRC
+     34          #define MAX_CMD_INDEX sizeof(CMD_LIST) //!< Все номера команд меньше этого числа
+     35          
+     36          static unsigned short crc16(unsigned char *pcBlock, unsigned short len);
+     37          static bool check_cmd_frame(uint8_t *cmd, uint8_t size);
+     38          void cmd_answer(uint8_t ATYPE, uint8_t *data, uint8_t len);
+     39          void cmd_answer_err(uint8_t a_type, uint8_t err_code);
+     40          
+     41          typedef bool(*cmd_handler)(uint8_t *cmd, uint8_t size);
+     42          
+     43          // Список обработчиков. Номер команды = индекс в массиве
+     44          static cmd_handler CMD_LIST[] = { 
+     45            cmd_0x00, cmd_0x01, cmd_0x02, cmd_0x03, cmd_0x04, cmd_0x05, cmd_0x06,
+     46            cmd_0x07, cmd_0x08, cmd_0x09, cmd_0x0A, cmd_0x0B, cmd_0x0C, cmd_0x0D,
+     47            cmd_0x0E
+     48          };    
+     49           
+     50          
+     51          
+     52          /**
+     53          @brief Разбор входящих команд от PC
+     54          @detail После приема следует ответ если есть ошибки CRC, args, len.
+     55           Если ошибок нет, то ответ формирует команда.
+     56          */
+     57          void parse_uart_stream(void)
+     58          {
+     59            uint8_t* cmd;
+     60            uint8_t size;
+     61            uint8_t iCmd;
+     62            
+     63            while (true){
+     64              cmd = uart_recv_cmd(&size);
+     65              if (!check_cmd_frame(cmd,size)){ // Кадр плохой
+     66                cmd_answer_err(ATYPE_PAR_ERR, PAR_CRC16);
+     67                continue; 
+     68              }
+     69                
+     70              iCmd = cmd[0];
+     71              if (!(iCmd < MAX_CMD_INDEX)){ // Нет такой команды
+     72                cmd_answer_err(ATYPE_PAR_ERR, PAR_NOCMD);
+     73                continue; 
+     74              }
+     75              
+     76              if (!CMD_LIST[iCmd](&cmd[1], size - 1)) 
+     77                continue; // если были ошибки в выполнении команды.
+     78              
+     79              // Впринципе проверять не нужно как завершилась команда, но на будующее 
+     80              // оставлю этот функционал. 
+     81              // Сюда приходим если нет проблем с командой
+     82            }
+     83          }
+     84          
+     85          /**
+     86          @brief Ответ на команду с ошибкой
+     87          @param[in] ATYPE тип ответа
+     88          @param[in] data указатель на данные
+     89          @param[in] len размер данных
+     90          */
+     91          void cmd_answer(uint8_t ATYPE, uint8_t *data, uint8_t len){
+     92            // Отдаем заголовок
+     93            uint8_t full_len = len+3; // Байт TYPE + 2б CRC16
+     94            uint8_t an[2] = {full_len, ATYPE};
+     95            uart_write((char*)an, sizeof(an));
+     96            
+     97            // Отдаем данные
+     98            uart_write((char*)data, len);
+     99            
+    100            unsigned short an_crc16 = crc16(data,len);
+    101            uart_write((char*)an_crc16, sizeof(an_crc16));  
+    102          }
+    103          
+    104          void cmd_answer_err(uint8_t a_type, uint8_t err_code){
+    105            // Отдаем заголовок
+    106            uint8_t answ_err[] = {a_type, err_code};
+    107            stream_write(answ_err, sizeof(answ_err));
+    108          }
+    109          
+    110          /**
+    111          @brief Отправляем данные в PC. 
+    112          @brief Формирует байт размера и добавляет CRC16
     113          */
-    114          static bool check_cmd_frame(uint8_t *cmd, uint8_t size)
-    115          {  
-    116            if (size < 3) // Размер данных не может быть меньше 3 байт
-    117                return false;
-    118              
-    119          #ifdef USE_CRC16_CHECK    
-    120            unsigned short* cmd_crc16;
-    121            unsigned short data_crc16;  
-    122            // Извлекаем CRC16 из пакета (последнии 2 байта) 
-    123            cmd_crc16 = (unsigned short*)&cmd[size - 2];
-    124            // Расчитываем CRC16 данных
-    125            data_crc16 = crc16(cmd, size - 2);
-    126            // Если данные битые то продолжаем прием
-    127            if (data_crc16 != *cmd_crc16)
-    128              return false;
-    129          #endif
-    130          
-    131            return true;
-    132          }
-    133          
-    134          /**
-    135          @brief Расчет CRC16
-    136          @param[in] pcBlock указатель на начало масива
-    137          @param[in] len размер данных для подсчета
-    138          @return код crc16
-    139          */
-    140          static unsigned short crc16(unsigned char *pcBlock, unsigned short len){
-    141              unsigned short crc = 0xFFFF;
-    142              unsigned char i;
-    143           
-    144              while (len--)
-    145              {
-    146                  crc ^= *pcBlock++ << 8;
-    147           
-    148                  for (i = 0; i < 8; i++)
-    149                      crc = crc & 0x8000 ? (crc << 1) ^ 0x1021 : crc << 1;
-    150              }
-    151           
-    152              return crc;
-    153          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\coder.c
+    114          void stream_write(uint8_t *data, uint8_t size)
+    115          {
+    116            ASSERT(size > 0 && size < 253) // +2 CRC +1 LEN +252 DATA = 255 максимум
+    117            uint8_t nsize = size + 2; // Два байта CRC
+    118            unsigned short data_crc16 = crc16(data, size);
+    119            uart_write((char*)&nsize, 1);
+    120            uart_write((char*)data, size);
+    121            uart_write((char*)&data_crc16 , 2);
+    122          }
+    123          
+    124          /**
+    125          @brief Проверка коректности принятого пакета
+    126          */
+    127          static bool check_cmd_frame(uint8_t *cmd, uint8_t size)
+    128          {  
+    129            if (size < 3) // Размер данных не может быть меньше 3 байт
+    130                return false;
+    131              
+    132          #ifdef USE_CRC16_CHECK    
+    133            unsigned short* cmd_crc16;
+    134            unsigned short data_crc16;  
+    135            // Извлекаем CRC16 из пакета (последнии 2 байта) 
+    136            cmd_crc16 = (unsigned short*)&cmd[size - 2];
+    137            // Расчитываем CRC16 данных
+    138            data_crc16 = crc16(cmd, size - 2);
+    139            // Если данные битые то продолжаем прием
+    140            if (data_crc16 != *cmd_crc16)
+    141              return false;
+    142          #endif
+    143          
+    144            return true;
+    145          }
+    146          
+    147          /**
+    148          @brief Расчет CRC16
+    149          @param[in] pcBlock указатель на начало масива
+    150          @param[in] len размер данных для подсчета
+    151          @return код crc16
+    152          */
+    153          static unsigned short crc16(unsigned char *pcBlock, unsigned short len){
+    154              unsigned short crc = 0xFFFF;
+    155              unsigned char i;
+    156           
+    157              while (len--)
+    158              {
+    159                  crc ^= *pcBlock++ << 8;
+    160           
+    161                  for (i = 0; i < 8; i++)
+    162                      crc = crc & 0x8000 ? (crc << 1) ^ 0x1021 : crc << 1;
+    163              }
+    164           
+    165              return crc;
+    166          }
+E:\WMNU\IAR\SHARE_PRJ_SRC\coder.c
       1          /*!
       2          \file Модуль шифрования данных
       3          \brief Функции кодирования данных
@@ -1543,7 +1411,7 @@
     579            memcpy(&src[f], &buf[ds], c); 
     580            return true;
     581          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\config.c
+E:\WMNU\IAR\SHARE_PRJ_SRC\config.c
       1          #include "stdint.h"
       2          #include "string.h"
       3          #include "stdbool.h"
@@ -1566,7 +1434,7 @@
      20            CONFIG.sync_channel = DEFAULT_SYNC_CHANNEL;
      21            CONFIG.panid = DEFAULT_PANID;
      22          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\delays.c
+E:\WMNU\IAR\SHARE_PRJ_SRC\delays.c
       1          /*!
       2          \file  Модуль измерения интервалов времени и функция задержки времени
       3          \brief Функции измерения времени и задержки
@@ -1702,7 +1570,7 @@
     133          {
     134            memcpy(src, dst, sizeof(TimeStamp_s));
     135          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\dma.c
+E:\WMNU\IAR\SHARE_PRJ_SRC\dma.c
       1          #include "dma.h"
       2          #include "ioCC2530.h"
       3          
@@ -1724,7 +1592,7 @@
      19            DMA1CFGH = CONF_ADDR >> 8;
      20            DMA1CFGL = CONF_ADDR & 0xFF;
      21          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\ethernet.c
+E:\WMNU\IAR\SHARE_PRJ_SRC\ethernet.c
       1          #include "frame.h"
       2          #include "Net_frames.h"
       3          #include "stdint.h"
@@ -1838,7 +1706,7 @@
     111            //re_memcpy(eth_h, fb->payload, ETH_LAY_SIZE);
     112            return eth_h;
     113          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\frame.c
+E:\WMNU\IAR\SHARE_PRJ_SRC\frame.c
       1          /**
       2          @file Модуль описывает сетевой кадр и связанные с ним буферы данных
       3          @brief Типы frame
@@ -1976,7 +1844,7 @@
     135          {
     136            return fr->len;
     137          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\LLC.c
+E:\WMNU\IAR\SHARE_PRJ_SRC\LLC.c
       1          /**
       2          @file 
       3          @brief Модуль содержит реализацию интерфейса радио для приема/передачи данных.
@@ -2079,192 +1947,191 @@
     100              re_free(task);
     101              task = next;
     102            }
-    103            
-    104          }
-    105          
-    106          /**
-    107          @brief Количество задач в очереди
-    108          @return количество задач в очереди
-    109          */
-    110          uint8_t LLC_GetTaskLen(void)
-    111          {
-    112            return nbrTasks;
-    113          }
-    114          
-    115          void LLC_SetRXCallback(void (*fn)(frame_s *fr))
-    116          {
-    117            ASSERT(fn != NULL);
-    118            RXCallback = fn;
-    119          }
-    120          
-    121          /**
-    122          @brief Добавляет обработчик заверешения временого слота в список
-    123          */
-    124          void LLC_TimeAlloc(void (*fn)(void))
-    125          {
-    126            TimeAllocFunc *ta = re_malloc(sizeof(TimeAllocFunc));
-    127            ASSERT(ta != NULL);
-    128            ta->next = NULL;
-    129            ta->fn = fn;
-    130          
-    131            // Перебираемся в конец списка
-    132            TimeAllocFunc *next = &HeadAllocFunc;
-    133            while (next->next != NULL)
-    134              next = next->next;
-    135            
-    136            // Добавляем новый элемент
-    137            next->next = ta;
-    138          };
-    139          
-    140          /**
-    141          @brief Добавляем задачу в очередь
-    142          @brief Взовращает true если задача добавлена в очередь. false, если размер 
-    143           очереди достиг максимального размера.
-    144          */
-    145          bool LLC_AddTask(frame_s* fr)
-    146          {
-    147             ASSERT(fr != NULL);
-    148           
-    149              if (nbrTasks == MAX_nbrTASKS)
-    150                return false;
-    151              
-    152             // Ждем пока разблокируется доступ.
-    153             while (tasksBLOCK);
-    154             tasksBLOCK = true;
-    155          
-    156             // Создаем новую задачу
-    157             LLCTask *new_task = (LLCTask*)re_malloc(sizeof(LLCTask));
-    158             ASSERT(new_task !=NULL); 
-    159                
-    160             new_task->TS = fr->meta.TS;
-    161             new_task->CH = fr->meta.CH;
-    162             new_task->fr = fr;
-    163             
-    164            LOG_ON("Add task = %u, CH = %d, TS = %d, OTS = %d. fr = %d",
-    165                (uint16_t)new_task,new_task->CH, new_task->TS, fr->meta.TS, (uint16_t)fr);
-    166            
-    167             // Если в очереди нет задач, добавим первую
-    168             if (FirstTask == NULL) 
-    169             {
-    170               new_task->next = NULL;
-    171               FirstTask = new_task;
-    172             }
-    173             // Если в очереди были задачи то вставим новую в голову списка
-    174             else 
-    175             {
-    176               new_task->next = FirstTask;
-    177               FirstTask = new_task;  
-    178             }
-    179             
-    180             nbrTasks ++;
-    181             tasksBLOCK = false;
-    182          
-    183             return true;
-    184          }
+    103          }
+    104          
+    105          /**
+    106          @brief Количество задач в очереди
+    107          @return количество задач в очереди
+    108          */
+    109          uint8_t LLC_GetTaskLen(void)
+    110          {
+    111            return nbrTasks;
+    112          }
+    113          
+    114          void LLC_SetRXCallback(void (*fn)(frame_s *fr))
+    115          {
+    116            ASSERT(fn != NULL);
+    117            RXCallback = fn;
+    118          }
+    119          
+    120          /**
+    121          @brief Добавляет обработчик заверешения временого слота в список
+    122          */
+    123          void LLC_TimeAlloc(void (*fn)(void))
+    124          {
+    125            TimeAllocFunc *ta = re_malloc(sizeof(TimeAllocFunc));
+    126            ASSERT(ta != NULL);
+    127            ta->next = NULL;
+    128            ta->fn = fn;
+    129          
+    130            // Перебираемся в конец списка
+    131            TimeAllocFunc *next = &HeadAllocFunc;
+    132            while (next->next != NULL)
+    133              next = next->next;
+    134            
+    135            // Добавляем новый элемент
+    136            next->next = ta;
+    137          };
+    138          
+    139          /**
+    140          @brief Добавляем задачу в очередь
+    141          @brief Взовращает true если задача добавлена в очередь. false, если размер 
+    142           очереди достиг максимального размера.
+    143          */
+    144          bool LLC_AddTask(frame_s* fr)
+    145          {
+    146             ASSERT(fr != NULL);
+    147           
+    148              if (nbrTasks == MAX_nbrTASKS)
+    149                return false;
+    150              
+    151             // Ждем пока разблокируется доступ.
+    152             while (tasksBLOCK);
+    153             tasksBLOCK = true;
+    154          
+    155             // Создаем новую задачу
+    156             LLCTask *new_task = (LLCTask*)re_malloc(sizeof(LLCTask));
+    157             ASSERT(new_task !=NULL); 
+    158                
+    159             new_task->TS = fr->meta.TS;
+    160             new_task->CH = fr->meta.CH;
+    161             new_task->fr = fr;
+    162             
+    163            LOG_ON("Add task = %u, CH = %d, TS = %d, OTS = %d. fr = %d",
+    164                (uint16_t)new_task,new_task->CH, new_task->TS, fr->meta.TS, (uint16_t)fr);
+    165            
+    166             // Если в очереди нет задач, добавим первую
+    167             if (FirstTask == NULL) 
+    168             {
+    169               new_task->next = NULL;
+    170               FirstTask = new_task;
+    171             }
+    172             // Если в очереди были задачи то вставим новую в голову списка
+    173             else 
+    174             {
+    175               new_task->next = FirstTask;
+    176               FirstTask = new_task;  
+    177             }
+    178             
+    179             nbrTasks ++;
+    180             tasksBLOCK = false;
+    181          
+    182             return true;
+    183          }
+    184          
     185          
     186          
     187          
-    188          
-    189          /**
-    190          @brief Планировщик задач
-    191          @details Соотносит задачи в очереди и свободные временные слоты MAC уровня.
-    192          При освобождении временных слотов, планировщик устанавливает данные для 
-    193          передачи в MAC.
-    194          @param[in] TS номер текущего временого слота
-    195          */
-    196          static void LLC_Shelduler(uint8_t TS)
-    197          {
-    198            // Если работает функция добавления задачи, то обслуживание очереди не
-    199            // производится. Это может привести к необычным последствиям
-    200            if (tasksBLOCK)
-    201              return;
-    202            tasksBLOCK = true;
-    203            
-    204            // Перебираем попорядку весь список на отправку
-    205            // HeadTask только указатель на первый элемент, сам он не подлежит отправке
-    206            LLCTask *task = FirstTask;
-    207            LLCTask *last = FirstTask;
-    208            LLCTask *next = FirstTask;
-    209            
-    210            while (task != NULL)
-    211            {    
-    212              if (MAC_GetTXState(task->TS)) // Занят ли временой слот
-    213              {
-    214                // Если слот занят переходим к следующей задаче
-    215                last = task;
-    216                task = task->next;
-    217                continue; 
-    218              }
-    219              
-    220              //Выбераем количество попыток передачи в зависимости от типа пакета
-    221              uint8_t attempts;
-    222              if (task->fr->meta.TX_METHOD == UNICAST)
-    223                attempts = UNICAST_SEND_ATEMPTS;
-    224              else if (task->fr->meta.TX_METHOD == BROADCAST)
-    225                attempts = BROADCAST_SEND_ATEMPTS;
-    226              else
-    227                ASSERT(false);
-    228              
-    229              MAC_Send(task->fr, attempts);
-    230              
-    231              next = task->next; // Запомним следующую задачу
-    232              
-    233              // Удаляем текущую задачу из списка
-    234              if (task == FirstTask)
-    235              {
-    236              // Удаляемым элементом является указателем на голову
-    237                 FirstTask = next;
-    238                 last = FirstTask;
-    239              }
-    240              else
-    241              {
-    242                // Удаляемым элементом является промежуточный элемент
-    243                last->next = next;
-    244              }
-    245              
-    246              nbrTasks--;
-    247              LOG_OFF("Free task = %u, nbrTasks = %d\r\n",
-    248                  (uint16_t)task, nbrTasks); 
-    249              re_free(task);
-    250              task = next;
-    251            }
-    252            
-    253            tasksBLOCK = false;
-    254          }
-    255          
-    256          /**
-    257          @brief Обработчик заверешния временого слота
-    258          @details Обратный вызов из TIC. Обработчик вызывает планировщик задач очереди
-    259          и передает управление зарегистрированым функциям с помощью LLC_TimeAlloc.
-    260          @param[in] TS номер завершенного временого слота
-    261          */
-    262          static void LLC_SE_HNDL(uint8_t TS)
-    263          {
-    264            LLC_Shelduler(TS);
-    265            LLC_RunTimeAlloc();
-    266          }
-    267          
-    268          static void LLC_RX_HNDL(frame_s *fr)
-    269          {
-    270            ASSERT(RXCallback !=NULL);
-    271            RXCallback(fr);
-    272          }
-    273          
-    274          /**
-    275          @brief Передаем управление зарегистрированным функциям
-    276          */
-    277          static void LLC_RunTimeAlloc(void)
-    278          {
-    279              TimeAllocFunc *next = &HeadAllocFunc;
-    280            // HeadAllocFunc служит только для указания на первый элемент в очереди
-    281            // так что его нужно пропустить и переходить сразу к next
-    282            while (next->next != NULL)
-    283            {
-    284              next->next->fn();
-    285              next = next->next;
-    286            }
-    287          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\MAC.c
+    188          /**
+    189          @brief Планировщик задач
+    190          @details Соотносит задачи в очереди и свободные временные слоты MAC уровня.
+    191          При освобождении временных слотов, планировщик устанавливает данные для 
+    192          передачи в MAC.
+    193          @param[in] TS номер текущего временого слота
+    194          */
+    195          static void LLC_Shelduler(uint8_t TS)
+    196          {
+    197            // Если работает функция добавления задачи, то обслуживание очереди не
+    198            // производится. Это может привести к необычным последствиям
+    199            if (tasksBLOCK)
+    200              return;
+    201            tasksBLOCK = true;
+    202            
+    203            // Перебираем попорядку весь список на отправку
+    204            // HeadTask только указатель на первый элемент, сам он не подлежит отправке
+    205            LLCTask *task = FirstTask;
+    206            LLCTask *last = FirstTask;
+    207            LLCTask *next = FirstTask;
+    208            
+    209            while (task != NULL)
+    210            {    
+    211              if (MAC_GetTXState(task->TS)) // Занят ли временой слот
+    212              {
+    213                // Если слот занят переходим к следующей задаче
+    214                last = task;
+    215                task = task->next;
+    216                continue; 
+    217              }
+    218              
+    219              //Выбераем количество попыток передачи в зависимости от типа пакета
+    220              uint8_t attempts;
+    221              if (task->fr->meta.TX_METHOD == UNICAST)
+    222                attempts = UNICAST_SEND_ATEMPTS;
+    223              else if (task->fr->meta.TX_METHOD == BROADCAST)
+    224                attempts = BROADCAST_SEND_ATEMPTS;
+    225              else
+    226                ASSERT(false);
+    227              
+    228              MAC_Send(task->fr, attempts);
+    229              
+    230              next = task->next; // Запомним следующую задачу
+    231              
+    232              // Удаляем текущую задачу из списка
+    233              if (task == FirstTask)
+    234              {
+    235              // Удаляемым элементом является указателем на голову
+    236                 FirstTask = next;
+    237                 last = FirstTask;
+    238              }
+    239              else
+    240              {
+    241                // Удаляемым элементом является промежуточный элемент
+    242                last->next = next;
+    243              }
+    244              
+    245              nbrTasks--;
+    246              LOG_OFF("Free task = %u, nbrTasks = %d\r\n",
+    247                  (uint16_t)task, nbrTasks); 
+    248              re_free(task);
+    249              task = next;
+    250            }
+    251            
+    252            tasksBLOCK = false;
+    253          }
+    254          
+    255          /**
+    256          @brief Обработчик заверешния временого слота
+    257          @details Обратный вызов из TIC. Обработчик вызывает планировщик задач очереди
+    258          и передает управление зарегистрированым функциям с помощью LLC_TimeAlloc.
+    259          @param[in] TS номер завершенного временого слота
+    260          */
+    261          static void LLC_SE_HNDL(uint8_t TS)
+    262          {
+    263            LLC_Shelduler(TS);
+    264            LLC_RunTimeAlloc();
+    265          }
+    266          
+    267          static void LLC_RX_HNDL(frame_s *fr)
+    268          {
+    269            ASSERT(RXCallback !=NULL);
+    270            RXCallback(fr);
+    271          }
+    272          
+    273          /**
+    274          @brief Передаем управление зарегистрированным функциям
+    275          */
+    276          static void LLC_RunTimeAlloc(void)
+    277          {
+    278              TimeAllocFunc *next = &HeadAllocFunc;
+    279            // HeadAllocFunc служит только для указания на первый элемент в очереди
+    280            // так что его нужно пропустить и переходить сразу к next
+    281            while (next->next != NULL)
+    282            {
+    283              next->next->fn();
+    284              next = next->next;
+    285            }
+    286          }
+E:\WMNU\IAR\SHARE_PRJ_SRC\MAC.c
       1          #include "MAC.h"
       2          #include "frame.h"
       3          #include "string.h"
@@ -2643,7 +2510,7 @@
     376            AES_StreamCoder(true, src, src, KEY, IV, size);
     377          }
     378          
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\src\main.c
+E:\WMNU\IAR\NEOCOREGATEWAY\src\main.c
       1          #include "manager.h"
       2          #include "nwdebuger.h"
       3          #include "ioCC2530.h"
@@ -2659,7 +2526,7 @@
      13            com_uart_init();
      14            parse_uart_stream();
      15          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\manager.c
+E:\WMNU\IAR\SHARE_PRJ_SRC\manager.c
       1          #include "manager.h"
       2          #include "coder.h"
       3          #include "delays.h"
@@ -2678,127 +2545,137 @@
      16          #include "config.h"
      17          #include "ioCC2530.h"
      18          #include "dma.h"
-     19          
-     20          static void MG_Init();
-     21          
-     22          static bool MG_MODULES_INITED = false; //!< Были ли запущенны аппаратные модули
-     23          static bool NETWORK_SEED = false; //!< Раздача сети шлюзом
-     24          
-     25          // Публичные методы
-     26          void neocore_hw_init();
-     27          bool neocore_stack_reset();
-     28          void network_seed_enable(bool en);
-     29          bool network_discovery(uint8_t timeout_ms);
-     30          bool MG_Connect();
-     31          
-     32          // Переменные модуля
-     33          
-     34          /**
-     35          @brief Начальная иницилизация стека
-     36          */
-     37          static void MG_Init()
-     38          {
-     39            NETWORK_SEED = false;
-     40            DMA_init();
-     41            CF_init();
-     42            NT_Init();
-     43            TIM_init();
-     44            TIC_Init();
-     45            RI_init();
-     46            AES_init();
-     47            MAC_Init();
-     48            SY_Init();
-     49            LLC_Init();
-     50            
-     51            // Загрузка дефолтных параметров
-     52            MAC_setIV(CONFIG.stream_iv);
-     53            MAC_setKEY(CONFIG.stream_key);
-     54            SY_setIV(CONFIG.stream_iv);
-     55            SY_setKEY(CONFIG.stream_key);  
-     56            // TODO Необходимо очищать все ранее выделеную память malloc
-     57          }
-     58          
-     59          /**
-     60          @brief Иницилизация аппаратуры стека
-     61          */
-     62          void neocore_hw_init()
-     63          {
-     64            if (!MG_MODULES_INITED){
-     65              MG_Init();
-     66              MG_MODULES_INITED = true;
-     67            }  
-     68          }
-     69          
-     70          /**
-     71          @brief Сброс всех настроек стека и удаление пакетов
-     72          */
-     73          bool neocore_stack_reset(){
-     74            TIC_Reset();
-     75            MAC_Reset();
-     76            SY_Reset();
-     77            LLC_Reset();
-     78            network_seed_enable(false);
-     79            
-     80            // Проверим все ли пакеты уничтожены
-     81            uint8_t nbrF = frame_getCount(); 
-     82            ASSERT(nbrF == 0);
-     83            if (!nbrF)
-     84              return true;
-     85            return false;
-     86          }
+     19          #include "rx_buff.h"
+     20          
+     21          static void MG_Init();
+     22          
+     23          static bool MG_MODULES_INITED = false; //!< Были ли запущенны аппаратные модули
+     24          static bool NETWORK_SEED = false; //!< Раздача сети шлюзом
+     25          
+     26          // Публичные методы
+     27          void neocore_hw_init();
+     28          bool neocore_stack_reset();
+     29          void network_seed_enable(bool en);
+     30          bool network_discovery(uint8_t timeout_ms);
+     31          bool MG_Connect();
+     32          
+     33          // Переменные модуля
+     34          
+     35          /**
+     36          @brief Начальная иницилизация стека
+     37          */
+     38          static void MG_Init()
+     39          {
+     40            NETWORK_SEED = false;
+     41            DMA_init();
+     42            CF_init();
+     43            NT_Init();
+     44            TIM_init();
+     45            TIC_Init();
+     46            RI_init();
+     47            AES_init();
+     48            MAC_Init();
+     49            SY_Init();
+     50            LLC_Init();
+     51            
+     52          #ifdef GATEWAY
+     53            RXB_Init();
+     54          #endif
+     55            
+     56            // Загрузка дефолтных параметров
+     57            MAC_setIV(CONFIG.stream_iv);
+     58            MAC_setKEY(CONFIG.stream_key);
+     59            SY_setIV(CONFIG.stream_iv);
+     60            SY_setKEY(CONFIG.stream_key);  
+     61            // TODO Необходимо очищать все ранее выделеную память malloc
+     62          }
+     63          
+     64          /**
+     65          @brief Иницилизация аппаратуры стека
+     66          */
+     67          void neocore_hw_init()
+     68          {
+     69            if (!MG_MODULES_INITED){
+     70              MG_Init();
+     71              MG_MODULES_INITED = true;
+     72            }  
+     73          }
+     74          
+     75          /**
+     76          @brief Сброс всех настроек стека и удаление пакетов
+     77          */
+     78          bool neocore_stack_reset(){
+     79            TIC_Reset();
+     80            MAC_Reset();
+     81            SY_Reset();
+     82            LLC_Reset();
+     83          
+     84          #ifdef GATEWAY
+     85            RXB_Reset();
+     86          #endif
      87          
-     88          /**
-     89          @brief Алгоритм подключения к сети
-     90          @param[in] timeout_ms время поиска сети
-     91          */
-     92          bool network_discovery(uint8_t timeout_ms)
-     93          {
-     94            uint16_t panid;
-     95            bool con = false;
-     96            
-     97            // Тупой алгоритм поиска сети.
-     98            while (!con)
-     99            {
-    100              con = SY_SYNC_NETWORK(&panid, timeout_ms);
-    101            }
-    102            
-    103            if (con){ // После синх. разрешаем обработку слотов
-    104              NETWORK_SEED = true;
-    105              MAC_Enable(true);
-    106              SY_Enable(true);
-    107            }
-    108            return con;
-    109          }
-    110          
-    111          /**
-    112          @brief Начинаем раздачу сети
-    113          @param[in] en true начать раздачу сети
-    114          */
-    115          void network_seed_enable(bool en)
-    116          {
-    117            if (en){
-    118              NETWORK_SEED = true;
-    119              MAC_Enable(true);
-    120              SY_Enable(true);
-    121            }
-    122            else{ 
-    123              NETWORK_SEED = false;
-    124              MAC_Enable(false);
-    125              SY_Enable(false);
-    126            }
-    127          }
-    128          
-    129          /**
-    130          @brief Возвращает состояние сети
-    131          @return true если сеть раздается
-    132          */
-    133          bool get_network_seed_status(void){
-    134            return NETWORK_SEED;
-    135          }
-    136          
-    137           
-    138            
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\mem.c
+     88            network_seed_enable(false);
+     89            
+     90            // Проверим все ли пакеты уничтожены
+     91            uint8_t nbrF = frame_getCount(); 
+     92            ASSERT(nbrF == 0);
+     93            if (!nbrF)
+     94              return true;
+     95            return false;
+     96          }
+     97          
+     98          /**
+     99          @brief Алгоритм подключения к сети
+    100          @param[in] timeout_ms время поиска сети
+    101          */
+    102          bool network_discovery(uint8_t timeout_ms)
+    103          {
+    104            uint16_t panid;
+    105            bool con = false;
+    106            
+    107            // Тупой алгоритм поиска сети.
+    108            while (!con)
+    109            {
+    110              con = SY_SYNC_NETWORK(&panid, timeout_ms);
+    111            }
+    112            
+    113            if (con){ // После синх. разрешаем обработку слотов
+    114              NETWORK_SEED = true;
+    115              MAC_Enable(true);
+    116              SY_Enable(true);
+    117            }
+    118            return con;
+    119          }
+    120          
+    121          /**
+    122          @brief Начинаем раздачу сети
+    123          @param[in] en true начать раздачу сети
+    124          */
+    125          void network_seed_enable(bool en)
+    126          {
+    127            if (en){
+    128              NETWORK_SEED = true;
+    129              MAC_Enable(true);
+    130              SY_Enable(true);
+    131            }
+    132            else{ 
+    133              NETWORK_SEED = false;
+    134              MAC_Enable(false);
+    135              SY_Enable(false);
+    136            }
+    137          }
+    138          
+    139          /**
+    140          @brief Возвращает состояние сети
+    141          @return true если сеть раздается
+    142          */
+    143          bool get_network_seed_status(void){
+    144            return NETWORK_SEED;
+    145          }
+    146          
+    147           
+    148            
+E:\WMNU\IAR\SHARE_PRJ_SRC\mem.c
       1          #include "ioCC2530.h"
       2          #include "stdlib.h"
       3          #include "stdint.h"
@@ -2863,7 +2740,7 @@
      62            EA = EA_save;
      63            //LOG(MSG_OFF | MSG_INFO | MSG_TRACE, "free = %d\r\n", (uint16_t)ptr);  
      64          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\NTMR.c
+E:\WMNU\IAR\SHARE_PRJ_SRC\NTMR.c
       1          #include "NTMR.h"
       2          #include "stdlib.h"
       3          #include "ioCC2530.h"
@@ -3174,7 +3051,7 @@
     308            ST1 = value.fild[1];
     309            ST0 = value.fild[0];
     310          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\nwdebuger.c
+E:\WMNU\IAR\SHARE_PRJ_SRC\nwdebuger.c
       1          #include "nwdebuger.h"
       2          #include "ioCC2530.h"
       3          #include "stdint.h"
@@ -3280,7 +3157,7 @@
     103          
     104          _STD_END
     105          #endif
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\RADIO.c
+E:\WMNU\IAR\SHARE_PRJ_SRC\RADIO.c
       1          /*!
       2          \file 
       3          \brief Модуль содержит реализацию интерфейса радио для приема/передачи данных.
@@ -3841,7 +3718,119 @@
     558            return true;
     559          }
     560          
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\sync.c
+E:\WMNU\IAR\SHARE_PRJ_SRC\rx_buff.c
+      1          #include "LLC.h"
+      2          #include "nwdebuger.h"
+      3          
+      4          /**
+      5          @file Буфер приемника пакетов.
+      6          @detail Буфер используется шлюзом для временого хранения принятых пакетов
+      7           перед передачей компьютеру по уарт.
+      8          */
+      9          
+     10          // Определения
+     11          #define RX_BUFF_SIZE 10 //!< Количество пакетов для хранения 
+     12          
+     13          // Глобальные функции
+     14          void RXB_Init(void);
+     15          void RXB_Reset(void);
+     16          uint8_t RXB_frame_count(void);
+     17          frame_s* RXB_get_frame(void);
+     18          void RXB_del_frame(frame_s *fr);
+     19          
+     20          // Статические функции
+     21          static void RXB_Callback(frame_s *fr);
+     22          static void Delete_frame(uint8_t index);
+     23          
+     24          // Локальные переменные
+     25          frame_s* FRAME_POOL[RX_BUFF_SIZE]; //!< Хранилище указателей на пакетов. NULL - нет пакета
+     26          
+     27          /**
+     28          @brief Первоначальная настройка
+     29          */
+     30          void RXB_Init(void){
+     31            LLC_SetRXCallback(RXB_Callback);
+     32            RXB_Reset();
+     33          }
+     34          
+     35          /**
+     36          @brief Сброс всех данных и настройка
+     37          */
+     38          void RXB_Reset(void){
+     39            for (uint8_t i = 0; i < RX_BUFF_SIZE; i++)
+     40              Delete_frame(i);
+     41          }
+     42          
+     43          /**
+     44          @brief Количество принятых пакетов в буфере
+     45          @return Количество пакетов
+     46          */
+     47          uint8_t RXB_frame_count(void){
+     48            uint8_t cnt = 0;
+     49            for (uint8_t i = 0; i < RX_BUFF_SIZE; i++)
+     50              if (FRAME_POOL[i] != NULL)
+     51                cnt ++;
+     52            return cnt;
+     53          }
+     54          
+     55          /**
+     56          @brief Возращает указатель на принятый пакет
+     57          */
+     58          frame_s* RXB_get_frame(void){
+     59            frame_s *rx_frame = NULL;
+     60          
+     61            for (uint8_t i = 0; i < RX_BUFF_SIZE; i++)
+     62              if (FRAME_POOL[i] != NULL){
+     63                rx_frame = FRAME_POOL[i];
+     64                break;
+     65              }
+     66            return rx_frame;
+     67          }
+     68          
+     69          /**
+     70          @brief Удаляет пакет по указателю
+     71          */
+     72          void RXB_del_frame(frame_s *fr){
+     73            int index = -1;
+     74            
+     75            for (uint8_t i = 0; i < RX_BUFF_SIZE; i++)
+     76              if (FRAME_POOL[i] == fr){
+     77                index = i;
+     78                break;
+     79              }    
+     80            
+     81            ASSERT(index > 0);
+     82            Delete_frame(index);
+     83          }
+     84          
+     85          /**
+     86          @brief Удаляет пакет из RX_BUFF_SIZE по индексу
+     87          @param[in] индекс пакета в массиве RX_BUFF_SIZE
+     88          */
+     89          static void Delete_frame(uint8_t index){
+     90            ASSERT(index < RX_BUFF_SIZE);
+     91            if (FRAME_POOL[index] != NULL){
+     92                frame_delete(FRAME_POOL[index]);
+     93                FRAME_POOL[index] = NULL;
+     94            }
+     95          }
+     96          
+     97          /**
+     98          @brief Обработчик принятого пакета
+     99          @detail Вставляет принятые пакеты в буфере, если места нет то размещает
+    100           по индексу 0.
+    101          */
+    102          static void RXB_Callback(frame_s *fr){
+    103            
+    104            for (uint8_t i = 0; i < RX_BUFF_SIZE; i++)
+    105              if (FRAME_POOL[i] == NULL){
+    106                FRAME_POOL[i] = fr;
+    107                return;
+    108              }
+    109            
+    110            FRAME_POOL[0] = fr;
+    111          }
+E:\WMNU\IAR\SHARE_PRJ_SRC\sync.c
       1          #include "stdlib.h"
       2          #include "basic.h"
       3          #include "frame.h"
@@ -4240,7 +4229,7 @@
     396            AES_StreamCoder(true, src, src, KEY, IV, size);
     397          }
     398          
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\SHARE_PRJ_SRC\TIC.c
+E:\WMNU\IAR\SHARE_PRJ_SRC\TIC.c
       1          #include "TIC.h"
       2          #include "NTMR.h"
       3          #include "stdlib.h"
@@ -4641,7 +4630,7 @@
     398          {
     399            return NODE_NONCE;
     400          }
-\\vmware-host\Shared Folders\Projects\WMNU\IAR\NeocoreGateway\src\uart_comm.c
+E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       1          #include "nwdebuger.h"
       2          #include "ioCC2530.h"
       3          #include "stdint.h"
@@ -4793,6 +4782,10 @@
         0     40   -> TIM_TimeStamp
         0     40   -> TIM_delay
         0     40   -> TIM_passedTime
+      0     28   Delete_frame
+        0     10   -> frame_delete
+        0     10   -> printf
+        0     16   -> printf
       2      0   ETH_Init
         2      0   -> LLC_SetRXCallback
       0     20   ETH_RX_HNDL
@@ -4812,7 +4805,7 @@
         0     12   -> printf
         0     18   -> printf
         0     12   -> re_malloc
-      2      0   LLC_GetTaskLen
+      2     10   LLC_GetTaskLen
       2      0   LLC_Init
         2      0   -> MAC_SetRXCallback
         2      0   -> TIC_SetSECallback
@@ -4849,7 +4842,7 @@
         0     12   -> frame_create
         0     12   -> frame_delete
         0     12   -> xor_calc
-      1     27   MAC_CloseRXSlot
+      1     28   MAC_CloseRXSlot
         0     10   -> TIC_SetRXState
         0     10   -> printf
         0     16   -> printf
@@ -4864,7 +4857,7 @@
         0     10   -> TIC_SetRXCallback
         0     10   -> TIC_SetTXCallback
         0     12   -> memset
-      1     27   MAC_OpenRXSlot
+      1     28   MAC_OpenRXSlot
         0     10   -> TIC_SetRXState
         0     10   -> printf
         0     16   -> printf
@@ -4907,6 +4900,7 @@
         2      0   -> MAC_setKEY
         2      0   -> NT_Init
         2      0   -> RI_init
+        2      0   -> RXB_Init
         2      0   -> SY_Init
         2      0   -> SY_setIV
         2      0   -> SY_setKEY
@@ -4960,6 +4954,18 @@
         2      1   -> setFreq
       2      0   RI_init
         2      0   -> random_core_init
+      2      0   RXB_Callback
+      2      0   RXB_Init
+        2      0   -> LLC_SetRXCallback
+        2      0   -> RXB_Reset
+      0     19   RXB_Reset
+        0      9   -> Delete_frame
+      0     18   RXB_del_frame
+        0     12   -> Delete_frame
+        0     12   -> printf
+        0     18   -> printf
+      2     10   RXB_frame_count
+      2     14   RXB_get_frame
       2     22   ReadTimer
       0     78   RecvData
         0     32   -> NT_GetTime
@@ -5085,105 +5091,91 @@
       3     44   UnLoadRXData
       0     18   __write
         0     16   -> MyLowLevelPutchar
-      1     20   answ
-        0     11   -> stream_write
-      1     22   answ
-        0     11   -> stream_write
-      1     20   answ
-        0     11   -> stream_write
-      1     27   answ
-        0     11   -> stream_write
-      1     20   answ
-        0     11   -> stream_write
-      1     24   answ
-        0     11   -> stream_write
-      1     22   answ
-        0     11   -> stream_write
-      1     22   answ
-        0     11   -> stream_write
-      1     25   answ
-        0     11   -> stream_write
-      1     25   answ
-        0     11   -> stream_write
-      1     20   answ
-        0     11   -> stream_write
-      1     22   answ
-        0     11   -> stream_write
-      1     22   answ
-        0     11   -> stream_write
-      1     20   answ
-        0     11   -> stream_write
-      1     25   answ
-        0     11   -> stream_write
-      1     25   answ_data
-        0     12   -> stream_write
       0      9   bits_count
       2     34   calcCompareTime
         0     22   -> ReadTimer
       0     13   check_cmd_frame
       0     21   clocks_update
-      0      9   cmd_0x00
-        0      9   -> answ
-        0      9   -> get_network_seed_status
-      0     11   cmd_0x01
-        0     11   -> answ
-        0     11   -> get_network_seed_status
-      0     11   cmd_0x02
-        0     11   -> TIC_SetRTC
-        0     11   -> answ
-        0     11   -> get_network_seed_status
+      0     10   cmd_0x00
+        0     10   -> cmd_answer
+        0     10   -> get_network_seed_status
+      0     12   cmd_0x01
+        0     12   -> cmd_answer
+        0     12   -> cmd_answer_err
+        0     12   -> get_network_seed_status
+      0     12   cmd_0x02
+        0     12   -> TIC_SetRTC
+        0     12   -> cmd_answer
+        0     12   -> cmd_answer_err
+        0     12   -> get_network_seed_status
       0     20   cmd_0x03
-        0     14   -> answ
+        0     14   -> cmd_answer
+        0     14   -> cmd_answer_err
         0     14   -> neocore_stack_reset
         0     14   -> network_seed_enable
         0     14   -> printf
         0     20   -> printf
       0     16   cmd_0x04
-        0     14   -> answ
+        0     14   -> cmd_answer
+        0     14   -> cmd_answer_err
         0     14   -> get_network_seed_status
         0     16   -> memcpy
       0     16   cmd_0x05
-        0     14   -> answ
+        0     14   -> cmd_answer
+        0     14   -> cmd_answer_err
         0     14   -> get_network_seed_status
         0     16   -> memcpy
       0      9   cmd_0x06
-        0      9   -> answ
-      0     11   cmd_0x07
-        0     11   -> MAC_OpenRXSlot
-        0     11   -> answ
-        0     11   -> get_network_seed_status
-      0     11   cmd_0x08
-        0     11   -> MAC_CloseRXSlot
-        0     11   -> answ
-        0     11   -> get_network_seed_status
-      0      9   cmd_0x09
-        0      9   -> answ
-      0      9   cmd_0x0A
-        0      9   -> answ
+        0      9   -> cmd_answer
+        0      9   -> cmd_answer_err
+      0     12   cmd_0x07
+        0     12   -> MAC_OpenRXSlot
+        0     12   -> cmd_answer
+        0     12   -> cmd_answer_err
+        0     12   -> get_network_seed_status
+      0     12   cmd_0x08
+        0     12   -> MAC_CloseRXSlot
+        0     12   -> cmd_answer
+        0     12   -> cmd_answer_err
+        0     12   -> get_network_seed_status
+      1     10   cmd_0x09
+        0     10   -> RXB_frame_count
+        0     10   -> cmd_answer
+        0     10   -> cmd_answer_err
+      1     10   cmd_0x0A
+        0     10   -> LLC_GetTaskLen
+        0     10   -> cmd_answer
+        0     10   -> cmd_answer_err
       0     18   cmd_0x0B
         0     16   -> LLC_AddTask
-        0     16   -> answ
+        0     16   -> cmd_answer
+        0     16   -> cmd_answer_err
         0     16   -> frame_addHeader
         0     16   -> frame_create
         0     16   -> get_network_seed_status
         0     18   -> re_memcpy
-      0      9   cmd_0x0C
-        0      9   -> answ
-        0      9   -> get_network_seed_status
+      0     14   cmd_0x0C
+        0     14   -> RXB_get_frame
+        0     14   -> cmd_answer_err
+        0     14   -> get_network_seed_status
+        0     14   -> upload_frame
       0     13   cmd_0x0D
         0     13   -> RI_Measure_POW
-        0     13   -> answ
-        0     13   -> answ_data
+        0     13   -> cmd_answer
+        0     13   -> cmd_answer_err
         0     13   -> get_network_seed_status
-      0     11   cmd_0x0E
-        0     11   -> answ
-        0     11   -> get_network_seed_status
-      1     30   cmd_answ
-        0     17   -> crc16
-        0     17   -> uart_write
+      0     12   cmd_0x0E
+        0     12   -> cmd_answer
+        0     12   -> cmd_answer_err
+        0     12   -> get_network_seed_status
+      1    179   cmd_answer
+        0     18   -> crc16
+        0     18   -> uart_write
+      1     27   cmd_answer_err
+        0     11   -> stream_write
       0      9   com_uart_init
         0      9   -> uart_dma_init
-      0     26   crc16
+      0     27   crc16
       0     34   extract_header
         0     14   -> frame_len
         0     14   -> printf
@@ -5239,6 +5231,7 @@
       0     30   neocore_stack_reset
         0     10   -> LLC_Reset
         0     10   -> MAC_Reset
+        0     10   -> RXB_Reset
         0     10   -> SY_Reset
         0     10   -> TIC_Reset
         0     10   -> frame_getCount
@@ -5256,7 +5249,7 @@
         2      0   -> uart_init
       0     13   parse_uart_stream
         0     13   -> check_cmd_frame
-        0     13   -> cmd_answ
+        0     13   -> cmd_answer_err
         0     13   -> uart_recv_cmd
       0      9   random_core_init
         0      9   -> RI_cfg
@@ -5267,7 +5260,7 @@
         0     10   -> free
       0     58   re_malloc
         0     14   -> malloc
-      0     36   re_memcpy
+      0    179   re_memcpy
         0     16   -> memcpy
       0     18   readRandom
         0      9   -> bits_count
@@ -5286,7 +5279,7 @@
         0     17   -> printf
       0     10   set_capture_time
         0      9   -> NT_SetCompare
-      1     33   stream_write
+      1     32   stream_write
         0     15   -> crc16
         0     15   -> printf
         0     21   -> printf
@@ -5297,8 +5290,11 @@
       0      0   uart_init
       0     10   uart_putchar
       3     13   uart_recv_cmd
-      0     27   uart_write
+      0     28   uart_write
         0     10   -> uart_putchar
+      1    177   upload_frame
+        0    161   -> cmd_answer
+        0    163   -> re_memcpy
       0     14   validate
       0     23   xor_calc
 
@@ -5309,6 +5305,7 @@
    -----  --------------
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_1
+      22  ?<Constant "*ASSERT* %s:%d:%s -> ">_10
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_2
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_3
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_4
@@ -5317,18 +5314,20 @@
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_7
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_8
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_9
-      77  ?<Constant "\\\\vmware-host\\Shared ...">
-      79  ?<Constant "\\\\vmware-host\\Shared ...">_1
-      72  ?<Constant "\\\\vmware-host\\Shared ...">_2
-      69  ?<Constant "\\\\vmware-host\\Shared ...">_3
-      67  ?<Constant "\\\\vmware-host\\Shared ...">_4
-      67  ?<Constant "\\\\vmware-host\\Shared ...">_5
-      71  ?<Constant "\\\\vmware-host\\Shared ...">_6
-      68  ?<Constant "\\\\vmware-host\\Shared ...">_7
-      69  ?<Constant "\\\\vmware-host\\Shared ...">_8
-      67  ?<Constant "\\\\vmware-host\\Shared ...">_9
+      42  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">
+      44  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">_1
+      37  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">
+      34  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_1
+      32  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_2
+      32  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_3
+      36  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_4
+      33  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_5
+      34  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_6
+      36  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_7
+      32  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_8
        3  ?<Constant "\r\n">
        3  ?<Constant "\r\n">_1
+       3  ?<Constant "\r\n">_10
        3  ?<Constant "\r\n">_2
        3  ?<Constant "\r\n">_3
        3  ?<Constant "\r\n">_4
@@ -5339,6 +5338,7 @@
        3  ?<Constant "\r\n">_9
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_1
+      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_10
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_2
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_3
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_4
@@ -5347,18 +5347,20 @@
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_7
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_8
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_9
-      77  ?<Initializer for <Constant "\\\\vmware-host\\
-      79  ?<Initializer for <Constant "\\\\vmware-host\\_1
-      72  ?<Initializer for <Constant "\\\\vmware-host\\_2
-      69  ?<Initializer for <Constant "\\\\vmware-host\\_3
-      67  ?<Initializer for <Constant "\\\\vmware-host\\_4
-      67  ?<Initializer for <Constant "\\\\vmware-host\\_5
-      71  ?<Initializer for <Constant "\\\\vmware-host\\_6
-      68  ?<Initializer for <Constant "\\\\vmware-host\\_7
-      69  ?<Initializer for <Constant "\\\\vmware-host\\_8
-      67  ?<Initializer for <Constant "\\\\vmware-host\\_9
+      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE
+      44  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE_1
+      37  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH
+      34  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_1
+      32  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_2
+      32  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_3
+      36  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_4
+      33  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_5
+      34  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_6
+      36  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_7
+      32  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_8
        3  ?<Initializer for <Constant "\r\n">>
        3  ?<Initializer for <Constant "\r\n">>_1
+       3  ?<Initializer for <Constant "\r\n">>_10
        3  ?<Initializer for <Constant "\r\n">>_2
        3  ?<Initializer for <Constant "\r\n">>_3
        3  ?<Initializer for <Constant "\r\n">>_4
@@ -5406,18 +5408,20 @@
       14  ?<Initializer for __FUNCTION__>_22
        8  ?<Initializer for __FUNCTION__>_23
        8  ?<Initializer for __FUNCTION__>_24
-      13  ?<Initializer for __FUNCTION__>_25
-      15  ?<Initializer for __FUNCTION__>_26
-      15  ?<Initializer for __FUNCTION__>_27
+      14  ?<Initializer for __FUNCTION__>_25
+      13  ?<Initializer for __FUNCTION__>_26
+      13  ?<Initializer for __FUNCTION__>_27
       15  ?<Initializer for __FUNCTION__>_28
       15  ?<Initializer for __FUNCTION__>_29
       12  ?<Initializer for __FUNCTION__>_3
-      19  ?<Initializer for __FUNCTION__>_30
-      18  ?<Initializer for __FUNCTION__>_31
-      29  ?<Initializer for __FUNCTION__>_32
+      15  ?<Initializer for __FUNCTION__>_30
+      15  ?<Initializer for __FUNCTION__>_31
+      19  ?<Initializer for __FUNCTION__>_32
       18  ?<Initializer for __FUNCTION__>_33
-      18  ?<Initializer for __FUNCTION__>_34
-      19  ?<Initializer for __FUNCTION__>_35
+      29  ?<Initializer for __FUNCTION__>_34
+      18  ?<Initializer for __FUNCTION__>_35
+      18  ?<Initializer for __FUNCTION__>_36
+      19  ?<Initializer for __FUNCTION__>_37
       15  ?<Initializer for __FUNCTION__>_4
       16  ?<Initializer for __FUNCTION__>_5
       16  ?<Initializer for __FUNCTION__>_6
@@ -5467,6 +5471,8 @@
        6  DMA_init::?relay
      147  DelayCalibrate
        6  DelayCalibrate::?relay
+     201  Delete_frame
+       6  Delete_frame::?relay
        1  ENCCS
       28  ETH_Init
        6  ETH_Init::?relay
@@ -5475,6 +5481,7 @@
       80  ETH_Set_RXCallback
        6  ETH_Set_RXCallback::?relay
        2  EventCallback
+      20  FRAME_POOL
        2  FirstTask
        4  HeadAllocFunc
       16  IV
@@ -5539,7 +5546,7 @@
        6  MAC_setIV::?relay
       41  MAC_setKEY
        6  MAC_setKEY::?relay
-      75  MG_Init
+      78  MG_Init
        6  MG_Init::?relay
        1  MG_MODULES_INITED
       12  MyLowLevelPutchar
@@ -5593,6 +5600,18 @@
        6  RI_cfg::?relay
       32  RI_init
        6  RI_init::?relay
+     116  RXB_Callback
+       6  RXB_Callback::?relay
+      21  RXB_Init
+       6  RXB_Init::?relay
+      26  RXB_Reset
+       6  RXB_Reset::?relay
+     162  RXB_del_frame
+       6  RXB_del_frame::?relay
+      69  RXB_frame_count
+       6  RXB_frame_count::?relay
+     116  RXB_get_frame
+       6  RXB_get_frame::?relay
        2  RXCallback
        2  RXCallback
        2  RXCallback
@@ -5739,38 +5758,6 @@
        4  __Constant_ffffff
      156  __write
        6  __write::?relay
-      51  answ
-      51  answ
-      51  answ
-      51  answ
-      51  answ
-      51  answ
-      51  answ
-      51  answ
-      51  answ
-      51  answ
-      51  answ
-      51  answ
-      51  answ
-      51  answ
-      51  answ
-       6  answ::?relay
-       6  answ::?relay
-       6  answ::?relay
-       6  answ::?relay
-       6  answ::?relay
-       6  answ::?relay
-       6  answ::?relay
-       6  answ::?relay
-       6  answ::?relay
-       6  answ::?relay
-       6  answ::?relay
-       6  answ::?relay
-       6  answ::?relay
-       6  answ::?relay
-       6  answ::?relay
-      59  answ_data
-       6  answ_data::?relay
       34  bits_count
        6  bits_count::?relay
      162  buf
@@ -5780,38 +5767,40 @@
        6  check_cmd_frame::?relay
       94  clocks_update
        6  clocks_update::?relay
-      34  cmd_0x00
+      63  cmd_0x00
        6  cmd_0x00::?relay
-      62  cmd_0x01
+      77  cmd_0x01
        6  cmd_0x01::?relay
-      58  cmd_0x02
+      76  cmd_0x02
        6  cmd_0x02::?relay
-     176  cmd_0x03
+     189  cmd_0x03
        6  cmd_0x03::?relay
-      75  cmd_0x04
+      91  cmd_0x04
        6  cmd_0x04::?relay
-      75  cmd_0x05
+      91  cmd_0x05
        6  cmd_0x05::?relay
-      31  cmd_0x06
+      44  cmd_0x06
        6  cmd_0x06::?relay
-      64  cmd_0x07
+      79  cmd_0x07
        6  cmd_0x07::?relay
-      63  cmd_0x08
+      72  cmd_0x08
        6  cmd_0x08::?relay
-      31  cmd_0x09
+      69  cmd_0x09
        6  cmd_0x09::?relay
-      31  cmd_0x0A
+      69  cmd_0x0A
        6  cmd_0x0A::?relay
-     171  cmd_0x0B
+     239  cmd_0x0B
        6  cmd_0x0B::?relay
-      44  cmd_0x0C
+      84  cmd_0x0C
        6  cmd_0x0C::?relay
-      94  cmd_0x0D
+     103  cmd_0x0D
        6  cmd_0x0D::?relay
-      57  cmd_0x0E
+      72  cmd_0x0E
        6  cmd_0x0E::?relay
-     113  cmd_answ
-       6  cmd_answ::?relay
+     104  cmd_answer
+       6  cmd_answer::?relay
+      56  cmd_answer_err
+       6  cmd_answer_err::?relay
       34  com_uart_init
        6  com_uart_init::?relay
       93  crc16
@@ -5857,7 +5846,7 @@
        1  nbrTasks
       26  neocore_hw_init
        6  neocore_hw_init::?relay
-      96  neocore_stack_reset
+      99  neocore_stack_reset
        6  neocore_stack_reset::?relay
       65  network_discovery
        6  network_discovery::?relay
@@ -5866,7 +5855,7 @@
       14  nwDebugerInit
        6  nwDebugerInit::?relay
        2  pACK
-     146  parse_uart_stream
+     148  parse_uart_stream
        6  parse_uart_stream::?relay
       78  random_core_init
        6  random_core_init::?relay
@@ -5906,27 +5895,29 @@
      255  uart_rx_buff
       48  uart_write
        6  uart_write::?relay
+     137  upload_frame
+       6  upload_frame::?relay
        4  val
        4  validate
        6  validate::?relay
       59  xor_calc
        6  xor_calc::?relay
-     532  -- Other
+     559  -- Other
 
  
- 18 385 bytes in segment BANKED_CODE
-  1 140 bytes in segment BANK_RELAYS
+ 18 816 bytes in segment BANKED_CODE
+  1 098 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
      60 bytes in segment NEAR_CODE
      37 bytes in segment SFR_AN
-  1 678 bytes in segment XDATA_I
-  1 678 bytes in segment XDATA_ID
-    997 bytes in segment XDATA_Z
+  1 416 bytes in segment XDATA_I
+  1 416 bytes in segment XDATA_ID
+  1 017 bytes in segment XDATA_Z
  
-  2 800 bytes of CODE     memory (+ 81 bytes shared)
+  2 496 bytes of CODE     memory (+ 81 bytes shared)
       0 bytes of DATA     memory (+ 37 bytes shared)
- 18 341 bytes of HUGECODE memory (+ 44 bytes shared)
-  2 615 bytes of XDATA    memory (+ 60 bytes shared)
+ 18 772 bytes of HUGECODE memory (+ 44 bytes shared)
+  2 373 bytes of XDATA    memory (+ 60 bytes shared)
 
 Errors: none
-Warnings: 7
+Warnings: 8
