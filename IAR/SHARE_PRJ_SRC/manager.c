@@ -125,6 +125,12 @@ bool network_discovery(uint8_t timeout_ms)
 void network_seed_enable(bool en)
 {
   if (en){
+    
+    MAC_setIV(CONFIG.stream_iv);
+    MAC_setKEY(CONFIG.stream_key);
+    SY_setIV(CONFIG.stream_iv);
+    SY_setKEY(CONFIG.stream_key);    
+    
     NETWORK_SEED = true;
     MAC_Enable(true);
     SY_Enable(true);

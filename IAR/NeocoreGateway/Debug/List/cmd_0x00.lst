@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               28/Jan/2020  15:31:22
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               28/Jan/2020  16:49:36
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -11,10 +11,10 @@
 #    Constant location  =  data
 #    Dptr setup         =  1,16
 #                          
-#    Source file        =  E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x00.c
+#    Source file        =  E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW4648.tmp
-#        (E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x00.c -lcN
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EWDC6F.tmp
+#        (E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c -lcN
 #        E:\WMNU\IAR\NeocoreGateway\Debug\List -o
 #        E:\WMNU\IAR\NeocoreGateway\Debug\Obj -e --debug --core=plain
 #        --dptr=16,1 --data_model=large --code_model=banked
@@ -23,21 +23,21 @@
 #        Systems\Embedded Workbench 8.0\8051\LIB\DLIB\dl8051Normal.h" -I
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\ -On --no_cse --no_unroll --no_inline
 #        --no_code_motion --no_tbaa --no_cross_call --mfc
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x01.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x02.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x01.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x02.c
 #        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x03.c
 #        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x04.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x05.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x05.c
 #        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x06.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x07.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x08.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x09.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0A.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0B.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0C.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0D.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0E.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_parser.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x07.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x08.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x09.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0A.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0B.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0C.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0D.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0E.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_parser.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\coder.c E:\WMNU\IAR\SHARE_PRJ_SRC\config.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\delays.c E:\WMNU\IAR\SHARE_PRJ_SRC\dma.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\ethernet.c E:\WMNU\IAR\SHARE_PRJ_SRC\frame.c
@@ -47,14 +47,14 @@
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\NTMR.c E:\WMNU\IAR\SHARE_PRJ_SRC\nwdebuger.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\RADIO.c E:\WMNU\IAR\SHARE_PRJ_SRC\rx_buff.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\sync.c E:\WMNU\IAR\SHARE_PRJ_SRC\TIC.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c)
+#        E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c)
 #    Locale             =  Russian_Russia.1251
 #    List file          =  E:\WMNU\IAR\NeocoreGateway\Debug\List\cmd_0x00.lst
 #    Object file        =  E:\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x00.r51
 #
 ###############################################################################
 
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x00.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -83,7 +83,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x00.c
      26            cmd_answer(ATYPE_CMD_OK, &answer, sizeof(answer));
      27            return true;
      28          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x01.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x01.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -120,7 +120,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x01.c
      34            cmd_answer(ATYPE_CMD_OK, NULL, 0);
      35            return true;
      36          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x02.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x02.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -241,7 +241,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x04.c
      35            cmd_answer(ATYPE_CMD_OK, NULL, 0);
      36            return true;
      37          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x05.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x05.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -311,7 +311,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x06.c
      29            
      30            return true;
      31          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x07.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x07.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -350,7 +350,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x07.c
      36            cmd_answer(ATYPE_CMD_OK, NULL, 0);
      37            return true;
      38          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x08.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x08.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -388,7 +388,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x08.c
      35            cmd_answer(ATYPE_CMD_OK, NULL, 0);
      36            return true;
      37          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x09.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x09.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -419,7 +419,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x09.c
      28            LOG_ON("CMD 0x09. RX frame count");
      29            return true;
      30          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0A.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0A.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -450,7 +450,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0A.c
      28            LOG_ON("CMD 0x09. TX frame count");
      29            return true;
      30          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0B.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0B.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -514,7 +514,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0B.c
      61            cmd_answer(ATYPE_CMD_OK, NULL, 0);
      62            return true;
      63          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0C.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0C.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -583,7 +583,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0C.c
      66            
      67            cmd_answer(ATYPE_CMD_OK, upload, answ_len);
      68          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0D.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0D.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -625,7 +625,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0D.c
      39            cmd_answer(ATYPE_CMD_OK, (uint8_t*)&rssi, sizeof(rssi));
      40            return true;
      41          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0E.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0E.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -662,7 +662,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0E.c
      34            cmd_answer(ATYPE_CMD_OK, NULL, 0);
      35            return true;
      36          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_parser.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_parser.c
       1          #include "uart_comm.h"
       2          #include "stdbool.h"
       3          #include "cmd_index_list.h"
@@ -2654,27 +2654,33 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\manager.c
     125          void network_seed_enable(bool en)
     126          {
     127            if (en){
-    128              NETWORK_SEED = true;
-    129              MAC_Enable(true);
-    130              SY_Enable(true);
-    131            }
-    132            else{ 
-    133              NETWORK_SEED = false;
-    134              MAC_Enable(false);
-    135              SY_Enable(false);
-    136            }
-    137          }
-    138          
-    139          /**
-    140          @brief Возвращает состояние сети
-    141          @return true если сеть раздается
-    142          */
-    143          bool get_network_seed_status(void){
-    144            return NETWORK_SEED;
-    145          }
-    146          
-    147           
-    148            
+    128              
+    129              MAC_setIV(CONFIG.stream_iv);
+    130              MAC_setKEY(CONFIG.stream_key);
+    131              SY_setIV(CONFIG.stream_iv);
+    132              SY_setKEY(CONFIG.stream_key);    
+    133              
+    134              NETWORK_SEED = true;
+    135              MAC_Enable(true);
+    136              SY_Enable(true);
+    137            }
+    138            else{ 
+    139              NETWORK_SEED = false;
+    140              MAC_Enable(false);
+    141              SY_Enable(false);
+    142            }
+    143          }
+    144          
+    145          /**
+    146          @brief Возвращает состояние сети
+    147          @return true если сеть раздается
+    148          */
+    149          bool get_network_seed_status(void){
+    150            return NETWORK_SEED;
+    151          }
+    152          
+    153           
+    154            
 E:\WMNU\IAR\SHARE_PRJ_SRC\mem.c
       1          #include "ioCC2530.h"
       2          #include "stdlib.h"
@@ -4630,7 +4636,7 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\TIC.c
     398          {
     399            return NODE_NONCE;
     400          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
+E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
       1          #include "nwdebuger.h"
       2          #include "ioCC2530.h"
       3          #include "stdint.h"
@@ -4886,9 +4892,9 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     10   -> frame_delete
         0     10   -> printf
         0     16   -> printf
-      0     12   MAC_setIV
+      0     21   MAC_setIV
         0     12   -> memcpy
-      0     12   MAC_setKEY
+      0     21   MAC_setKEY
         0     12   -> memcpy
       2      0   MG_Init
         2      0   -> AES_init
@@ -4997,9 +5003,9 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       0     12   SY_TS1_HNDL_MASTER
         0     12   -> TIC_SetTXState
         0     12   -> send_sync
-      0     12   SY_setIV
+      0     21   SY_setIV
         0     12   -> memcpy
-      0     12   SY_setKEY
+      0     21   SY_setKEY
         0     12   -> memcpy
       2      0   SY_sync_sended
       0     48   SendData
@@ -5244,7 +5250,11 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     11   -> SY_SYNC_NETWORK
       0     23   network_seed_enable
         0      9   -> MAC_Enable
+        0      9   -> MAC_setIV
+        0      9   -> MAC_setKEY
         0      9   -> SY_Enable
+        0      9   -> SY_setIV
+        0      9   -> SY_setKEY
       2      0   nwDebugerInit
         2      0   -> uart_init
       0     13   parse_uart_stream
@@ -5315,7 +5325,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_8
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_9
       42  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">
-      44  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">_1
+      44  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">
       37  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">
       34  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_1
       32  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_2
@@ -5348,7 +5358,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_8
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_9
       42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE
-      44  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE_1
+      44  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne
       37  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH
       34  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_1
       32  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_2
@@ -5850,7 +5860,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  neocore_stack_reset::?relay
       65  network_discovery
        6  network_discovery::?relay
-      52  network_seed_enable
+      80  network_seed_enable
        6  network_seed_enable::?relay
       14  nwDebugerInit
        6  nwDebugerInit::?relay
@@ -5905,7 +5915,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
      559  -- Other
 
  
- 18 816 bytes in segment BANKED_CODE
+ 18 844 bytes in segment BANKED_CODE
   1 098 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
      60 bytes in segment NEAR_CODE
@@ -5916,7 +5926,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
  
   2 496 bytes of CODE     memory (+ 81 bytes shared)
       0 bytes of DATA     memory (+ 37 bytes shared)
- 18 772 bytes of HUGECODE memory (+ 44 bytes shared)
+ 18 800 bytes of HUGECODE memory (+ 44 bytes shared)
   2 373 bytes of XDATA    memory (+ 60 bytes shared)
 
 Errors: none

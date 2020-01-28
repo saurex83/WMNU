@@ -49,7 +49,7 @@
         <FreqHi>0</FreqHi>
     </Simulator>
     <DebugChecksum>
-        <Checksum>1305567020</Checksum>
+        <Checksum>2807945630</Checksum>
     </DebugChecksum>
     <CallStack>
         <ShowArgs>0</ShowArgs>
@@ -57,17 +57,16 @@
     <Disassembly>
         <MixedMode>1</MixedMode>
     </Disassembly>
-    <array_types>
-        <Fmt0>uint8_t [255]	3	0</Fmt0>
-    </array_types>
     <watch_formats>
-        <Fmt0>{W}1:P0DIR	1	0</Fmt0>
-        <Fmt1>{W}1:U0CSR	1	0</Fmt1>
-        <Fmt2>{W}1:U1CSR	1	0</Fmt2>
-        <Fmt3>{W}1:U1UCR	1	0</Fmt3>
-        <Fmt4>{W}1:crc	4	0</Fmt4>
-        <Fmt5>{W}1:crc16	4	0</Fmt5>
+        <Fmt0>{W}1:CONFIG.sync_channel	3	0</Fmt0>
     </watch_formats>
+    <Breakpoints>
+        <Count>0</Count>
+    </Breakpoints>
+    <ChipconEmu>
+        <StopTimersOnHalt>0</StopTimersOnHalt>
+        <LeaveTargetRunning>1</LeaveTargetRunning>
+    </ChipconEmu>
     <LogFile>
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>
@@ -77,14 +76,6 @@
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>
     </TermIOLog>
-    <Breakpoints>
-        <Bp0>_ "STD_CODE" "{$PROJ_DIR$\src\uart_comm.c}.104.3" 0 0 0 0 "" 0 ""</Bp0>
-        <Count>1</Count>
-    </Breakpoints>
-    <ChipconEmu>
-        <StopTimersOnHalt>0</StopTimersOnHalt>
-        <LeaveTargetRunning>1</LeaveTargetRunning>
-    </ChipconEmu>
     <Aliases>
         <Count>0</Count>
         <SuppressDialog>0</SuppressDialog>

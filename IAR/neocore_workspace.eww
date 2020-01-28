@@ -4,6 +4,9 @@
         <path>$WS_DIR$\NeocoreGateway\neocoregw.ewp</path>
     </project>
     <project>
+        <path>$WS_DIR$\NeocoreTNode\neocoreTNode.ewp</path>
+    </project>
+    <project>
         <path>$WS_DIR$\PRJ_UNITEST\unitest.ewp</path>
     </project>
     <batchBuild />
