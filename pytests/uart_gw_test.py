@@ -33,18 +33,17 @@ def SEND_FRAME(UART_CONN):
     UART_CONN.cmd04_Set_IV(DEFAULT_IV)
     UART_CONN.cmd05_Set_KEY(DEFAULT_KEY)
     UART_CONN.cmd03_ON_OFF(True)
+    UART_CONN.cmd07_OpenSlot(b'\x22',b'\x14')
 
     while(True):
-        print('Загружаем 20 кадров')
-        for i in range(20):
+        if UART_CONN.cmd0A_TX_buff_size() == 0:
             UART_CONN.cmd0B_tx_frame(data)
 
-
-        while(True):
-            cnt = UART_CONN.cmd0A_TX_buff_size()
-            time.sleep(1)
-            if cnt == 0:
-                break
+        if UART_CONN.cmd09_RX_buff_size() != 0:
+            rx_frame = UART_CONN.cmd0C_get_rx_frame()
+            print(rx_frame)
+ 
+        time.sleep(1)
 
 
 def energy__scan(UART_CONN):

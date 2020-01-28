@@ -175,7 +175,7 @@
                 </option>
                 <option>
                     <name>General Xdata Stack Size</name>
-                    <state>0x12c</state>
+                    <state>0x22c</state>
                 </option>
                 <option>
                     <name>General Ext Stack Size</name>
@@ -490,7 +490,7 @@
                 </option>
                 <option>
                     <name>CCOptLevel</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CCOptStrategy</name>
@@ -499,7 +499,7 @@
                 </option>
                 <option>
                     <name>CCOptLevelSlave</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CompilerMisraRules04</name>
@@ -2223,9 +2223,6 @@
             <data />
         </settings>
     </configuration>
-    <mfc>
-        <configuration>Debug</configuration>
-    </mfc>
     <group>
         <name>neocore</name>
         <file>
@@ -2349,4 +2346,7 @@
     <file>
         <name>$PROJ_DIR$\src\main.c</name>
     </file>
+    <mfc>
+        <configuration>Debug</configuration>
+    </mfc>
 </project>
