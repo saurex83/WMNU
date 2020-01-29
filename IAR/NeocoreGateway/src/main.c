@@ -9,6 +9,7 @@ extern  char uart_getchar(void);
 void main(void)
 {
   neocore_hw_init();
+  P1DIR |= 0x01;
   network_seed_enable(false);
   com_uart_init();
   parse_uart_stream();

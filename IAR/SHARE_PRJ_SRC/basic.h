@@ -1,7 +1,7 @@
 #pragma once
 #include "stdint.h"
 
-//#define GATEWAY
+#define GATEWAY
 #define NODE_VER 0
 #define NODE_TYPE 1
 

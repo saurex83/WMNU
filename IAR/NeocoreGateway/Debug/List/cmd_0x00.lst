@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               29/Jan/2020  13:29:21
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               29/Jan/2020  15:04:08
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,7 +13,7 @@
 #                          
 #    Source file        =  E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EWE98A.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EWB431.tmp
 #        (E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c -lcN
 #        E:\WMNU\IAR\NeocoreGateway\Debug\List -o
 #        E:\WMNU\IAR\NeocoreGateway\Debug\Obj -e --debug --core=plain
@@ -37,7 +37,7 @@
 #        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0C.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0D.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0E.c
-#        E:\WMNU\IAR\NeocoreGateway\src\cmd_parser.c
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_parser.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\coder.c E:\WMNU\IAR\SHARE_PRJ_SRC\config.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\delays.c E:\WMNU\IAR\SHARE_PRJ_SRC\dma.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\ethernet.c E:\WMNU\IAR\SHARE_PRJ_SRC\frame.c
@@ -670,7 +670,7 @@ E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0E.c
      34            cmd_answer(ATYPE_CMD_OK, NULL, 0);
      35            return true;
      36          }
-E:\WMNU\IAR\NeocoreGateway\src\cmd_parser.c
+E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_parser.c
       1          #include "uart_comm.h"
       2          #include "stdbool.h"
       3          #include "cmd_index_list.h"
@@ -2531,10 +2531,11 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\main.c
       9          void main(void)
      10          {
      11            neocore_hw_init();
-     12            network_seed_enable(false);
-     13            com_uart_init();
-     14            parse_uart_stream();
-     15          }
+     12            P1DIR |= 0x01;
+     13            network_seed_enable(false);
+     14            com_uart_init();
+     15            parse_uart_stream();
+     16          }
 E:\WMNU\IAR\SHARE_PRJ_SRC\manager.c
       1          #include "manager.h"
       2          #include "coder.h"
@@ -3894,372 +3895,366 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\sync.c
      30          static uint32_t LAST_SYNC_TIME = 0; //!< Время последней синхр.
      31          static uint32_t NEXT_SYNC_TIME = 0; //!< Время следующей синхр.
      32          static uint32_t SYNC_SENDED = 0; //!< Количество успешно ретранслированых пакетов
-     33          static bool NEED_SEND_SYNC = false; //!< Нужно отослать синхропакет
-     34          static bool SY_ENABLE_MODULE = false;
-     35          
-     36          // Ключ потокового шифрования и вектор иницилизации
-     37          static uint8_t KEY[16] = DEFAULT_KEY;
-     38          static uint8_t IV[16] = DEFAULT_IV;
-     39          //@brief Точное время приема/передачи пакета синхронизации времени
-     40          // Расчитывается при иницилизации
-     41          static uint16_t SYNC_ACCURATE_NETWORK_TIME; 
-     42          
-     43          #define SYNC_TS 1 //!< Номер временного слота синхросигнала
-     44          #define SYNC_RECV_TIMEOUT 2 // Время ожидания приема пакета в мс
-     45          #define SYNC_TIMEOUT 110//!< Время в сек после которого сеть не синхронна
-     46          
+     33          static uint32_t SYNC_SEND_TIME = 0;
+     34          static bool NEED_SEND_SYNC = false; //!< Нужно отослать синхропакет
+     35          static bool SY_ENABLE_MODULE = false;
+     36          
+     37          // Ключ потокового шифрования и вектор иницилизации
+     38          static uint8_t KEY[16] = DEFAULT_KEY;
+     39          static uint8_t IV[16] = DEFAULT_IV;
+     40          //@brief Точное время приема/передачи пакета синхронизации времени
+     41          // Расчитывается при иницилизации
+     42          static uint16_t SYNC_ACCURATE_NETWORK_TIME; 
+     43          
+     44          #define SYNC_TS 1 //!< Номер временного слота синхросигнала
+     45          #define SYNC_RECV_TIMEOUT 2 // Время ожидания приема пакета в мс
+     46          #define SYNC_TIMEOUT 110//!< Время в сек после которого сеть не синхронна
      47          
-     48          typedef struct // Формат структуры пакета синхронизации
-     49          {
-     50              uint16_t panid;
-     51              uint32_t rtc;
-     52              uint32_t magic;
-     53          } __attribute__((packed)) SYNC_s;
-     54          
-     55          #define MAGIC 0x19833891 // Проверка что пакет действительно sync
-     56          #define RAND_SYNC_RX_DELAY  9 // Фиксированое время приема rand()%10 + 5
-     57          #define RAND_SYNC_TX_DELAY  10 // Фиксированное время передачи сигнала
-     58          // Максимальное отклонение при приеме sync в тактах сети
-     59          #define SYNC_TIME_DRIFT 35  
-     60          
-     61          #ifdef GATEWAY
-     62            #define SYNC_MASTER     // Если определено, то узел является шлюзом
-     63          #endif
-     64          
-     65          void SY_Init(void)
-     66          {
-     67            SYNC_SENDED = 0;
-     68            LAST_SYNC_TIME = 0;
-     69            NEXT_SYNC_TIME = 0;
-     70            SY_ENABLE_MODULE = false;
-     71            SYNC_ACCURATE_NETWORK_TIME = TIC_SlotTime(SYNC_TS) + TIC_SlotActivityTime()/2;
-     72          #ifdef SYNC_MASTER
-     73            TIC_SetTS1Callback(SY_TS1_HNDL_MASTER);
-     74            TIC_SetSyncTimeAllocCallback(SY_TIME_ALLOC_MASTER);
-     75          #else
-     76            TIC_SetTS1Callback(SY_TS1_HNDL_SLAVE);
-     77            TIC_SetSyncTimeAllocCallback(SY_TIME_ALLOC_SLAVE);
-     78          #endif
-     79          }
-     80          
-     81          void SY_Reset(void)
-     82          {
-     83            SYNC_SENDED = 0;
-     84            LAST_SYNC_TIME = 0;
-     85            NEXT_SYNC_TIME = 0;
-     86            SY_ENABLE_MODULE = false;
-     87          }
-     88          
-     89          void SY_Enable(bool en)
-     90          {
-     91            SY_ENABLE_MODULE = en;
-     92          }
-     93          
-     94          /**
-     95          @brief Количество успешно переданных пакетов синхронизации
-     96          @return Количечтво пакетов
-     97          */
-     98          uint32_t SY_sync_sended(void)
-     99          {
-    100            return SYNC_SENDED;
-    101          }
-    102          
-    103          /**
-    104          @brief Установить вектор иницилизации для шифрования
-    105          @param[in] ptr_IV указатель на 16 байтный вектор иницилизации
-    106          */
-    107          void SY_setIV(void* ptr_IV)
-    108          {
-    109            memcpy(IV, ptr_IV, 16);
-    110          }
-    111          
-    112          /**
-    113          @brief Установить ключ шифрования
-    114          @param[in] ptr_KEY указатель на 16 байтный ключ
-    115          */
-    116          void SY_setKEY(void* ptr_KEY)
-    117          {
-    118            memcpy(KEY, ptr_KEY, 16);
-    119          }
-    120          
-    121          /**
-    122          @brief Функция вызывается после каждого завершенного слота времени
-    123          @detail Детектирует потерю синхронизации, активирует процесс синхронизации
-    124           активирует слот для ретрансляцию сигнала
-    125          */
-    126          static void SY_TIME_ALLOC_SLAVE(void)
-    127          { 
-    128            if (!SY_ENABLE_MODULE) // Модуль отключен
-    129              return;  
-    130            
-    131            // Потеря синхронизации
-    132            if ( (TIC_GetUptime() - LAST_SYNC_TIME) > SYNC_TIMEOUT)
-    133            {
-    134                LOG_ON("Network out of sync.");
-    135                return;
-    136            }
-    137            
-    138            if (TIC_GetRXState(SYNC_TS)) // Если прием уже активен
-    139              return;
-    140            
-    141            // Ретрансляция синхропакета
-    142            if (NEED_SEND_SYNC)
-    143            {
-    144              LOG_OFF("Need to send resync");
-    145              TIC_SetRXState(SYNC_TS, true);
-    146              return;
-    147            }
-    148            
-    149            // Необходимо начать процесс синхронизации
-    150            if (TIC_GetUptime() > NEXT_SYNC_TIME)
-    151            {
-    152              LOG_ON("Begin resync");
-    153              P1_0 = !true; 
-    154              TIC_SetRXState(SYNC_TS, true);
-    155            }
-    156          }
-    157          
-    158          /**
-    159          @brief Функция вызывается после каждого завершенного слота времени
-    160          @detail Запускает процесс передачи синхросигнала в равные промежутки времени
-    161          */
-    162          static void SY_TIME_ALLOC_MASTER(void)
-    163          { 
-    164            static uint32_t sync_send_time = 0;
-    165           
-    166            if (!SY_ENABLE_MODULE) // Модуль отключен
-    167            {
-    168              sync_send_time = 0;
-    169              return;  
-    170            }
-    171            
-    172            if (TIC_GetTXState(SYNC_TS)) // Если передача уже активна.
-    173              return;
-    174            
-    175            uint32_t now = TIC_GetUptime();
-    176            if ( now < sync_send_time) // Если время новой передачи не наступило
-    177              return;
-    178            
-    179            TIC_SetTXState(SYNC_TS,true); // Разрешаем передачу
-    180             
-    181             // Определяем следующее время передачи
-    182             sync_send_time = now + RAND_SYNC_TX_DELAY;
-    183          }
-    184          
-    185          /**
-    186          @brief Вызывает при активности TS1 RX или TX
-    187          @detail Выполняет две функции: синхронизацию с сетью или передачу синхр.
-    188          */
-    189          static void SY_TS1_HNDL_SLAVE(void)
-    190          {
-    191            if (!SY_ENABLE_MODULE) // Модуль отключен
-    192              return;
-    193              
-    194            // Нужно отослать синхропакет
-    195            if (NEED_SEND_SYNC)
-    196            {
-    197              if (send_sync())
-    198                SYNC_SENDED++;
-    199              LOG_ON("Resync TX. CNT=%d",(uint16_t)SYNC_SENDED);
-    200              NEED_SEND_SYNC = false;
-    201              TIC_SetRXState(SYNC_TS, false);
-    202            }
-    203            
-    204            // Ждем начала точного времени начала передачи сигнала заранее
-    205            // Время в тактах сети
-    206            NT_WaitTime(SYNC_ACCURATE_NETWORK_TIME - SYNC_TIME_DRIFT);
-    207           
-    208            // Время в мс
-    209            frame_s *fr_SYNC = get_sync(SYNC_RECV_TIMEOUT); 
+     48          
+     49          typedef struct // Формат структуры пакета синхронизации
+     50          {
+     51              uint16_t panid;
+     52              uint32_t rtc;
+     53              uint32_t magic;
+     54          } __attribute__((packed)) SYNC_s;
+     55          
+     56          #define MAGIC 0x19833891 // Проверка что пакет действительно sync
+     57          #define RAND_SYNC_RX_DELAY  9 // Фиксированое время приема rand()%10 + 5
+     58          #define RAND_SYNC_TX_DELAY  10 // Фиксированное время передачи сигнала
+     59          // Максимальное отклонение при приеме sync в тактах сети
+     60          #define SYNC_TIME_DRIFT 35  
+     61          
+     62          #ifdef GATEWAY
+     63            #define SYNC_MASTER     // Если определено, то узел является шлюзом
+     64          #endif
+     65          
+     66          void SY_Init(void)
+     67          {
+     68            SYNC_SENDED = 0;
+     69            LAST_SYNC_TIME = 0;
+     70            NEXT_SYNC_TIME = 0;
+     71            SY_ENABLE_MODULE = false;
+     72            SYNC_ACCURATE_NETWORK_TIME = TIC_SlotTime(SYNC_TS) + TIC_SlotActivityTime()/2;
+     73          #ifdef SYNC_MASTER
+     74            TIC_SetTS1Callback(SY_TS1_HNDL_MASTER);
+     75            TIC_SetSyncTimeAllocCallback(SY_TIME_ALLOC_MASTER);
+     76          #else
+     77            TIC_SetTS1Callback(SY_TS1_HNDL_SLAVE);
+     78            TIC_SetSyncTimeAllocCallback(SY_TIME_ALLOC_SLAVE);
+     79          #endif
+     80          }
+     81          
+     82          void SY_Reset(void)
+     83          {
+     84            SYNC_SENDED = 0;
+     85            LAST_SYNC_TIME = 0;
+     86            NEXT_SYNC_TIME = 0;
+     87            SYNC_SEND_TIME = 0;
+     88            SY_ENABLE_MODULE = false;
+     89          }
+     90          
+     91          void SY_Enable(bool en)
+     92          {
+     93            SY_ENABLE_MODULE = en;
+     94          }
+     95          
+     96          /**
+     97          @brief Количество успешно переданных пакетов синхронизации
+     98          @return Количечтво пакетов
+     99          */
+    100          uint32_t SY_sync_sended(void)
+    101          {
+    102            return SYNC_SENDED;
+    103          }
+    104          
+    105          /**
+    106          @brief Установить вектор иницилизации для шифрования
+    107          @param[in] ptr_IV указатель на 16 байтный вектор иницилизации
+    108          */
+    109          void SY_setIV(void* ptr_IV)
+    110          {
+    111            memcpy(IV, ptr_IV, 16);
+    112          }
+    113          
+    114          /**
+    115          @brief Установить ключ шифрования
+    116          @param[in] ptr_KEY указатель на 16 байтный ключ
+    117          */
+    118          void SY_setKEY(void* ptr_KEY)
+    119          {
+    120            memcpy(KEY, ptr_KEY, 16);
+    121          }
+    122          
+    123          /**
+    124          @brief Функция вызывается после каждого завершенного слота времени
+    125          @detail Детектирует потерю синхронизации, активирует процесс синхронизации
+    126           активирует слот для ретрансляцию сигнала
+    127          */
+    128          static void SY_TIME_ALLOC_SLAVE(void)
+    129          { 
+    130            if (!SY_ENABLE_MODULE) // Модуль отключен
+    131              return;  
+    132            
+    133            // Потеря синхронизации
+    134            if ( (TIC_GetUptime() - LAST_SYNC_TIME) > SYNC_TIMEOUT)
+    135            {
+    136                LOG_ON("Network out of sync.");
+    137                return;
+    138            }
+    139            
+    140            if (TIC_GetRXState(SYNC_TS)) // Если прием уже активен
+    141              return;
+    142            
+    143            // Ретрансляция синхропакета
+    144            if (NEED_SEND_SYNC)
+    145            {
+    146              LOG_OFF("Need to send resync");
+    147              TIC_SetRXState(SYNC_TS, true);
+    148              return;
+    149            }
+    150            
+    151            // Необходимо начать процесс синхронизации
+    152            if (TIC_GetUptime() > NEXT_SYNC_TIME)
+    153            {
+    154              LOG_ON("Begin resync");
+    155              P1_0 = !true; 
+    156              TIC_SetRXState(SYNC_TS, true);
+    157            }
+    158          }
+    159          
+    160          /**
+    161          @brief Функция вызывается после каждого завершенного слота времени
+    162          @detail Запускает процесс передачи синхросигнала в равные промежутки времени
+    163          */
+    164          static void SY_TIME_ALLOC_MASTER(void)
+    165          { 
+    166            if (TIC_GetTXState(SYNC_TS)) // Если передача уже активна.
+    167              return;
+    168            
+    169            uint32_t now = TIC_GetUptime();
+    170            if ( now < SYNC_SEND_TIME) // Если время новой передачи не наступило
+    171              return;
+    172            
+    173            TIC_SetTXState(SYNC_TS,true); // Разрешаем передачу
+    174             
+    175             // Определяем следующее время передачи
+    176             SYNC_SEND_TIME = now + RAND_SYNC_TX_DELAY;
+    177          }
+    178          
+    179          /**
+    180          @brief Вызывает при активности TS1 RX или TX
+    181          @detail Выполняет две функции: синхронизацию с сетью или передачу синхр.
+    182          */
+    183          static void SY_TS1_HNDL_SLAVE(void)
+    184          {
+    185            if (!SY_ENABLE_MODULE) // Модуль отключен
+    186              return;
+    187              
+    188            // Нужно отослать синхропакет
+    189            if (NEED_SEND_SYNC)
+    190            {
+    191              if (send_sync())
+    192                SYNC_SENDED++;
+    193              LOG_ON("Resync TX. CNT=%d",(uint16_t)SYNC_SENDED);
+    194              NEED_SEND_SYNC = false;
+    195              TIC_SetRXState(SYNC_TS, false);
+    196            }
+    197            
+    198            // Ждем начала точного времени начала передачи сигнала заранее
+    199            // Время в тактах сети
+    200            NT_WaitTime(SYNC_ACCURATE_NETWORK_TIME - SYNC_TIME_DRIFT);
+    201           
+    202            // Время в мс
+    203            frame_s *fr_SYNC = get_sync(SYNC_RECV_TIMEOUT); 
+    204            
+    205            if (!fr_SYNC)
+    206              return;
+    207            
+    208            SYNC_s *sync;
+    209            sync = (SYNC_s*)fr_SYNC->payload;
     210            
-    211            if (!fr_SYNC)
-    212              return;
-    213            
-    214            SYNC_s *sync;
-    215            sync = (SYNC_s*)fr_SYNC->payload;
-    216            
-    217            // Проверяем принадлежность пакета
-    218            if (( sync->panid != CONFIG.panid) && (sync->magic != MAGIC))
-    219            {
-    220              frame_delete(fr_SYNC);
-    221              return;
-    222            }
+    211            // Проверяем принадлежность пакета
+    212            if (( sync->panid != CONFIG.panid) && (sync->magic != MAGIC))
+    213            {
+    214              frame_delete(fr_SYNC);
+    215              return;
+    216            }
+    217            
+    218            // Синхронизируемся
+    219            // Время прошедшее с момента приема пакета в тактах сети
+    220            uint16_t delta = TIC_GetTimer() - fr_SYNC->meta.TIMESTAMP;
+    221            TIC_SetTimer(SYNC_ACCURATE_NETWORK_TIME + delta);
+    222            TIC_SetRTC(sync->rtc);
     223            
-    224            // Синхронизируемся
-    225            // Время прошедшее с момента приема пакета в тактах сети
-    226            uint16_t delta = TIC_GetTimer() - fr_SYNC->meta.TIMESTAMP;
-    227            TIC_SetTimer(SYNC_ACCURATE_NETWORK_TIME + delta);
-    228            TIC_SetRTC(sync->rtc);
-    229            
-    230            LAST_SYNC_TIME = TIC_GetUptime();
-    231            NEXT_SYNC_TIME = LAST_SYNC_TIME + RAND_SYNC_RX_DELAY; 
-    232            TIC_SetRXState(SYNC_TS, false);
-    233            LOG_ON("Node Synced. TS=%d, AT=%d, DEL=%d, AD=%d, RTC=%d, NRTC=%d, SRTC=%d",
-    234                   fr_SYNC->meta.TIMESTAMP,SYNC_ACCURATE_NETWORK_TIME, delta,
-    235                   SYNC_ACCURATE_NETWORK_TIME - fr_SYNC->meta.TIMESTAMP, 
-    236                   (uint16_t)LAST_SYNC_TIME,
-    237                   (uint16_t)NEXT_SYNC_TIME,
-    238                   (uint16_t)TIC_GetRTC());
-    239            frame_delete(fr_SYNC);
-    240            // После приема нужно ретранслировать синхропакет
-    241            NEED_SEND_SYNC = true; 
-    242          P1_0 = !false; // ОТЛАДКА
-    243          }
-    244          
-    245          /**
-    246          @brief Вызывает при активносм TS1 RX или TX
-    247          @detail Формирует кадр синхронизации и передает его в строго определенное время
-    248          */
-    249          static void SY_TS1_HNDL_MASTER(void)
-    250          {
-    251            if (!SY_ENABLE_MODULE) // Модуль отключен
-    252              return;  
-    253             
-    254          P1_0 = !true; //ОТЛАДКА  
-    255            if (send_sync())
-    256              SYNC_SENDED++;
-    257            
-    258            LOG_ON("Sync send."); 
-    259          P1_0 = !false; //ОТЛАДКА
-    260            
-    261            TIC_SetTXState(SYNC_TS, false);
-    262          }
-    263          
-    264          /**
-    265          @brief Создать и отправить синхропакет
-    266          */
-    267          static bool send_sync(void)
-    268          {
-    269            SYNC_s sync;
-    270            sync.panid = CONFIG.panid;
-    271            sync.rtc = TIC_GetRTC();
-    272            sync.magic = MAGIC;
-    273            
-    274            frame_s *fr_SYNC = frame_create();
-    275            frame_addHeader(fr_SYNC, &sync, sizeof(SYNC_s));
-    276            fr_SYNC->meta.SEND_TIME = SYNC_ACCURATE_NETWORK_TIME; // время в тактах сети. ((1/32768)*164)*1000
-    277              
-    278          #ifdef RARIO_STREAM_ENCRYPT
-    279            BitRawCrypt(fr_SYNC->payload, fr_SYNC->len);
-    280          #endif
-    281            
-    282            RI_SetChannel(CONFIG.sync_channel);
-    283            bool res = RI_Send(fr_SYNC);
-    284            
-    285            frame_delete(fr_SYNC);
-    286            return res;
-    287          }
-    288          
-    289          /**
-    290          @brief Прием пакет синхронизации
-    291          @param[in] Время ожидания в мс
-    292          @return Указатель на пакет или NULL
-    293          */
-    294          static frame_s* get_sync(uint16_t timeout)
-    295          {
-    296            RI_SetChannel(CONFIG.sync_channel);
-    297            frame_s *fr_SYNC = RI_Receive(timeout);
-    298            
-    299            // Если пакета нет, выходим из обработчика
-    300            if (fr_SYNC == NULL)
+    224            LAST_SYNC_TIME = TIC_GetUptime();
+    225            NEXT_SYNC_TIME = LAST_SYNC_TIME + RAND_SYNC_RX_DELAY; 
+    226            TIC_SetRXState(SYNC_TS, false);
+    227            LOG_ON("Node Synced. TS=%d, AT=%d, DEL=%d, AD=%d, RTC=%d, NRTC=%d, SRTC=%d",
+    228                   fr_SYNC->meta.TIMESTAMP,SYNC_ACCURATE_NETWORK_TIME, delta,
+    229                   SYNC_ACCURATE_NETWORK_TIME - fr_SYNC->meta.TIMESTAMP, 
+    230                   (uint16_t)LAST_SYNC_TIME,
+    231                   (uint16_t)NEXT_SYNC_TIME,
+    232                   (uint16_t)TIC_GetRTC());
+    233            frame_delete(fr_SYNC);
+    234            // После приема нужно ретранслировать синхропакет
+    235            NEED_SEND_SYNC = true; 
+    236          P1_0 = !false; // ОТЛАДКА
+    237          }
+    238          
+    239          /**
+    240          @brief Вызывает при активносм TS1 RX или TX
+    241          @detail Формирует кадр синхронизации и передает его в строго определенное время
+    242          */
+    243          static void SY_TS1_HNDL_MASTER(void)
+    244          {
+    245            if (!SY_ENABLE_MODULE) // Модуль отключен
+    246              return;  
+    247             
+    248          P1_0 = !true; //ОТЛАДКА  
+    249            if (send_sync())
+    250              SYNC_SENDED++;
+    251            
+    252            LOG_ON("Sync send."); 
+    253          P1_0 = !false; //ОТЛАДКА
+    254            
+    255            TIC_SetTXState(SYNC_TS, false);
+    256          }
+    257          
+    258          /**
+    259          @brief Создать и отправить синхропакет
+    260          */
+    261          static bool send_sync(void)
+    262          {
+    263            SYNC_s sync;
+    264            sync.panid = CONFIG.panid;
+    265            sync.rtc = TIC_GetRTC();
+    266            sync.magic = MAGIC;
+    267            
+    268            frame_s *fr_SYNC = frame_create();
+    269            frame_addHeader(fr_SYNC, &sync, sizeof(SYNC_s));
+    270            fr_SYNC->meta.SEND_TIME = SYNC_ACCURATE_NETWORK_TIME; // время в тактах сети. ((1/32768)*164)*1000
+    271              
+    272          #ifdef RARIO_STREAM_ENCRYPT
+    273            BitRawCrypt(fr_SYNC->payload, fr_SYNC->len);
+    274          #endif
+    275            
+    276            RI_SetChannel(CONFIG.sync_channel);
+    277            bool res = RI_Send(fr_SYNC);
+    278            
+    279            frame_delete(fr_SYNC);
+    280            return res;
+    281          }
+    282          
+    283          /**
+    284          @brief Прием пакет синхронизации
+    285          @param[in] Время ожидания в мс
+    286          @return Указатель на пакет или NULL
+    287          */
+    288          static frame_s* get_sync(uint16_t timeout)
+    289          {
+    290            RI_SetChannel(CONFIG.sync_channel);
+    291            frame_s *fr_SYNC = RI_Receive(timeout);
+    292            
+    293            // Если пакета нет, выходим из обработчика
+    294            if (fr_SYNC == NULL)
+    295              return NULL;
+    296            
+    297            // Проверим размер пакета
+    298            if (fr_SYNC->len != sizeof(SYNC_s))
+    299            {
+    300              frame_delete(fr_SYNC);
     301              return NULL;
-    302            
-    303            // Проверим размер пакета
-    304            if (fr_SYNC->len != sizeof(SYNC_s))
-    305            {
-    306              frame_delete(fr_SYNC);
-    307              return NULL;
-    308            }
-    309            
-    310            #ifdef RARIO_STREAM_ENCRYPT
-    311            BitRawDecrypt(fr_SYNC->payload, fr_SYNC->len);
-    312            #endif
-    313            return fr_SYNC;
-    314          }
-    315          
-    316          /**
-    317          @brief Процедура синхронизации с сетью
-    318          @detail Процедура изет сеть в течении времени timeout и синхронизируется с ней
-    319          @param[in] timeout время в милисекундах
-    320          @param[out] panid указатель на идентификатор найденой сети
-    321          @return true если сеть найдета
-    322          */
-    323          bool SY_SYNC_NETWORK(uint16_t *panid,uint16_t timeout)
-    324          {
-    325            // TODO Нужно обнулить настройки всех модулей
-    326            // Или об этом будет заботиться верхний уровень?
-    327            TIC_CloseAllState();
+    302            }
+    303            
+    304            #ifdef RARIO_STREAM_ENCRYPT
+    305            BitRawDecrypt(fr_SYNC->payload, fr_SYNC->len);
+    306            #endif
+    307            return fr_SYNC;
+    308          }
+    309          
+    310          /**
+    311          @brief Процедура синхронизации с сетью
+    312          @detail Процедура изет сеть в течении времени timeout и синхронизируется с ней
+    313          @param[in] timeout время в милисекундах
+    314          @param[out] panid указатель на идентификатор найденой сети
+    315          @return true если сеть найдета
+    316          */
+    317          bool SY_SYNC_NETWORK(uint16_t *panid,uint16_t timeout)
+    318          {
+    319            // TODO Нужно обнулить настройки всех модулей
+    320            // Или об этом будет заботиться верхний уровень?
+    321            TIC_CloseAllState();
+    322            
+    323            RI_SetChannel(CONFIG.sync_channel);
+    324            
+    325            TimeStamp_s begin, end;
+    326            TIM_TimeStamp(&begin);
+    327            TIM_TimeStamp(&end);
     328            
-    329            RI_SetChannel(CONFIG.sync_channel);
-    330            
-    331            TimeStamp_s begin, end;
-    332            TIM_TimeStamp(&begin);
-    333            TIM_TimeStamp(&end);
+    329            bool net_found = false;
+    330            uint32_t passed = 0;
+    331            frame_s *fr_SYNC;
+    332            SYNC_s *sync;
+    333            uint32_t timeout_us = timeout * 1000;
     334            
-    335            bool net_found = false;
-    336            uint32_t passed = 0;
-    337            frame_s *fr_SYNC;
-    338            SYNC_s *sync;
-    339            uint32_t timeout_us = timeout * 1000;
-    340            
-    341            while (passed < timeout_us)
-    342            {
-    343              fr_SYNC = get_sync(timeout);
-    344              if (fr_SYNC == NULL)
-    345              {
-    346                passed = TIM_passedTime(&begin, &end);
-    347                continue;
-    348              }
-    349              
-    350              // Приняли какойто пакет, декодируем.
-    351              sync = (SYNC_s*)fr_SYNC->payload;
-    352              
-    353              if (sync->magic != MAGIC)
-    354              { // Проверим что пакет именно тот а не эфирный мусор
-    355                frame_delete(fr_SYNC);
-    356                passed = TIM_passedTime(&begin, &end);
-    357                continue;
-    358              }   
-    359              
-    360              // Возвращаем результат
-    361              *panid = sync->panid;
-    362              CONFIG.panid = sync->panid;
-    363              net_found = true;
-    364              
-    365              // Синхронизируемся с сетью
-    366              // Время прошедшее с момента приема пакета в тактах сети
-    367              uint16_t delta = TIC_GetTimer() - fr_SYNC->meta.TIMESTAMP;
-    368              TIC_SetTimer(SYNC_ACCURATE_NETWORK_TIME + delta);
-    369              TIC_SetRTC(sync->rtc);
-    370              LAST_SYNC_TIME = TIC_GetUptime();
-    371              NEXT_SYNC_TIME = LAST_SYNC_TIME + RAND_SYNC_RX_DELAY; 
-    372              frame_delete(fr_SYNC);
-    373              break;
-    374            } 
-    375            
-    376            return net_found;
-    377          }
-    378          
-    379          /*!
-    380          \brief Расшифровка область памяти
-    381          \param[in,out] *src Указатель на начало области дешифрования
-    382          \param[in] size Размер расшифруемых данных
-    383          */
-    384          static void BitRawDecrypt(uint8_t *src, uint8_t size)
-    385          {
-    386            AES_StreamCoder(false, src, src, KEY, IV, size);
-    387          }
-    388          
-    389          /*!
-    390          \brief Шифрует область памяти
-    391          \param[in,out] *src Указатель на начало области шифрования
-    392          \param[in] size Размер шифруемых данных
-    393          */
-    394          static void BitRawCrypt(uint8_t *src, uint8_t size)
-    395          {
-    396            AES_StreamCoder(true, src, src, KEY, IV, size);
-    397          }
-    398          
+    335            while (passed < timeout_us)
+    336            {
+    337              fr_SYNC = get_sync(timeout);
+    338              if (fr_SYNC == NULL)
+    339              {
+    340                passed = TIM_passedTime(&begin, &end);
+    341                continue;
+    342              }
+    343              
+    344              // Приняли какойто пакет, декодируем.
+    345              sync = (SYNC_s*)fr_SYNC->payload;
+    346              
+    347              if (sync->magic != MAGIC)
+    348              { // Проверим что пакет именно тот а не эфирный мусор
+    349                frame_delete(fr_SYNC);
+    350                passed = TIM_passedTime(&begin, &end);
+    351                continue;
+    352              }   
+    353              
+    354              // Возвращаем результат
+    355              *panid = sync->panid;
+    356              CONFIG.panid = sync->panid;
+    357              net_found = true;
+    358              
+    359              // Синхронизируемся с сетью
+    360              // Время прошедшее с момента приема пакета в тактах сети
+    361              uint16_t delta = TIC_GetTimer() - fr_SYNC->meta.TIMESTAMP;
+    362              TIC_SetTimer(SYNC_ACCURATE_NETWORK_TIME + delta);
+    363              TIC_SetRTC(sync->rtc);
+    364              LAST_SYNC_TIME = TIC_GetUptime();
+    365              NEXT_SYNC_TIME = LAST_SYNC_TIME + RAND_SYNC_RX_DELAY; 
+    366              frame_delete(fr_SYNC);
+    367              break;
+    368            } 
+    369            
+    370            return net_found;
+    371          }
+    372          
+    373          /*!
+    374          \brief Расшифровка область памяти
+    375          \param[in,out] *src Указатель на начало области дешифрования
+    376          \param[in] size Размер расшифруемых данных
+    377          */
+    378          static void BitRawDecrypt(uint8_t *src, uint8_t size)
+    379          {
+    380            AES_StreamCoder(false, src, src, KEY, IV, size);
+    381          }
+    382          
+    383          /*!
+    384          \brief Шифрует область памяти
+    385          \param[in,out] *src Указатель на начало области шифрования
+    386          \param[in] size Размер шифруемых данных
+    387          */
+    388          static void BitRawCrypt(uint8_t *src, uint8_t size)
+    389          {
+    390            AES_StreamCoder(true, src, src, KEY, IV, size);
+    391          }
+    392          
 E:\WMNU\IAR\SHARE_PRJ_SRC\TIC.c
       1          #include "TIC.h"
       2          #include "NTMR.h"
@@ -5350,7 +5345,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_8
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_9
       42  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">
-      44  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">
+      44  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">_1
       37  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">
       34  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_1
       32  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_2
@@ -5383,7 +5378,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_8
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_9
       42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE
-      44  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne
+      44  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE_1
       37  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH
       34  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_1
       32  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_2
@@ -5607,6 +5602,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
      126  NT_WaitTime
        6  NT_WaitTime::?relay
        1  P0SEL
+       1  P1DIR
        1  P1SEL
        1  PERCFG
        3  RADIO_CFG
@@ -5665,16 +5661,17 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        1  STLOAD
        2  SYNC_ACCURATE_NETWORK_TIME
        4  SYNC_SENDED
+       4  SYNC_SEND_TIME
        1  SY_ENABLE_MODULE
       23  SY_Enable
        6  SY_Enable::?relay
      121  SY_Init
        6  SY_Init::?relay
-      71  SY_Reset
+      89  SY_Reset
        6  SY_Reset::?relay
      501  SY_SYNC_NETWORK
        6  SY_SYNC_NETWORK::?relay
-      99  SY_TIME_ALLOC_MASTER
+      73  SY_TIME_ALLOC_MASTER
        6  SY_TIME_ALLOC_MASTER::?relay
       48  SY_TS1_HNDL_MASTER
        6  SY_TS1_HNDL_MASTER::?relay
@@ -5874,7 +5871,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  isIRQEnable::?relay
       70  loadTimerCompare
        6  loadTimerCompare::?relay
-      17  main
+      20  main
        6  main::?relay
       21  malloc
        6  malloc::?relay
@@ -5917,7 +5914,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  stream_write::?relay
        3  strip_header
        6  strip_header::?relay
-       4  sync_send_time
        1  tasksBLOCK
      132  uart_dma_init
        6  uart_dma_init::?relay
@@ -5943,18 +5939,18 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
      559  -- Other
 
  
- 19 124 bytes in segment BANKED_CODE
+ 19 119 bytes in segment BANKED_CODE
   1 104 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
      60 bytes in segment NEAR_CODE
-     37 bytes in segment SFR_AN
+     38 bytes in segment SFR_AN
   1 416 bytes in segment XDATA_I
   1 416 bytes in segment XDATA_ID
   1 176 bytes in segment XDATA_Z
  
   2 502 bytes of CODE     memory (+ 81 bytes shared)
-      0 bytes of DATA     memory (+ 37 bytes shared)
- 19 080 bytes of HUGECODE memory (+ 44 bytes shared)
+      0 bytes of DATA     memory (+ 38 bytes shared)
+ 19 075 bytes of HUGECODE memory (+ 44 bytes shared)
   2 532 bytes of XDATA    memory (+ 60 bytes shared)
 
 Errors: none

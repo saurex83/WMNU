@@ -2,7 +2,7 @@
 #                                                                              #
 #      IAR Universal Linker V6.4.6.89                                          #
 #                                                                              #
-#           Link time     =  29/Jan/2020  13:30:50                             #
+#           Link time     =  29/Jan/2020  15:01:15                             #
 #           Target CPU    =  x51                                               #
 #           List file     =  E:\WMNU\IAR\NeocoreTNode\Debug\List\neocoreTNode. #
 #                            map                                               #
@@ -12,7 +12,7 @@
 #                            UBROF version 10.0.6                              #
 #                            Using library modules for C-SPY (-rt)             #
 #           Command line  =  -f                                                #
-#                            C:\Users\08A4~1\AppData\Local\Temp\EW4E54.tmp     #
+#                            C:\Users\08A4~1\AppData\Local\Temp\EW1685.tmp     #
 #                            (E:\WMNU\IAR\NeocoreTNode\Debug\Obj\cmd_parser.r5 #
 #                            1                                                 #
 #                            E:\WMNU\IAR\NeocoreTNode\Debug\Obj\coder.r51      #
@@ -2674,7 +2674,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 XDATA_Z
   Relative segment, address: XDATA 00000419 - 00000419 (0x1 bytes), align: 0
-  Segment part 10.            Intra module refs:   SY_TIME_ALLOC_SLAVE
+  Segment part 11.            Intra module refs:   SY_TIME_ALLOC_SLAVE
                                                    SY_TS1_HNDL_SLAVE
            LOCAL                   ADDRESS         
            =====                   =======         
@@ -2682,7 +2682,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 XDATA_Z
   Relative segment, address: XDATA 0000041A - 0000041A (0x1 bytes), align: 0
-  Segment part 11.            Intra module refs:   SY_Enable
+  Segment part 12.            Intra module refs:   SY_Enable
                                                    SY_Init
                                                    SY_TIME_ALLOC_SLAVE
                                                    SY_TS1_HNDL_SLAVE
@@ -2692,7 +2692,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 XDATA_I
   Relative segment, address: XDATA 00000753 - 00000762 (0x10 bytes), align: 0
-  Segment part 12.            Intra module refs:   BitRawCrypt
+  Segment part 13.            Intra module refs:   BitRawCrypt
                                                    BitRawDecrypt
                                                    SY_setKEY
            LOCAL                   ADDRESS         
@@ -2701,7 +2701,7 @@ XDATA_I
     -------------------------------------------------------------------------
 XDATA_I
   Relative segment, address: XDATA 00000763 - 00000772 (0x10 bytes), align: 0
-  Segment part 14.            Intra module refs:   BitRawCrypt
+  Segment part 15.            Intra module refs:   BitRawCrypt
                                                    BitRawDecrypt
                                                    SY_setIV
            LOCAL                   ADDRESS         
@@ -2710,14 +2710,14 @@ XDATA_I
     -------------------------------------------------------------------------
 XDATA_I
   Relative segment, address: XDATA 00000773 - 00000776 (0x4 bytes), align: 0
-  Segment part 17.            Intra module refs:   SY_TIME_ALLOC_SLAVE
+  Segment part 18.            Intra module refs:   SY_TIME_ALLOC_SLAVE
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            __Constant_6f           00000773 
     -------------------------------------------------------------------------
 XDATA_I
   Relative segment, address: XDATA 00000777 - 0000077A (0x4 bytes), align: 0
-  Segment part 21.            Intra module refs:   SY_SYNC_NETWORK
+  Segment part 22.            Intra module refs:   SY_SYNC_NETWORK
                                                    SY_TS1_HNDL_SLAVE
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
@@ -2725,7 +2725,7 @@ XDATA_I
     -------------------------------------------------------------------------
 XDATA_I
   Relative segment, address: XDATA 0000077B - 0000077E (0x4 bytes), align: 0
-  Segment part 23.            Intra module refs:   SY_SYNC_NETWORK
+  Segment part 24.            Intra module refs:   SY_SYNC_NETWORK
                                                    SY_TS1_HNDL_SLAVE
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
@@ -2733,7 +2733,7 @@ XDATA_I
     -------------------------------------------------------------------------
 XDATA_Z
   Relative segment, address: XDATA 0000041B - 0000041C (0x2 bytes), align: 0
-  Segment part 16.            Intra module refs:   SY_Init
+  Segment part 17.            Intra module refs:   SY_Init
                                                    SY_SYNC_NETWORK
                                                    SY_TS1_HNDL_SLAVE
                                                    send_sync
@@ -2744,7 +2744,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002776 - 000027EE (0x79 bytes), align: 0
-  Segment part 25.            Intra module refs:   SY_Init::?relay
+  Segment part 26.            Intra module refs:   SY_Init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            SY_Init                 00002776 
@@ -2753,7 +2753,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000027EF - 00002805 (0x17 bytes), align: 0
-  Segment part 29.            Intra module refs:   SY_Enable::?relay
+  Segment part 30.            Intra module refs:   SY_Enable::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            SY_Enable               000027EF 
@@ -2761,7 +2761,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002806 - 0000282A (0x25 bytes), align: 0
-  Segment part 33.            Intra module refs:   SY_setIV::?relay
+  Segment part 34.            Intra module refs:   SY_setIV::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            SY_setIV                00002806 
@@ -2770,7 +2770,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 0000282B - 0000284F (0x25 bytes), align: 0
-  Segment part 35.            Intra module refs:   SY_setKEY::?relay
+  Segment part 36.            Intra module refs:   SY_setKEY::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            SY_setKEY               0000282B 
@@ -2779,7 +2779,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002850 - 000028B8 (0x69 bytes), align: 0
-  Segment part 37.            Intra module refs:   SY_TIME_ALLOC_SLAVE::?relay
+  Segment part 38.            Intra module refs:   SY_TIME_ALLOC_SLAVE::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            SY_TIME_ALLOC_SLAVE     00002850 
@@ -2789,7 +2789,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000028B9 - 000029DD (0x125 bytes), align: 0
-  Segment part 39.            Intra module refs:   SY_TS1_HNDL_SLAVE::?relay
+  Segment part 40.            Intra module refs:   SY_TS1_HNDL_SLAVE::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            SY_TS1_HNDL_SLAVE       000028B9 
@@ -2799,7 +2799,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000029DE - 00002A7E (0xa1 bytes), align: 0
-  Segment part 41.            Intra module refs:   send_sync::?relay
+  Segment part 42.            Intra module refs:   send_sync::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            send_sync               000029DE 
@@ -2808,7 +2808,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002A7F - 00002ADD (0x5f bytes), align: 0
-  Segment part 43.            Intra module refs:   get_sync::?relay
+  Segment part 44.            Intra module refs:   get_sync::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            get_sync                00002A7F 
@@ -2817,7 +2817,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002ADE - 00002C91 (0x1b4 bytes), align: 0
-  Segment part 45.            Intra module refs:   SY_SYNC_NETWORK::?relay
+  Segment part 46.            Intra module refs:   SY_SYNC_NETWORK::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            SY_SYNC_NETWORK         00002ADE 
@@ -2826,7 +2826,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002C92 - 00002CC7 (0x36 bytes), align: 0
-  Segment part 47.            Intra module refs:   BitRawDecrypt::?relay
+  Segment part 48.            Intra module refs:   BitRawDecrypt::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            BitRawDecrypt           00002C92 
@@ -2835,7 +2835,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002CC8 - 00002CFD (0x36 bytes), align: 0
-  Segment part 49.            Intra module refs:   BitRawCrypt::?relay
+  Segment part 50.            Intra module refs:   BitRawCrypt::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            BitRawCrypt             00002CC8 
@@ -2844,55 +2844,55 @@ XDATA_Z
     -------------------------------------------------------------------------
 XDATA_ID
   Relative segment, address: CODE 00000308 - 00000317 (0x10 bytes), align: 0
-  Segment part 13.            Intra module refs:   KEY
+  Segment part 14.            Intra module refs:   KEY
     -------------------------------------------------------------------------
 XDATA_ID
   Relative segment, address: CODE 00000318 - 00000327 (0x10 bytes), align: 0
-  Segment part 15.            Intra module refs:   IV
+  Segment part 16.            Intra module refs:   IV
     -------------------------------------------------------------------------
 XDATA_ID
   Relative segment, address: CODE 00000328 - 0000032B (0x4 bytes), align: 0
-  Segment part 18.            Intra module refs:   __Constant_6f
+  Segment part 19.            Intra module refs:   __Constant_6f
     -------------------------------------------------------------------------
 XDATA_ID
   Relative segment, address: CODE 0000032C - 0000032F (0x4 bytes), align: 0
-  Segment part 22.            Intra module refs:   __Constant_19833891
+  Segment part 23.            Intra module refs:   __Constant_19833891
     -------------------------------------------------------------------------
 XDATA_ID
   Relative segment, address: CODE 00000330 - 00000333 (0x4 bytes), align: 0
-  Segment part 24.            Intra module refs:   __Constant_9
+  Segment part 25.            Intra module refs:   __Constant_9
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000005F2 - 000005F7 (0x6 bytes), align: 0
-  Segment part 26.
+  Segment part 27.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            SY_Init::?relay         000005F2        MG_Init (manager)
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000005F8 - 000005FD (0x6 bytes), align: 0
-  Segment part 30.
+  Segment part 31.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            SY_Enable::?relay       000005F8        network_discovery (manager)
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000005FE - 00000603 (0x6 bytes), align: 0
-  Segment part 34.
+  Segment part 35.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            SY_setIV::?relay        000005FE        MG_Init (manager)
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000604 - 00000609 (0x6 bytes), align: 0
-  Segment part 36.
+  Segment part 37.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            SY_setKEY::?relay       00000604        MG_Init (manager)
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000060A - 0000060F (0x6 bytes), align: 0
-  Segment part 38.            Intra module refs:   SY_Init
+  Segment part 39.            Intra module refs:   SY_Init
            LOCAL                   ADDRESS         
            =====                   =======         
            SY_TIME_ALLOC_SLAVE::?relay
@@ -2900,7 +2900,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000610 - 00000615 (0x6 bytes), align: 0
-  Segment part 40.            Intra module refs:   SY_Init
+  Segment part 41.            Intra module refs:   SY_Init
            LOCAL                   ADDRESS         
            =====                   =======         
            SY_TS1_HNDL_SLAVE::?relay
@@ -2908,14 +2908,14 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000616 - 0000061B (0x6 bytes), align: 0
-  Segment part 42.            Intra module refs:   SY_TS1_HNDL_SLAVE
+  Segment part 43.            Intra module refs:   SY_TS1_HNDL_SLAVE
            LOCAL                   ADDRESS         
            =====                   =======         
            send_sync::?relay       00000616 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000061C - 00000621 (0x6 bytes), align: 0
-  Segment part 44.            Intra module refs:   SY_SYNC_NETWORK
+  Segment part 45.            Intra module refs:   SY_SYNC_NETWORK
                                                    SY_TS1_HNDL_SLAVE
            LOCAL                   ADDRESS         
            =====                   =======         
@@ -2923,7 +2923,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000622 - 00000627 (0x6 bytes), align: 0
-  Segment part 46.
+  Segment part 47.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            SY_SYNC_NETWORK::?relay
@@ -2931,14 +2931,14 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000628 - 0000062D (0x6 bytes), align: 0
-  Segment part 48.            Intra module refs:   get_sync
+  Segment part 49.            Intra module refs:   get_sync
            LOCAL                   ADDRESS         
            =====                   =======         
            BitRawDecrypt::?relay   00000628 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000062E - 00000633 (0x6 bytes), align: 0
-  Segment part 50.            Intra module refs:   send_sync
+  Segment part 51.            Intra module refs:   send_sync
            LOCAL                   ADDRESS         
            =====                   =======         
            BitRawCrypt::?relay     0000062E 

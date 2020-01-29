@@ -30,6 +30,7 @@ static bool send_sync(void);
 static uint32_t LAST_SYNC_TIME = 0; //!< Время последней синхр.
 static uint32_t NEXT_SYNC_TIME = 0; //!< Время следующей синхр.
 static uint32_t SYNC_SENDED = 0; //!< Количество успешно ретранслированых пакетов
+static uint32_t SYNC_SEND_TIME = 0;
 static bool NEED_SEND_SYNC = false; //!< Нужно отослать синхропакет
 static bool SY_ENABLE_MODULE = false;
 
@@ -83,6 +84,7 @@ void SY_Reset(void)
   SYNC_SENDED = 0;
   LAST_SYNC_TIME = 0;
   NEXT_SYNC_TIME = 0;
+  SYNC_SEND_TIME = 0;
   SY_ENABLE_MODULE = false;
 }
 
@@ -161,25 +163,17 @@ static void SY_TIME_ALLOC_SLAVE(void)
 */
 static void SY_TIME_ALLOC_MASTER(void)
 { 
-  static uint32_t sync_send_time = 0;
- 
-  if (!SY_ENABLE_MODULE) // Модуль отключен
-  {
-    sync_send_time = 0;
-    return;  
-  }
-  
   if (TIC_GetTXState(SYNC_TS)) // Если передача уже активна.
     return;
   
   uint32_t now = TIC_GetUptime();
-  if ( now < sync_send_time) // Если время новой передачи не наступило
+  if ( now < SYNC_SEND_TIME) // Если время новой передачи не наступило
     return;
   
   TIC_SetTXState(SYNC_TS,true); // Разрешаем передачу
    
    // Определяем следующее время передачи
-   sync_send_time = now + RAND_SYNC_TX_DELAY;
+   SYNC_SEND_TIME = now + RAND_SYNC_TX_DELAY;
 }
 
 /**
