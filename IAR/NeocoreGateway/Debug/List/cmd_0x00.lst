@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               29/Jan/2020  20:06:52
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               29/Jan/2020  20:35:01
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,7 +13,7 @@
 #                          
 #    Source file        =  E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EWE299.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EWA6C5.tmp
 #        (E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c -lcN
 #        E:\WMNU\IAR\NeocoreGateway\Debug\List -o
 #        E:\WMNU\IAR\NeocoreGateway\Debug\Obj -e --debug --core=plain
@@ -2540,16 +2540,21 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\main.c
       4          #include "stdint.h"
       5          #include "uart_comm.h"
       6          #include "cmd_parser.h"
-      7          extern  char uart_getchar(void);
-      8          // Собирать проект с ключем GATEWAY в файле basic.h
-      9          void main(void)
-     10          {
-     11            neocore_hw_init();
-     12            P1DIR |= 0x01;
-     13            network_seed_enable(false);
-     14            com_uart_init();
-     15            parse_uart_stream();
-     16          }
+      7          
+      8          
+      9          #ifndef GATEWAY
+     10          #warning ENABLE GATEWAY DEFINE
+     11          #endif
+     12          
+     13          // Собирать проект с ключем GATEWAY в файле basic.h
+     14          void main(void)
+     15          {
+     16            neocore_hw_init();
+     17            P1DIR |= 0x01;
+     18            network_seed_enable(false);
+     19            com_uart_init();
+     20            parse_uart_stream();
+     21          }
 E:\WMNU\IAR\SHARE_PRJ_SRC\manager.c
       1          #include "manager.h"
       2          #include "coder.h"
@@ -3822,7 +3827,7 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\rx_buff.c
      68            frame_s *rx_frame = NULL;
      69          
      70            for (uint8_t i = 0; i < RX_BUFF_SIZE; i++)
-     71              if (FRAME_POOL[i].fr != NULL){
+     71              if (FRAME_POOL[i].fr != NULL && !FRAME_POOL[i].need_delete){
      72                rx_frame = FRAME_POOL[i].fr;
      73                break;
      74              }
@@ -5663,7 +5668,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  RXB_del_frame::?relay
      107  RXB_frame_count
        6  RXB_frame_count::?relay
-     116  RXB_get_frame
+     158  RXB_get_frame
        6  RXB_get_frame::?relay
        2  RXCallback
        2  RXCallback
@@ -5964,7 +5969,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
      559  -- Other
 
  
- 19 109 bytes in segment BANKED_CODE
+ 19 151 bytes in segment BANKED_CODE
   1 104 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
      60 bytes in segment NEAR_CODE
@@ -5975,8 +5980,8 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
  
   2 502 bytes of CODE     memory (+ 93 bytes shared)
       0 bytes of DATA     memory (+ 38 bytes shared)
- 19 065 bytes of HUGECODE memory (+ 44 bytes shared)
+ 19 107 bytes of HUGECODE memory (+ 44 bytes shared)
   2 532 bytes of XDATA    memory (+ 72 bytes shared)
 
 Errors: none
-Warnings: 8
+Warnings: 9

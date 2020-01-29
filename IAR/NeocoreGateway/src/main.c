@@ -4,7 +4,12 @@
 #include "stdint.h"
 #include "uart_comm.h"
 #include "cmd_parser.h"
-extern  char uart_getchar(void);
+
+
+#ifndef GATEWAY
+#warning ENABLE GATEWAY DEFINE
+#endif
+
 // Собирать проект с ключем GATEWAY в файле basic.h
 void main(void)
 {

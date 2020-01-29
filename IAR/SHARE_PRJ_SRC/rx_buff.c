@@ -68,7 +68,7 @@ frame_s* RXB_get_frame(void){
   frame_s *rx_frame = NULL;
 
   for (uint8_t i = 0; i < RX_BUFF_SIZE; i++)
-    if (FRAME_POOL[i].fr != NULL){
+    if (FRAME_POOL[i].fr != NULL && !FRAME_POOL[i].need_delete){
       rx_frame = FRAME_POOL[i].fr;
       break;
     }
