@@ -9,7 +9,7 @@ extern  char uart_getchar(void);
 void main(void)
 {
   neocore_hw_init();
-  network_seed_enable(true);
+  network_seed_enable(false);
   com_uart_init();
   parse_uart_stream();
 }

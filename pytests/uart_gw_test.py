@@ -38,7 +38,7 @@ def SEND_FRAME(UART_CONN):
     while(True):
         if UART_CONN.cmd0A_TX_buff_size() == 0:
             UART_CONN.cmd0B_tx_frame(data)
-
+     #   UART_CONN.cmd09_RX_buff_size()
         if UART_CONN.cmd09_RX_buff_size() != 0:
             rx_frame = UART_CONN.cmd0C_get_rx_frame()
             print(rx_frame)

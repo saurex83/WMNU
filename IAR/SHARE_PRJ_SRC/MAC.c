@@ -318,8 +318,8 @@ static void MAC_TX_HNDL(uint8_t TS)
 
   // Задержка перед передачей данных необходима для учета отклонения
   // времени между узлами из-за рассинхронизации узлов
-  //TIM_delay(TX_DELAY);
-  TIM_delay(500);
+  TIM_delay(TX_DELAY);
+//  TIM_delay(500);
   // Пробуем передать данные
   bool tx_success = RI_Send(MACSlotTable[TS].TX.fr); 
   bool send_success = false;  

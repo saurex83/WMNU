@@ -2,7 +2,7 @@
 #                                                                              #
 #      IAR Universal Linker V6.4.6.89                                          #
 #                                                                              #
-#           Link time     =  28/Jan/2020  20:34:52                             #
+#           Link time     =  29/Jan/2020  13:30:50                             #
 #           Target CPU    =  x51                                               #
 #           List file     =  E:\WMNU\IAR\NeocoreTNode\Debug\List\neocoreTNode. #
 #                            map                                               #
@@ -12,7 +12,7 @@
 #                            UBROF version 10.0.6                              #
 #                            Using library modules for C-SPY (-rt)             #
 #           Command line  =  -f                                                #
-#                            C:\Users\08A4~1\AppData\Local\Temp\EW23CB.tmp     #
+#                            C:\Users\08A4~1\AppData\Local\Temp\EW4E54.tmp     #
 #                            (E:\WMNU\IAR\NeocoreTNode\Debug\Obj\cmd_parser.r5 #
 #                            1                                                 #
 #                            E:\WMNU\IAR\NeocoreTNode\Debug\Obj\coder.r51      #
@@ -446,7 +446,6 @@ XDATA_I
 XDATA_I
   Relative segment, address: XDATA 00000524 - 00000527 (0x4 bytes), align: 0
   Segment part 14.            Intra module refs:   DelayCalibrate
-                                                   MAC_TX_HNDL (MAC)
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            __Constant_1f4          00000524 
@@ -1173,6 +1172,14 @@ XDATA_I
            =====                   =======         
            IV                      00000685 
     -------------------------------------------------------------------------
+XDATA_I
+  Relative segment, address: XDATA 00000695 - 00000698 (0x4 bytes), align: 0
+  Segment part 34.            Intra module refs:   MAC_TX_HNDL
+                                                   RI_Receive (RADIO)
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __Constant_3e8          00000695 
+    -------------------------------------------------------------------------
 XDATA_Z
   Relative segment, address: XDATA 0000028A - 0000028A (0x1 bytes), align: 0
   Segment part 31.            Intra module refs:   MAC_Enable
@@ -1377,6 +1384,10 @@ XDATA_ID
   Relative segment, address: CODE 0000023A - 00000249 (0x10 bytes), align: 0
   Segment part 30.            Intra module refs:   IV
     -------------------------------------------------------------------------
+XDATA_ID
+  Relative segment, address: CODE 0000024A - 0000024D (0x4 bytes), align: 0
+  Segment part 35.            Intra module refs:   __Constant_3e8
+    -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000004BA - 000004BF (0x6 bytes), align: 0
   Segment part 37.
@@ -1554,14 +1565,14 @@ XDATA_Z
            RX_frame::state         000003EB 
     -------------------------------------------------------------------------
 XDATA_I
-  Relative segment, address: XDATA 00000695 - 00000698 (0x4 bytes), align: 0
+  Relative segment, address: XDATA 00000699 - 0000069C (0x4 bytes), align: 0
   Segment part 10.            Intra module refs:   main
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           __Constant_5            00000695 
+           __Constant_5            00000699 
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 0000024A - 0000024D (0x4 bytes), align: 0
+  Relative segment, address: CODE 0000024E - 00000251 (0x4 bytes), align: 0
   Segment part 11.            Intra module refs:   __Constant_5
     -------------------------------------------------------------------------
 BANK_RELAYS
@@ -1975,39 +1986,39 @@ INTVEC
                                    0000002B 
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 0000024E - 00000258 (0xb bytes), align: 0
+  Relative segment, address: CODE 00000252 - 0000025C (0xb bytes), align: 0
   Segment part 17.            Intra module refs:   NT_SetTime::__FUNCTION__
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 00000259 - 0000026E (0x16 bytes), align: 0
+  Relative segment, address: CODE 0000025D - 00000272 (0x16 bytes), align: 0
   Segment part 19.            Intra module refs:   Segment part 18
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 0000026F - 0000028F (0x21 bytes), align: 0
+  Relative segment, address: CODE 00000273 - 00000293 (0x21 bytes), align: 0
   Segment part 21.            Intra module refs:   Segment part 20
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 00000290 - 00000292 (0x3 bytes), align: 0
+  Relative segment, address: CODE 00000294 - 00000296 (0x3 bytes), align: 0
   Segment part 23.            Intra module refs:   Segment part 22
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 00000293 - 000002A0 (0xe bytes), align: 0
+  Relative segment, address: CODE 00000297 - 000002A4 (0xe bytes), align: 0
   Segment part 25.            Intra module refs:   NT_SetCompare::__FUNCTION__
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 000002A1 - 000002A4 (0x4 bytes), align: 0
+  Relative segment, address: CODE 000002A5 - 000002A8 (0x4 bytes), align: 0
   Segment part 32.            Intra module refs:   __Constant_ffff8000
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 000002A5 - 000002A8 (0x4 bytes), align: 0
+  Relative segment, address: CODE 000002A9 - 000002AC (0x4 bytes), align: 0
   Segment part 34.            Intra module refs:   __Constant_8000
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 000002A9 - 000002AC (0x4 bytes), align: 0
+  Relative segment, address: CODE 000002AD - 000002B0 (0x4 bytes), align: 0
   Segment part 36.            Intra module refs:   __Constant_ffffff
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 000002AD - 000002B0 (0x4 bytes), align: 0
+  Relative segment, address: CODE 000002B1 - 000002B4 (0x4 bytes), align: 0
   Segment part 38.            Intra module refs:   __Constant_7fff
     -------------------------------------------------------------------------
 BANK_RELAYS
@@ -2099,64 +2110,64 @@ BANK_RELAYS
                                    0000058C 
     -------------------------------------------------------------------------
 XDATA_I
-  Relative segment, address: XDATA 00000699 - 000006A3 (0xb bytes), align: 0
+  Relative segment, address: XDATA 0000069D - 000006A7 (0xb bytes), align: 0
   Segment part 16.            Intra module refs:   NT_SetTime
            LOCAL                   ADDRESS         
            =====                   =======         
            NT_SetTime::__FUNCTION__
-                                   00000699 
+                                   0000069D 
     -------------------------------------------------------------------------
 XDATA_I
-  Relative segment, address: XDATA 000006A4 - 000006B9 (0x16 bytes), align: 0
+  Relative segment, address: XDATA 000006A8 - 000006BD (0x16 bytes), align: 0
   Segment part 18.            Intra module refs:   NT_SetCompare
                                                    NT_SetTime
     -------------------------------------------------------------------------
 XDATA_I
-  Relative segment, address: XDATA 000006BA - 000006DA (0x21 bytes), align: 0
+  Relative segment, address: XDATA 000006BE - 000006DE (0x21 bytes), align: 0
   Segment part 20.            Intra module refs:   NT_SetCompare
                                                    NT_SetTime
     -------------------------------------------------------------------------
 XDATA_I
-  Relative segment, address: XDATA 000006DB - 000006DD (0x3 bytes), align: 0
+  Relative segment, address: XDATA 000006DF - 000006E1 (0x3 bytes), align: 0
   Segment part 22.            Intra module refs:   NT_SetCompare
                                                    NT_SetTime
     -------------------------------------------------------------------------
 XDATA_I
-  Relative segment, address: XDATA 000006DE - 000006EB (0xe bytes), align: 0
+  Relative segment, address: XDATA 000006E2 - 000006EF (0xe bytes), align: 0
   Segment part 24.            Intra module refs:   NT_SetCompare
            LOCAL                   ADDRESS         
            =====                   =======         
            NT_SetCompare::__FUNCTION__
-                                   000006DE 
-    -------------------------------------------------------------------------
-XDATA_I
-  Relative segment, address: XDATA 000006EC - 000006EF (0x4 bytes), align: 0
-  Segment part 31.            Intra module refs:   calcCompareTime
-           ENTRY                   ADDRESS         REF BY
-           =====                   =======         ======
-           __Constant_ffff8000     000006EC 
+                                   000006E2 
     -------------------------------------------------------------------------
 XDATA_I
   Relative segment, address: XDATA 000006F0 - 000006F3 (0x4 bytes), align: 0
-  Segment part 33.            Intra module refs:   calcCompareTime
+  Segment part 31.            Intra module refs:   calcCompareTime
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           __Constant_8000         000006F0 
+           __Constant_ffff8000     000006F0 
     -------------------------------------------------------------------------
 XDATA_I
   Relative segment, address: XDATA 000006F4 - 000006F7 (0x4 bytes), align: 0
-  Segment part 35.            Intra module refs:   calcCompareTime
+  Segment part 33.            Intra module refs:   calcCompareTime
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           __Constant_ffffff       000006F4 
+           __Constant_8000         000006F4 
     -------------------------------------------------------------------------
 XDATA_I
   Relative segment, address: XDATA 000006F8 - 000006FB (0x4 bytes), align: 0
+  Segment part 35.            Intra module refs:   calcCompareTime
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __Constant_ffffff       000006F8 
+    -------------------------------------------------------------------------
+XDATA_I
+  Relative segment, address: XDATA 000006FC - 000006FF (0x4 bytes), align: 0
   Segment part 37.            Intra module refs:   NT_GetTime
                                                    NT_WaitTime
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           __Constant_7fff         000006F8 
+           __Constant_7fff         000006FC 
 
     *************************************************************************
 
@@ -2440,36 +2451,32 @@ XDATA_Z
                XSTACK = 00000000 ( 00000009 )
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 000002B1 - 000002B8 (0x8 bytes), align: 0
+  Relative segment, address: CODE 000002B5 - 000002BC (0x8 bytes), align: 0
   Segment part 11.            Intra module refs:   RI_Send::__FUNCTION__
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 000002B9 - 000002CE (0x16 bytes), align: 0
+  Relative segment, address: CODE 000002BD - 000002D2 (0x16 bytes), align: 0
   Segment part 13.            Intra module refs:   Segment part 12
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 000002CF - 000002F0 (0x22 bytes), align: 0
+  Relative segment, address: CODE 000002D3 - 000002F4 (0x22 bytes), align: 0
   Segment part 15.            Intra module refs:   Segment part 14
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 000002F1 - 000002F3 (0x3 bytes), align: 0
+  Relative segment, address: CODE 000002F5 - 000002F7 (0x3 bytes), align: 0
   Segment part 17.            Intra module refs:   Segment part 16
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 000002F4 - 000002FB (0x8 bytes), align: 0
+  Relative segment, address: CODE 000002F8 - 000002FF (0x8 bytes), align: 0
   Segment part 19.            Intra module refs:   setFreq::__FUNCTION__
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 000002FC - 000002FF (0x4 bytes), align: 0
+  Relative segment, address: CODE 00000300 - 00000303 (0x4 bytes), align: 0
   Segment part 25.            Intra module refs:   __Constant_447a0000
     -------------------------------------------------------------------------
 XDATA_ID
-  Relative segment, address: CODE 00000300 - 00000303 (0x4 bytes), align: 0
-  Segment part 27.            Intra module refs:   __Constant_1
-    -------------------------------------------------------------------------
-XDATA_ID
   Relative segment, address: CODE 00000304 - 00000307 (0x4 bytes), align: 0
-  Segment part 29.            Intra module refs:   __Constant_3e8
+  Segment part 27.            Intra module refs:   __Constant_1
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000059E - 000005A3 (0x6 bytes), align: 0
@@ -2581,58 +2588,51 @@ BANK_RELAYS
                                    000005EC 
     -------------------------------------------------------------------------
 XDATA_I
-  Relative segment, address: XDATA 000006FC - 00000703 (0x8 bytes), align: 0
+  Relative segment, address: XDATA 00000700 - 00000707 (0x8 bytes), align: 0
   Segment part 10.            Intra module refs:   RI_Send
            LOCAL                   ADDRESS         
            =====                   =======         
-           RI_Send::__FUNCTION__   000006FC 
+           RI_Send::__FUNCTION__   00000700 
     -------------------------------------------------------------------------
 XDATA_I
-  Relative segment, address: XDATA 00000704 - 00000719 (0x16 bytes), align: 0
+  Relative segment, address: XDATA 00000708 - 0000071D (0x16 bytes), align: 0
   Segment part 12.            Intra module refs:   RI_Send
                                                    setFreq
     -------------------------------------------------------------------------
 XDATA_I
-  Relative segment, address: XDATA 0000071A - 0000073B (0x22 bytes), align: 0
+  Relative segment, address: XDATA 0000071E - 0000073F (0x22 bytes), align: 0
   Segment part 14.            Intra module refs:   RI_Send
                                                    setFreq
     -------------------------------------------------------------------------
 XDATA_I
-  Relative segment, address: XDATA 0000073C - 0000073E (0x3 bytes), align: 0
+  Relative segment, address: XDATA 00000740 - 00000742 (0x3 bytes), align: 0
   Segment part 16.            Intra module refs:   RI_Send
                                                    setFreq
     -------------------------------------------------------------------------
 XDATA_I
-  Relative segment, address: XDATA 0000073F - 00000746 (0x8 bytes), align: 0
+  Relative segment, address: XDATA 00000743 - 0000074A (0x8 bytes), align: 0
   Segment part 18.            Intra module refs:   setFreq
            LOCAL                   ADDRESS         
            =====                   =======         
-           setFreq::__FUNCTION__   0000073F 
+           setFreq::__FUNCTION__   00000743 
     -------------------------------------------------------------------------
 XDATA_I
-  Relative segment, address: XDATA 00000747 - 0000074A (0x4 bytes), align: 0
+  Relative segment, address: XDATA 0000074B - 0000074E (0x4 bytes), align: 0
   Segment part 24.            Intra module refs:   RI_Receive
                                                    RI_Send
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           __Constant_447a0000     00000747 
+           __Constant_447a0000     0000074B 
     -------------------------------------------------------------------------
 XDATA_I
-  Relative segment, address: XDATA 0000074B - 0000074E (0x4 bytes), align: 0
+  Relative segment, address: XDATA 0000074F - 00000752 (0x4 bytes), align: 0
   Segment part 26.            Intra module refs:   RI_Receive
                                                    RI_Send
                                                    SY_TS1_HNDL_SLAVE (sync)
                                                    clocks_update (TIC)
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           __Constant_1            0000074B 
-    -------------------------------------------------------------------------
-XDATA_I
-  Relative segment, address: XDATA 0000074F - 00000752 (0x4 bytes), align: 0
-  Segment part 28.            Intra module refs:   RI_Receive
-           ENTRY                   ADDRESS         REF BY
-           =====                   =======         ======
-           __Constant_3e8          0000074F 
+           __Constant_1            0000074F 
 
     *************************************************************************
 
@@ -3807,7 +3807,7 @@ CSTART
                                                    __Constant_20 (delays)
                                                    __Constant_3c6ef35f (?rand)
                                                    __Constant_3d000000 (delays)
-                                                   __Constant_3e8 (RADIO)
+                                                   __Constant_3e8 (MAC)
                                                    __Constant_447a0000 (RADIO)
                                                    __Constant_5 (main)
                                                    __Constant_6f (sync)

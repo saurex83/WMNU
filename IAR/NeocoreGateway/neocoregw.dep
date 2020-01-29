@@ -123,6 +123,8 @@
             <file>$PROJ_DIR$\Debug\Obj\delays.pbi</file>
             <file>$PROJ_DIR$\Debug\Obj\rx_buff.r51</file>
             <file>$PROJ_DIR$\Debug\Obj\rx_buff.pbi</file>
+            <file>$PROJ_DIR$\Debug\List\rx_buff.lst</file>
+            <file>$PROJ_DIR$\Debug\List\cmd_0x0C.lst</file>
             <file>$PROJ_DIR$\Debug\Obj\rx_buff.__cstat.et</file>
             <file>$PROJ_DIR$\..\NEOCORETNODE\src\main.c</file>
             <file>$PROJ_DIR$\src\cmd_0x03.c</file>
@@ -188,6 +190,7 @@
             <file>$PROJ_DIR$\Debug\Obj\cmd_0x00.__cstat.et</file>
             <file>$PROJ_DIR$\Debug\Obj\cmd_0x0C.__cstat.et</file>
             <file>$PROJ_DIR$\Debug\Obj\cmd_0x02.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\List\MAC.lst</file>
         </outputs>
         <file>
             <name>$PROJ_DIR$\src\cmd_0x00.c</name>
@@ -202,17 +205,17 @@
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 180</file>
+                    <file> 182</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 39 17 89 155 90 134 33 78 36 88 162 105 114 104 74</file>
+                    <file> 39 17 89 157 90 136 33 78 36 88 164 105 114 104 74</file>
                 </tool>
                 <tool>
                     <name>ICC8051</name>
-                    <file> 88 89 36 105 90 78 33 114 134 155 17 162 104 74 39 1 141 2 173 143 120 121 29 122 123 124 153 164 149 125 126 167 127 151 128 157 111 129 130 131 133 136 132 138 139 101 145 140 137 142 144 146 158 148 150 152 174 154 147 160 171 156 159 161 55 163 165 166 170 172 135</file>
+                    <file> 88 89 36 105 90 78 33 114 136 157 17 164 104 74 39 1 143 2 175 145 122 123 29 124 125 126 155 166 151 127 128 169 129 153 130 159 111 131 132 133 135 138 134 140 141 101 147 142 139 144 146 148 160 150 152 154 176 156 149 162 173 158 161 163 55 165 167 168 172 174 137</file>
                 </tool>
             </inputs>
         </file>
@@ -235,7 +238,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 39 17 89 141 90 134 33 78 36 88 155 162 105 114 104 74</file>
+                    <file> 39 17 89 143 90 136 33 78 36 88 157 164 105 114 104 74</file>
                 </tool>
             </inputs>
         </file>
@@ -252,13 +255,13 @@
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 182</file>
+                    <file> 184</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 17 89 173 90 88 36 155 33 78 39 134 141 162 105 114 143 104 74</file>
+                    <file> 17 89 175 90 88 36 157 33 78 39 136 143 164 105 114 145 104 74</file>
                 </tool>
             </inputs>
         </file>
@@ -305,7 +308,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 39 17 89 141 90 134 33 78 36 88 155 162 105 114 104 74</file>
+                    <file> 39 17 89 143 90 136 33 78 36 88 157 164 105 114 104 74</file>
                 </tool>
             </inputs>
         </file>
@@ -328,7 +331,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 17 89 29 90 155 33 78 39 134 141 162 36 105 114 88 74 104</file>
+                    <file> 17 89 29 90 157 33 78 39 136 143 164 36 105 114 88 74 104</file>
                 </tool>
             </inputs>
         </file>
@@ -345,13 +348,13 @@
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 176</file>
+                    <file> 178</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 17 89 29 90 155 33 78 39 134 141 162 36 105 114 88 74 104</file>
+                    <file> 17 89 29 90 157 33 78 39 136 143 164 36 105 114 88 74 104</file>
                 </tool>
             </inputs>
         </file>
@@ -368,13 +371,13 @@
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 177</file>
+                    <file> 179</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 17 89 173 90 88 36 155 33 78 39 134 141 162 105 114 143 104 74</file>
+                    <file> 17 89 175 90 88 36 157 33 78 39 136 143 164 105 114 145 104 74</file>
                 </tool>
             </inputs>
         </file>
@@ -391,13 +394,13 @@
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 178</file>
+                    <file> 180</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 17 88 89 143 153 90 39 36 155 33 78 164 149 134 141 162 105 114 173 104 74</file>
+                    <file> 17 88 89 145 155 90 39 36 157 33 78 166 151 136 143 164 105 114 175 104 74</file>
                 </tool>
             </inputs>
         </file>
@@ -420,7 +423,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 17 88 89 143 153 90 39 36 155 33 78 164 149 134 141 162 105 114 173 104 74</file>
+                    <file> 17 88 89 145 155 90 39 36 157 33 78 166 151 136 143 164 105 114 175 104 74</file>
                 </tool>
             </inputs>
         </file>
@@ -443,7 +446,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 17 88 89 143 153 90 39 36 155 33 78 164 149 134 141 162 105 114 173 104 74 167</file>
+                    <file> 17 88 89 145 155 90 39 36 157 33 78 166 151 136 143 164 105 114 175 104 74 169</file>
                 </tool>
             </inputs>
         </file>
@@ -466,7 +469,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 17 88 89 143 153 90 39 36 155 33 78 164 149 134 141 162 105 114 173 104 74 151</file>
+                    <file> 17 88 89 145 155 90 39 36 157 33 78 166 151 136 143 164 105 114 175 104 74 153</file>
                 </tool>
             </inputs>
         </file>
@@ -489,7 +492,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 89 17 33 149 88 153 78 164 155 39 36 134 141 162 157 105 114 90 143 151 173 104 74 111</file>
+                    <file> 89 17 33 151 88 155 78 166 157 39 36 136 143 164 159 105 114 90 145 153 175 104 74 111</file>
                 </tool>
             </inputs>
         </file>
@@ -506,13 +509,13 @@
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 181</file>
+                    <file> 183</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 89 17 33 149 153 78 164 155 167 39 134 141 162 157 36 105 114 90 88 143 111 74 173 104</file>
+                    <file> 151 17 39 155 105 114 36 88 157 169 175 145 104 89 136 143 164 33 90 78 166 74</file>
                 </tool>
             </inputs>
         </file>
@@ -529,13 +532,13 @@
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 179</file>
+                    <file> 181</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 17 89 164 90 88 155 33 78 104 74 36 134 141 162 105 114 149 39</file>
+                    <file> 17 89 166 90 88 157 33 78 104 74 36 136 143 164 105 114 151 39</file>
                 </tool>
             </inputs>
         </file>
@@ -552,13 +555,13 @@
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 175</file>
+                    <file> 177</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 17 88 89 143 153 90 39 36 155 33 78 164 149 134 141 162 105 114 173 104 74</file>
+                    <file> 17 88 89 145 155 90 39 36 157 33 78 166 151 136 143 164 105 114 175 104 74</file>
                 </tool>
             </inputs>
         </file>
@@ -581,7 +584,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 134 36 89 132 17 162 105 114 88 74 136 33 90 78 104 39</file>
+                    <file> 136 36 89 134 17 164 105 114 88 74 138 33 90 78 104 39</file>
                 </tool>
             </inputs>
         </file>
@@ -604,7 +607,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 90 145 39 89 33 88 104 36 78 101 17 74 105 114 162</file>
+                    <file> 90 147 39 89 33 88 104 36 78 101 17 74 105 114 164</file>
                 </tool>
             </inputs>
         </file>
@@ -627,7 +630,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 89 145 78 88 29 17 33 90 101 143 36 105 114 74 139</file>
+                    <file> 89 147 78 88 29 17 33 90 101 145 36 105 114 74 141</file>
                 </tool>
             </inputs>
         </file>
@@ -650,7 +653,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 74 36 89 33 78 29 90 88 17 105 114 137 141</file>
+                    <file> 74 36 89 33 78 29 90 88 17 105 114 139 143</file>
                 </tool>
             </inputs>
         </file>
@@ -673,7 +676,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 89 36 29 90 143 33 78 74 101 88 105 114</file>
+                    <file> 89 36 29 90 145 33 78 74 101 88 105 114</file>
                 </tool>
             </inputs>
         </file>
@@ -696,7 +699,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 36 88 105 33 78 101 89 90 145 114</file>
+                    <file> 36 88 105 33 78 101 89 90 147 114</file>
                 </tool>
             </inputs>
         </file>
@@ -719,7 +722,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 33 89 78 17 151 36 88 90 39 158 162 157 105 114 149 104 74 111</file>
+                    <file> 33 89 78 17 153 36 88 90 39 160 164 159 105 114 151 104 74 111</file>
                 </tool>
             </inputs>
         </file>
@@ -742,7 +745,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 111 101 105 74 39 157 88 36 114 89 29 162 17 33 90 78 104 149</file>
+                    <file> 111 101 105 74 39 159 88 36 114 89 29 164 17 33 90 78 104 151</file>
                 </tool>
             </inputs>
         </file>
@@ -765,7 +768,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 149 89 17 88 90 39 162 33 36 173 78 143 104 153 157 101 105 114 164 111 74 151</file>
+                    <file> 151 89 17 88 90 39 164 33 36 175 78 145 104 155 159 101 105 114 166 111 74 153</file>
                 </tool>
             </inputs>
         </file>
@@ -788,7 +791,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 89 149 88 139 17 36 29 111 173 90 162 137 164 33 78 39 74 153 105 114 143 104</file>
+                    <file> 89 151 88 141 17 36 29 111 175 90 164 139 166 33 78 39 74 155 105 114 145 104</file>
                 </tool>
             </inputs>
         </file>
@@ -811,7 +814,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 89 101 164 173 104 149 33 78 88 17 143 153 171 137 90 74 139 147 151 160 141 162 36 105 114 39 155 145 167</file>
+                    <file> 89 101 166 175 104 151 33 78 88 17 145 155 173 139 90 74 141 149 153 162 143 164 36 105 114 39 157 147 169</file>
                 </tool>
             </inputs>
         </file>
@@ -834,7 +837,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 105 114 36 162 74 88 33 89 111 29 90 78 101 104 39</file>
+                    <file> 105 114 36 164 74 88 33 89 111 29 90 78 101 104 39</file>
                 </tool>
             </inputs>
         </file>
@@ -857,7 +860,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 78 89 36 74 101 17 33 90 111 162 88 105 114 104 39 160</file>
+                    <file> 78 89 36 74 101 17 33 90 111 164 88 105 114 104 39 162</file>
                 </tool>
             </inputs>
         </file>
@@ -880,7 +883,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 104 89 88 36 114 101 55 39 105 74 162 33 90 78</file>
+                    <file> 104 89 88 36 114 101 55 39 105 74 164 33 90 78</file>
                 </tool>
             </inputs>
         </file>
@@ -903,7 +906,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 88 74 160 36 101 173 105 114 111 89 162 149 157 165 143 29 17 33 90 78 104 39 164</file>
+                    <file> 88 74 162 36 101 175 105 114 111 89 164 151 159 167 145 29 17 33 90 78 104 39 166</file>
                 </tool>
             </inputs>
         </file>
@@ -920,13 +923,13 @@
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 118</file>
+                    <file> 120</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 105 149 17 36 114 39 89 162 88 33 90 78 104 74 151</file>
+                    <file> 105 151 17 36 114 39 89 164 88 33 90 78 104 74 153</file>
                 </tool>
             </inputs>
         </file>
@@ -949,7 +952,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 74 160 89 36 88 162 90 17 143 149 173 101 33 78 137 29 139 164 141 105 114 104 111 39</file>
+                    <file> 74 162 89 36 88 164 90 17 145 151 175 101 33 78 139 29 141 166 143 105 114 104 111 39</file>
                 </tool>
             </inputs>
         </file>
@@ -972,7 +975,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 36 88 89 143 90 39 111 101 33 78 160 162 137 17 105 114 74 104 173</file>
+                    <file> 36 88 89 145 90 39 111 101 33 78 162 164 139 17 105 114 74 104 175</file>
                 </tool>
             </inputs>
         </file>
@@ -995,7 +998,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 36 74 136 101 88 114 162 17 105 104 89 155 134 33 90 78 39</file>
+                    <file> 36 74 138 101 88 114 164 17 105 104 89 157 136 33 90 78 39</file>
                 </tool>
             </inputs>
         </file>

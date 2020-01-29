@@ -1,5 +1,6 @@
 #include "LLC.h"
 #include "nwdebuger.h"
+#include "stdbool.h"
 
 /**
 @file Буфер приемника пакетов.
@@ -21,15 +22,23 @@ void RXB_del_frame(frame_s *fr);
 static void RXB_Callback(frame_s *fr);
 static void Delete_frame(uint8_t index);
 
+typedef struct{
+    frame_s* fr;
+    bool need_delete;
+} rx_buffer_s;
+
 // Локальные переменные
-frame_s* FRAME_POOL[RX_BUFF_SIZE]; //!< Хранилище указателей на пакетов. NULL - нет пакета
+static rx_buffer_s FRAME_POOL[RX_BUFF_SIZE]; //!< Хранилище указателей на пакетов. NULL - нет пакета
 
 /**
 @brief Первоначальная настройка
 */
 void RXB_Init(void){
   LLC_SetRXCallback(RXB_Callback);
-  RXB_Reset();
+  for (uint8_t i = 0; i < RX_BUFF_SIZE; i++){
+    FRAME_POOL[i].fr = NULL;
+    FRAME_POOL[i].need_delete = false;
+  }
 }
 
 /**
@@ -47,7 +56,7 @@ void RXB_Reset(void){
 uint8_t RXB_frame_count(void){
   uint8_t cnt = 0;
   for (uint8_t i = 0; i < RX_BUFF_SIZE; i++)
-    if (FRAME_POOL[i] != NULL)
+    if (FRAME_POOL[i].fr != NULL && !FRAME_POOL[i].need_delete)
       cnt ++;
   return cnt;
 }
@@ -59,8 +68,8 @@ frame_s* RXB_get_frame(void){
   frame_s *rx_frame = NULL;
 
   for (uint8_t i = 0; i < RX_BUFF_SIZE; i++)
-    if (FRAME_POOL[i] != NULL){
-      rx_frame = FRAME_POOL[i];
+    if (FRAME_POOL[i].fr != NULL){
+      rx_frame = FRAME_POOL[i].fr;
       break;
     }
   return rx_frame;
@@ -73,13 +82,14 @@ void RXB_del_frame(frame_s *fr){
   int index = -1;
   
   for (uint8_t i = 0; i < RX_BUFF_SIZE; i++)
-    if (FRAME_POOL[i] == fr){
+    if (FRAME_POOL[i].fr == fr){
       index = i;
       break;
     }    
-  
-  ASSERT(index > 0);
+
+  ASSERT(index >= 0);
   Delete_frame(index);
+  
 }
 
 /**
@@ -88,24 +98,30 @@ void RXB_del_frame(frame_s *fr){
 */
 static void Delete_frame(uint8_t index){
   ASSERT(index < RX_BUFF_SIZE);
-  if (FRAME_POOL[index] != NULL){
-      frame_delete(FRAME_POOL[index]);
-      FRAME_POOL[index] = NULL;
-  }
+  FRAME_POOL[index].need_delete = true;
 }
 
 /**
 @brief Обработчик принятого пакета
-@detail Вставляет принятые пакеты в буфере, если места нет то размещает
- по индексу 0.
+@detail Если нет места пакет удаляем
 */
-static void RXB_Callback(frame_s *fr){
-  
+static void RXB_Callback(frame_s *fr){  
+  // Удалим ненужные
   for (uint8_t i = 0; i < RX_BUFF_SIZE; i++)
-    if (FRAME_POOL[i] == NULL){
-      FRAME_POOL[i] = fr;
+    if (FRAME_POOL[i].need_delete){
+      if (FRAME_POOL[i].fr != NULL)
+        frame_delete(FRAME_POOL[i].fr);
+      FRAME_POOL[i].fr = NULL;
+      FRAME_POOL[i].need_delete = false;
+    }
+  
+  // Ищем куда вставить
+  for (uint8_t i = 0; i < RX_BUFF_SIZE; i++)
+    if (FRAME_POOL[i].fr == NULL){
+      FRAME_POOL[i].fr = fr;
       return;
     }
   
-  FRAME_POOL[0] = fr;
+  // Вставлять некуда
+  frame_delete(fr);
 }

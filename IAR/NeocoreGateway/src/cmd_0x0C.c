@@ -5,15 +5,18 @@
 #include "MAC.h"
 #include "nwdebuger.h"
 #include "rx_buff.h"
-#include "mem.h"
 
 static void upload_frame(frame_s *fr);
+static void mem_move(uint8_t *dst, uint8_t *src, uint8_t len);
 
 #define ARGS_SIZE sizeof(cmd_args_s)
 typedef struct //!< Аргументы команды
 {
   uint16_t crc16;
 } cmd_args_s;
+
+
+static uint8_t upload[sizeof(meta_s) + 1 + 127];
 
 /**
 @brief Отправить на PC принятый пакет из буфера RX. Сеть вкл.
@@ -38,7 +41,7 @@ bool cmd_0x0C(uint8_t *cmd, uint8_t size)
   }
   
   upload_frame(rx_frame);
-  
+ // RXB_del_frame(rx_frame);
   LOG_ON("CMD 0x0C. Upload RX frame");
   return true;
 }
@@ -57,12 +60,17 @@ sizeof(meta_s)-|   |
 sizeof(meta_s)+1  -| 
 */
   // Пакет буду собирать в массиве upload иначе crc считать неудобно
-  uint8_t upload[sizeof(meta_s) + 1 + 127]; // Размер мета+1 байт длинны+пакет
+   // Размер мета+1 байт длинны+пакет
   uint8_t answ_len = sizeof(meta_s) + 1 + fr->len; // Суммарный размер пакета
-  
-  re_memcpy(upload, &fr->meta, sizeof(meta_s));
+  mem_move(upload, (uint8_t*)&fr->meta, sizeof(meta_s));
   upload[sizeof(meta_s)] = fr->len; // byte len
-  re_memcpy(&upload[sizeof(meta_s) + 1], fr->payload, fr->len);
+  mem_move(&upload[sizeof(meta_s) + 1], (uint8_t*)fr->payload, fr->len);
   
   cmd_answer(ATYPE_CMD_OK, upload, answ_len);
+  //cmd_answer(ATYPE_CMD_OK, upload, 10);
+}
+
+static void mem_move(uint8_t *dst, uint8_t *src, uint8_t len){
+  for (uint8_t i = 0; i < len; i++)
+    dst[i] = src[i];
 }
