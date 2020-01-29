@@ -191,6 +191,8 @@
             <file>$PROJ_DIR$\Debug\Obj\cmd_0x0C.__cstat.et</file>
             <file>$PROJ_DIR$\Debug\Obj\cmd_0x02.__cstat.et</file>
             <file>$PROJ_DIR$\Debug\List\MAC.lst</file>
+            <file>$PROJ_DIR$\Debug\List\RADIO.lst</file>
+            <file>$PROJ_DIR$\Debug\List\sync.lst</file>
         </outputs>
         <file>
             <name>$PROJ_DIR$\src\cmd_0x00.c</name>

@@ -31,8 +31,8 @@ bool MAC_GetRXState(uint8_t TS);
 static uint8_t KEY[16] = DEFAULT_KEY;
 static uint8_t IV[16] = DEFAULT_IV;
   
-#define RECV_TIMEOUT 2 // Время ожидания приема пакета в мс с начала слота
-#define ACK_RECV_TIMEOUT 1 // Время ожидания приема подтверждения в мс
+#define RECV_TIMEOUT 2500 // Время ожидания приема пакета в мкс с начала слота
+#define ACK_RECV_TIMEOUT 1000 // Время ожидания приема подтверждения в мкс
 #define TX_DELAY 1*Tmsec // Смещение при передаче пакета. Защита от девиации времени
 
 typedef struct // Формат структуры пакета ACK
@@ -274,14 +274,15 @@ static void MAC_RX_HNDL(uint8_t TS)
     return;
   
   // Задержка перед приемом. Прием начинается через 427мкс и заканчивается в
-  // 2.71 мс от начала слота. Длительность 2.28мс
+  // 3.2 мс от начала слота. Длительность 2.8мс. Длятельность больше 2мс так
+  // как SDF приходит позже чем фактическая передача на 400мкс
   TIM_delay(200);
   RI_SetChannel(MACSlotTable[TS].RX.CH);
   frame_s *fr = RI_Receive(RECV_TIMEOUT);
 
 //volatile uint16_t DBGT= NT_GetTime();  
   
- // frame_s *fr = RI_Receive(2);
+ // frame_s *fr = RI_Receive(2000);
   
 //volatile uint16_t DBGT2= NT_GetTime();   
   // Если пакета нет, выходим из обработчика

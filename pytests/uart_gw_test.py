@@ -43,7 +43,7 @@ def SEND_FRAME(UART_CONN):
             rx_frame = UART_CONN.cmd0C_get_rx_frame()
             fr_parse = frame.Frame()
             fr_parse.parse(rx_frame)
-            print('TIMESTAMP :%d'%(fr_parse.META['TIMESTAMP']))
+            print('TIMESTAMP :%d, RSSI :%d'%(fr_parse.META['TIMESTAMP'],fr_parse.META['RSSI_SIG'] ))
             print(rx_frame)
  
         time.sleep(1)

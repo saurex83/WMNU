@@ -13,7 +13,7 @@ enum CHANNAL_e
 void RI_init(void);
 bool RI_SetChannel(uint8_t CH);
 bool RI_Send(frame_s *fr);
-frame_s* RI_Receive(uint16_t timeout);
+frame_s* RI_Receive(uint32_t timeout);
 uint32_t RI_GetCRCError(void);
 uint32_t RI_GetCCAReject(void);
 float RI_GetUptime(void);

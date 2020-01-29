@@ -17,7 +17,7 @@
 void RI_init(void);
 bool RI_SetChannel(uint8_t CH);
 bool RI_Send(frame_s *fr);
-frame_s* RI_Receive(uint16_t timeout);
+frame_s* RI_Receive(uint32_t timeout);
 uint32_t RI_GetCRCError(void);
 uint32_t RI_GetCCAReject(void);
 float RI_GetUptime(void);
@@ -294,22 +294,21 @@ static inline void setFreq(uint8_t CH)
 \brief Принимает данные из эфира
 \details Функция принимает данные из эфира. Проводит проверку CRC, увеличивает
 RI_CRC_ERROR. Отмечает время прихода SFD в тактах сетевого времени .
-\param[in] timeout Время ожидания данных в милисекундах
+\param[in] timeout Время ожидания данных в микросекундах
 \return Возвращает NULL если данных нет
 */
-frame_s* RI_Receive(uint16_t timeout)
+frame_s* RI_Receive(uint32_t timeout)
 {
   // Устанавливаем частоту передачи пакета
   RI_cfg();
   uint16_t SFD_TimeStamp;
   
   // Принимаем пакет 
-  uint32_t timeout_us = timeout*1000UL; // Переводим мс->мкс
   TimeStamp_s start,stop; // Измерение времени
   TIM_TimeStamp(&start); // Начало измерения времени работы радио
-volatile uint16_t DBGT1= NT_GetTime();
-  bool recv_res = RecvData(timeout_us, &SFD_TimeStamp);
-volatile uint16_t DBGT2= NT_GetTime();
+//volatile uint16_t DBGT1= NT_GetTime(); 
+  bool recv_res = RecvData(timeout, &SFD_TimeStamp);
+//volatile uint16_t DBGT2= NT_GetTime();
   TIM_TimeStamp(&stop); // Конец измерения времени радио
   uint32_t passed = TIM_passedTime(&start, &stop);
   RI_UPTIME += (float)passed/(float)1000; // Микросекунды в милисекунды

@@ -692,7 +692,7 @@
                     <item>CONFIG.sync_channel</item>
                     <item>DBGT</item>
                     <item>DBGT2</item>
-                    <item></item>
+                    <item />
                 </expressions>
                 <col-names>
                     <item>Expression</item>

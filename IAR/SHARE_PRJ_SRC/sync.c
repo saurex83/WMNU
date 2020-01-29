@@ -24,7 +24,7 @@ static void SY_TIME_ALLOC_SLAVE(void);
 static void SY_TIME_ALLOC_MASTER(void);
 static void BitRawDecrypt(uint8_t *src, uint8_t size);
 static void BitRawCrypt(uint8_t *src, uint8_t size);
-static frame_s* get_sync(uint16_t timeout);
+static frame_s* get_sync(uint32_t timeout);
 static bool send_sync(void);
 
 static uint32_t LAST_SYNC_TIME = 0; //!< Время последней синхр.
@@ -42,7 +42,7 @@ static uint8_t IV[16] = DEFAULT_IV;
 static uint16_t SYNC_ACCURATE_NETWORK_TIME; 
 
 #define SYNC_TS 1 //!< Номер временного слота синхросигнала
-#define SYNC_RECV_TIMEOUT 2 // Время ожидания приема пакета в мс
+#define SYNC_RECV_TIMEOUT 2000 // Время ожидания приема пакета в мкс
 #define SYNC_TIMEOUT 110//!< Время в сек после которого сеть не синхронна
 
 
@@ -285,7 +285,7 @@ static bool send_sync(void)
 @param[in] Время ожидания в мс
 @return Указатель на пакет или NULL
 */
-static frame_s* get_sync(uint16_t timeout)
+static frame_s* get_sync(uint32_t timeout)
 {
   RI_SetChannel(CONFIG.sync_channel);
   frame_s *fr_SYNC = RI_Receive(timeout);
@@ -334,7 +334,7 @@ bool SY_SYNC_NETWORK(uint16_t *panid,uint16_t timeout)
   
   while (passed < timeout_us)
   {
-    fr_SYNC = get_sync(timeout);
+    fr_SYNC = get_sync(timeout_us);
     if (fr_SYNC == NULL)
     {
       passed = TIM_passedTime(&begin, &end);
