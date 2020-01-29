@@ -39,7 +39,7 @@ class Frame():
         # Метод разбирает принятые байты и заполняет структуры
         # data байты
         # Первые 16 байт это мета+байт len
-        meta = META_S.unpack(data[0:16])
+        meta = META_S.unpack(data[0:22])
         self.META['TIMESTAMP'] = meta[0]
         self.META['RSSI_SIG'] = meta[1]
         self.META['LIQ'] = meta[2]

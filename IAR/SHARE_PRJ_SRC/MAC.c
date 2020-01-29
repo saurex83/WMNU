@@ -6,7 +6,7 @@
 #include "TIC.h"
 #include "stdlib.h"
 #include "basic.h"
-
+#include "NTMR.h"  // ОТЛАДКА
 // Обработчики прерываний
 static void MAC_RX_HNDL(uint8_t TS);
 static void MAC_TX_HNDL(uint8_t TS);
@@ -273,9 +273,17 @@ static void MAC_RX_HNDL(uint8_t TS)
   if (!MAC_ENABLE_MODULE) // Модуль откючен
     return;
   
+  // Задержка перед приемом. Прием начинается через 427мкс и заканчивается в
+  // 2.71 мс от начала слота. Длительность 2.28мс
+  TIM_delay(200);
   RI_SetChannel(MACSlotTable[TS].RX.CH);
   frame_s *fr = RI_Receive(RECV_TIMEOUT);
+
+//volatile uint16_t DBGT= NT_GetTime();  
   
+ // frame_s *fr = RI_Receive(2);
+  
+//volatile uint16_t DBGT2= NT_GetTime();   
   // Если пакета нет, выходим из обработчика
   if (fr == NULL)
     return;
@@ -298,6 +306,7 @@ static void MAC_RX_HNDL(uint8_t TS)
 @detail После отправки пакета требуется подтверждение приема если meta.ACK = 1.
  После отправки ждем приема ACK. Проверка подлинности ACK происходит с помощью
  обратного вызова isACK_OK(*fr, *fr_ACK). Результат true или false.
+ Передача начинается через 1.5 мс.
 @param[in] TS номер временного слота
 */
 static void MAC_TX_HNDL(uint8_t TS)
@@ -315,18 +324,22 @@ static void MAC_TX_HNDL(uint8_t TS)
   }
   
   RI_SetChannel(MACSlotTable[TS].TX.CH); // Устанавливаем канал передачи
-
+//volatile uint16_t DBGT = 5;
+//DBGT= NT_GetTime();
   // Задержка перед передачей данных необходима для учета отклонения
-  // времени между узлами из-за рассинхронизации узлов
-  TIM_delay(TX_DELAY);
-//  TIM_delay(500);
+  // времени между узлами из-за рассинхронизации узлов.
+  // Задержка составляет 1.5 мс (49 тактов сети)
+  // В delay число 918, оно учитывает время включения радио, контроля CCA
+  // и начал передачи будет чере 1.5мс
+//volatile uint16_t DBGT= NT_GetTime();
+    TIM_delay(918);
   // Пробуем передать данные
   bool tx_success = RI_Send(MACSlotTable[TS].TX.fr); 
   bool send_success = false;  
   
   LOG_OFF("RI_Send = %d, CH = %d, TS = %d\r\n",
       tx_success, MACSlotTable[TS].TX.CH, TS);
-    
+//DBGT= NT_GetTime();    
   if (tx_success)
   {
     if (TS > 1) // требуется подтверждение ACK

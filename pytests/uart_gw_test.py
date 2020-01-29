@@ -36,11 +36,14 @@ def SEND_FRAME(UART_CONN):
     UART_CONN.cmd07_OpenSlot(b'\x22',b'\x14')
 
     while(True):
-        if UART_CONN.cmd0A_TX_buff_size() == 0:
-            UART_CONN.cmd0B_tx_frame(data)
+    #    if UART_CONN.cmd0A_TX_buff_size() == 0:
+    #        UART_CONN.cmd0B_tx_frame(data)
      #   UART_CONN.cmd09_RX_buff_size()
         if UART_CONN.cmd09_RX_buff_size() != 0:
             rx_frame = UART_CONN.cmd0C_get_rx_frame()
+            fr_parse = frame.Frame()
+            fr_parse.parse(rx_frame)
+            print('TIMESTAMP :%d'%(fr_parse.META['TIMESTAMP']))
             print(rx_frame)
  
         time.sleep(1)

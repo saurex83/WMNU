@@ -41,7 +41,7 @@ bool cmd_0x0C(uint8_t *cmd, uint8_t size)
   }
   
   upload_frame(rx_frame);
- // RXB_del_frame(rx_frame);
+  RXB_del_frame(rx_frame);
   LOG_ON("CMD 0x0C. Upload RX frame");
   return true;
 }

@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               29/Jan/2020  15:04:08
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               29/Jan/2020  17:58:09
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,7 +13,7 @@
 #                          
 #    Source file        =  E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EWB431.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW653.tmp
 #        (E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c -lcN
 #        E:\WMNU\IAR\NeocoreGateway\Debug\List -o
 #        E:\WMNU\IAR\NeocoreGateway\Debug\Obj -e --debug --core=plain
@@ -558,7 +558,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0C.c
      41            }
      42            
      43            upload_frame(rx_frame);
-     44           // RXB_del_frame(rx_frame);
+     44            RXB_del_frame(rx_frame);
      45            LOG_ON("CMD 0x0C. Upload RX frame");
      46            return true;
      47          }
@@ -2148,7 +2148,7 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\MAC.c
       6          #include "TIC.h"
       7          #include "stdlib.h"
       8          #include "basic.h"
-      9          
+      9          #include "NTMR.h"  // ОТЛАДКА
      10          // Обработчики прерываний
      11          static void MAC_RX_HNDL(uint8_t TS);
      12          static void MAC_TX_HNDL(uint8_t TS);
@@ -2415,110 +2415,123 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\MAC.c
     273            if (!MAC_ENABLE_MODULE) // Модуль откючен
     274              return;
     275            
-    276            RI_SetChannel(MACSlotTable[TS].RX.CH);
-    277            frame_s *fr = RI_Receive(RECV_TIMEOUT);
-    278            
-    279            // Если пакета нет, выходим из обработчика
-    280            if (fr == NULL)
-    281              return;
-    282            
-    283            // Пакеты во временные слоты 1..49 требуют подтверждения
-    284            // Слоты 0 и 1 для швс и синхронизации соответсвенно
-    285            if (TS > 1)
-    286              MAC_ACK_Send(fr);
-    287           
-    288            #ifdef RARIO_STREAM_ENCRYPT
-    289            BitRawDecrypt(fr->payload, fr->len);
-    290            #endif
-    291            
-    292            RXCallback(fr);   // Передаем пакет на дальнейшую обработку
-    293            // Удаление пакета не наша забота
-    294          }
-    295          
-    296          /**
-    297          @brief Обработчик слота пердачи пакета
-    298          @detail После отправки пакета требуется подтверждение приема если meta.ACK = 1.
-    299           После отправки ждем приема ACK. Проверка подлинности ACK происходит с помощью
-    300           обратного вызова isACK_OK(*fr, *fr_ACK). Результат true или false.
-    301          @param[in] TS номер временного слота
-    302          */
-    303          static void MAC_TX_HNDL(uint8_t TS)
-    304          {
-    305            ASSERT(TS < 50  || TS !=0);
-    306            
-    307            if (!MAC_ENABLE_MODULE) // Модуль отключен
-    308              return;
-    309            
-    310            // По ошибки вызвали. Такого быть не должно, но подстрахуемся.
-    311            if ((!MACSlotTable[TS].TX.enable) || (MACSlotTable[TS].TX.attempts == 0)) 
-    312            {
-    313              TIC_SetTXState(TS, false);
-    314              return;
-    315            }
-    316            
-    317            RI_SetChannel(MACSlotTable[TS].TX.CH); // Устанавливаем канал передачи
-    318          
-    319            // Задержка перед передачей данных необходима для учета отклонения
-    320            // времени между узлами из-за рассинхронизации узлов
-    321            TIM_delay(TX_DELAY);
-    322          //  TIM_delay(500);
-    323            // Пробуем передать данные
-    324            bool tx_success = RI_Send(MACSlotTable[TS].TX.fr); 
-    325            bool send_success = false;  
-    326            
-    327            LOG_OFF("RI_Send = %d, CH = %d, TS = %d\r\n",
-    328                tx_success, MACSlotTable[TS].TX.CH, TS);
-    329              
-    330            if (tx_success)
-    331            {
-    332              if (TS > 1) // требуется подтверждение ACK
-    333              {
-    334                if (MAC_ACK_Recv(MACSlotTable[TS].TX.fr))
-    335                    send_success = true;
-    336              }
-    337              else // не требуеться подтверждение
-    338                send_success = true;
-    339            }
-    340            
-    341          
-    342            if (send_success) // В случаи успеха удаляем данные и закрываем слоты 
-    343            { 
-    344              frame_delete(MACSlotTable[TS].TX.fr);
-    345              MACSlotTable[TS].TX.enable = false;
-    346              TIC_SetTXState(TS, false);      
-    347            }
-    348            else // Уменьшаем счетчик попыток передачи и удаляем пакет при достижении 0.
-    349            {
-    350              MACSlotTable[TS].TX.attempts --;
-    351              if (MACSlotTable[TS].TX.attempts == 0)
-    352                {
-    353                  frame_delete(MACSlotTable[TS].TX.fr);
-    354                  MACSlotTable[TS].TX.enable = false;
-    355                  TIC_SetTXState(TS, false);  
-    356                }
-    357            }
-    358          }
-    359          
-    360          /*!
-    361          \brief Расшифровка область памяти
-    362          \param[in,out] *src Указатель на начало области дешифрования
-    363          \param[in] size Размер расшифруемых данных
-    364          */
-    365          static void BitRawDecrypt(uint8_t *src, uint8_t size)
-    366          {
-    367            AES_StreamCoder(false, src, src, KEY, IV, size);
-    368          }
-    369          
-    370          /*!
-    371          \brief Шифрует область памяти
-    372          \param[in,out] *src Указатель на начало области шифрования
-    373          \param[in] size Размер шифруемых данных
-    374          */
-    375          static void BitRawCrypt(uint8_t *src, uint8_t size)
-    376          {
-    377            AES_StreamCoder(true, src, src, KEY, IV, size);
-    378          }
-    379          
+    276            // Задержка перед приемом. Прием начинается через 427мкс и заканчивается в
+    277            // 2.71 мс от начала слота. Длительность 2.28мс
+    278            TIM_delay(200);
+    279            RI_SetChannel(MACSlotTable[TS].RX.CH);
+    280            frame_s *fr = RI_Receive(RECV_TIMEOUT);
+    281          
+    282          //volatile uint16_t DBGT= NT_GetTime();  
+    283            
+    284           // frame_s *fr = RI_Receive(2);
+    285            
+    286          //volatile uint16_t DBGT2= NT_GetTime();   
+    287            // Если пакета нет, выходим из обработчика
+    288            if (fr == NULL)
+    289              return;
+    290            
+    291            // Пакеты во временные слоты 1..49 требуют подтверждения
+    292            // Слоты 0 и 1 для швс и синхронизации соответсвенно
+    293            if (TS > 1)
+    294              MAC_ACK_Send(fr);
+    295           
+    296            #ifdef RARIO_STREAM_ENCRYPT
+    297            BitRawDecrypt(fr->payload, fr->len);
+    298            #endif
+    299            
+    300            RXCallback(fr);   // Передаем пакет на дальнейшую обработку
+    301            // Удаление пакета не наша забота
+    302          }
+    303          
+    304          /**
+    305          @brief Обработчик слота пердачи пакета
+    306          @detail После отправки пакета требуется подтверждение приема если meta.ACK = 1.
+    307           После отправки ждем приема ACK. Проверка подлинности ACK происходит с помощью
+    308           обратного вызова isACK_OK(*fr, *fr_ACK). Результат true или false.
+    309           Передача начинается через 1.5 мс.
+    310          @param[in] TS номер временного слота
+    311          */
+    312          static void MAC_TX_HNDL(uint8_t TS)
+    313          {
+    314            ASSERT(TS < 50  || TS !=0);
+    315            
+    316            if (!MAC_ENABLE_MODULE) // Модуль отключен
+    317              return;
+    318            
+    319            // По ошибки вызвали. Такого быть не должно, но подстрахуемся.
+    320            if ((!MACSlotTable[TS].TX.enable) || (MACSlotTable[TS].TX.attempts == 0)) 
+    321            {
+    322              TIC_SetTXState(TS, false);
+    323              return;
+    324            }
+    325            
+    326            RI_SetChannel(MACSlotTable[TS].TX.CH); // Устанавливаем канал передачи
+    327          //volatile uint16_t DBGT = 5;
+    328          //DBGT= NT_GetTime();
+    329            // Задержка перед передачей данных необходима для учета отклонения
+    330            // времени между узлами из-за рассинхронизации узлов.
+    331            // Задержка составляет 1.5 мс (49 тактов сети)
+    332            // В delay число 918, оно учитывает время включения радио, контроля CCA
+    333            // и начал передачи будет чере 1.5мс
+    334          //volatile uint16_t DBGT= NT_GetTime();
+    335              TIM_delay(918);
+    336            // Пробуем передать данные
+    337            bool tx_success = RI_Send(MACSlotTable[TS].TX.fr); 
+    338            bool send_success = false;  
+    339            
+    340            LOG_OFF("RI_Send = %d, CH = %d, TS = %d\r\n",
+    341                tx_success, MACSlotTable[TS].TX.CH, TS);
+    342          //DBGT= NT_GetTime();    
+    343            if (tx_success)
+    344            {
+    345              if (TS > 1) // требуется подтверждение ACK
+    346              {
+    347                if (MAC_ACK_Recv(MACSlotTable[TS].TX.fr))
+    348                    send_success = true;
+    349              }
+    350              else // не требуеться подтверждение
+    351                send_success = true;
+    352            }
+    353            
+    354          
+    355            if (send_success) // В случаи успеха удаляем данные и закрываем слоты 
+    356            { 
+    357              frame_delete(MACSlotTable[TS].TX.fr);
+    358              MACSlotTable[TS].TX.enable = false;
+    359              TIC_SetTXState(TS, false);      
+    360            }
+    361            else // Уменьшаем счетчик попыток передачи и удаляем пакет при достижении 0.
+    362            {
+    363              MACSlotTable[TS].TX.attempts --;
+    364              if (MACSlotTable[TS].TX.attempts == 0)
+    365                {
+    366                  frame_delete(MACSlotTable[TS].TX.fr);
+    367                  MACSlotTable[TS].TX.enable = false;
+    368                  TIC_SetTXState(TS, false);  
+    369                }
+    370            }
+    371          }
+    372          
+    373          /*!
+    374          \brief Расшифровка область памяти
+    375          \param[in,out] *src Указатель на начало области дешифрования
+    376          \param[in] size Размер расшифруемых данных
+    377          */
+    378          static void BitRawDecrypt(uint8_t *src, uint8_t size)
+    379          {
+    380            AES_StreamCoder(false, src, src, KEY, IV, size);
+    381          }
+    382          
+    383          /*!
+    384          \brief Шифрует область памяти
+    385          \param[in,out] *src Указатель на начало области шифрования
+    386          \param[in] size Размер шифруемых данных
+    387          */
+    388          static void BitRawCrypt(uint8_t *src, uint8_t size)
+    389          {
+    390            AES_StreamCoder(true, src, src, KEY, IV, size);
+    391          }
+    392          
 E:\WMNU\IAR\NEOCOREGATEWAY\src\main.c
       1          #include "manager.h"
       2          #include "nwdebuger.h"
@@ -3368,372 +3381,376 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\RADIO.c
     192                ISRXON();
     193                // Ждем пока статус RSSI_VALID станет true
     194                while(!RSSISTAT);
-    195          ////TIM_TimeStamp(&ts_rssistat); 
-    196                // Очищаем флаг завершения передачи сообщения
-    197                RFIRQF1 &= ~RFIRQF1_TXDONE;
-    198                RFIRQF0 &= ~RFIRQF0_SFD;
-    199                
-    200                // Время отправки сообщения измеряется в тактах сетевого времени NTMR
-    201                // Он работатаеи намного лучше чем MAC таймер(меньше погрешность)
-    202                // Отправка в обозначенное время или по факту готовности
-    203                //13 - поправка в тактах сети на передачу преамболы
-    204                uint16_t timer = 0; // Для отлалки. 
-    205                if (fr->meta.SEND_TIME != 0)
-    206                  timer = NT_WaitTime(fr->meta.SEND_TIME - 13); 
-    207          
-    208                // Начинаем передачу данных
-    209                // Transmission of preamble begins 192 μs after the STXON or STXONCCA 
-    210                // command strobe
-    211                // 192+(4(pream)+1(sfd))*8bit*4us = 352 мкс. Измерил 360мкс
-    212                // Измерил в тактах NT_GetTimer() получилось 13 тиков. 396 мкс 
-    213                ISTXONCCA();
-    214          ////TIM_TimeStamp(&ts_istxon); 
-    215                // Произошла ошибка передачи если SAMPLED_CCA false
-    216                if (!(FSMSTAT1 & 1<<3)) //SAMPLED_CCA == 0
-    217                {
-    218                  result = false;
-    219                  break;
-    220                }
-    221          
-    222                // Ждем завершения отправки SFD
-    223                while (!(RFIRQF0 & RFIRQF0_SFD));
-    224                fr->meta.TIMESTAMP = NT_GetTime(); 
-    225          ////TIM_TimeStamp(&ts_sfd); 
-    226                // Проверим переданно ли сообщение TX_FRM_DONE
-    227                while (!(RFIRQF1 & RFIRQF1_TXDONE));
-    228                break;
-    229            }
-    230          ////TIM_TimeStamp(&ts_stop);
-    231            
-    232            ISRFOFF();
-    233          ////  LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
-    234          ////"Merge = %lu. Crypt = %lu. Load TX = %lu. RSSI_OK = %lu. ISTXON = %lu. SFD = %lu. TX = %lu. FULL = %lu \n", 
-    235          ////      TIM_passedTime(&ts_start, &ts_frame_merge),
-    236          ////      TIM_passedTime(&ts_frame_merge, &ts_crypt),
-    237          ////      TIM_passedTime(&ts_crypt, &ts_load_tx),
-    238          ////      TIM_passedTime(&ts_load_tx, &ts_rssistat),
-    239          ////      TIM_passedTime(&ts_rssistat, &ts_istxon),
-    240          ////      TIM_passedTime(&ts_istxon, &ts_sfd),
-    241          ////      TIM_passedTime(&ts_sfd, &ts_stop),
-    242          ////      TIM_passedTime(&ts_start, &ts_stop)
-    243          ////      );
-    244            
-    245            if (result)
-    246              return true;
-    247            return false; 
-    248          }
-    249          
-    250          /**
-    251          @brief Загрузка данных для передачи в буфер. 
-    252          @detail Поля LEN, FCS1, FCS2 добавляются автоматически
-    253          @param[in] src указатель на данные
-    254          @param[in] len размер данных
-    255          */
-    256          static void LoadTXData(uint8_t *src, uint8_t len)
-    257          {
-    258            // Очищаем буфер передатчика
-    259            ISFLUSHTX(); 
-    260            // Поле LEN на два байта больше
-    261            RFD = len + 2;
-    262            
-    263            for (uint8_t i = 0 ; i < len; i++)
-    264              RFD = src[i];
-    265            
-    266            // Добавляем CRC1,2
-    267            RFD = 0x00;
-    268            RFD = 0x00;
-    269          };
-    270          
-    271          /**
-    272          @brief Выгружаем принятый пакет из радио
-    273          @param[out] src указатель на буфер приемника
-    274          @param[in] len размер выгружаемых данных
-    275          */
-    276          static void UnLoadRXData(uint8_t *src, uint8_t len)
-    277          {
-    278            for (uint8_t i = 0 ; i < len; i++)
-    279              src[i] = RFD;
-    280          };
-    281          
-    282          static inline void setFreq(uint8_t CH)
-    283          {
-    284            ASSERT( (CH >= 11) && (CH <= 28));
-    285            // Устанавливаем частоту радиопередатчика
-    286            FREQCTRL_u FRQ;
-    287            FRQ.value = FRQ_CALC(RADIO_CFG.CH);
-    288            FREQCTRL = FRQ.value;  
-    289          }
-    290          
-    291          /*!
-    292          \brief Принимает данные из эфира
-    293          \details Функция принимает данные из эфира. Проводит проверку CRC, увеличивает
-    294          RI_CRC_ERROR. Отмечает время прихода SFD в тактах сетевого времени .
-    295          \param[in] timeout Время ожидания данных в милисекундах
-    296          \return Возвращает NULL если данных нет
-    297          */
-    298          frame_s* RI_Receive(uint16_t timeout)
-    299          {
-    300            // Устанавливаем частоту передачи пакета
-    301            RI_cfg();
-    302            uint16_t SFD_TimeStamp;
-    303            
-    304            // Принимаем пакет 
-    305            uint32_t timeout_us = timeout*1000UL; // Переводим мс->мкс
-    306            TimeStamp_s start,stop; // Измерение времени
-    307            TIM_TimeStamp(&start); // Начало измерения времени работы радио
-    308            bool recv_res = RecvData(timeout_us, &SFD_TimeStamp);
-    309            TIM_TimeStamp(&stop); // Конец измерения времени радио
-    310            uint32_t passed = TIM_passedTime(&start, &stop);
-    311            RI_UPTIME += (float)passed/(float)1000; // Микросекунды в милисекунды
-    312            
-    313            // Если ничего не приняли возвращаем NULL
-    314            if (!recv_res)
-    315              return NULL;
+    195                     
+    196          ////TIM_TimeStamp(&ts_rssistat); 
+    197                // Очищаем флаг завершения передачи сообщения
+    198                RFIRQF1 &= ~RFIRQF1_TXDONE;
+    199                RFIRQF0 &= ~RFIRQF0_SFD;
+    200                
+    201                // Время отправки сообщения измеряется в тактах сетевого времени NTMR
+    202                // Он работатаеи намного лучше чем MAC таймер(меньше погрешность)
+    203                // Отправка в обозначенное время или по факту готовности
+    204                //13 - поправка в тактах сети на передачу преамболы
+    205                uint16_t timer = 0; // Для отлалки. 
+    206                if (fr->meta.SEND_TIME != 0)
+    207                  timer = NT_WaitTime(fr->meta.SEND_TIME - 13); 
+    208          
+    209                // Начинаем передачу данных
+    210                // Transmission of preamble begins 192 μs after the STXON or STXONCCA 
+    211                // command strobe
+    212                // 192+(4(pream)+1(sfd))*8bit*4us = 352 мкс. Измерил 360мкс
+    213                // Измерил в тактах NT_GetTimer() получилось 13 тиков. 396 мкс
+    214                // ИЗМЕРЯЛ ПОВТОРНО- правда 13 тиков ))
+    215                ISTXONCCA();
+    216          ////TIM_TimeStamp(&ts_istxon); 
+    217                // Произошла ошибка передачи если SAMPLED_CCA false
+    218                if (!(FSMSTAT1 & 1<<3)) //SAMPLED_CCA == 0
+    219                {
+    220                  result = false;
+    221                  break;
+    222                }
+    223          //volatile uint16_t DBGT= NT_GetTime(); 
+    224                // Ждем завершения отправки SFD
+    225                while (!(RFIRQF0 & RFIRQF0_SFD));
+    226                fr->meta.TIMESTAMP = NT_GetTime(); 
+    227          //volatile uint16_t DBGT2= NT_GetTime();        
+    228          ////TIM_TimeStamp(&ts_sfd); 
+    229                // Проверим переданно ли сообщение TX_FRM_DONE
+    230                while (!(RFIRQF1 & RFIRQF1_TXDONE));
+    231                break;
+    232            }
+    233          ////TIM_TimeStamp(&ts_stop);
+    234            ISRFOFF();
+    235          ////  LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
+    236          ////"Merge = %lu. Crypt = %lu. Load TX = %lu. RSSI_OK = %lu. ISTXON = %lu. SFD = %lu. TX = %lu. FULL = %lu \n", 
+    237          ////      TIM_passedTime(&ts_start, &ts_frame_merge),
+    238          ////      TIM_passedTime(&ts_frame_merge, &ts_crypt),
+    239          ////      TIM_passedTime(&ts_crypt, &ts_load_tx),
+    240          ////      TIM_passedTime(&ts_load_tx, &ts_rssistat),
+    241          ////      TIM_passedTime(&ts_rssistat, &ts_istxon),
+    242          ////      TIM_passedTime(&ts_istxon, &ts_sfd),
+    243          ////      TIM_passedTime(&ts_sfd, &ts_stop),
+    244          ////      TIM_passedTime(&ts_start, &ts_stop)
+    245          ////      );
+    246            
+    247            if (result)
+    248              return true;
+    249            return false; 
+    250          }
+    251          
+    252          /**
+    253          @brief Загрузка данных для передачи в буфер. 
+    254          @detail Поля LEN, FCS1, FCS2 добавляются автоматически
+    255          @param[in] src указатель на данные
+    256          @param[in] len размер данных
+    257          */
+    258          static void LoadTXData(uint8_t *src, uint8_t len)
+    259          {
+    260            // Очищаем буфер передатчика
+    261            ISFLUSHTX(); 
+    262            // Поле LEN на два байта больше
+    263            RFD = len + 2;
+    264            
+    265            for (uint8_t i = 0 ; i < len; i++)
+    266              RFD = src[i];
+    267            
+    268            // Добавляем CRC1,2
+    269            RFD = 0x00;
+    270            RFD = 0x00;
+    271          };
+    272          
+    273          /**
+    274          @brief Выгружаем принятый пакет из радио
+    275          @param[out] src указатель на буфер приемника
+    276          @param[in] len размер выгружаемых данных
+    277          */
+    278          static void UnLoadRXData(uint8_t *src, uint8_t len)
+    279          {
+    280            for (uint8_t i = 0 ; i < len; i++)
+    281              src[i] = RFD;
+    282          };
+    283          
+    284          static inline void setFreq(uint8_t CH)
+    285          {
+    286            ASSERT( (CH >= 11) && (CH <= 28));
+    287            // Устанавливаем частоту радиопередатчика
+    288            FREQCTRL_u FRQ;
+    289            FRQ.value = FRQ_CALC(RADIO_CFG.CH);
+    290            FREQCTRL = FRQ.value;  
+    291          }
+    292          
+    293          /*!
+    294          \brief Принимает данные из эфира
+    295          \details Функция принимает данные из эфира. Проводит проверку CRC, увеличивает
+    296          RI_CRC_ERROR. Отмечает время прихода SFD в тактах сетевого времени .
+    297          \param[in] timeout Время ожидания данных в милисекундах
+    298          \return Возвращает NULL если данных нет
+    299          */
+    300          frame_s* RI_Receive(uint16_t timeout)
+    301          {
+    302            // Устанавливаем частоту передачи пакета
+    303            RI_cfg();
+    304            uint16_t SFD_TimeStamp;
+    305            
+    306            // Принимаем пакет 
+    307            uint32_t timeout_us = timeout*1000UL; // Переводим мс->мкс
+    308            TimeStamp_s start,stop; // Измерение времени
+    309            TIM_TimeStamp(&start); // Начало измерения времени работы радио
+    310          volatile uint16_t DBGT1= NT_GetTime();
+    311            bool recv_res = RecvData(timeout_us, &SFD_TimeStamp);
+    312          volatile uint16_t DBGT2= NT_GetTime();
+    313            TIM_TimeStamp(&stop); // Конец измерения времени радио
+    314            uint32_t passed = TIM_passedTime(&start, &stop);
+    315            RI_UPTIME += (float)passed/(float)1000; // Микросекунды в милисекунды
     316            
-    317            uint8_t frame_size = RXFIFOCNT; // Количество принятых данных
-    318            
-    319            // Минимальный размер FCS1,FCS2 - 2 байта. LEN не включен в подсчет 
-    320            if (frame_size <= 2)
-    321              return NULL;
+    317            // Если ничего не приняли возвращаем NULL
+    318            if (!recv_res)
+    319              return NULL;
+    320            
+    321            uint8_t frame_size = RXFIFOCNT; // Количество принятых данных
     322            
-    323            // Выгружаем данные из приемника
-    324            uint8_t *frame_raw = re_malloc(frame_size); 
-    325            UnLoadRXData(frame_raw, frame_size);
+    323            // Минимальный размер FCS1,FCS2 - 2 байта. LEN не включен в подсчет 
+    324            if (frame_size <= 2)
+    325              return NULL;
     326            
-    327            int8_t  FCS1 = frame_raw[frame_size - 2]; // RSSI
-    328            uint8_t FCS2 = frame_raw[frame_size - 1]; // bit7 = CRCOK, bit[6..0] Corr_val
-    329            uint8_t LEN_F = frame_raw[0]; // Поле LEN
+    327            // Выгружаем данные из приемника
+    328            uint8_t *frame_raw = re_malloc(frame_size); 
+    329            UnLoadRXData(frame_raw, frame_size);
     330            
-    331            // Проверим поле LEN. Размер данных в заголовке должен совпадать
-    332            // с фактической длинной принятых данных
-    333            if (LEN_F != frame_size - 1)
-    334            {
-    335              re_free(frame_raw);
-    336              RI_CRC_ERROR ++;
-    337              return NULL;
-    338            }
-    339            
-    340            // Проверим поле CRCOK
-    341            if (!(FCS2 && 1<<7))
-    342            {
-    343              re_free(frame_raw);
-    344              RI_CRC_ERROR ++;
-    345              return NULL;
-    346            }
-    347            
-    348            // Создаем буфер, последнии два байта FCS1,2 и поле LEN не копируем
-    349            frame_s *raw_frame = frame_create();
-    350            frame_addHeader(raw_frame, &frame_raw[1], frame_size - 3);
+    331            int8_t  FCS1 = frame_raw[frame_size - 2]; // RSSI
+    332            uint8_t FCS2 = frame_raw[frame_size - 1]; // bit7 = CRCOK, bit[6..0] Corr_val
+    333            uint8_t LEN_F = frame_raw[0]; // Поле LEN
+    334            
+    335            // Проверим поле LEN. Размер данных в заголовке должен совпадать
+    336            // с фактической длинной принятых данных
+    337            if (LEN_F != frame_size - 1)
+    338            {
+    339              re_free(frame_raw);
+    340              RI_CRC_ERROR ++;
+    341              return NULL;
+    342            }
+    343            
+    344            // Проверим поле CRCOK
+    345            if (!(FCS2 && 1<<7))
+    346            {
+    347              re_free(frame_raw);
+    348              RI_CRC_ERROR ++;
+    349              return NULL;
+    350            }
     351            
-    352            // Копируем метку времени SFD
-    353            raw_frame->meta.TIMESTAMP = SFD_TimeStamp;
-    354            
-    355            // Расчитываем мощность принятого сигнала
-    356            raw_frame->meta.RSSI_SIG =  FCS1 + RSSI_OFFSET;
-    357            // Расчитываем качество сигнала
-    358            uint8_t corr = FCS2 & 0x7F;
-    359            raw_frame->meta.LIQ = LIQ_CALC(corr); // Значение коэфф. корреляции
-    360          
-    361            raw_frame->meta.CH = RADIO_CFG.CH;
-    362          
-    363            re_free(frame_raw);
-    364            return raw_frame;
-    365          }
+    352            // Создаем буфер, последнии два байта FCS1,2 и поле LEN не копируем
+    353            frame_s *raw_frame = frame_create();
+    354            frame_addHeader(raw_frame, &frame_raw[1], frame_size - 3);
+    355            
+    356            // Копируем метку времени SFD
+    357            raw_frame->meta.TIMESTAMP = SFD_TimeStamp;
+    358            
+    359            // Расчитываем мощность принятого сигнала
+    360            raw_frame->meta.RSSI_SIG =  FCS1 + RSSI_OFFSET;
+    361            // Расчитываем качество сигнала
+    362            uint8_t corr = FCS2 & 0x7F;
+    363            raw_frame->meta.LIQ = LIQ_CALC(corr); // Значение коэфф. корреляции
+    364          
+    365            raw_frame->meta.CH = RADIO_CFG.CH;
     366          
-    367          /**
-    368          @brief Прием данных из эфира
-    369          @param[in] timeout_us время ожидания в микросекундах
-    370          @param[out] SFD_TimeStamp отметка времени завершения приема SFD
-    371          */
-    372          static bool RecvData(uint32_t timeout_us, uint16_t *SFD_TimeStamp)
-    373          {
-    374            TimeStamp_s start,stop; // Измерение времени  
-    375            ISFLUSHRX(); // Очищаем буфер приема
-    376            
-    377            TIM_TimeStamp(&start);
-    378            
-    379            // Очищаем флаг завершения передачи сообщения и приема SFD
-    380            RFIRQF0 &= ~RFIRQF0_RXPKTDONE;  
-    381            RFIRQF0 &= ~RFIRQF0_SFD; 
-    382            ISRXON(); // Включаем радиопередатчик
-    383          
-    384            bool time_out = false; // Истекло время ожидания пакета
-    385            bool packet_received = false; // Приняли пакет
-    386            bool sfd_received = false; // Приняли sfd
-    387            
-    388            // Цикл приема пакета
-    389            while (true)
-    390            {
-    391              TIM_TimeStamp(&stop);
-    392              if (TIM_passedTime(&start, &stop) >= timeout_us)
-    393              {
-    394                time_out = true;
-    395                break;
-    396              }
-    397             
-    398              // Принят сигнал SFD
-    399              if ((RFIRQF0 & RFIRQF0_SFD))
-    400              {
-    401                *SFD_TimeStamp = NT_GetTime(); 
-    402                sfd_received = true;
-    403              }
-    404              
-    405              //  Завершен ли прием сообщения RX_FRM_DONE (RXPKTDONE)
-    406              if ((RFIRQF0 & RFIRQF0_RXPKTDONE))
-    407              {
-    408                packet_received = true;
-    409                break;
-    410              }
-    411            } // while 
-    412            
-    413            ISRFOFF();
-    414            if (packet_received && sfd_received && !time_out)
-    415              return true;
-    416            else
-    417              return false;
-    418          }
-    419          
-    420          /*!
-    421          \brief Возвращает количество ошибок возникших с момента иницилизации
-    422          \return Количество CRC ошибок
-    423          */
-    424          uint32_t RI_GetCRCError(void)
-    425          {
-    426            return RI_CRC_ERROR;
-    427          }
-    428          
-    429          /*!
-    430          \brief Возвращает количестов отказов передачи пакета из-за занятости канала.
-    431          \return Количество отказов CCA
-    432          */
-    433          uint32_t RI_GetCCAReject(void)
-    434          {
-    435            return RI_CCA_REJECT;
-    436          }
-    437          
-    438          /*!
-    439          \brief Возвращает суммарное время работы радио в режиме прием/передача
-    440          \return Вермя в милисекундах
-    441          */
-    442          float RI_GetUptime(void)
-    443          {
-    444            return RI_UPTIME;
-    445          }
-    446          
-    447          /**
-    448          @breif Подссчет количества бит в байте
-    449          @return Возвращает количество бит
-    450          */
-    451          static uint8_t bits_count(uint8_t value) {
-    452            int ret = 0;
-    453            for ( ; value; value = value >> 1 )
-    454              ret += value & 1;
-    455            return ret;
-    456          }
-    457          
-    458          /**
-    459          @brief Возращает 1 байт случайного числа
-    460          @details Радио выдает всего лишь дви бита, нам нужно 8 
-    461          */
-    462          static inline uint8_t getRNDByte(void)
-    463          {
-    464            uint8_t val = 0;
-    465            val |= RFRND << 0;
-    466            val |= RFRND << 2;
-    467            val |= RFRND << 4;
-    468            val |= RFRND << 6;
-    469            return val;
-    470          }
-    471          
-    472          /**
-    473          @brief Возвращает случайное число с числом включеных бит от 2 до 6 включительно
-    474          @details Случайные числа появляются в регистре с частотой 170нс. Функция 
-    475          возвращает гарантированно новое значение. 
-    476          @return возвращает случайное число.
-    477          */
-    478          static inline uint8_t readRandom(void)
-    479          {
-    480            uint8_t rnd_val = 0;
-    481            uint8_t bit_cnt = 0;
-    482            while ( bit_cnt <= 2 || bit_cnt >= 6 )
-    483            {
-    484              rnd_val = getRNDByte();
-    485              while (rnd_val == getRNDByte());
-    486              rnd_val = getRNDByte();
-    487              bit_cnt = bits_count(rnd_val);
-    488            }
-    489            return rnd_val;
-    490          }
-    491          
-    492          /*!
-    493          \brief Иницилизирует ядро генератора случайных чисел данными из эфира
-    494          */
-    495          static void random_core_init(void)  
-    496          {
-    497            unsigned int rnd_core = 0;;
-    498               
-    499            RI_cfg();
-    500            FREQCTRL = 0x00; // Выбираем не используемую частоту
-    501          
-    502            // TODO По какой то причине OP_EXE не выполняет команду.
-    503            // регистра RFST читается как 0xD0. это его состояние при reset
-    504            // Включаем демодулятор
-    505            ISRXON();
-    506            
-    507            // Ждем пока статус RSSI_VALID станет true
-    508            while(!RSSISTAT);
-    509            
-    510            // Ждем случайных чисел
-    511            while (RFRND == 0);
-    512            
-    513            // Настраиваем ядро случайного генератора
-    514            rnd_core = readRandom();
-    515            rnd_core |= (unsigned int)readRandom()<<8;
-    516            srand(rnd_core);
-    517            
-    518            // Выключаем демодулятор
-    519            ISRFOFF();
-    520            // Первая генерация случайного числа занимает много времени.
-    521            // Влияло на работу радио, так как использовались случайные посылки
-    522            rand(); 
-    523          }
-    524          
-    525          /**
-    526          @brief Измерение мощности сигнала
-    527          @details Частота = 2394+fch. fch = [0..113]. 2394MHz to 2507MHz.
-    528           Устройство поддерживает частоты до 2507 МГц
-    529          @param[in] fch номер ЧАСТОТНОГО канала
-    530          @param[in] timeout_ms время сканирования в мс
-    531          @param[out] Максимальная мощность сигнала за время сканирования
-    532          @return true если успешно
-    533          */
-    534          bool RI_Measure_POW(uint8_t fch, uint16_t timeout_ms, int8_t *RSSI_SIG){
-    535            
-    536            RI_cfg();
-    537            
-    538            if (fch > 113)
-    539              return false;
-    540            
-    541            //(2394+FREQCTRL.FREQ[6:0])
-    542            FREQCTRL = fch; // Выбираем не используемую частоту
-    543          
-    544            // Включаем демодулятор
-    545            ISRXON();
-    546            
-    547            // Ждем пока статус RSSI_VALID станет true
-    548            while(!RSSISTAT);
-    549            FRMCTRL0 |= 1<<4; // включаем ENERGY_SCAN, детектор пикового сигнала
+    367            re_free(frame_raw);
+    368            return raw_frame;
+    369          }
+    370          
+    371          /**
+    372          @brief Прием данных из эфира
+    373          @param[in] timeout_us время ожидания в микросекундах
+    374          @param[out] SFD_TimeStamp отметка времени завершения приема SFD
+    375          */
+    376          static bool RecvData(uint32_t timeout_us, uint16_t *SFD_TimeStamp)
+    377          {
+    378            TimeStamp_s start,stop; // Измерение времени  
+    379            ISFLUSHRX(); // Очищаем буфер приема
+    380            
+    381            TIM_TimeStamp(&start);
+    382            
+    383            // Очищаем флаг завершения передачи сообщения и приема SFD
+    384            RFIRQF0 &= ~RFIRQF0_RXPKTDONE;  
+    385            RFIRQF0 &= ~RFIRQF0_SFD; 
+    386            ISRXON(); // Включаем радиопередатчик
+    387          
+    388            bool time_out = false; // Истекло время ожидания пакета
+    389            bool packet_received = false; // Приняли пакет
+    390            bool sfd_received = false; // Приняли sfd
+    391            
+    392            // Цикл приема пакета
+    393            while (true)
+    394            {
+    395              TIM_TimeStamp(&stop);
+    396              if (TIM_passedTime(&start, &stop) >= timeout_us)
+    397              {
+    398                time_out = true;
+    399                break;
+    400              }
+    401             
+    402              // Принят сигнал SFD
+    403              if ((RFIRQF0 & RFIRQF0_SFD))
+    404              {
+    405                *SFD_TimeStamp = NT_GetTime(); 
+    406                sfd_received = true;
+    407              }
+    408              
+    409              //  Завершен ли прием сообщения RX_FRM_DONE (RXPKTDONE)
+    410              if ((RFIRQF0 & RFIRQF0_RXPKTDONE))
+    411              {
+    412                packet_received = true;
+    413                break;
+    414              }
+    415            } // while 
+    416            
+    417            ISRFOFF();
+    418            if (packet_received && sfd_received && !time_out)
+    419              return true;
+    420            else
+    421              return false;
+    422          }
+    423          
+    424          /*!
+    425          \brief Возвращает количество ошибок возникших с момента иницилизации
+    426          \return Количество CRC ошибок
+    427          */
+    428          uint32_t RI_GetCRCError(void)
+    429          {
+    430            return RI_CRC_ERROR;
+    431          }
+    432          
+    433          /*!
+    434          \brief Возвращает количестов отказов передачи пакета из-за занятости канала.
+    435          \return Количество отказов CCA
+    436          */
+    437          uint32_t RI_GetCCAReject(void)
+    438          {
+    439            return RI_CCA_REJECT;
+    440          }
+    441          
+    442          /*!
+    443          \brief Возвращает суммарное время работы радио в режиме прием/передача
+    444          \return Вермя в милисекундах
+    445          */
+    446          float RI_GetUptime(void)
+    447          {
+    448            return RI_UPTIME;
+    449          }
+    450          
+    451          /**
+    452          @breif Подссчет количества бит в байте
+    453          @return Возвращает количество бит
+    454          */
+    455          static uint8_t bits_count(uint8_t value) {
+    456            int ret = 0;
+    457            for ( ; value; value = value >> 1 )
+    458              ret += value & 1;
+    459            return ret;
+    460          }
+    461          
+    462          /**
+    463          @brief Возращает 1 байт случайного числа
+    464          @details Радио выдает всего лишь дви бита, нам нужно 8 
+    465          */
+    466          static inline uint8_t getRNDByte(void)
+    467          {
+    468            uint8_t val = 0;
+    469            val |= RFRND << 0;
+    470            val |= RFRND << 2;
+    471            val |= RFRND << 4;
+    472            val |= RFRND << 6;
+    473            return val;
+    474          }
+    475          
+    476          /**
+    477          @brief Возвращает случайное число с числом включеных бит от 2 до 6 включительно
+    478          @details Случайные числа появляются в регистре с частотой 170нс. Функция 
+    479          возвращает гарантированно новое значение. 
+    480          @return возвращает случайное число.
+    481          */
+    482          static inline uint8_t readRandom(void)
+    483          {
+    484            uint8_t rnd_val = 0;
+    485            uint8_t bit_cnt = 0;
+    486            while ( bit_cnt <= 2 || bit_cnt >= 6 )
+    487            {
+    488              rnd_val = getRNDByte();
+    489              while (rnd_val == getRNDByte());
+    490              rnd_val = getRNDByte();
+    491              bit_cnt = bits_count(rnd_val);
+    492            }
+    493            return rnd_val;
+    494          }
+    495          
+    496          /*!
+    497          \brief Иницилизирует ядро генератора случайных чисел данными из эфира
+    498          */
+    499          static void random_core_init(void)  
+    500          {
+    501            unsigned int rnd_core = 0;;
+    502               
+    503            RI_cfg();
+    504            FREQCTRL = 0x00; // Выбираем не используемую частоту
+    505          
+    506            // TODO По какой то причине OP_EXE не выполняет команду.
+    507            // регистра RFST читается как 0xD0. это его состояние при reset
+    508            // Включаем демодулятор
+    509            ISRXON();
+    510            
+    511            // Ждем пока статус RSSI_VALID станет true
+    512            while(!RSSISTAT);
+    513            
+    514            // Ждем случайных чисел
+    515            while (RFRND == 0);
+    516            
+    517            // Настраиваем ядро случайного генератора
+    518            rnd_core = readRandom();
+    519            rnd_core |= (unsigned int)readRandom()<<8;
+    520            srand(rnd_core);
+    521            
+    522            // Выключаем демодулятор
+    523            ISRFOFF();
+    524            // Первая генерация случайного числа занимает много времени.
+    525            // Влияло на работу радио, так как использовались случайные посылки
+    526            rand(); 
+    527          }
+    528          
+    529          /**
+    530          @brief Измерение мощности сигнала
+    531          @details Частота = 2394+fch. fch = [0..113]. 2394MHz to 2507MHz.
+    532           Устройство поддерживает частоты до 2507 МГц
+    533          @param[in] fch номер ЧАСТОТНОГО канала
+    534          @param[in] timeout_ms время сканирования в мс
+    535          @param[out] Максимальная мощность сигнала за время сканирования
+    536          @return true если успешно
+    537          */
+    538          bool RI_Measure_POW(uint8_t fch, uint16_t timeout_ms, int8_t *RSSI_SIG){
+    539            
+    540            RI_cfg();
+    541            
+    542            if (fch > 113)
+    543              return false;
+    544            
+    545            //(2394+FREQCTRL.FREQ[6:0])
+    546            FREQCTRL = fch; // Выбираем не используемую частоту
+    547          
+    548            // Включаем демодулятор
+    549            ISRXON();
     550            
-    551            // Ждем пока канал анализируется
-    552            TIM_delay(1000*timeout_ms);
-    553            
-    554            int8_t rssi = RSSI + RSSI_OFFSET;
-    555            *RSSI_SIG = rssi;
-    556            // Отключаем радио
-    557            ISRFOFF();
-    558            return true;
-    559          }
-    560          
+    551            // Ждем пока статус RSSI_VALID станет true
+    552            while(!RSSISTAT);
+    553            FRMCTRL0 |= 1<<4; // включаем ENERGY_SCAN, детектор пикового сигнала
+    554            
+    555            // Ждем пока канал анализируется
+    556            TIM_delay(1000*timeout_ms);
+    557            
+    558            int8_t rssi = RSSI + RSSI_OFFSET;
+    559            *RSSI_SIG = rssi;
+    560            // Отключаем радио
+    561            ISRFOFF();
+    562            return true;
+    563          }
+    564          
 E:\WMNU\IAR\SHARE_PRJ_SRC\rx_buff.c
       1          #include "LLC.h"
       2          #include "nwdebuger.h"
@@ -4891,6 +4908,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     12   -> MAC_ACK_Send
         0     12   -> RI_Receive
         0     12   -> RI_SetChannel
+        0     12   -> TIM_delay
         0     12   -> printf
         0     18   -> printf
       0     22   MAC_Reset
@@ -4932,7 +4950,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         2      0   -> TIC_Init
         2      0   -> TIM_init
       0     16   MyLowLevelPutchar
-      0     48   NT_GetTime
+      0     64   NT_GetTime
         0     16   -> ReadTimer
       0     15   NT_IRQEnable
       2      0   NT_Init
@@ -4957,16 +4975,17 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       1     27   RI_Measure_POW
         0     14   -> RI_cfg
         0     14   -> TIM_delay
-      1     60   RI_Receive
-        0     44   -> RI_cfg
-        0     46   -> RecvData
-        0     44   -> TIM_TimeStamp
-        0     44   -> TIM_passedTime
-        0     44   -> UnLoadRXData
-        0     44   -> frame_addHeader
-        0     44   -> frame_create
-        0     44   -> re_free
-        0     44   -> re_malloc
+      1     64   RI_Receive
+        0     48   -> NT_GetTime
+        0     48   -> RI_cfg
+        0     50   -> RecvData
+        0     48   -> TIM_TimeStamp
+        0     48   -> TIM_passedTime
+        0     48   -> UnLoadRXData
+        0     48   -> frame_addHeader
+        0     48   -> frame_create
+        0     48   -> re_free
+        0     48   -> re_malloc
       0     62   RI_Send
         0     36   -> RI_cfg
         0     36   -> SendData
@@ -4975,7 +4994,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     36   -> printf
         0     42   -> printf
       2     44   RI_SetChannel
-      3     45   RI_cfg
+      3     49   RI_cfg
         2      1   -> setFreq
       2      0   RI_init
         2      0   -> random_core_init
@@ -4985,14 +5004,14 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         2      0   -> LLC_SetRXCallback
       0     19   RXB_Reset
         0      9   -> Delete_frame
-      0     18   RXB_del_frame
+      0     32   RXB_del_frame
         0     12   -> Delete_frame
         0     12   -> printf
         0     18   -> printf
       2     10   RXB_frame_count
       2     14   RXB_get_frame
       2     22   ReadTimer
-      0     78   RecvData
+      0     82   RecvData
         0     32   -> NT_GetTime
         0     32   -> TIM_TimeStamp
         0     32   -> TIM_passedTime
@@ -5100,7 +5119,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     24   -> TIM_TimeStamp
         0     24   -> TIM_passedTime
       0     19   TIC_getCurrentTS
-      3     44   TIM_TimeStamp
+      3     48   TIM_TimeStamp
       0     14   TIM_copy
         0     14   -> memcpy
       0     76   TIM_delay
@@ -5108,12 +5127,12 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     36   -> TIM_TimeStamp
       2      0   TIM_init
         2      0   -> DelayCalibrate
-      0     62   TIM_passedTime
+      0     66   TIM_passedTime
         0     18   -> Interval
       0     15   TimerCompareInterrupt
         0     15   -> NT_GetTime
         0     15   -> NT_IRQEnable
-      3     44   UnLoadRXData
+      3     48   UnLoadRXData
       0     18   __write
         0     16   -> MyLowLevelPutchar
       0      9   bits_count
@@ -5180,6 +5199,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     16   -> get_network_seed_status
         0     18   -> re_memcpy
       0     14   cmd_0x0C
+        0     14   -> RXB_del_frame
         0     14   -> RXB_get_frame
         0     14   -> cmd_answer_err
         0     14   -> get_network_seed_status
@@ -5206,13 +5226,13 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     14   -> printf
         0     20   -> printf
         0     14   -> re_malloc
-      1     68   frame_addHeader
+      1     72   frame_addHeader
         0     18   -> printf
         0     24   -> printf
         0     18   -> re_free
         0     18   -> re_malloc
         0     20   -> re_memcpy
-      0     62   frame_create
+      0     66   frame_create
         0     14   -> memset
         0     12   -> printf
         0     18   -> printf
@@ -5286,9 +5306,9 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0      9   -> rand
         0      9   -> readRandom
         0      9   -> srand
-      0     54   re_free
+      0     58   re_free
         0     10   -> free
-      0     58   re_malloc
+      0     62   re_malloc
         0     14   -> malloc
       0     36   re_memcpy
         0     16   -> memcpy
@@ -5410,6 +5430,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        4  ?<Initializer for __Constant_1>
        4  ?<Initializer for __Constant_1f4>
        4  ?<Initializer for __Constant_20>
+       4  ?<Initializer for __Constant_396>
        4  ?<Initializer for __Constant_3d000000>
        4  ?<Initializer for __Constant_3e8>
        4  ?<Initializer for __Constant_447a0000>
@@ -5417,6 +5438,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        4  ?<Initializer for __Constant_8000>
        4  ?<Initializer for __Constant_9>
        4  ?<Initializer for __Constant_a>
+       4  ?<Initializer for __Constant_c8>
        4  ?<Initializer for __Constant_ffff8000>
        4  ?<Initializer for __Constant_fffffe0c>
        4  ?<Initializer for __Constant_ffffff>
@@ -5561,7 +5583,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  MAC_Init::?relay
      167  MAC_OpenRXSlot
        6  MAC_OpenRXSlot::?relay
-     195  MAC_RX_HNDL
+     204  MAC_RX_HNDL
        6  MAC_RX_HNDL::?relay
      135  MAC_Reset
        6  MAC_Reset::?relay
@@ -5620,7 +5642,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  RI_GetUptime::?relay
      117  RI_Measure_POW
        6  RI_Measure_POW::?relay
-     535  RI_Receive
+     561  RI_Receive
        6  RI_Receive::?relay
      216  RI_Send
        6  RI_Send::?relay
@@ -5778,6 +5800,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        4  __Constant_19833891
        4  __Constant_1f4
        4  __Constant_20
+       4  __Constant_396
        4  __Constant_3d000000
        4  __Constant_3e8
        4  __Constant_447a0000
@@ -5785,6 +5808,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        4  __Constant_8000
        4  __Constant_9
        4  __Constant_a
+       4  __Constant_c8
        4  __Constant_ffff8000
        4  __Constant_fffffe0c
        4  __Constant_ffffff
@@ -5823,7 +5847,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  cmd_0x0A::?relay
      239  cmd_0x0B
        6  cmd_0x0B::?relay
-      84  cmd_0x0C
+      91  cmd_0x0C
        6  cmd_0x0C::?relay
      103  cmd_0x0D
        6  cmd_0x0D::?relay
@@ -5939,19 +5963,19 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
      559  -- Other
 
  
- 19 119 bytes in segment BANKED_CODE
+ 19 161 bytes in segment BANKED_CODE
   1 104 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
      60 bytes in segment NEAR_CODE
      38 bytes in segment SFR_AN
-  1 416 bytes in segment XDATA_I
-  1 416 bytes in segment XDATA_ID
+  1 424 bytes in segment XDATA_I
+  1 424 bytes in segment XDATA_ID
   1 176 bytes in segment XDATA_Z
  
-  2 502 bytes of CODE     memory (+ 81 bytes shared)
+  2 502 bytes of CODE     memory (+ 89 bytes shared)
       0 bytes of DATA     memory (+ 38 bytes shared)
- 19 075 bytes of HUGECODE memory (+ 44 bytes shared)
-  2 532 bytes of XDATA    memory (+ 60 bytes shared)
+ 19 117 bytes of HUGECODE memory (+ 44 bytes shared)
+  2 532 bytes of XDATA    memory (+ 68 bytes shared)
 
 Errors: none
 Warnings: 8

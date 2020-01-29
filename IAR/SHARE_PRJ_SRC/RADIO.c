@@ -192,6 +192,7 @@ static bool SendData(frame_s *fr)
       ISRXON();
       // Ждем пока статус RSSI_VALID станет true
       while(!RSSISTAT);
+           
 ////TIM_TimeStamp(&ts_rssistat); 
       // Очищаем флаг завершения передачи сообщения
       RFIRQF1 &= ~RFIRQF1_TXDONE;
@@ -209,7 +210,8 @@ static bool SendData(frame_s *fr)
       // Transmission of preamble begins 192 μs after the STXON or STXONCCA 
       // command strobe
       // 192+(4(pream)+1(sfd))*8bit*4us = 352 мкс. Измерил 360мкс
-      // Измерил в тактах NT_GetTimer() получилось 13 тиков. 396 мкс 
+      // Измерил в тактах NT_GetTimer() получилось 13 тиков. 396 мкс
+      // ИЗМЕРЯЛ ПОВТОРНО- правда 13 тиков ))
       ISTXONCCA();
 ////TIM_TimeStamp(&ts_istxon); 
       // Произошла ошибка передачи если SAMPLED_CCA false
@@ -218,17 +220,17 @@ static bool SendData(frame_s *fr)
         result = false;
         break;
       }
-
+//volatile uint16_t DBGT= NT_GetTime(); 
       // Ждем завершения отправки SFD
       while (!(RFIRQF0 & RFIRQF0_SFD));
       fr->meta.TIMESTAMP = NT_GetTime(); 
+//volatile uint16_t DBGT2= NT_GetTime();        
 ////TIM_TimeStamp(&ts_sfd); 
       // Проверим переданно ли сообщение TX_FRM_DONE
       while (!(RFIRQF1 & RFIRQF1_TXDONE));
       break;
   }
 ////TIM_TimeStamp(&ts_stop);
-  
   ISRFOFF();
 ////  LOG(MSG_ON | MSG_INFO | MSG_TRACE, 
 ////"Merge = %lu. Crypt = %lu. Load TX = %lu. RSSI_OK = %lu. ISTXON = %lu. SFD = %lu. TX = %lu. FULL = %lu \n", 
@@ -305,7 +307,9 @@ frame_s* RI_Receive(uint16_t timeout)
   uint32_t timeout_us = timeout*1000UL; // Переводим мс->мкс
   TimeStamp_s start,stop; // Измерение времени
   TIM_TimeStamp(&start); // Начало измерения времени работы радио
+volatile uint16_t DBGT1= NT_GetTime();
   bool recv_res = RecvData(timeout_us, &SFD_TimeStamp);
+volatile uint16_t DBGT2= NT_GetTime();
   TIM_TimeStamp(&stop); // Конец измерения времени радио
   uint32_t passed = TIM_passedTime(&start, &stop);
   RI_UPTIME += (float)passed/(float)1000; // Микросекунды в милисекунды
