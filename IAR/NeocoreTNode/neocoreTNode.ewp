@@ -2223,6 +2223,57 @@
             <data />
         </settings>
     </configuration>
+    <mfc>
+        <configuration>Debug</configuration>
+    </mfc>
+    <group>
+        <name>HLprotocol</name>
+        <file>
+            <name>$PROJ_DIR$\src\auth.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\auth.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\balancer.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\balancer.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\ethernet.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\ethernet.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\ip.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\ip.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\neighnbor.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\route.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\route.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\tcp.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\tcp.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\udp.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\udp.h</name>
+        </file>
+    </group>
     <group>
         <name>neocore</name>
         <file>
