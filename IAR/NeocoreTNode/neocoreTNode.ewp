@@ -2256,6 +2256,9 @@
             <name>$PROJ_DIR$\src\neighnbor.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\src\neighnbor.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\src\route.c</name>
         </file>
         <file>

@@ -2,7 +2,7 @@
 #                                                                              #
 #      IAR Universal Linker V6.4.6.89                                          #
 #                                                                              #
-#           Link time     =  30/Jan/2020  11:09:46                             #
+#           Link time     =  30/Jan/2020  12:18:38                             #
 #           Target CPU    =  x51                                               #
 #           List file     =  E:\WMNU\IAR\NeocoreTNode\Debug\List\neocoreTNode. #
 #                            map                                               #
@@ -12,7 +12,7 @@
 #                            UBROF version 10.0.6                              #
 #                            Using library modules for C-SPY (-rt)             #
 #           Command line  =  -f                                                #
-#                            C:\Users\08A4~1\AppData\Local\Temp\EW8788.tmp     #
+#                            C:\Users\08A4~1\AppData\Local\Temp\EW928D.tmp     #
 #                            (E:\WMNU\IAR\NeocoreTNode\Debug\Obj\auth.r51      #
 #                            E:\WMNU\IAR\NeocoreTNode\Debug\Obj\balancer.r51   #
 #                            E:\WMNU\IAR\NeocoreTNode\Debug\Obj\cmd_parser.r51 #
@@ -560,7 +560,7 @@ SFR_AN
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00001341 - 0000140D (0xcd bytes), align: 0
-  Segment part 259.           Intra module refs:   AES_init::?relay
+  Segment part 267.           Intra module refs:   AES_init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            AES_init                00001341 
@@ -568,7 +568,7 @@ SFR_AN
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 0000140E - 0000166D (0x260 bytes), align: 0
-  Segment part 261.           Intra module refs:   AES_StreamCoder::?relay
+  Segment part 269.           Intra module refs:   AES_StreamCoder::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            AES_StreamCoder         0000140E 
@@ -929,7 +929,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 0000166E - 000016C5 (0x58 bytes), align: 0
-  Segment part 273.           Intra module refs:   CF_init::?relay
+  Segment part 281.           Intra module refs:   CF_init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            CF_init                 0000166E 
@@ -953,7 +953,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000016C6 - 000016D6 (0x11 bytes), align: 0
-  Segment part 275.           Intra module refs:   TIM_init::?relay
+  Segment part 283.           Intra module refs:   TIM_init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIM_init                000016C6 
@@ -962,7 +962,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000016D7 - 00001713 (0x3d bytes), align: 0
-  Segment part 277.           Intra module refs:   TIM_TimeStamp::?relay
+  Segment part 285.           Intra module refs:   TIM_TimeStamp::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIM_TimeStamp           000016D7 
@@ -971,7 +971,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00001714 - 000017A6 (0x93 bytes), align: 0
-  Segment part 279.           Intra module refs:   DelayCalibrate::?relay
+  Segment part 287.           Intra module refs:   DelayCalibrate::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            DelayCalibrate          00001714 
@@ -980,7 +980,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000017A7 - 00001849 (0xa3 bytes), align: 0
-  Segment part 281.           Intra module refs:   Interval::?relay
+  Segment part 289.           Intra module refs:   Interval::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            Interval                000017A7 
@@ -988,7 +988,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 0000184A - 000018A7 (0x5e bytes), align: 0
-  Segment part 283.           Intra module refs:   TIM_passedTime::?relay
+  Segment part 291.           Intra module refs:   TIM_passedTime::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIM_passedTime          0000184A 
@@ -997,7 +997,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000018A8 - 0000192C (0x85 bytes), align: 0
-  Segment part 285.           Intra module refs:   TIM_delay::?relay
+  Segment part 293.           Intra module refs:   TIM_delay::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIM_delay               000018A8 
@@ -1015,7 +1015,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 0000192D - 00001951 (0x25 bytes), align: 0
-  Segment part 289.           Intra module refs:   DMA_init::?relay
+  Segment part 297.           Intra module refs:   DMA_init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            DMA_init                0000192D 
@@ -1030,7 +1030,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00001952 - 00001AC0 (0x16f bytes), align: 0
-  Segment part 303.           Intra module refs:   frame_addHeader::?relay
+  Segment part 311.           Intra module refs:   frame_addHeader::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            frame_addHeader         00001952 
@@ -1040,7 +1040,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00001AC1 - 00001B68 (0xa8 bytes), align: 0
-  Segment part 307.           Intra module refs:   frame_create::?relay
+  Segment part 315.           Intra module refs:   frame_create::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            frame_create            00001AC1 
@@ -1049,7 +1049,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00001B69 - 00001BAF (0x47 bytes), align: 0
-  Segment part 309.           Intra module refs:   frame_delete::?relay
+  Segment part 317.           Intra module refs:   frame_delete::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            frame_delete            00001B69 
@@ -1101,7 +1101,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00001BB0 - 00001BDE (0x2f bytes), align: 0
-  Segment part 313.           Intra module refs:   LLC_Init::?relay
+  Segment part 327.           Intra module refs:   LLC_Init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            LLC_Init                00001BB0 
@@ -1110,7 +1110,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00001BDF - 00001BEE (0x10 bytes), align: 0
-  Segment part 317.           Intra module refs:   LLC_GetTaskLen::?relay
+  Segment part 331.           Intra module refs:   LLC_GetTaskLen::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            LLC_GetTaskLen          00001BDF 
@@ -1118,7 +1118,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00001BEF - 00001C3E (0x50 bytes), align: 0
-  Segment part 319.           Intra module refs:   LLC_SetRXCallback::?relay
+  Segment part 333.           Intra module refs:   LLC_SetRXCallback::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            LLC_SetRXCallback       00001BEF 
@@ -1127,7 +1127,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00001C3F - 00001D74 (0x136 bytes), align: 0
-  Segment part 323.           Intra module refs:   LLC_AddTask::?relay
+  Segment part 337.           Intra module refs:   LLC_AddTask::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            LLC_AddTask             00001C3F 
@@ -1137,7 +1137,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00001D75 - 00001EB1 (0x13d bytes), align: 0
-  Segment part 325.           Intra module refs:   LLC_Shelduler::?relay
+  Segment part 339.           Intra module refs:   LLC_Shelduler::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            LLC_Shelduler           00001D75 
@@ -1146,7 +1146,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00001EB2 - 00001EC5 (0x14 bytes), align: 0
-  Segment part 327.           Intra module refs:   LLC_SE_HNDL::?relay
+  Segment part 341.           Intra module refs:   LLC_SE_HNDL::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            LLC_SE_HNDL             00001EB2 
@@ -1155,7 +1155,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00001EC6 - 00001F27 (0x62 bytes), align: 0
-  Segment part 329.           Intra module refs:   LLC_RX_HNDL::?relay
+  Segment part 343.           Intra module refs:   LLC_RX_HNDL::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            LLC_RX_HNDL             00001EC6 
@@ -1164,7 +1164,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00001F28 - 00001F6A (0x43 bytes), align: 0
-  Segment part 331.           Intra module refs:   LLC_RunTimeAlloc::?relay
+  Segment part 345.           Intra module refs:   LLC_RunTimeAlloc::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            LLC_RunTimeAlloc        00001F28 
@@ -1220,7 +1220,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00001F6B - 00001F93 (0x29 bytes), align: 0
-  Segment part 333.           Intra module refs:   MAC_setIV::?relay
+  Segment part 347.           Intra module refs:   MAC_setIV::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            MAC_setIV               00001F6B 
@@ -1229,7 +1229,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00001F94 - 00001FBC (0x29 bytes), align: 0
-  Segment part 335.           Intra module refs:   MAC_setKEY::?relay
+  Segment part 349.           Intra module refs:   MAC_setKEY::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            MAC_setKEY              00001F94 
@@ -1238,7 +1238,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00001FBD - 00001FF5 (0x39 bytes), align: 0
-  Segment part 337.           Intra module refs:   MAC_Init::?relay
+  Segment part 351.           Intra module refs:   MAC_Init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            MAC_Init                00001FBD 
@@ -1247,7 +1247,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00001FF6 - 0000209C (0xa7 bytes), align: 0
-  Segment part 341.           Intra module refs:   MAC_OpenRXSlot::?relay
+  Segment part 355.           Intra module refs:   MAC_OpenRXSlot::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            MAC_OpenRXSlot          00001FF6 
@@ -1257,7 +1257,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 0000209D - 00002242 (0x1a6 bytes), align: 0
-  Segment part 345.           Intra module refs:   MAC_Send::?relay
+  Segment part 359.           Intra module refs:   MAC_Send::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            MAC_Send                0000209D 
@@ -1267,7 +1267,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002243 - 00002259 (0x17 bytes), align: 0
-  Segment part 347.           Intra module refs:   MAC_Enable::?relay
+  Segment part 361.           Intra module refs:   MAC_Enable::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            MAC_Enable              00002243 
@@ -1276,7 +1276,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 0000225A - 00002294 (0x3b bytes), align: 0
-  Segment part 349.           Intra module refs:   xor_calc::?relay
+  Segment part 363.           Intra module refs:   xor_calc::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            xor_calc                0000225A 
@@ -1284,7 +1284,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002295 - 000022EF (0x5b bytes), align: 0
-  Segment part 351.           Intra module refs:   MAC_ACK_Send::?relay
+  Segment part 365.           Intra module refs:   MAC_ACK_Send::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            MAC_ACK_Send            00002295 
@@ -1300,7 +1300,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000022F0 - 00002360 (0x71 bytes), align: 0
-  Segment part 353.           Intra module refs:   MAC_ACK_Recv::?relay
+  Segment part 367.           Intra module refs:   MAC_ACK_Recv::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            MAC_ACK_Recv            000022F0 
@@ -1309,7 +1309,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002361 - 00002373 (0x13 bytes), align: 0
-  Segment part 355.           Intra module refs:   MAC_SetRXCallback::?relay
+  Segment part 369.           Intra module refs:   MAC_SetRXCallback::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            MAC_SetRXCallback       00002361 
@@ -1317,7 +1317,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002374 - 000023E4 (0x71 bytes), align: 0
-  Segment part 357.           Intra module refs:   MAC_GetTXState::?relay
+  Segment part 371.           Intra module refs:   MAC_GetTXState::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            MAC_GetTXState          00002374 
@@ -1326,7 +1326,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000023E5 - 000024B2 (0xce bytes), align: 0
-  Segment part 361.           Intra module refs:   MAC_RX_HNDL::?relay
+  Segment part 375.           Intra module refs:   MAC_RX_HNDL::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            MAC_RX_HNDL             000023E5 
@@ -1335,7 +1335,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000024B3 - 00002705 (0x253 bytes), align: 0
-  Segment part 363.           Intra module refs:   MAC_TX_HNDL::?relay
+  Segment part 377.           Intra module refs:   MAC_TX_HNDL::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            MAC_TX_HNDL             000024B3 
@@ -1345,7 +1345,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002706 - 0000273F (0x3a bytes), align: 0
-  Segment part 365.           Intra module refs:   BitRawDecrypt::?relay
+  Segment part 379.           Intra module refs:   BitRawDecrypt::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            BitRawDecrypt           00002706 
@@ -1354,7 +1354,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002740 - 00002779 (0x3a bytes), align: 0
-  Segment part 367.           Intra module refs:   BitRawCrypt::?relay
+  Segment part 381.           Intra module refs:   BitRawCrypt::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            BitRawCrypt             00002740 
@@ -1363,7 +1363,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 0000277A - 000027E0 (0x67 bytes), align: 0
-  Segment part 369.           Intra module refs:   gen_frame::?relay
+  Segment part 383.           Intra module refs:   gen_frame::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            gen_frame               0000277A 
@@ -1372,7 +1372,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000027E1 - 0000283A (0x5a bytes), align: 0
-  Segment part 371.
+  Segment part 385.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            main                    000027E1        ?call_main (?cmain)
@@ -1380,7 +1380,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 0000283B - 00002865 (0x2b bytes), align: 0
-  Segment part 373.           Intra module refs:   RX_frame::?relay
+  Segment part 387.           Intra module refs:   RX_frame::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            RX_frame                0000283B 
@@ -1411,7 +1411,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002866 - 000028B3 (0x4e bytes), align: 0
-  Segment part 375.           Intra module refs:   MG_Init::?relay
+  Segment part 389.           Intra module refs:   MG_Init::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            MG_Init                 00002866 
@@ -1420,7 +1420,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000028B4 - 000028CD (0x1a bytes), align: 0
-  Segment part 377.           Intra module refs:   neocore_hw_init::?relay
+  Segment part 391.           Intra module refs:   neocore_hw_init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            neocore_hw_init         000028B4 
@@ -1429,7 +1429,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000028CE - 0000290E (0x41 bytes), align: 0
-  Segment part 381.           Intra module refs:   network_discovery::?relay
+  Segment part 395.           Intra module refs:   network_discovery::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            network_discovery       000028CE 
@@ -1438,7 +1438,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 0000290F - 0000294F (0x41 bytes), align: 0
-  Segment part 389.           Intra module refs:   re_memcpy::?relay
+  Segment part 403.           Intra module refs:   re_memcpy::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            re_memcpy               0000290F 
@@ -1447,7 +1447,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002950 - 00002980 (0x31 bytes), align: 0
-  Segment part 391.           Intra module refs:   re_malloc::?relay
+  Segment part 405.           Intra module refs:   re_malloc::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            re_malloc               00002950 
@@ -1456,7 +1456,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002981 - 000029A3 (0x23 bytes), align: 0
-  Segment part 393.           Intra module refs:   re_free::?relay
+  Segment part 407.           Intra module refs:   re_free::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            re_free                 00002981 
@@ -1494,7 +1494,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000029A4 - 000029ED (0x4a bytes), align: 0
-  Segment part 395.           Intra module refs:   NT_Init::?relay
+  Segment part 415.           Intra module refs:   NT_Init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            NT_Init                 000029A4 
@@ -1503,7 +1503,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000029EE - 00002A89 (0x9c bytes), align: 0
-  Segment part 397.           Intra module refs:   NT_SetTime::?relay
+  Segment part 417.           Intra module refs:   NT_SetTime::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            NT_SetTime              000029EE 
@@ -1512,7 +1512,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002A8A - 00002B46 (0xbd bytes), align: 0
-  Segment part 399.           Intra module refs:   calcCompareTime::?relay
+  Segment part 419.           Intra module refs:   calcCompareTime::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            calcCompareTime         00002A8A 
@@ -1522,7 +1522,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002B47 - 00002BC7 (0x81 bytes), align: 0
-  Segment part 401.           Intra module refs:   NT_SetCompare::?relay
+  Segment part 421.           Intra module refs:   NT_SetCompare::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            NT_SetCompare           00002B47 
@@ -1531,7 +1531,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002BC8 - 00002BDA (0x13 bytes), align: 0
-  Segment part 403.           Intra module refs:   NT_IRQEnable::?relay
+  Segment part 423.           Intra module refs:   NT_IRQEnable::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            NT_IRQEnable            00002BC8 
@@ -1539,7 +1539,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002BDB - 00002BE5 (0xb bytes), align: 0
-  Segment part 405.           Intra module refs:   isIRQEnable::?relay
+  Segment part 425.           Intra module refs:   isIRQEnable::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            isIRQEnable             00002BDB 
@@ -1547,7 +1547,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002BE6 - 00002BF8 (0x13 bytes), align: 0
-  Segment part 407.           Intra module refs:   NT_SetEventCallback::?relay
+  Segment part 427.           Intra module refs:   NT_SetEventCallback::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            NT_SetEventCallback     00002BE6 
@@ -1555,7 +1555,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002BF9 - 00002C2F (0x37 bytes), align: 0
-  Segment part 409.           Intra module refs:   NT_GetTime::?relay
+  Segment part 429.           Intra module refs:   NT_GetTime::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            NT_GetTime              00002BF9 
@@ -1564,7 +1564,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 NEAR_CODE
   Relative segment, address: CODE 00001305 - 00001340 (0x3c bytes), align: 0
-  Segment part 567.           Intra module refs:   TimerCompareInterrupt::??INTVEC 43
+  Segment part 615.           Intra module refs:   TimerCompareInterrupt::??INTVEC 43
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TimerCompareInterrupt   00001305 
@@ -1574,7 +1574,7 @@ NEAR_CODE
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002C30 - 00002CAD (0x7e bytes), align: 0
-  Segment part 411.           Intra module refs:   NT_WaitTime::?relay
+  Segment part 431.           Intra module refs:   NT_WaitTime::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            NT_WaitTime             00002C30 
@@ -1589,7 +1589,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002CAE - 00002CE8 (0x3b bytes), align: 0
-  Segment part 413.           Intra module refs:   ReadTimer::?relay
+  Segment part 433.           Intra module refs:   ReadTimer::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            ReadTimer               00002CAE 
@@ -1605,7 +1605,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002CE9 - 00002D2E (0x46 bytes), align: 0
-  Segment part 415.           Intra module refs:   loadTimerCompare::?relay
+  Segment part 435.           Intra module refs:   loadTimerCompare::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            loadTimerCompare        00002CE9 
@@ -1613,7 +1613,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002D2F - 00002D3A (0xc bytes), align: 0
-  Segment part 421.           Intra module refs:   MyLowLevelPutchar::?relay
+  Segment part 441.           Intra module refs:   MyLowLevelPutchar::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            MyLowLevelPutchar       00002D2F 
@@ -1621,7 +1621,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002D3B - 00002DD6 (0x9c bytes), align: 0
-  Segment part 423.           Intra module refs:   __write::?relay
+  Segment part 443.           Intra module refs:   __write::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            __write                 00002D3B 
@@ -1663,7 +1663,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002DD7 - 00002DF6 (0x20 bytes), align: 0
-  Segment part 425.           Intra module refs:   RI_init::?relay
+  Segment part 445.           Intra module refs:   RI_init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            RI_init                 00002DD7 
@@ -1672,7 +1672,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002DF7 - 00002E63 (0x6d bytes), align: 0
-  Segment part 427.           Intra module refs:   RI_cfg::?relay
+  Segment part 447.           Intra module refs:   RI_cfg::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            RI_cfg                  00002DF7 
@@ -1682,7 +1682,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002E64 - 00002E83 (0x20 bytes), align: 0
-  Segment part 429.           Intra module refs:   RI_SetChannel::?relay
+  Segment part 449.           Intra module refs:   RI_SetChannel::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            RI_SetChannel           00002E64 
@@ -1691,7 +1691,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002E84 - 00002F5B (0xd8 bytes), align: 0
-  Segment part 431.           Intra module refs:   RI_Send::?relay
+  Segment part 451.           Intra module refs:   RI_Send::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            RI_Send                 00002E84 
@@ -1700,7 +1700,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002F5C - 00002FFA (0x9f bytes), align: 0
-  Segment part 433.           Intra module refs:   SendData::?relay
+  Segment part 453.           Intra module refs:   SendData::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            SendData                00002F5C 
@@ -1709,7 +1709,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00002FFB - 0000302C (0x32 bytes), align: 0
-  Segment part 435.           Intra module refs:   LoadTXData::?relay
+  Segment part 455.           Intra module refs:   LoadTXData::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            LoadTXData              00002FFB 
@@ -1718,7 +1718,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 0000302D - 00003054 (0x28 bytes), align: 0
-  Segment part 437.           Intra module refs:   UnLoadRXData::?relay
+  Segment part 457.           Intra module refs:   UnLoadRXData::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            UnLoadRXData            0000302D 
@@ -1727,7 +1727,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003055 - 000030CC (0x78 bytes), align: 0
-  Segment part 439.           Intra module refs:   setFreq::?relay
+  Segment part 459.           Intra module refs:   setFreq::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            setFreq                 00003055 
@@ -1737,7 +1737,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000030CD - 000032BF (0x1f3 bytes), align: 0
-  Segment part 441.           Intra module refs:   RI_Receive::?relay
+  Segment part 461.           Intra module refs:   RI_Receive::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            RI_Receive              000030CD 
@@ -1747,7 +1747,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000032C0 - 00003357 (0x98 bytes), align: 0
-  Segment part 443.           Intra module refs:   RecvData::?relay
+  Segment part 463.           Intra module refs:   RecvData::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            RecvData                000032C0 
@@ -1756,7 +1756,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003358 - 00003379 (0x22 bytes), align: 0
-  Segment part 451.           Intra module refs:   bits_count::?relay
+  Segment part 471.           Intra module refs:   bits_count::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            bits_count              00003358 
@@ -1764,7 +1764,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 0000337A - 000033AE (0x35 bytes), align: 0
-  Segment part 453.           Intra module refs:   getRNDByte::?relay
+  Segment part 473.           Intra module refs:   getRNDByte::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            getRNDByte              0000337A 
@@ -1773,7 +1773,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000033AF - 000033E4 (0x36 bytes), align: 0
-  Segment part 455.           Intra module refs:   readRandom::?relay
+  Segment part 475.           Intra module refs:   readRandom::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            readRandom              000033AF 
@@ -1782,7 +1782,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000033E5 - 00003432 (0x4e bytes), align: 0
-  Segment part 457.           Intra module refs:   random_core_init::?relay
+  Segment part 477.           Intra module refs:   random_core_init::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            random_core_init        000033E5 
@@ -1799,7 +1799,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003433 - 000034A3 (0x71 bytes), align: 0
-  Segment part 461.           Intra module refs:   RXB_Init::?relay
+  Segment part 497.           Intra module refs:   RXB_Init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            RXB_Init                00003433 
@@ -1808,7 +1808,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000034A4 - 00003604 (0x161 bytes), align: 0
-  Segment part 473.           Intra module refs:   RXB_Callback::?relay
+  Segment part 509.           Intra module refs:   RXB_Callback::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            RXB_Callback            000034A4 
@@ -2026,7 +2026,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003605 - 0000367D (0x79 bytes), align: 0
-  Segment part 475.           Intra module refs:   SY_Init::?relay
+  Segment part 511.           Intra module refs:   SY_Init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            SY_Init                 00003605 
@@ -2035,7 +2035,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 0000367E - 00003694 (0x17 bytes), align: 0
-  Segment part 479.           Intra module refs:   SY_Enable::?relay
+  Segment part 515.           Intra module refs:   SY_Enable::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            SY_Enable               0000367E 
@@ -2044,7 +2044,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003695 - 000036BD (0x29 bytes), align: 0
-  Segment part 483.           Intra module refs:   SY_setIV::?relay
+  Segment part 519.           Intra module refs:   SY_setIV::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            SY_setIV                00003695 
@@ -2053,7 +2053,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000036BE - 000036E6 (0x29 bytes), align: 0
-  Segment part 485.           Intra module refs:   SY_setKEY::?relay
+  Segment part 521.           Intra module refs:   SY_setKEY::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            SY_setKEY               000036BE 
@@ -2062,7 +2062,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000036E7 - 0000372F (0x49 bytes), align: 0
-  Segment part 487.           Intra module refs:   SY_TIME_ALLOC_MASTER::?relay
+  Segment part 523.           Intra module refs:   SY_TIME_ALLOC_MASTER::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            SY_TIME_ALLOC_MASTER    000036E7 
@@ -2071,7 +2071,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003730 - 0000375F (0x30 bytes), align: 0
-  Segment part 489.           Intra module refs:   SY_TS1_HNDL_MASTER::?relay
+  Segment part 525.           Intra module refs:   SY_TS1_HNDL_MASTER::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            SY_TS1_HNDL_MASTER      00003730 
@@ -2080,7 +2080,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003760 - 00003800 (0xa1 bytes), align: 0
-  Segment part 491.           Intra module refs:   send_sync::?relay
+  Segment part 527.           Intra module refs:   send_sync::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            send_sync               00003760 
@@ -2089,7 +2089,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003801 - 00003867 (0x67 bytes), align: 0
-  Segment part 493.           Intra module refs:   get_sync::?relay
+  Segment part 529.           Intra module refs:   get_sync::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            get_sync                00003801 
@@ -2098,7 +2098,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003868 - 00003A5A (0x1f3 bytes), align: 0
-  Segment part 495.           Intra module refs:   SY_SYNC_NETWORK::?relay
+  Segment part 531.           Intra module refs:   SY_SYNC_NETWORK::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            SY_SYNC_NETWORK         00003868 
@@ -2107,7 +2107,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003A5B - 00003A94 (0x3a bytes), align: 0
-  Segment part 497.           Intra module refs:   BitRawDecrypt::?relay
+  Segment part 533.           Intra module refs:   BitRawDecrypt::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            BitRawDecrypt           00003A5B 
@@ -2116,7 +2116,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003A95 - 00003ACE (0x3a bytes), align: 0
-  Segment part 499.           Intra module refs:   BitRawCrypt::?relay
+  Segment part 535.           Intra module refs:   BitRawCrypt::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            BitRawCrypt             00003A95 
@@ -2208,7 +2208,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003ACF - 00003AF8 (0x2a bytes), align: 0
-  Segment part 503.           Intra module refs:   TIC_Init::?relay
+  Segment part 545.           Intra module refs:   TIC_Init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_Init                00003ACF 
@@ -2217,7 +2217,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003AF9 - 00003B1B (0x23 bytes), align: 0
-  Segment part 507.           Intra module refs:   TIC_CloseAllState::?relay
+  Segment part 549.           Intra module refs:   TIC_CloseAllState::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_CloseAllState       00003AF9 
@@ -2226,7 +2226,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003B1C - 00003B78 (0x5d bytes), align: 0
-  Segment part 511.           Intra module refs:   TIC_SetTimer::?relay
+  Segment part 553.           Intra module refs:   TIC_SetTimer::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_SetTimer            00003B1C 
@@ -2235,7 +2235,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003B79 - 00003B86 (0xe bytes), align: 0
-  Segment part 513.           Intra module refs:   TIC_GetTimer::?relay
+  Segment part 555.           Intra module refs:   TIC_GetTimer::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_GetTimer            00003B79 
@@ -2245,7 +2245,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003B87 - 00003C06 (0x80 bytes), align: 0
-  Segment part 515.           Intra module refs:   TIC_SetTXState::?relay
+  Segment part 557.           Intra module refs:   TIC_SetTXState::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_SetTXState          00003B87 
@@ -2254,7 +2254,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003C07 - 00003C86 (0x80 bytes), align: 0
-  Segment part 517.           Intra module refs:   TIC_SetRXState::?relay
+  Segment part 559.           Intra module refs:   TIC_SetRXState::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_SetRXState          00003C07 
@@ -2263,7 +2263,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003C87 - 00003CE8 (0x62 bytes), align: 0
-  Segment part 519.           Intra module refs:   TIC_GetTXState::?relay
+  Segment part 561.           Intra module refs:   TIC_GetTXState::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_GetTXState          00003C87 
@@ -2272,7 +2272,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003CE9 - 00003D38 (0x50 bytes), align: 0
-  Segment part 523.           Intra module refs:   TIC_SetTS1Callback::?relay
+  Segment part 565.           Intra module refs:   TIC_SetTS1Callback::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_SetTS1Callback      00003CE9 
@@ -2281,7 +2281,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003D39 - 00003D88 (0x50 bytes), align: 0
-  Segment part 525.           Intra module refs:   TIC_SetRXCallback::?relay
+  Segment part 567.           Intra module refs:   TIC_SetRXCallback::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_SetRXCallback       00003D39 
@@ -2290,7 +2290,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003D89 - 00003DD8 (0x50 bytes), align: 0
-  Segment part 527.           Intra module refs:   TIC_SetSyncTimeAllocCallback::?relay
+  Segment part 569.           Intra module refs:   TIC_SetSyncTimeAllocCallback::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_SetSyncTimeAllocCallback
@@ -2300,7 +2300,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003DD9 - 00003E28 (0x50 bytes), align: 0
-  Segment part 529.           Intra module refs:   TIC_SetTXCallback::?relay
+  Segment part 571.           Intra module refs:   TIC_SetTXCallback::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_SetTXCallback       00003DD9 
@@ -2309,7 +2309,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003E29 - 00003E78 (0x50 bytes), align: 0
-  Segment part 531.           Intra module refs:   TIC_SetSECallback::?relay
+  Segment part 573.           Intra module refs:   TIC_SetSECallback::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_SetSECallback       00003E29 
@@ -2318,7 +2318,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003E79 - 00003E89 (0x11 bytes), align: 0
-  Segment part 533.           Intra module refs:   TIC_GetUptime::?relay
+  Segment part 575.           Intra module refs:   TIC_GetUptime::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_GetUptime           00003E79 
@@ -2327,7 +2327,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003E8A - 00003E9A (0x11 bytes), align: 0
-  Segment part 535.           Intra module refs:   TIC_GetRTC::?relay
+  Segment part 577.           Intra module refs:   TIC_GetRTC::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_GetRTC              00003E8A 
@@ -2336,7 +2336,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003E9B - 00003EC2 (0x28 bytes), align: 0
-  Segment part 537.           Intra module refs:   TIC_SetRTC::?relay
+  Segment part 579.           Intra module refs:   TIC_SetRTC::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_SetRTC              00003E9B 
@@ -2344,7 +2344,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003EC3 - 00003EFF (0x3d bytes), align: 0
-  Segment part 539.           Intra module refs:   TIC_getCurrentTS::?relay
+  Segment part 581.           Intra module refs:   TIC_getCurrentTS::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            TIC_getCurrentTS        00003EC3 
@@ -2352,7 +2352,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003F00 - 00003F23 (0x24 bytes), align: 0
-  Segment part 541.           Intra module refs:   incrementTS::?relay
+  Segment part 583.           Intra module refs:   incrementTS::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            incrementTS             00003F00 
@@ -2361,7 +2361,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003F24 - 00003F2A (0x7 bytes), align: 0
-  Segment part 543.           Intra module refs:   TIC_SlotActivityTime::?relay
+  Segment part 585.           Intra module refs:   TIC_SlotActivityTime::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_SlotActivityTime    00003F24 
@@ -2369,7 +2369,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003F2B - 00003F46 (0x1c bytes), align: 0
-  Segment part 547.           Intra module refs:   TIC_SlotTime::?relay
+  Segment part 589.           Intra module refs:   TIC_SlotTime::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_SlotTime            00003F2B 
@@ -2377,7 +2377,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003F47 - 00003F6E (0x28 bytes), align: 0
-  Segment part 549.           Intra module refs:   set_capture_time::?relay
+  Segment part 591.           Intra module refs:   set_capture_time::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            set_capture_time        00003F47 
@@ -2386,7 +2386,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003F6F - 00003FCA (0x5c bytes), align: 0
-  Segment part 551.           Intra module refs:   TIC_TDMAShelduler::?relay
+  Segment part 593.           Intra module refs:   TIC_TDMAShelduler::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            TIC_TDMAShelduler       00003F6F 
@@ -2396,7 +2396,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00003FCB - 00004021 (0x57 bytes), align: 0
-  Segment part 553.           Intra module refs:   Callback_execution::?relay
+  Segment part 595.           Intra module refs:   Callback_execution::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            Callback_execution      00003FCB 
@@ -2405,7 +2405,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00004022 - 000040E7 (0xc6 bytes), align: 0
-  Segment part 555.           Intra module refs:   TIC_HW_Timer_IRQ::?relay
+  Segment part 597.           Intra module refs:   TIC_HW_Timer_IRQ::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            TIC_HW_Timer_IRQ        00004022 
@@ -2414,7 +2414,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 000040E8 - 00004145 (0x5e bytes), align: 0
-  Segment part 557.           Intra module refs:   clocks_update::?relay
+  Segment part 599.           Intra module refs:   clocks_update::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            clocks_update           000040E8 
@@ -2422,7 +2422,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 00004146 - 0000415A (0x15 bytes), align: 0
-  Segment part 563.           Intra module refs:   free::?relay
+  Segment part 611.           Intra module refs:   free::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            free                    00004146 
@@ -2431,7 +2431,7 @@ XDATA_Z
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
   Relative segment, address: CODE 0000415B - 0000416F (0x15 bytes), align: 0
-  Segment part 565.           Intra module refs:   malloc::?relay
+  Segment part 613.           Intra module refs:   malloc::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            malloc                  0000415B 
@@ -2724,14 +2724,14 @@ XDATA_ID
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000448 - 0000044D (0x6 bytes), align: 0
-  Segment part 260.           Intra module refs:   MG_Init
+  Segment part 268.           Intra module refs:   MG_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            AES_init::?relay        00000448 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000044E - 00000453 (0x6 bytes), align: 0
-  Segment part 262.           Intra module refs:   BitRawCrypt
+  Segment part 270.           Intra module refs:   BitRawCrypt
                                                    BitRawDecrypt
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
@@ -2740,21 +2740,21 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000454 - 00000459 (0x6 bytes), align: 0
-  Segment part 274.           Intra module refs:   MG_Init
+  Segment part 282.           Intra module refs:   MG_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            CF_init::?relay         00000454 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000045A - 0000045F (0x6 bytes), align: 0
-  Segment part 276.           Intra module refs:   MG_Init
+  Segment part 284.           Intra module refs:   MG_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIM_init::?relay        0000045A 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000460 - 00000465 (0x6 bytes), align: 0
-  Segment part 278.           Intra module refs:   DelayCalibrate
+  Segment part 286.           Intra module refs:   DelayCalibrate
                                                    RI_Receive
                                                    RI_Send
                                                    RecvData
@@ -2768,7 +2768,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000466 - 0000046B (0x6 bytes), align: 0
-  Segment part 280.           Intra module refs:   TIM_init
+  Segment part 288.           Intra module refs:   TIM_init
            LOCAL                   ADDRESS         
            =====                   =======         
            DelayCalibrate::?relay
@@ -2776,7 +2776,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000046C - 00000471 (0x6 bytes), align: 0
-  Segment part 282.           Intra module refs:   TIM_delay
+  Segment part 290.           Intra module refs:   TIM_delay
                                                    TIM_passedTime
            LOCAL                   ADDRESS         
            =====                   =======         
@@ -2784,7 +2784,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000472 - 00000477 (0x6 bytes), align: 0
-  Segment part 284.           Intra module refs:   DelayCalibrate
+  Segment part 292.           Intra module refs:   DelayCalibrate
                                                    RI_Receive
                                                    RI_Send
                                                    RecvData
@@ -2796,7 +2796,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000478 - 0000047D (0x6 bytes), align: 0
-  Segment part 286.           Intra module refs:   DelayCalibrate
+  Segment part 294.           Intra module refs:   DelayCalibrate
                                                    MAC_RX_HNDL
                                                    MAC_TX_HNDL
            ENTRY                   ADDRESS         REF BY
@@ -2805,14 +2805,14 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000047E - 00000483 (0x6 bytes), align: 0
-  Segment part 290.           Intra module refs:   MG_Init
+  Segment part 298.           Intra module refs:   MG_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            DMA_init::?relay        0000047E 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000484 - 00000489 (0x6 bytes), align: 0
-  Segment part 304.           Intra module refs:   MAC_ACK_Send
+  Segment part 312.           Intra module refs:   MAC_ACK_Send
                                                    RI_Receive
                                                    gen_frame
                                                    send_sync
@@ -2823,7 +2823,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000048A - 0000048F (0x6 bytes), align: 0
-  Segment part 308.           Intra module refs:   MAC_ACK_Send
+  Segment part 316.           Intra module refs:   MAC_ACK_Send
                                                    RI_Receive
                                                    gen_frame
                                                    send_sync
@@ -2833,7 +2833,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000490 - 00000495 (0x6 bytes), align: 0
-  Segment part 310.           Intra module refs:   MAC_ACK_Recv
+  Segment part 318.           Intra module refs:   MAC_ACK_Recv
                                                    MAC_ACK_Send
                                                    MAC_TX_HNDL
                                                    RXB_Callback
@@ -2847,14 +2847,14 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000496 - 0000049B (0x6 bytes), align: 0
-  Segment part 314.           Intra module refs:   MG_Init
+  Segment part 328.           Intra module refs:   MG_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            LLC_Init::?relay        00000496 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000049C - 000004A1 (0x6 bytes), align: 0
-  Segment part 318.           Intra module refs:   main
+  Segment part 332.           Intra module refs:   main
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            LLC_GetTaskLen::?relay
@@ -2862,7 +2862,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000004A2 - 000004A7 (0x6 bytes), align: 0
-  Segment part 320.           Intra module refs:   RXB_Init
+  Segment part 334.           Intra module refs:   RXB_Init
                                                    main
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
@@ -2871,35 +2871,35 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000004A8 - 000004AD (0x6 bytes), align: 0
-  Segment part 324.           Intra module refs:   main
+  Segment part 338.           Intra module refs:   main
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            LLC_AddTask::?relay     000004A8 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000004AE - 000004B3 (0x6 bytes), align: 0
-  Segment part 326.           Intra module refs:   LLC_SE_HNDL
+  Segment part 340.           Intra module refs:   LLC_SE_HNDL
            LOCAL                   ADDRESS         
            =====                   =======         
            LLC_Shelduler::?relay   000004AE 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000004B4 - 000004B9 (0x6 bytes), align: 0
-  Segment part 328.           Intra module refs:   LLC_Init
+  Segment part 342.           Intra module refs:   LLC_Init
            LOCAL                   ADDRESS         
            =====                   =======         
            LLC_SE_HNDL::?relay     000004B4 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000004BA - 000004BF (0x6 bytes), align: 0
-  Segment part 330.           Intra module refs:   LLC_Init
+  Segment part 344.           Intra module refs:   LLC_Init
            LOCAL                   ADDRESS         
            =====                   =======         
            LLC_RX_HNDL::?relay     000004BA 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000004C0 - 000004C5 (0x6 bytes), align: 0
-  Segment part 332.           Intra module refs:   LLC_SE_HNDL
+  Segment part 346.           Intra module refs:   LLC_SE_HNDL
            LOCAL                   ADDRESS         
            =====                   =======         
            LLC_RunTimeAlloc::?relay
@@ -2907,28 +2907,28 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000004C6 - 000004CB (0x6 bytes), align: 0
-  Segment part 334.           Intra module refs:   MG_Init
+  Segment part 348.           Intra module refs:   MG_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            MAC_setIV::?relay       000004C6 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000004CC - 000004D1 (0x6 bytes), align: 0
-  Segment part 336.           Intra module refs:   MG_Init
+  Segment part 350.           Intra module refs:   MG_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            MAC_setKEY::?relay      000004CC 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000004D2 - 000004D7 (0x6 bytes), align: 0
-  Segment part 338.           Intra module refs:   MG_Init
+  Segment part 352.           Intra module refs:   MG_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            MAC_Init::?relay        000004D2 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000004D8 - 000004DD (0x6 bytes), align: 0
-  Segment part 342.           Intra module refs:   main
+  Segment part 356.           Intra module refs:   main
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            MAC_OpenRXSlot::?relay
@@ -2936,21 +2936,21 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000004DE - 000004E3 (0x6 bytes), align: 0
-  Segment part 346.           Intra module refs:   LLC_Shelduler
+  Segment part 360.           Intra module refs:   LLC_Shelduler
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            MAC_Send::?relay        000004DE 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000004E4 - 000004E9 (0x6 bytes), align: 0
-  Segment part 348.           Intra module refs:   network_discovery
+  Segment part 362.           Intra module refs:   network_discovery
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            MAC_Enable::?relay      000004E4 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000004EA - 000004EF (0x6 bytes), align: 0
-  Segment part 350.           Intra module refs:   MAC_ACK_Recv
+  Segment part 364.           Intra module refs:   MAC_ACK_Recv
                                                    MAC_ACK_Send
            LOCAL                   ADDRESS         
            =====                   =======         
@@ -2958,21 +2958,21 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000004F0 - 000004F5 (0x6 bytes), align: 0
-  Segment part 352.           Intra module refs:   MAC_RX_HNDL
+  Segment part 366.           Intra module refs:   MAC_RX_HNDL
            LOCAL                   ADDRESS         
            =====                   =======         
            MAC_ACK_Send::?relay    000004F0 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000004F6 - 000004FB (0x6 bytes), align: 0
-  Segment part 354.           Intra module refs:   MAC_TX_HNDL
+  Segment part 368.           Intra module refs:   MAC_TX_HNDL
            LOCAL                   ADDRESS         
            =====                   =======         
            MAC_ACK_Recv::?relay    000004F6 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000004FC - 00000501 (0x6 bytes), align: 0
-  Segment part 356.           Intra module refs:   LLC_Init
+  Segment part 370.           Intra module refs:   LLC_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            MAC_SetRXCallback::?relay
@@ -2980,7 +2980,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000502 - 00000507 (0x6 bytes), align: 0
-  Segment part 358.           Intra module refs:   LLC_Shelduler
+  Segment part 372.           Intra module refs:   LLC_Shelduler
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            MAC_GetTXState::?relay
@@ -2988,56 +2988,56 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000508 - 0000050D (0x6 bytes), align: 0
-  Segment part 362.           Intra module refs:   MAC_Init
+  Segment part 376.           Intra module refs:   MAC_Init
            LOCAL                   ADDRESS         
            =====                   =======         
            MAC_RX_HNDL::?relay     00000508 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000050E - 00000513 (0x6 bytes), align: 0
-  Segment part 364.           Intra module refs:   MAC_Init
+  Segment part 378.           Intra module refs:   MAC_Init
            LOCAL                   ADDRESS         
            =====                   =======         
            MAC_TX_HNDL::?relay     0000050E 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000514 - 00000519 (0x6 bytes), align: 0
-  Segment part 366.           Intra module refs:   MAC_RX_HNDL
+  Segment part 380.           Intra module refs:   MAC_RX_HNDL
            LOCAL                   ADDRESS         
            =====                   =======         
            BitRawDecrypt::?relay   00000514 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000051A - 0000051F (0x6 bytes), align: 0
-  Segment part 368.           Intra module refs:   MAC_Send
+  Segment part 382.           Intra module refs:   MAC_Send
            LOCAL                   ADDRESS         
            =====                   =======         
            BitRawCrypt::?relay     0000051A 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000520 - 00000525 (0x6 bytes), align: 0
-  Segment part 370.           Intra module refs:   main
+  Segment part 384.           Intra module refs:   main
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            gen_frame::?relay       00000520 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000526 - 0000052B (0x6 bytes), align: 0
-  Segment part 374.           Intra module refs:   main
+  Segment part 388.           Intra module refs:   main
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            RX_frame::?relay        00000526 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000052C - 00000531 (0x6 bytes), align: 0
-  Segment part 376.           Intra module refs:   neocore_hw_init
+  Segment part 390.           Intra module refs:   neocore_hw_init
            LOCAL                   ADDRESS         
            =====                   =======         
            MG_Init::?relay         0000052C 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000532 - 00000537 (0x6 bytes), align: 0
-  Segment part 378.           Intra module refs:   main
+  Segment part 392.           Intra module refs:   main
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            neocore_hw_init::?relay
@@ -3045,7 +3045,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000538 - 0000053D (0x6 bytes), align: 0
-  Segment part 382.           Intra module refs:   main
+  Segment part 396.           Intra module refs:   main
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            network_discovery::?relay
@@ -3053,14 +3053,14 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000053E - 00000543 (0x6 bytes), align: 0
-  Segment part 390.           Intra module refs:   frame_addHeader
+  Segment part 404.           Intra module refs:   frame_addHeader
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            re_memcpy::?relay       0000053E 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000544 - 00000549 (0x6 bytes), align: 0
-  Segment part 392.           Intra module refs:   LLC_AddTask
+  Segment part 406.           Intra module refs:   LLC_AddTask
                                                    RI_Receive
                                                    frame_addHeader
                                                    frame_create
@@ -3070,7 +3070,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000054A - 0000054F (0x6 bytes), align: 0
-  Segment part 394.           Intra module refs:   LLC_Shelduler
+  Segment part 408.           Intra module refs:   LLC_Shelduler
                                                    RI_Receive
                                                    frame_addHeader
                                                    frame_delete
@@ -3080,21 +3080,21 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000550 - 00000555 (0x6 bytes), align: 0
-  Segment part 396.           Intra module refs:   MG_Init
+  Segment part 416.           Intra module refs:   MG_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            NT_Init::?relay         00000550 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000556 - 0000055B (0x6 bytes), align: 0
-  Segment part 398.           Intra module refs:   TIC_SetTimer
+  Segment part 418.           Intra module refs:   TIC_SetTimer
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            NT_SetTime::?relay      00000556 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000055C - 00000561 (0x6 bytes), align: 0
-  Segment part 400.           Intra module refs:   NT_SetCompare
+  Segment part 420.           Intra module refs:   NT_SetCompare
            LOCAL                   ADDRESS         
            =====                   =======         
            calcCompareTime::?relay
@@ -3102,7 +3102,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000562 - 00000567 (0x6 bytes), align: 0
-  Segment part 402.           Intra module refs:   NT_SetTime
+  Segment part 422.           Intra module refs:   NT_SetTime
                                                    TIC_Init
                                                    set_capture_time
            ENTRY                   ADDRESS         REF BY
@@ -3111,7 +3111,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000568 - 0000056D (0x6 bytes), align: 0
-  Segment part 404.           Intra module refs:   NT_Init
+  Segment part 424.           Intra module refs:   NT_Init
                                                    NT_SetCompare
                                                    TimerCompareInterrupt
            LOCAL                   ADDRESS         
@@ -3120,14 +3120,14 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000056E - 00000573 (0x6 bytes), align: 0
-  Segment part 406.           Intra module refs:   NT_SetTime
+  Segment part 426.           Intra module refs:   NT_SetTime
            LOCAL                   ADDRESS         
            =====                   =======         
            isIRQEnable::?relay     0000056E 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000574 - 00000579 (0x6 bytes), align: 0
-  Segment part 408.           Intra module refs:   TIC_Init
+  Segment part 428.           Intra module refs:   TIC_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            NT_SetEventCallback::?relay
@@ -3135,7 +3135,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000057A - 0000057F (0x6 bytes), align: 0
-  Segment part 410.           Intra module refs:   RecvData
+  Segment part 430.           Intra module refs:   RecvData
                                                    SendData
                                                    TIC_GetTimer
                                                    TimerCompareInterrupt
@@ -3145,14 +3145,14 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000580 - 00000585 (0x6 bytes), align: 0
-  Segment part 412.           Intra module refs:   SendData
+  Segment part 432.           Intra module refs:   SendData
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            NT_WaitTime::?relay     00000580 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000586 - 0000058B (0x6 bytes), align: 0
-  Segment part 414.           Intra module refs:   NT_GetTime
+  Segment part 434.           Intra module refs:   NT_GetTime
                                                    NT_SetTime
                                                    calcCompareTime
            LOCAL                   ADDRESS         
@@ -3161,7 +3161,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000058C - 00000591 (0x6 bytes), align: 0
-  Segment part 416.           Intra module refs:   NT_SetCompare
+  Segment part 436.           Intra module refs:   NT_SetCompare
            LOCAL                   ADDRESS         
            =====                   =======         
            loadTimerCompare::?relay
@@ -3169,7 +3169,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000592 - 00000597 (0x6 bytes), align: 0
-  Segment part 422.           Intra module refs:   __write
+  Segment part 442.           Intra module refs:   __write
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            MyLowLevelPutchar::?relay
@@ -3177,21 +3177,21 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000598 - 0000059D (0x6 bytes), align: 0
-  Segment part 424.
+  Segment part 444.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            __write::?relay         00000598        putchar (?putchar)
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000059E - 000005A3 (0x6 bytes), align: 0
-  Segment part 426.           Intra module refs:   MG_Init
+  Segment part 446.           Intra module refs:   MG_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            RI_init::?relay         0000059E 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000005A4 - 000005A9 (0x6 bytes), align: 0
-  Segment part 428.           Intra module refs:   RI_Receive
+  Segment part 448.           Intra module refs:   RI_Receive
                                                    RI_Send
                                                    random_core_init
            LOCAL                   ADDRESS         
@@ -3200,7 +3200,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000005AA - 000005AF (0x6 bytes), align: 0
-  Segment part 430.           Intra module refs:   MAC_RX_HNDL
+  Segment part 450.           Intra module refs:   MAC_RX_HNDL
                                                    MAC_TX_HNDL
                                                    SY_SYNC_NETWORK
                                                    get_sync
@@ -3211,7 +3211,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000005B0 - 000005B5 (0x6 bytes), align: 0
-  Segment part 432.           Intra module refs:   MAC_ACK_Send
+  Segment part 452.           Intra module refs:   MAC_ACK_Send
                                                    MAC_TX_HNDL
                                                    send_sync
            ENTRY                   ADDRESS         REF BY
@@ -3220,35 +3220,35 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000005B6 - 000005BB (0x6 bytes), align: 0
-  Segment part 434.           Intra module refs:   RI_Send
+  Segment part 454.           Intra module refs:   RI_Send
            LOCAL                   ADDRESS         
            =====                   =======         
            SendData::?relay        000005B6 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000005BC - 000005C1 (0x6 bytes), align: 0
-  Segment part 436.           Intra module refs:   SendData
+  Segment part 456.           Intra module refs:   SendData
            LOCAL                   ADDRESS         
            =====                   =======         
            LoadTXData::?relay      000005BC 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000005C2 - 000005C7 (0x6 bytes), align: 0
-  Segment part 438.           Intra module refs:   RI_Receive
+  Segment part 458.           Intra module refs:   RI_Receive
            LOCAL                   ADDRESS         
            =====                   =======         
            UnLoadRXData::?relay    000005C2 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000005C8 - 000005CD (0x6 bytes), align: 0
-  Segment part 440.           Intra module refs:   RI_cfg
+  Segment part 460.           Intra module refs:   RI_cfg
            LOCAL                   ADDRESS         
            =====                   =======         
            setFreq::?relay         000005C8 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000005CE - 000005D3 (0x6 bytes), align: 0
-  Segment part 442.           Intra module refs:   MAC_ACK_Recv
+  Segment part 462.           Intra module refs:   MAC_ACK_Recv
                                                    MAC_RX_HNDL
                                                    get_sync
            ENTRY                   ADDRESS         REF BY
@@ -3257,35 +3257,35 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000005D4 - 000005D9 (0x6 bytes), align: 0
-  Segment part 444.           Intra module refs:   RI_Receive
+  Segment part 464.           Intra module refs:   RI_Receive
            LOCAL                   ADDRESS         
            =====                   =======         
            RecvData::?relay        000005D4 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000005DA - 000005DF (0x6 bytes), align: 0
-  Segment part 452.           Intra module refs:   readRandom
+  Segment part 472.           Intra module refs:   readRandom
            LOCAL                   ADDRESS         
            =====                   =======         
            bits_count::?relay      000005DA 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000005E0 - 000005E5 (0x6 bytes), align: 0
-  Segment part 454.           Intra module refs:   readRandom
+  Segment part 474.           Intra module refs:   readRandom
            LOCAL                   ADDRESS         
            =====                   =======         
            getRNDByte::?relay      000005E0 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000005E6 - 000005EB (0x6 bytes), align: 0
-  Segment part 456.           Intra module refs:   random_core_init
+  Segment part 476.           Intra module refs:   random_core_init
            LOCAL                   ADDRESS         
            =====                   =======         
            readRandom::?relay      000005E6 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000005EC - 000005F1 (0x6 bytes), align: 0
-  Segment part 458.           Intra module refs:   RI_init
+  Segment part 478.           Intra module refs:   RI_init
            LOCAL                   ADDRESS         
            =====                   =======         
            random_core_init::?relay
@@ -3293,49 +3293,49 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000005F2 - 000005F7 (0x6 bytes), align: 0
-  Segment part 462.           Intra module refs:   MG_Init
+  Segment part 498.           Intra module refs:   MG_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            RXB_Init::?relay        000005F2 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000005F8 - 000005FD (0x6 bytes), align: 0
-  Segment part 474.           Intra module refs:   RXB_Init
+  Segment part 510.           Intra module refs:   RXB_Init
            LOCAL                   ADDRESS         
            =====                   =======         
            RXB_Callback::?relay    000005F8 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000005FE - 00000603 (0x6 bytes), align: 0
-  Segment part 476.           Intra module refs:   MG_Init
+  Segment part 512.           Intra module refs:   MG_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            SY_Init::?relay         000005FE 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000604 - 00000609 (0x6 bytes), align: 0
-  Segment part 480.           Intra module refs:   network_discovery
+  Segment part 516.           Intra module refs:   network_discovery
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            SY_Enable::?relay       00000604 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000060A - 0000060F (0x6 bytes), align: 0
-  Segment part 484.           Intra module refs:   MG_Init
+  Segment part 520.           Intra module refs:   MG_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            SY_setIV::?relay        0000060A 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000610 - 00000615 (0x6 bytes), align: 0
-  Segment part 486.           Intra module refs:   MG_Init
+  Segment part 522.           Intra module refs:   MG_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            SY_setKEY::?relay       00000610 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000616 - 0000061B (0x6 bytes), align: 0
-  Segment part 488.           Intra module refs:   SY_Init
+  Segment part 524.           Intra module refs:   SY_Init
            LOCAL                   ADDRESS         
            =====                   =======         
            SY_TIME_ALLOC_MASTER::?relay
@@ -3343,7 +3343,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000061C - 00000621 (0x6 bytes), align: 0
-  Segment part 490.           Intra module refs:   SY_Init
+  Segment part 526.           Intra module refs:   SY_Init
            LOCAL                   ADDRESS         
            =====                   =======         
            SY_TS1_HNDL_MASTER::?relay
@@ -3351,21 +3351,21 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000622 - 00000627 (0x6 bytes), align: 0
-  Segment part 492.           Intra module refs:   SY_TS1_HNDL_MASTER
+  Segment part 528.           Intra module refs:   SY_TS1_HNDL_MASTER
            LOCAL                   ADDRESS         
            =====                   =======         
            send_sync::?relay       00000622 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000628 - 0000062D (0x6 bytes), align: 0
-  Segment part 494.           Intra module refs:   SY_SYNC_NETWORK
+  Segment part 530.           Intra module refs:   SY_SYNC_NETWORK
            LOCAL                   ADDRESS         
            =====                   =======         
            get_sync::?relay        00000628 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000062E - 00000633 (0x6 bytes), align: 0
-  Segment part 496.           Intra module refs:   network_discovery
+  Segment part 532.           Intra module refs:   network_discovery
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            SY_SYNC_NETWORK::?relay
@@ -3373,28 +3373,28 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000634 - 00000639 (0x6 bytes), align: 0
-  Segment part 498.           Intra module refs:   get_sync
+  Segment part 534.           Intra module refs:   get_sync
            LOCAL                   ADDRESS         
            =====                   =======         
            BitRawDecrypt::?relay   00000634 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000063A - 0000063F (0x6 bytes), align: 0
-  Segment part 500.           Intra module refs:   send_sync
+  Segment part 536.           Intra module refs:   send_sync
            LOCAL                   ADDRESS         
            =====                   =======         
            BitRawCrypt::?relay     0000063A 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000640 - 00000645 (0x6 bytes), align: 0
-  Segment part 504.           Intra module refs:   MG_Init
+  Segment part 546.           Intra module refs:   MG_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_Init::?relay        00000640 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000646 - 0000064B (0x6 bytes), align: 0
-  Segment part 508.           Intra module refs:   SY_SYNC_NETWORK
+  Segment part 550.           Intra module refs:   SY_SYNC_NETWORK
                                                    TIC_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
@@ -3403,7 +3403,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000064C - 00000651 (0x6 bytes), align: 0
-  Segment part 512.           Intra module refs:   SY_SYNC_NETWORK
+  Segment part 554.           Intra module refs:   SY_SYNC_NETWORK
                                                    TIC_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
@@ -3411,14 +3411,14 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000652 - 00000657 (0x6 bytes), align: 0
-  Segment part 514.           Intra module refs:   SY_SYNC_NETWORK
+  Segment part 556.           Intra module refs:   SY_SYNC_NETWORK
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_GetTimer::?relay    00000652 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000658 - 0000065D (0x6 bytes), align: 0
-  Segment part 516.           Intra module refs:   MAC_Send
+  Segment part 558.           Intra module refs:   MAC_Send
                                                    MAC_TX_HNDL
                                                    SY_TIME_ALLOC_MASTER
                                                    SY_TS1_HNDL_MASTER
@@ -3430,7 +3430,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000065E - 00000663 (0x6 bytes), align: 0
-  Segment part 518.           Intra module refs:   MAC_OpenRXSlot
+  Segment part 560.           Intra module refs:   MAC_OpenRXSlot
                                                    TIC_CloseAllState
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
@@ -3439,7 +3439,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000664 - 00000669 (0x6 bytes), align: 0
-  Segment part 520.           Intra module refs:   SY_TIME_ALLOC_MASTER
+  Segment part 562.           Intra module refs:   SY_TIME_ALLOC_MASTER
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_GetTXState::?relay
@@ -3447,7 +3447,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000066A - 0000066F (0x6 bytes), align: 0
-  Segment part 524.           Intra module refs:   SY_Init
+  Segment part 566.           Intra module refs:   SY_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_SetTS1Callback::?relay
@@ -3455,7 +3455,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000670 - 00000675 (0x6 bytes), align: 0
-  Segment part 526.           Intra module refs:   MAC_Init
+  Segment part 568.           Intra module refs:   MAC_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_SetRXCallback::?relay
@@ -3463,7 +3463,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000676 - 0000067B (0x6 bytes), align: 0
-  Segment part 528.           Intra module refs:   SY_Init
+  Segment part 570.           Intra module refs:   SY_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_SetSyncTimeAllocCallback::?relay
@@ -3471,7 +3471,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000067C - 00000681 (0x6 bytes), align: 0
-  Segment part 530.           Intra module refs:   MAC_Init
+  Segment part 572.           Intra module refs:   MAC_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_SetTXCallback::?relay
@@ -3479,7 +3479,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000682 - 00000687 (0x6 bytes), align: 0
-  Segment part 532.           Intra module refs:   LLC_Init
+  Segment part 574.           Intra module refs:   LLC_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_SetSECallback::?relay
@@ -3487,7 +3487,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000688 - 0000068D (0x6 bytes), align: 0
-  Segment part 534.           Intra module refs:   SY_SYNC_NETWORK
+  Segment part 576.           Intra module refs:   SY_SYNC_NETWORK
                                                    SY_TIME_ALLOC_MASTER
                                                    main
            ENTRY                   ADDRESS         REF BY
@@ -3496,21 +3496,21 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000068E - 00000693 (0x6 bytes), align: 0
-  Segment part 536.           Intra module refs:   send_sync
+  Segment part 578.           Intra module refs:   send_sync
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_GetRTC::?relay      0000068E 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 00000694 - 00000699 (0x6 bytes), align: 0
-  Segment part 538.           Intra module refs:   SY_SYNC_NETWORK
+  Segment part 580.           Intra module refs:   SY_SYNC_NETWORK
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_SetRTC::?relay      00000694 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 0000069A - 0000069F (0x6 bytes), align: 0
-  Segment part 540.           Intra module refs:   TIC_HW_Timer_IRQ
+  Segment part 582.           Intra module refs:   TIC_HW_Timer_IRQ
            LOCAL                   ADDRESS         
            =====                   =======         
            TIC_getCurrentTS::?relay
@@ -3518,14 +3518,14 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000006A0 - 000006A5 (0x6 bytes), align: 0
-  Segment part 542.           Intra module refs:   TIC_TDMAShelduler
+  Segment part 584.           Intra module refs:   TIC_TDMAShelduler
            LOCAL                   ADDRESS         
            =====                   =======         
            incrementTS::?relay     000006A0 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000006A6 - 000006AB (0x6 bytes), align: 0
-  Segment part 544.           Intra module refs:   SY_Init
+  Segment part 586.           Intra module refs:   SY_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_SlotActivityTime::?relay
@@ -3533,14 +3533,14 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000006AC - 000006B1 (0x6 bytes), align: 0
-  Segment part 548.           Intra module refs:   SY_Init
+  Segment part 590.           Intra module refs:   SY_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_SlotTime::?relay    000006AC 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000006B2 - 000006B7 (0x6 bytes), align: 0
-  Segment part 550.           Intra module refs:   TIC_TDMAShelduler
+  Segment part 592.           Intra module refs:   TIC_TDMAShelduler
            LOCAL                   ADDRESS         
            =====                   =======         
            set_capture_time::?relay
@@ -3548,7 +3548,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000006B8 - 000006BD (0x6 bytes), align: 0
-  Segment part 552.           Intra module refs:   TIC_HW_Timer_IRQ
+  Segment part 594.           Intra module refs:   TIC_HW_Timer_IRQ
            LOCAL                   ADDRESS         
            =====                   =======         
            TIC_TDMAShelduler::?relay
@@ -3556,7 +3556,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000006BE - 000006C3 (0x6 bytes), align: 0
-  Segment part 554.           Intra module refs:   TIC_HW_Timer_IRQ
+  Segment part 596.           Intra module refs:   TIC_HW_Timer_IRQ
            LOCAL                   ADDRESS         
            =====                   =======         
            Callback_execution::?relay
@@ -3564,7 +3564,7 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000006C4 - 000006C9 (0x6 bytes), align: 0
-  Segment part 556.           Intra module refs:   TIC_Init
+  Segment part 598.           Intra module refs:   TIC_Init
            LOCAL                   ADDRESS         
            =====                   =======         
            TIC_HW_Timer_IRQ::?relay
@@ -3572,21 +3572,21 @@ BANK_RELAYS
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000006CA - 000006CF (0x6 bytes), align: 0
-  Segment part 558.           Intra module refs:   TIC_HW_Timer_IRQ
+  Segment part 600.           Intra module refs:   TIC_HW_Timer_IRQ
            LOCAL                   ADDRESS         
            =====                   =======         
            clocks_update::?relay   000006CA 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000006D0 - 000006D5 (0x6 bytes), align: 0
-  Segment part 564.           Intra module refs:   re_free
+  Segment part 612.           Intra module refs:   re_free
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            free::?relay            000006D0 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000006D6 - 000006DB (0x6 bytes), align: 0
-  Segment part 566.           Intra module refs:   re_malloc
+  Segment part 614.           Intra module refs:   re_malloc
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            malloc::?relay          000006D6 
