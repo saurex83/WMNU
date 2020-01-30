@@ -1,7 +1,6 @@
 #include "manager.h"
 #include "coder.h"
 #include "delays.h"
-#include "ethernet.h"
 #include "frame.h"
 #include "LLC.h"
 #include "MAC.h"

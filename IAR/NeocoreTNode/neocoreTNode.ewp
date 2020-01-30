@@ -2307,12 +2307,6 @@
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\dma.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\ethernet.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\ethernet.h</name>
-        </file>
-        <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\frame.c</name>
         </file>
         <file>

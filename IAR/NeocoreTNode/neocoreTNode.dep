@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
     <fileVersion>2</fileVersion>
-    <fileChecksum>755936740</fileChecksum>
+    <fileChecksum>1353672361</fileChecksum>
     <configuration>
         <name>Debug</name>
         <outputs>
@@ -126,6 +126,13 @@
             <file>$PROJ_DIR$\Debug\Obj\auth.pbi</file>
             <file>$PROJ_DIR$\src\auth.c</file>
             <file>$PROJ_DIR$\src\neighnbor.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\route.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\auth.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\udp.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\tcp.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\balancer.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\ip.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\neighnbor.__cstat.et</file>
             <file>$PROJ_DIR$\src\route.c</file>
             <file>$PROJ_DIR$\Debug\Obj\route.r51</file>
             <file>$PROJ_DIR$\Debug\Obj\route.pbi</file>
@@ -138,6 +145,7 @@
             <file>$PROJ_DIR$\Debug\Obj\udp.pbi</file>
             <file>$PROJ_DIR$\src\tcp.h</file>
             <file>$PROJ_DIR$\src\udp.h</file>
+            <file>$PROJ_DIR$\..\NEOCOREGATEWAY\src\cmd_0x0B.c</file>
             <file>$PROJ_DIR$\Debug\Obj\balancer.r51</file>
             <file>$PROJ_DIR$\Debug\Obj\balancer.pbi</file>
             <file>$PROJ_DIR$\src\balancer.h</file>
@@ -161,10 +169,6 @@
                     <name>__cstat</name>
                     <file> 110</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 93</file>
-                </tool>
             </outputs>
         </file>
         <file>
@@ -178,19 +182,11 @@
                     <name>__cstat</name>
                     <file> 109</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 87</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
                     <file> 49 9 68 67 48 47 70 65 59 7 75 82 79 78 3</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 3 47 67 49 75 82 65 68 70 79 59 48 78 7 9</file>
                 </tool>
             </inputs>
         </file>
@@ -205,19 +201,11 @@
                     <name>__cstat</name>
                     <file> 111</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 85</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
                     <file> 78 75 49 70 68 48 65 67 47 82 79 0 5</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 67 49 75 82 65 68 70 79 48 78 47 0 5</file>
                 </tool>
             </inputs>
         </file>
@@ -232,19 +220,11 @@
                     <name>__cstat</name>
                     <file> 32</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 88</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
                     <file> 49 75 48 65 7 70 68 78 59 67 82 79</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 59 7 67 49 75 82 65 68 70 79 48 78</file>
                 </tool>
             </inputs>
         </file>
@@ -259,19 +239,11 @@
                     <name>__cstat</name>
                     <file> 112</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 84</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
                     <file> 75 67 82 70 68 59 49 65 9 79</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 9 67 49 75 82 65 68 70 79 59</file>
                 </tool>
             </inputs>
         </file>
@@ -286,19 +258,11 @@
                     <name>__cstat</name>
                     <file> 113</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 89</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
                     <file> 70 49 68 47 15 75 67 65 80 22 26 21 82 79 13 77 78 81</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 13 47 67 49 75 82 65 68 70 79 22 26 77 78 80 15 21 81</file>
                 </tool>
             </inputs>
         </file>
@@ -313,19 +277,11 @@
                     <name>__cstat</name>
                     <file> 33</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 91</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
                     <file> 81 59 82 78 80 21 67 75 79 49 48 26 47 70 65 68 77 13</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 13 47 67 49 75 82 65 68 70 79 48 78 21 81 26 77 80 59</file>
                 </tool>
             </inputs>
         </file>
@@ -340,19 +296,11 @@
                     <name>__cstat</name>
                     <file> 34</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 92</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
                     <file> 13 49 47 67 65 80 26 70 75 57 68 7 77 17 21 59 82 79 28 81 78 15</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 15 47 67 49 75 82 65 68 70 79 13 17 57 7 28 21 81 78 26 77 80 59</file>
                 </tool>
             </inputs>
         </file>
@@ -367,19 +315,11 @@
                     <name>__cstat</name>
                     <file> 35</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 94</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
                     <file> 70 47 24 13 82 3 78 48 81 57 49 75 77 67 26 0 28 79 7 17 65 68 80</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 17 47 67 49 75 82 65 68 70 79 57 7 28 13 48 78 26 77 80 3 81 0 24</file>
                 </tool>
             </inputs>
         </file>
@@ -394,19 +334,11 @@
                     <name>__cstat</name>
                     <file> 36</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 90</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 49 59 28 57 77 13 70 68 67 47 7 17 55 0 65 78 3 11 15 24 5 26 75 82 79 80 19 9 31</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 19 47 67 49 75 82 65 68 70 79 3 7 11 13 15 17 57 28 24 55 5 26 77 78 80 0 59 9 31</file>
+                    <file> 47 75 57 82 67 28 15 26 13 7 24 5 79 80 3 17 55 0 59 49 70 65 68 77 78 19 9 31</file>
                 </tool>
             </inputs>
         </file>
@@ -421,19 +353,11 @@
                     <name>__cstat</name>
                     <file> 37</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 102</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
                     <file> 82 79 75 26 78 67 70 49 81 48 65 68 59 77 80</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 59 81 49 75 82 65 68 70 79 78 67 48 26 77 80</file>
                 </tool>
             </inputs>
         </file>
@@ -448,19 +372,11 @@
                     <name>__cstat</name>
                     <file> 38</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 98</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
                     <file> 68 49 75 78 59 47 70 65 81 26 67 82 79 77 80 24</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 24 47 67 49 75 82 65 68 70 79 81 78 59 26 77 80</file>
                 </tool>
             </inputs>
         </file>
@@ -475,19 +391,11 @@
                     <name>__cstat</name>
                     <file> 39</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 96</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
                     <file> 77 49 67 75 79 59 76 80 82 78 26 70 65 68</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 26 77 49 75 82 65 68 70 79 78 80 59 67 76</file>
                 </tool>
             </inputs>
         </file>
@@ -502,19 +410,11 @@
                     <name>__cstat</name>
                     <file> 40</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 97</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
                     <file> 67 78 24 75 59 57 82 79 81 49 26 13 21 29 7 48 47 70 65 68 77 80 28</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 28 47 67 49 75 82 65 68 70 79 13 21 81 78 26 77 80 29 59 57 7 48 24</file>
                 </tool>
             </inputs>
         </file>
@@ -529,19 +429,11 @@
                     <name>__cstat</name>
                     <file> 41</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 100</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
                     <file> 82 13 47 75 79 80 49 26 67 70 65 68 77 78 15</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 15 47 67 49 75 82 65 68 70 79 13 26 77 78 80</file>
                 </tool>
             </inputs>
         </file>
@@ -550,7 +442,7 @@
             <outputs>
                 <tool>
                     <name>XLINK</name>
-                    <file> 72 64</file>
+                    <file> 64 72</file>
                 </tool>
             </outputs>
         </file>
@@ -565,19 +457,11 @@
                     <name>__cstat</name>
                     <file> 42</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 108</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
                     <file> 78 24 49 75 67 26 65 47 7 13 57 59 70 68 0 48 3 28 5 82 79 77 81 80</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 81 49 75 82 65 68 70 79 78 0 67 13 47 48 26 77 80 3 57 7 28 24 5 59</file>
                 </tool>
             </inputs>
         </file>
@@ -592,19 +476,11 @@
                     <name>__cstat</name>
                     <file> 43</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 107</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
                     <file> 75 67 49 7 65 80 81 59 70 68 24 26 0 47 82 79 78 77 57</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 57 47 67 49 75 82 65 68 70 79 7 24 81 78 26 77 80 0 59</file>
                 </tool>
             </inputs>
         </file>
@@ -619,19 +495,11 @@
                     <name>__cstat</name>
                     <file> 71</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 44</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
                     <file> 67 13 15 75 49 47 78 59 17 82 79 28 26 57 81 70 65 68 77 80 7 19</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 19 47 67 49 75 82 65 68 70 79 26 77 78 80 59 15 13 17 57 7 28 81</file>
                 </tool>
             </inputs>
         </file>
@@ -646,7 +514,7 @@
             <inputs>
                 <tool>
                     <name>XLINK</name>
-                    <file> 74 93 87 85 88 84 89 91 92 94 44 90 102 98 96 97 100 108 107 73</file>
+                    <file> 74 117 141 93 87 85 88 84 89 91 147 92 94 44 90 102 148 98 96 97 129 100 108 114 107 132 73</file>
                 </tool>
             </inputs>
         </file>
@@ -658,10 +526,16 @@
                     <file> 116</file>
                 </tool>
                 <tool>
-                    <name>ICC8051</name>
-                    <file> 114</file>
+                    <name>__cstat</name>
+                    <file> 124</file>
                 </tool>
             </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 82 75 80 70 68 77 49 78 65 26 79</file>
+                </tool>
+            </inputs>
         </file>
         <file>
             <name>$PROJ_DIR$\src\auth.c</name>
@@ -671,36 +545,62 @@
                     <file> 118</file>
                 </tool>
                 <tool>
+                    <name>__cstat</name>
+                    <file> 122</file>
+                </tool>
+                <tool>
                     <name>ICC8051</name>
-                    <file> 117</file>
+                    <file> 117 141 93 87 85 88 84 89 91 147 92 94 44 90 102 148 98 96 97 129 100 108 114 107 132</file>
                 </tool>
             </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 82 75 80 70 68 77 49 78 65 26 79</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 26 77 49 75 82 65 68 70 79 78 80 146 1 2 3 47 67 59 48 7 9 4 0 5 6 8 134 13 22 15 12 21 81 144 14 17 57 28 16 24 58 19 18 55 31 20 150 23 25 76 27 29 128 30 54 115 56 131</file>
+                </tool>
+            </inputs>
         </file>
         <file>
             <name>$PROJ_DIR$\src\route.c</name>
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 123</file>
+                    <file> 130</file>
                 </tool>
                 <tool>
-                    <name>ICC8051</name>
-                    <file> 122</file>
+                    <name>__cstat</name>
+                    <file> 121</file>
                 </tool>
             </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 82 75 80 70 68 77 49 78 65 26 79</file>
+                </tool>
+            </inputs>
         </file>
         <file>
             <name>$PROJ_DIR$\src\udp.c</name>
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 130</file>
+                    <file> 137</file>
                 </tool>
                 <tool>
-                    <name>ICC8051</name>
-                    <file> 125</file>
+                    <name>__cstat</name>
+                    <file> 123</file>
                 </tool>
             </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 82 75 80 70 68 77 49 78 65 26 79</file>
+                </tool>
+            </inputs>
         </file>
         <file>
             <name>$PROJ_DIR$\src\ethernet.c</name>
@@ -710,54 +610,74 @@
                     <file> 99</file>
                 </tool>
                 <tool>
-                    <name>ICC8051</name>
-                    <file> 89</file>
+                    <name>__cstat</name>
+                    <file> 113</file>
                 </tool>
             </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 49 47 78 70 68 77 65 13 75 80 82 79 67 26 22 15 5</file>
+                </tool>
+            </inputs>
         </file>
         <file>
             <name>$PROJ_DIR$\src\ip.c</name>
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 137</file>
+                    <file> 145</file>
                 </tool>
                 <tool>
-                    <name>ICC8051</name>
-                    <file> 139</file>
+                    <name>__cstat</name>
+                    <file> 126</file>
                 </tool>
             </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 82 75 80 70 68 77 49 78 65 26 79</file>
+                </tool>
+            </inputs>
         </file>
         <file>
             <name>$PROJ_DIR$\src\balancer.c</name>
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 134</file>
+                    <file> 142</file>
                 </tool>
                 <tool>
-                    <name>ICC8051</name>
-                    <file> 133</file>
+                    <name>__cstat</name>
+                    <file> 125</file>
                 </tool>
             </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 82 75 80 70 68 77 49 78 65 26 79</file>
+                </tool>
+            </inputs>
         </file>
         <file>
             <name>$PROJ_DIR$\src\neighnbor.c</name>
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 141</file>
+                    <file> 149</file>
                 </tool>
                 <tool>
-                    <name>ICC8051</name>
-                    <file> 140</file>
+                    <name>__cstat</name>
+                    <file> 127</file>
                 </tool>
             </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 82 75 80 70 68 77 49 78 65 26 79</file>
+                </tool>
+            </inputs>
         </file>
-        <forcedrebuild>
-            <name>[MULTI_TOOL]</name>
-            <tool>XLINK</tool>
-        </forcedrebuild>
     </configuration>
     <configuration>
         <name>Release</name>

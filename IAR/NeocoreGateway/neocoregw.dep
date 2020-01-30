@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
     <fileVersion>2</fileVersion>
-    <fileChecksum>1804954860</fileChecksum>
+    <fileChecksum>3472139105</fileChecksum>
     <configuration>
         <name>Debug</name>
         <outputs>
@@ -187,6 +187,7 @@
             <file>$PROJ_DIR$\Debug\Obj\cmd_0x0B.__cstat.et</file>
             <file>$PROJ_DIR$\Debug\Obj\cmd_0x08.__cstat.et</file>
             <file>$PROJ_DIR$\Debug\Obj\nwdebuger.pbi</file>
+            <file>$PROJ_DIR$\Debug\List\cmd_0x0B.lst</file>
         </outputs>
         <file>
             <name>[ROOT_NODE]</name>
@@ -210,7 +211,7 @@
                 </tool>
                 <tool>
                     <name>ICC8051</name>
-                    <file> 56 53 14 3 51 91 89 60 12 59 10 92 16 86 15 87 54 19 84 20 75 85 23 48 71 22 41 40 43 72 67 108 39 17 73</file>
+                    <file> 56 53 14 3 51 91 89 60 12 59 10 92 16 86 15 87 54 19 84 20 75 23 48 71 22 41 40 43 72 67 108 39 17 73</file>
                 </tool>
             </outputs>
             <inputs>
@@ -220,7 +221,7 @@
                 </tool>
                 <tool>
                     <name>ICC8051</name>
-                    <file> 80 81 28 97 82 70 25 106 133 154 9 161 96 66 31 1 140 2 172 142 119 120 21 121 122 123 152 163 148 124 125 166 126 150 127 156 103 128 129 130 132 135 131 137 138 93 144 139 136 141 143 145 157 147 149 151 159 173 153 146 170 155 158 160 47 162 164 165 169 171 134</file>
+                    <file> 80 81 28 97 82 70 25 106 133 154 9 161 96 66 31 1 140 2 172 142 119 120 21 121 122 123 152 163 148 124 125 166 126 150 127 156 103 128 129 130 132 135 131 137 138 93 144 139 136 141 143 147 149 151 159 173 153 170 155 158 160 47 162 164 165 169 171 134</file>
                 </tool>
             </inputs>
         </file>
@@ -234,10 +235,6 @@
                 <tool>
                     <name>__cstat</name>
                     <file> 176</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 14</file>
                 </tool>
             </outputs>
             <inputs>
@@ -257,10 +254,6 @@
                 <tool>
                     <name>__cstat</name>
                     <file> 118</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 3</file>
                 </tool>
             </outputs>
             <inputs>
@@ -296,10 +289,6 @@
                     <name>__cstat</name>
                     <file> 98</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 51</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
@@ -318,10 +307,6 @@
                 <tool>
                     <name>__cstat</name>
                     <file> 65</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 91</file>
                 </tool>
             </outputs>
             <inputs>
@@ -342,10 +327,6 @@
                     <name>__cstat</name>
                     <file> 112</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 89</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
@@ -364,10 +345,6 @@
                 <tool>
                     <name>__cstat</name>
                     <file> 113</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 60</file>
                 </tool>
             </outputs>
             <inputs>
@@ -388,10 +365,6 @@
                     <name>__cstat</name>
                     <file> 114</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 12</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
@@ -410,10 +383,6 @@
                 <tool>
                     <name>__cstat</name>
                     <file> 180</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 59</file>
                 </tool>
             </outputs>
             <inputs>
@@ -434,10 +403,6 @@
                     <name>__cstat</name>
                     <file> 177</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 10</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
@@ -456,10 +421,6 @@
                 <tool>
                     <name>__cstat</name>
                     <file> 175</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 92</file>
                 </tool>
             </outputs>
             <inputs>
@@ -480,10 +441,6 @@
                     <name>__cstat</name>
                     <file> 179</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 16</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
@@ -502,10 +459,6 @@
                 <tool>
                     <name>__cstat</name>
                     <file> 117</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 86</file>
                 </tool>
             </outputs>
             <inputs>
@@ -526,10 +479,6 @@
                     <name>__cstat</name>
                     <file> 115</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 15</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
@@ -548,10 +497,6 @@
                 <tool>
                     <name>__cstat</name>
                     <file> 111</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 87</file>
                 </tool>
             </outputs>
             <inputs>
@@ -572,10 +517,6 @@
                     <name>__cstat</name>
                     <file> 64</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 54</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
@@ -594,10 +535,6 @@
                 <tool>
                     <name>__cstat</name>
                     <file> 178</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 73</file>
                 </tool>
             </outputs>
             <inputs>
@@ -618,10 +555,6 @@
                     <name>__cstat</name>
                     <file> 45</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 19</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
@@ -640,10 +573,6 @@
                 <tool>
                     <name>__cstat</name>
                     <file> 34</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 84</file>
                 </tool>
             </outputs>
             <inputs>
@@ -664,10 +593,6 @@
                     <name>__cstat</name>
                     <file> 105</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 20</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
@@ -686,10 +611,6 @@
                 <tool>
                     <name>__cstat</name>
                     <file> 174</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 75</file>
                 </tool>
             </outputs>
             <inputs>
@@ -733,10 +654,6 @@
                     <name>__cstat</name>
                     <file> 33</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 23</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
@@ -755,10 +672,6 @@
                 <tool>
                     <name>__cstat</name>
                     <file> 30</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 48</file>
                 </tool>
             </outputs>
             <inputs>
@@ -779,10 +692,6 @@
                     <name>__cstat</name>
                     <file> 29</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 71</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
@@ -802,15 +711,11 @@
                     <name>__cstat</name>
                     <file> 26</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 41</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 81 93 163 172 96 148 25 70 80 9 142 152 170 136 82 66 138 146 150 159 140 161 28 97 106 31 154 144 166</file>
+                    <file> 9 28 172 97 80 163 150 161 148 142 159 140 106 31 138 152 170 136 93 81 25 82 70 96 66 154 144 166</file>
                 </tool>
             </inputs>
         </file>
@@ -824,10 +729,6 @@
                 <tool>
                     <name>__cstat</name>
                     <file> 69</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 40</file>
                 </tool>
             </outputs>
             <inputs>
@@ -848,10 +749,6 @@
                     <name>__cstat</name>
                     <file> 68</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 43</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
@@ -870,10 +767,6 @@
                 <tool>
                     <name>__cstat</name>
                     <file> 36</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 72</file>
                 </tool>
             </outputs>
             <inputs>
@@ -894,10 +787,6 @@
                     <name>__cstat</name>
                     <file> 44</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 67</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
@@ -916,10 +805,6 @@
                 <tool>
                     <name>__cstat</name>
                     <file> 110</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 108</file>
                 </tool>
             </outputs>
             <inputs>
@@ -940,10 +825,6 @@
                     <name>__cstat</name>
                     <file> 35</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 39</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
@@ -963,10 +844,6 @@
                     <name>__cstat</name>
                     <file> 37</file>
                 </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 17</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
@@ -985,10 +862,6 @@
                 <tool>
                     <name>__cstat</name>
                     <file> 32</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 22</file>
                 </tool>
             </outputs>
             <inputs>
@@ -1125,6 +998,10 @@
         <forcedrebuild>
             <name>$PROJ_DIR$\src\main.c</name>
             <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>[MULTI_TOOL]</name>
+            <tool>XLINK</tool>
         </forcedrebuild>
     </configuration>
     <configuration>

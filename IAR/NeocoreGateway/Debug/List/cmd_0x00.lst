@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               29/Jan/2020  20:35:01
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               30/Jan/2020  11:11:37
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,7 +13,7 @@
 #                          
 #    Source file        =  E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EWA6C5.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW2EBC.tmp
 #        (E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c -lcN
 #        E:\WMNU\IAR\NeocoreGateway\Debug\List -o
 #        E:\WMNU\IAR\NeocoreGateway\Debug\Obj -e --debug --core=plain
@@ -26,13 +26,13 @@
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x01.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x02.c
 #        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x03.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x04.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x04.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x05.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x06.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x07.c
-#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x08.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x09.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0A.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x06.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x07.c
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x08.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x09.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0A.c
 #        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0B.c
 #        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0C.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0D.c
@@ -40,9 +40,8 @@
 #        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_parser.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\coder.c E:\WMNU\IAR\SHARE_PRJ_SRC\config.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\delays.c E:\WMNU\IAR\SHARE_PRJ_SRC\dma.c
-#        E:\WMNU\IAR\SHARE_PRJ_SRC\ethernet.c E:\WMNU\IAR\SHARE_PRJ_SRC\frame.c
-#        E:\WMNU\IAR\SHARE_PRJ_SRC\LLC.c E:\WMNU\IAR\SHARE_PRJ_SRC\MAC.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\main.c
+#        E:\WMNU\IAR\SHARE_PRJ_SRC\frame.c E:\WMNU\IAR\SHARE_PRJ_SRC\LLC.c
+#        E:\WMNU\IAR\SHARE_PRJ_SRC\MAC.c E:\WMNU\IAR\NEOCOREGATEWAY\src\main.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\manager.c E:\WMNU\IAR\SHARE_PRJ_SRC\mem.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\NTMR.c E:\WMNU\IAR\SHARE_PRJ_SRC\nwdebuger.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\RADIO.c E:\WMNU\IAR\SHARE_PRJ_SRC\rx_buff.c
@@ -203,7 +202,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x03.c
      41            cmd_answer(ATYPE_CMD_OK, NULL, 0);
      42            return true;
      43          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x04.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x04.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -279,7 +278,7 @@ E:\WMNU\IAR\NeocoreGateway\src\cmd_0x05.c
      35            cmd_answer(ATYPE_CMD_OK, NULL, 0);
      36            return true;
      37          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x06.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x06.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -311,7 +310,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x06.c
      29            
      30            return true;
      31          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x07.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x07.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -350,7 +349,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x07.c
      36            cmd_answer(ATYPE_CMD_OK, NULL, 0);
      37            return true;
      38          }
-E:\WMNU\IAR\NeocoreGateway\src\cmd_0x08.c
+E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x08.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -388,7 +387,7 @@ E:\WMNU\IAR\NeocoreGateway\src\cmd_0x08.c
      35            cmd_answer(ATYPE_CMD_OK, NULL, 0);
      36            return true;
      37          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x09.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x09.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -419,7 +418,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x09.c
      28            LOG_ON("CMD 0x09. RX frame count");
      29            return true;
      30          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0A.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0A.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -481,7 +480,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0B.c
      28            }
      29            
      30            cmd_args_s *args = (cmd_args_s*)cmd; // Извлекаем аргументы
-     31            uint8_t xx= ARGS_SIZE;
+     31          
      32            if (size - 2 != ARGS_SIZE + args->len - 1){ // Проверим точный размер
      33              cmd_answer_err(ATYPE_CMD_ERR, CMD_LEN);
      34              return false;
@@ -505,15 +504,16 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0B.c
      52            bool res = LLC_AddTask(tx_frame);
      53            
      54            if (!res){ // Буфер полон 
-     55              cmd_answer_err(ATYPE_CMD_ERR, CMD_TX_FULL);
-     56              LOG_ON("CMD 0x0B. TX buff full");
-     57              return false;
-     58            }
-     59            
-     60            LOG_ON("CMD 0x0B. Frame add to LLC");
-     61            cmd_answer(ATYPE_CMD_OK, NULL, 0);
-     62            return true;
-     63          }
+     55              frame_delete(tx_frame);
+     56              cmd_answer_err(ATYPE_CMD_ERR, CMD_TX_FULL);
+     57              LOG_ON("CMD 0x0B. TX buff full");
+     58              return false;
+     59            }
+     60            
+     61            LOG_ON("CMD 0x0B. Frame add to LLC");
+     62            cmd_answer(ATYPE_CMD_OK, NULL, 0);
+     63            return true;
+     64          }
 E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0C.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
@@ -1600,120 +1600,6 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\dma.c
      19            DMA1CFGH = CONF_ADDR >> 8;
      20            DMA1CFGL = CONF_ADDR & 0xFF;
      21          }
-E:\WMNU\IAR\SHARE_PRJ_SRC\ethernet.c
-      1          #include "frame.h"
-      2          #include "Net_frames.h"
-      3          #include "stdint.h"
-      4          #include "nwdebuger.h"
-      5          #include "LLC.h"
-      6          #include "mem.h"
-      7          
-      8          void ETH_Send(frame_s *fr);
-      9          
-     10          static void ETH_RX_HNDL(frame_s *fr);
-     11          static void (*RXCallback)(frame_s *fr); //frame_s RAW_LAY, wthout ETH_LAY
-     12          static bool validate(ETH_LAY *eth);
-     13          static ETH_LAY* extract_header(frame_s *fr);
-     14          static void send_ack(ETH_LAY *eth);
-     15          static frame_s* strip_header(frame_s *fr);
-     16          
-     17          /**
-     18          @brief Иницилизация модуля
-     19          */
-     20          void ETH_Init(void)
-     21          {
-     22            RXCallback = NULL; 
-     23            LLC_SetRXCallback(ETH_RX_HNDL);
-     24          }
-     25          
-     26          /**
-     27          @brief Установка обработчика приема пакета ETH
-     28          */
-     29          void ETH_Set_RXCallback(void (*fn)(frame_s *fr))
-     30          {
-     31            ASSERT(fn != NULL);
-     32            RXCallback = fn;
-     33          }
-     34          
-     35          /**
-     36          @brief Обработка принятого пакет сети.
-     37          @detail После валидации пакета, уничтожается заголовок ETH и пакет передается
-     38           на дальнейшую обработку вверх по стеку с помощью обратного вызова RXCallback
-     39          */
-     40          static void ETH_RX_HNDL(frame_s *fr)
-     41          {
-     42            ASSERT(fr != NULL);
-     43            
-     44            bool valid;
-     45            frame_s *striped_frame;
-     46            
-     47            ETH_LAY* eth_h = extract_header(fr);
-     48            
-     49            // Извлечь заголовок не удалось
-     50            if (eth_h == NULL)
-     51              goto ERR_FRAME;
-     52            
-     53            valid = validate(eth_h);
-     54           
-     55            // Заголовок не верный
-     56            if (!valid)
-     57              goto ERR_FRAME;
-     58           
-     59            // Требуется отправить подтверждение приема пакета
-     60            if (eth_h->ETH_T.bits.ACK)
-     61              send_ack(eth_h);
-     62            
-     63            // Создаем новый пакет без заголовка и удаляем исходный
-     64            striped_frame = strip_header(fr);
-     65            frame_delete(fr);
-     66            ASSERT(striped_frame != NULL);
-     67            
-     68            // Передаем обработчику выше по стеку
-     69            ASSERT(RXCallback != NULL);
-     70            RXCallback(striped_frame);
-     71            
-     72            re_free(eth_h);
-     73            return;
-     74            
-     75          ERR_FRAME:
-     76            frame_delete(fr);
-     77            re_free(eth_h);
-     78            return;
-     79          }
-     80          
-     81          /**
-     82          @brief Создает новый пакет без заголовка ETH_H
-     83          @return указатель на новый frame_s*. NULL - не удалось создать пакет
-     84          */
-     85          static frame_s* strip_header(frame_s *fr)
-     86          {
-     87          }
-     88          
-     89          /**
-     90          @brief Подготавливает и отпправляет подтверждение приема пакета
-     91          */
-     92          static void send_ack(ETH_LAY *eth)
-     93          {
-     94           
-     95          }
-     96          
-     97          static bool validate(ETH_LAY *eth)
-     98          {
-     99            return true;
-    100          }
-    101          
-    102          static ETH_LAY* extract_header(frame_s *fr)
-    103          {
-    104            ETH_LAY* eth_h = (ETH_LAY*)re_malloc(ETH_LAY_SIZE);
-    105            ASSERT(eth_h != NULL);
-    106            
-    107            uint8_t len = frame_len(fr);
-    108            ASSERT(len >= ETH_LAY_SIZE);
-    109            
-    110            //fbuf_s *fb = frame_get_fbuf_head(fr);
-    111            //re_memcpy(eth_h, fb->payload, ETH_LAY_SIZE);
-    112            return eth_h;
-    113          }
 E:\WMNU\IAR\SHARE_PRJ_SRC\frame.c
       1          /**
       2          @file Модуль описывает сетевой кадр и связанные с ним буферы данных
@@ -2559,157 +2445,156 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\manager.c
       1          #include "manager.h"
       2          #include "coder.h"
       3          #include "delays.h"
-      4          #include "ethernet.h"
-      5          #include "frame.h"
-      6          #include "LLC.h"
-      7          #include "MAC.h"
-      8          #include "NTMR.h"
-      9          #include "RADIO.h"
-     10          #include "TIC.h"
-     11          #include "sync.h"
-     12          #include "config.h"
-     13          #include "frame.h"
-     14          #include "nwdebuger.h"
-     15          #include "basic.h"
-     16          #include "config.h"
-     17          #include "ioCC2530.h"
-     18          #include "dma.h"
-     19          #include "rx_buff.h"
-     20          
-     21          static void MG_Init();
-     22          
-     23          static bool MG_MODULES_INITED = false; //!< Были ли запущенны аппаратные модули
-     24          static bool NETWORK_SEED = false; //!< Раздача сети шлюзом
-     25          
-     26          // Публичные методы
-     27          void neocore_hw_init();
-     28          bool neocore_stack_reset();
-     29          void network_seed_enable(bool en);
-     30          bool network_discovery(uint8_t timeout_ms);
-     31          bool MG_Connect();
-     32          
-     33          // Переменные модуля
-     34          
-     35          /**
-     36          @brief Начальная иницилизация стека
-     37          */
-     38          static void MG_Init()
-     39          {
-     40            NETWORK_SEED = false;
-     41            DMA_init();
-     42            CF_init();
-     43            NT_Init();
-     44            TIM_init();
-     45            TIC_Init();
-     46            RI_init();
-     47            AES_init();
-     48            MAC_Init();
-     49            SY_Init();
-     50            LLC_Init();
-     51            
-     52          #ifdef GATEWAY
-     53            RXB_Init();
-     54          #endif
-     55            
-     56            // Загрузка дефолтных параметров
-     57            MAC_setIV(CONFIG.stream_iv);
-     58            MAC_setKEY(CONFIG.stream_key);
-     59            SY_setIV(CONFIG.stream_iv);
-     60            SY_setKEY(CONFIG.stream_key);  
-     61            // TODO Необходимо очищать все ранее выделеную память malloc
-     62          }
-     63          
-     64          /**
-     65          @brief Иницилизация аппаратуры стека
-     66          */
-     67          void neocore_hw_init()
-     68          {
-     69            if (!MG_MODULES_INITED){
-     70              MG_Init();
-     71              MG_MODULES_INITED = true;
-     72            }  
-     73          }
-     74          
-     75          /**
-     76          @brief Сброс всех настроек стека и удаление пакетов
-     77          */
-     78          bool neocore_stack_reset(){
-     79            TIC_Reset();
-     80            MAC_Reset();
-     81            SY_Reset();
-     82            LLC_Reset();
-     83          
-     84          #ifdef GATEWAY
-     85            RXB_Reset();
-     86          #endif
-     87          
-     88            network_seed_enable(false);
-     89            
-     90            // Проверим все ли пакеты уничтожены
-     91            uint8_t nbrF = frame_getCount(); 
-     92            ASSERT(nbrF == 0);
-     93            if (!nbrF)
-     94              return true;
-     95            return false;
-     96          }
-     97          
-     98          /**
-     99          @brief Алгоритм подключения к сети
-    100          @param[in] timeout_ms время поиска сети
-    101          */
-    102          bool network_discovery(uint8_t timeout_ms)
-    103          {
-    104            uint16_t panid;
-    105            bool con = false;
-    106            
-    107            // Тупой алгоритм поиска сети.
-    108            while (!con)
-    109            {
-    110              con = SY_SYNC_NETWORK(&panid, timeout_ms);
-    111            }
-    112            
-    113            if (con){ // После синх. разрешаем обработку слотов
-    114              NETWORK_SEED = true;
-    115              MAC_Enable(true);
-    116              SY_Enable(true);
-    117            }
-    118            return con;
-    119          }
-    120          
-    121          /**
-    122          @brief Начинаем раздачу сети
-    123          @param[in] en true начать раздачу сети
-    124          */
-    125          void network_seed_enable(bool en)
-    126          {
-    127            if (en){
-    128              
-    129              MAC_setIV(CONFIG.stream_iv);
-    130              MAC_setKEY(CONFIG.stream_key);
-    131              SY_setIV(CONFIG.stream_iv);
-    132              SY_setKEY(CONFIG.stream_key);    
-    133              
-    134              NETWORK_SEED = true;
-    135              MAC_Enable(true);
-    136              SY_Enable(true);
-    137            }
-    138            else{ 
-    139              NETWORK_SEED = false;
-    140              MAC_Enable(false);
-    141              SY_Enable(false);
-    142            }
-    143          }
-    144          
-    145          /**
-    146          @brief Возвращает состояние сети
-    147          @return true если сеть раздается
-    148          */
-    149          bool get_network_seed_status(void){
-    150            return NETWORK_SEED;
-    151          }
-    152          
-    153           
-    154            
+      4          #include "frame.h"
+      5          #include "LLC.h"
+      6          #include "MAC.h"
+      7          #include "NTMR.h"
+      8          #include "RADIO.h"
+      9          #include "TIC.h"
+     10          #include "sync.h"
+     11          #include "config.h"
+     12          #include "frame.h"
+     13          #include "nwdebuger.h"
+     14          #include "basic.h"
+     15          #include "config.h"
+     16          #include "ioCC2530.h"
+     17          #include "dma.h"
+     18          #include "rx_buff.h"
+     19          
+     20          static void MG_Init();
+     21          
+     22          static bool MG_MODULES_INITED = false; //!< Были ли запущенны аппаратные модули
+     23          static bool NETWORK_SEED = false; //!< Раздача сети шлюзом
+     24          
+     25          // Публичные методы
+     26          void neocore_hw_init();
+     27          bool neocore_stack_reset();
+     28          void network_seed_enable(bool en);
+     29          bool network_discovery(uint8_t timeout_ms);
+     30          bool MG_Connect();
+     31          
+     32          // Переменные модуля
+     33          
+     34          /**
+     35          @brief Начальная иницилизация стека
+     36          */
+     37          static void MG_Init()
+     38          {
+     39            NETWORK_SEED = false;
+     40            DMA_init();
+     41            CF_init();
+     42            NT_Init();
+     43            TIM_init();
+     44            TIC_Init();
+     45            RI_init();
+     46            AES_init();
+     47            MAC_Init();
+     48            SY_Init();
+     49            LLC_Init();
+     50            
+     51          #ifdef GATEWAY
+     52            RXB_Init();
+     53          #endif
+     54            
+     55            // Загрузка дефолтных параметров
+     56            MAC_setIV(CONFIG.stream_iv);
+     57            MAC_setKEY(CONFIG.stream_key);
+     58            SY_setIV(CONFIG.stream_iv);
+     59            SY_setKEY(CONFIG.stream_key);  
+     60            // TODO Необходимо очищать все ранее выделеную память malloc
+     61          }
+     62          
+     63          /**
+     64          @brief Иницилизация аппаратуры стека
+     65          */
+     66          void neocore_hw_init()
+     67          {
+     68            if (!MG_MODULES_INITED){
+     69              MG_Init();
+     70              MG_MODULES_INITED = true;
+     71            }  
+     72          }
+     73          
+     74          /**
+     75          @brief Сброс всех настроек стека и удаление пакетов
+     76          */
+     77          bool neocore_stack_reset(){
+     78            TIC_Reset();
+     79            MAC_Reset();
+     80            SY_Reset();
+     81            LLC_Reset();
+     82          
+     83          #ifdef GATEWAY
+     84            RXB_Reset();
+     85          #endif
+     86          
+     87            network_seed_enable(false);
+     88            
+     89            // Проверим все ли пакеты уничтожены
+     90            uint8_t nbrF = frame_getCount(); 
+     91            ASSERT(nbrF == 0);
+     92            if (!nbrF)
+     93              return true;
+     94            return false;
+     95          }
+     96          
+     97          /**
+     98          @brief Алгоритм подключения к сети
+     99          @param[in] timeout_ms время поиска сети
+    100          */
+    101          bool network_discovery(uint8_t timeout_ms)
+    102          {
+    103            uint16_t panid;
+    104            bool con = false;
+    105            
+    106            // Тупой алгоритм поиска сети.
+    107            while (!con)
+    108            {
+    109              con = SY_SYNC_NETWORK(&panid, timeout_ms);
+    110            }
+    111            
+    112            if (con){ // После синх. разрешаем обработку слотов
+    113              NETWORK_SEED = true;
+    114              MAC_Enable(true);
+    115              SY_Enable(true);
+    116            }
+    117            return con;
+    118          }
+    119          
+    120          /**
+    121          @brief Начинаем раздачу сети
+    122          @param[in] en true начать раздачу сети
+    123          */
+    124          void network_seed_enable(bool en)
+    125          {
+    126            if (en){
+    127              
+    128              MAC_setIV(CONFIG.stream_iv);
+    129              MAC_setKEY(CONFIG.stream_key);
+    130              SY_setIV(CONFIG.stream_iv);
+    131              SY_setKEY(CONFIG.stream_key);    
+    132              
+    133              NETWORK_SEED = true;
+    134              MAC_Enable(true);
+    135              SY_Enable(true);
+    136            }
+    137            else{ 
+    138              NETWORK_SEED = false;
+    139              MAC_Enable(false);
+    140              SY_Enable(false);
+    141            }
+    142          }
+    143          
+    144          /**
+    145          @brief Возвращает состояние сети
+    146          @return true если сеть раздается
+    147          */
+    148          bool get_network_seed_status(void){
+    149            return NETWORK_SEED;
+    150          }
+    151          
+    152           
+    153            
 E:\WMNU\IAR\SHARE_PRJ_SRC\mem.c
       1          #include "ioCC2530.h"
       2          #include "stdlib.h"
@@ -4833,20 +4718,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       1     28   Delete_frame
         0     10   -> printf
         0     16   -> printf
-      2      0   ETH_Init
-        2      0   -> LLC_SetRXCallback
-      0     20   ETH_RX_HNDL
-        0     14   -> extract_header
-        0     14   -> frame_delete
-        0     14   -> printf
-        0     20   -> printf
-        0     14   -> re_free
-        0     14   -> send_ack
-        0     14   -> strip_header
-        0     14   -> validate
-      0     16   ETH_Set_RXCallback
-        0     10   -> printf
-        0     16   -> printf
       0     54   Interval
       1     34   LLC_AddTask
         0     12   -> printf
@@ -5200,6 +5071,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     16   -> cmd_answer_err
         0     16   -> frame_addHeader
         0     16   -> frame_create
+        0     16   -> frame_delete
         0     16   -> get_network_seed_status
         0     18   -> re_memcpy
       0     14   cmd_0x0C
@@ -5225,11 +5097,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       0      9   com_uart_init
         0      9   -> uart_dma_init
       0     27   crc16
-      0     34   extract_header
-        0     14   -> frame_len
-        0     14   -> printf
-        0     20   -> printf
-        0     14   -> re_malloc
       1     66   frame_addHeader
         0     18   -> printf
         0     24   -> printf
@@ -5250,7 +5117,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       0     54   frame_delete
         0     10   -> re_free
       2     10   frame_getCount
-      2     14   frame_len
+      2      0   frame_len
       0     19   free
         0      9   -> __xdata_free
       0     86   generateAuthData
@@ -5319,7 +5186,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       0     18   readRandom
         0      9   -> bits_count
         0      9   -> getRNDByte
-      0     14   send_ack
       0     32   send_sync
         0     20   -> BitRawCrypt
         0     20   -> RI_Send
@@ -5338,7 +5204,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     15   -> printf
         0     21   -> printf
         0     15   -> uart_write
-      0     14   strip_header
       2      9   uart_dma_init
       0      0   uart_getchar
       0      0   uart_init
@@ -5349,7 +5214,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       0     23   upload_frame
         0      9   -> cmd_answer
         0      9   -> mem_move
-      0     14   validate
       0     23   xor_calc
 
 
@@ -5359,7 +5223,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
    -----  --------------
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_1
-      22  ?<Constant "*ASSERT* %s:%d:%s -> ">_10
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_2
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_3
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_4
@@ -5370,18 +5233,16 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_9
       42  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">
       44  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">_1
-      37  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">
-      34  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_1
+      34  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">
+      32  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_1
       32  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_2
-      32  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_3
-      36  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_4
-      33  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_5
-      34  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_6
-      36  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_7
-      32  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_8
+      36  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_3
+      33  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_4
+      34  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_5
+      36  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_6
+      32  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_7
        3  ?<Constant "\r\n">
        3  ?<Constant "\r\n">_1
-       3  ?<Constant "\r\n">_10
        3  ?<Constant "\r\n">_2
        3  ?<Constant "\r\n">_3
        3  ?<Constant "\r\n">_4
@@ -5392,7 +5253,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        3  ?<Constant "\r\n">_9
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_1
-      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_10
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_2
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_3
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_4
@@ -5403,18 +5263,16 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_9
       42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE
       44  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE_1
-      37  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH
-      34  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_1
+      34  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH
+      32  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_1
       32  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_2
-      32  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_3
-      36  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_4
-      33  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_5
-      34  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_6
-      36  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_7
-      32  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_8
+      36  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_3
+      33  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_4
+      34  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_5
+      36  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_6
+      32  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_7
        3  ?<Initializer for <Constant "\r\n">>
        3  ?<Initializer for <Constant "\r\n">>_1
-       3  ?<Initializer for <Constant "\r\n">>_10
        3  ?<Initializer for <Constant "\r\n">>_2
        3  ?<Initializer for <Constant "\r\n">>_3
        3  ?<Initializer for <Constant "\r\n">>_4
@@ -5449,42 +5307,39 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        4  ?<Initializer for __Constant_ffffff>
        9  ?<Initializer for __FUNCTION__>
       13  ?<Initializer for __FUNCTION__>_1
-      12  ?<Initializer for __FUNCTION__>_10
-      14  ?<Initializer for __FUNCTION__>_11
-      12  ?<Initializer for __FUNCTION__>_12
+      15  ?<Initializer for __FUNCTION__>_10
+      16  ?<Initializer for __FUNCTION__>_11
+       9  ?<Initializer for __FUNCTION__>_12
       15  ?<Initializer for __FUNCTION__>_13
-      16  ?<Initializer for __FUNCTION__>_14
-       9  ?<Initializer for __FUNCTION__>_15
-      15  ?<Initializer for __FUNCTION__>_16
-      15  ?<Initializer for __FUNCTION__>_17
-      12  ?<Initializer for __FUNCTION__>_18
-      12  ?<Initializer for __FUNCTION__>_19
-      19  ?<Initializer for __FUNCTION__>_2
-      20  ?<Initializer for __FUNCTION__>_20
-      11  ?<Initializer for __FUNCTION__>_21
+      15  ?<Initializer for __FUNCTION__>_14
+      12  ?<Initializer for __FUNCTION__>_15
+      12  ?<Initializer for __FUNCTION__>_16
+      20  ?<Initializer for __FUNCTION__>_17
+      11  ?<Initializer for __FUNCTION__>_18
+      14  ?<Initializer for __FUNCTION__>_19
+      16  ?<Initializer for __FUNCTION__>_2
+       8  ?<Initializer for __FUNCTION__>_20
+       8  ?<Initializer for __FUNCTION__>_21
       14  ?<Initializer for __FUNCTION__>_22
-       8  ?<Initializer for __FUNCTION__>_23
-       8  ?<Initializer for __FUNCTION__>_24
-      14  ?<Initializer for __FUNCTION__>_25
-      13  ?<Initializer for __FUNCTION__>_26
-      13  ?<Initializer for __FUNCTION__>_27
+      13  ?<Initializer for __FUNCTION__>_23
+      13  ?<Initializer for __FUNCTION__>_24
+      15  ?<Initializer for __FUNCTION__>_25
+      15  ?<Initializer for __FUNCTION__>_26
+      15  ?<Initializer for __FUNCTION__>_27
       15  ?<Initializer for __FUNCTION__>_28
-      15  ?<Initializer for __FUNCTION__>_29
-      12  ?<Initializer for __FUNCTION__>_3
-      15  ?<Initializer for __FUNCTION__>_30
-      15  ?<Initializer for __FUNCTION__>_31
-      19  ?<Initializer for __FUNCTION__>_32
+      19  ?<Initializer for __FUNCTION__>_29
+      16  ?<Initializer for __FUNCTION__>_3
+      18  ?<Initializer for __FUNCTION__>_30
+      29  ?<Initializer for __FUNCTION__>_31
+      18  ?<Initializer for __FUNCTION__>_32
       18  ?<Initializer for __FUNCTION__>_33
-      29  ?<Initializer for __FUNCTION__>_34
-      18  ?<Initializer for __FUNCTION__>_35
-      18  ?<Initializer for __FUNCTION__>_36
-      19  ?<Initializer for __FUNCTION__>_37
-      15  ?<Initializer for __FUNCTION__>_4
-      16  ?<Initializer for __FUNCTION__>_5
-      16  ?<Initializer for __FUNCTION__>_6
-      13  ?<Initializer for __FUNCTION__>_7
-      18  ?<Initializer for __FUNCTION__>_8
-      14  ?<Initializer for __FUNCTION__>_9
+      19  ?<Initializer for __FUNCTION__>_34
+      13  ?<Initializer for __FUNCTION__>_4
+      18  ?<Initializer for __FUNCTION__>_5
+      14  ?<Initializer for __FUNCTION__>_6
+      12  ?<Initializer for __FUNCTION__>_7
+      14  ?<Initializer for __FUNCTION__>_8
+      12  ?<Initializer for __FUNCTION__>_9
       16  ?<Initializer for default_iv>
       16  ?<Initializer for default_key>
      476  AES_CCMDecrypt
@@ -5531,12 +5386,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
      114  Delete_frame
        6  Delete_frame::?relay
        1  ENCCS
-      28  ETH_Init
-       6  ETH_Init::?relay
-     319  ETH_RX_HNDL
-       6  ETH_RX_HNDL::?relay
-      80  ETH_Set_RXCallback
-       6  ETH_Set_RXCallback::?relay
        2  EventCallback
       30  FRAME_POOL
        2  FirstTask
@@ -5670,7 +5519,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  RXB_frame_count::?relay
      158  RXB_get_frame
        6  RXB_get_frame::?relay
-       2  RXCallback
        2  RXCallback
        2  RXCallback
        2  RXCallback
@@ -5851,7 +5699,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  cmd_0x09::?relay
       69  cmd_0x0A
        6  cmd_0x0A::?relay
-     239  cmd_0x0B
+     242  cmd_0x0B
        6  cmd_0x0B::?relay
       91  cmd_0x0C
        6  cmd_0x0C::?relay
@@ -5869,8 +5717,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  crc16::?relay
       16  default_iv
       16  default_key
-     162  extract_header
-       6  extract_header::?relay
      367  frame_addHeader
        6  frame_addHeader::?relay
      168  frame_create
@@ -5932,8 +5778,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       54  readRandom
        6  readRandom::?relay
        4  ret_val
-       3  send_ack
-       6  send_ack::?relay
      161  send_sync
        6  send_sync::?relay
      120  setFreq
@@ -5942,8 +5786,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  set_capture_time::?relay
      156  stream_write
        6  stream_write::?relay
-       3  strip_header
-       6  strip_header::?relay
        1  tasksBLOCK
      132  uart_dma_init
        6  uart_dma_init::?relay
@@ -5962,26 +5804,24 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       87  upload_frame
        6  upload_frame::?relay
        4  val
-       4  validate
-       6  validate::?relay
       59  xor_calc
        6  xor_calc::?relay
-     559  -- Other
+     513  -- Other
 
  
- 19 151 bytes in segment BANKED_CODE
-  1 104 bytes in segment BANK_RELAYS
+ 18 555 bytes in segment BANKED_CODE
+  1 062 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
      60 bytes in segment NEAR_CODE
      38 bytes in segment SFR_AN
-  1 428 bytes in segment XDATA_I
-  1 428 bytes in segment XDATA_ID
-  1 176 bytes in segment XDATA_Z
+  1 320 bytes in segment XDATA_I
+  1 320 bytes in segment XDATA_ID
+  1 174 bytes in segment XDATA_Z
  
-  2 502 bytes of CODE     memory (+ 93 bytes shared)
+  2 352 bytes of CODE     memory (+ 93 bytes shared)
       0 bytes of DATA     memory (+ 38 bytes shared)
- 19 107 bytes of HUGECODE memory (+ 44 bytes shared)
-  2 532 bytes of XDATA    memory (+ 72 bytes shared)
+ 18 511 bytes of HUGECODE memory (+ 44 bytes shared)
+  2 422 bytes of XDATA    memory (+ 72 bytes shared)
 
 Errors: none
-Warnings: 9
+Warnings: 7
