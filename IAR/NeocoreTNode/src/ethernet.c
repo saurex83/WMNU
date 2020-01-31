@@ -46,7 +46,7 @@ void ETH_SetRXCallback(void (*fn)(frame_s *fr)){
 @brief Проверка пакета на удолетворения фильтрам
 */
 static bool frame_filter(frame_s *fr){
-  ETH_LAY *eth_header = (ETH_LAY*)fr;
+  ETH_LAY *eth_header = (ETH_LAY*)fr->payload;
   
   // Фильтр 1: по размеру кадра
   if (fr->len < ETH_LAY_SIZE)
@@ -73,11 +73,13 @@ static bool frame_filter(frame_s *fr){
 */
 static void ETH_Receive_HNDL(frame_s *fr){
   // Проверяем пакет
-  if (!frame_filter(fr))
+  if (!frame_filter(fr)){
     frame_delete(fr);
+    return;
+  }
 
   // Заполняем метаданные
-  ETH_LAY *eth_header = (ETH_LAY*)fr;
+  ETH_LAY *eth_header = (ETH_LAY*)fr->payload;
   fr->meta.NDST = eth_header->NDST;
   fr->meta.NSRC = eth_header->NSRC;
   fr->meta.PID = eth_header->ETH_T.bits.PID;

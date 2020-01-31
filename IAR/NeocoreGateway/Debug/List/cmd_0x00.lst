@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               31/Jan/2020  10:13:54
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               31/Jan/2020  16:28:06
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,7 +13,7 @@
 #                          
 #    Source file        =  E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW24F.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EWA00D.tmp
 #        (E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c -lcN
 #        E:\WMNU\IAR\NeocoreGateway\Debug\List -o
 #        E:\WMNU\IAR\NeocoreGateway\Debug\Obj -e --debug --core=plain
@@ -23,7 +23,7 @@
 #        Systems\Embedded Workbench 8.0\8051\LIB\DLIB\dl8051Normal.h" -I
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\ -On --no_cse --no_unroll --no_inline
 #        --no_code_motion --no_tbaa --no_cross_call --mfc
-#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x01.c
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x01.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x02.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x03.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x04.c
@@ -82,7 +82,7 @@ E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c
      26            cmd_answer(ATYPE_CMD_OK, &answer, sizeof(answer));
      27            return true;
      28          }
-E:\WMNU\IAR\NeocoreGateway\src\cmd_0x01.c
+E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x01.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -92,7 +92,7 @@ E:\WMNU\IAR\NeocoreGateway\src\cmd_0x01.c
       7          #define ARGS_SIZE sizeof(cmd_args_s)
       8          typedef struct //!< Аргументы команды
       9          {
-     10            uint16_t panid;
+     10            uint8_t panid;
      11            uint16_t crc16;
      12          } cmd_args_s;
      13          
@@ -3825,7 +3825,7 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\sync.c
      48          
      49          typedef struct // Формат структуры пакета синхронизации
      50          {
-     51              uint16_t panid;
+     51              uint8_t panid;
      52              uint32_t rtc;
      53              uint32_t magic;
      54          } __attribute__((packed)) SYNC_s;
@@ -4698,7 +4698,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       2      0   AES_init
       0     28   BitRawCrypt
         0     16   -> AES_StreamCoder
-      0     36   BitRawCrypt
+      0     35   BitRawCrypt
         0     16   -> AES_StreamCoder
       0     28   BitRawDecrypt
         0     16   -> AES_StreamCoder
@@ -4825,7 +4825,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         2      0   -> MAC_setKEY
         2      0   -> NT_Init
         2      0   -> RI_init
-        2      0   -> RXB_Init
         2      0   -> SY_Init
         2      0   -> SY_setIV
         2      0   -> SY_setKEY
@@ -4850,7 +4849,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     14   -> isIRQEnable
         0     14   -> printf
         0     20   -> printf
-      0     24   NT_WaitTime
+      0     28   NT_WaitTime
       2      0   RI_GetCCAReject
       2      0   RI_GetCRCError
       2      0   RI_GetUptime
@@ -4867,7 +4866,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     42   -> frame_create
         0     42   -> re_free
         0     42   -> re_malloc
-      0     62   RI_Send
+      0     61   RI_Send
         0     36   -> RI_cfg
         0     36   -> SendData
         0     36   -> TIM_TimeStamp
@@ -4883,7 +4882,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0      9   -> frame_delete
       3      0   RXB_Init
         2      0   -> LLC_SetRXCallback
-      0     19   RXB_Reset
+      0      9   RXB_Reset
         0      9   -> Delete_frame
       0     32   RXB_del_frame
         0     12   -> Delete_frame
@@ -4915,13 +4914,21 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     44   -> TIM_passedTime
         0     44   -> frame_delete
         0     44   -> get_sync
-      0     16   SY_TIME_ALLOC_MASTER
-        0     16   -> TIC_GetTXState
+      2     12   SY_TIME_ALLOC_SLAVE
+        0     12   -> TIC_GetRXState
+        0     12   -> TIC_GetUptime
+        2     12   -> TIC_GetUptime
+        0     12   -> TIC_SetRXState
+      0     16   SY_TS1_HNDL_SLAVE
+        0     16   -> NT_WaitTime
+        0     16   -> TIC_GetTimer
         0     16   -> TIC_GetUptime
-        0     16   -> TIC_SetTXState
-      0     12   SY_TS1_HNDL_MASTER
-        0     12   -> TIC_SetTXState
-        0     12   -> send_sync
+        0     16   -> TIC_SetRTC
+        0     16   -> TIC_SetRXState
+        0     16   -> TIC_SetTimer
+        0     16   -> frame_delete
+        0     16   -> get_sync
+        0     16   -> send_sync
       0     21   SY_setIV
         0     12   -> memcpy
       0     21   SY_setKEY
@@ -4935,11 +4942,11 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0      9   -> TIC_SetRXState
         0      9   -> TIC_SetTXState
       2      0   TIC_GetNonce
-      2     20   TIC_GetRTC
-      0     16   TIC_GetRXState
+      2     19   TIC_GetRTC
+      0     28   TIC_GetRXState
         0     10   -> printf
         0     16   -> printf
-      0     32   TIC_GetTXState
+      0     16   TIC_GetTXState
         0     10   -> printf
         0     16   -> printf
       0      0   TIC_GetTimeStampTS0
@@ -4968,7 +4975,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       0     26   TIC_SetRXCallback
         0     10   -> printf
         0     16   -> printf
-      0     26   TIC_SetRXState
+      0     32   TIC_SetRXState
         0     10   -> printf
         0     16   -> printf
       0     16   TIC_SetSECallback
@@ -4983,7 +4990,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       0     26   TIC_SetTXCallback
         0     10   -> printf
         0     16   -> printf
-      0     32   TIC_SetTXState
+      0     28   TIC_SetTXState
         0     10   -> printf
         0     16   -> printf
       0     60   TIC_SetTimer
@@ -5154,7 +5161,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       0     30   neocore_stack_reset
         0     10   -> LLC_Reset
         0     10   -> MAC_Reset
-        0     10   -> RXB_Reset
         0     10   -> SY_Reset
         0     10   -> TIC_Reset
         0     10   -> frame_getCount
@@ -5192,14 +5198,14 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       0     18   readRandom
         0      9   -> bits_count
         0      9   -> getRNDByte
-      0     32   send_sync
-        0     20   -> BitRawCrypt
-        0     20   -> RI_Send
-        0     20   -> RI_SetChannel
-        0     20   -> TIC_GetRTC
-        0     20   -> frame_addHeader
-        0     20   -> frame_create
-        0     20   -> frame_delete
+      1     35   send_sync
+        0     19   -> BitRawCrypt
+        0     19   -> RI_Send
+        0     19   -> RI_SetChannel
+        0     19   -> TIC_GetRTC
+        0     19   -> frame_addHeader
+        0     19   -> frame_create
+        0     19   -> frame_delete
       1     18   setFreq
         0     11   -> printf
         0     17   -> printf
@@ -5303,11 +5309,12 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        4  ?<Initializer for __Constant_3d000000>
        4  ?<Initializer for __Constant_3e8>
        4  ?<Initializer for __Constant_447a0000>
+       4  ?<Initializer for __Constant_6f>
+       4  ?<Initializer for __Constant_7d0>
        4  ?<Initializer for __Constant_7fff>
        4  ?<Initializer for __Constant_8000>
        4  ?<Initializer for __Constant_9>
        4  ?<Initializer for __Constant_9c4>
-       4  ?<Initializer for __Constant_a>
        4  ?<Initializer for __Constant_c8>
        4  ?<Initializer for __Constant_ffff8000>
        4  ?<Initializer for __Constant_fffffe0c>
@@ -5373,7 +5380,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        1  CLKCONSTA
       30  CMD_LIST
        4  COMPARE_TIME
-      36  CONFIG
+      37  CONFIG
      608  CTR_enc_decrypt
        6  CTR_enc_decrypt::?relay
       87  Callback_execution
@@ -5459,12 +5466,13 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  MAC_setIV::?relay
       41  MAC_setKEY
        6  MAC_setKEY::?relay
-      78  MG_Init
+      75  MG_Init
        6  MG_Init::?relay
        1  MG_MODULES_INITED
       12  MyLowLevelPutchar
        6  MyLowLevelPutchar::?relay
        1  NBR_FRAME
+       1  NEED_SEND_SYNC
        1  NETWORK_SEED
        4  NEXT_SYNC_TIME
        4  NODE_NONCE
@@ -5551,12 +5559,12 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  SY_Init::?relay
       89  SY_Reset
        6  SY_Reset::?relay
-     499  SY_SYNC_NETWORK
+     491  SY_SYNC_NETWORK
        6  SY_SYNC_NETWORK::?relay
-      73  SY_TIME_ALLOC_MASTER
-       6  SY_TIME_ALLOC_MASTER::?relay
-      48  SY_TS1_HNDL_MASTER
-       6  SY_TS1_HNDL_MASTER::?relay
+     105  SY_TIME_ALLOC_SLAVE
+       6  SY_TIME_ALLOC_SLAVE::?relay
+     303  SY_TS1_HNDL_SLAVE
+       6  SY_TS1_HNDL_SLAVE::?relay
       41  SY_setIV
        6  SY_setIV::?relay
       41  SY_setKEY
@@ -5591,7 +5599,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  TIC_HW_Timer_IRQ::?relay
       42  TIC_Init
        6  TIC_Init::?relay
-      89  TIC_Reset
+      35  TIC_Reset
        6  TIC_Reset::?relay
       26  TIC_SetNonce
        6  TIC_SetNonce::?relay
@@ -5665,11 +5673,12 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        4  __Constant_3d000000
        4  __Constant_3e8
        4  __Constant_447a0000
+       4  __Constant_6f
+       4  __Constant_7d0
        4  __Constant_7fff
        4  __Constant_8000
        4  __Constant_9
        4  __Constant_9c4
-       4  __Constant_a
        4  __Constant_c8
        4  __Constant_ffff8000
        4  __Constant_fffffe0c
@@ -5687,7 +5696,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  clocks_update::?relay
       63  cmd_0x00
        6  cmd_0x00::?relay
-      77  cmd_0x01
+      72  cmd_0x01
        6  cmd_0x01::?relay
       76  cmd_0x02
        6  cmd_0x02::?relay
@@ -5764,7 +5773,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        1  nbrTasks
       26  neocore_hw_init
        6  neocore_hw_init::?relay
-      99  neocore_stack_reset
+      96  neocore_stack_reset
        6  neocore_stack_reset::?relay
       65  network_discovery
        6  network_discovery::?relay
@@ -5786,7 +5795,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       54  readRandom
        6  readRandom::?relay
        4  ret_val
-     161  send_sync
+     158  send_sync
        6  send_sync::?relay
      120  setFreq
        6  setFreq::?relay
@@ -5817,19 +5826,19 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
      513  -- Other
 
  
- 18 566 bytes in segment BANKED_CODE
+ 18 777 bytes in segment BANKED_CODE
   1 062 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
      60 bytes in segment NEAR_CODE
      38 bytes in segment SFR_AN
-  1 324 bytes in segment XDATA_I
-  1 324 bytes in segment XDATA_ID
-  1 174 bytes in segment XDATA_Z
+  1 328 bytes in segment XDATA_I
+  1 328 bytes in segment XDATA_ID
+  1 176 bytes in segment XDATA_Z
  
-  2 352 bytes of CODE     memory (+ 97 bytes shared)
-      0 bytes of DATA     memory (+ 38 bytes shared)
- 18 522 bytes of HUGECODE memory (+ 44 bytes shared)
-  2 422 bytes of XDATA    memory (+ 76 bytes shared)
+  2 352 bytes of CODE     memory (+ 101 bytes shared)
+      0 bytes of DATA     memory (+  38 bytes shared)
+ 18 733 bytes of HUGECODE memory (+  44 bytes shared)
+  2 424 bytes of XDATA    memory (+  80 bytes shared)
 
 Errors: none
-Warnings: 8
+Warnings: 7

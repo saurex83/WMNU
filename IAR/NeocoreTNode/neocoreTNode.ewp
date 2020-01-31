@@ -2259,6 +2259,12 @@
             <name>$PROJ_DIR$\src\neighnbor.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\src\protocol_controller.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\protocol_controller.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\src\route.c</name>
         </file>
         <file>

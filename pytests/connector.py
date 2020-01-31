@@ -100,7 +100,7 @@ class Connector:
             return True
 
     def cmd01_Set_panid(self, panid):
-        #panid тип bytes длинной 2 байта
+        #panid тип bytes длинной 1 байта
         cmd = b'\x01' + panid
         self._write(cmd)
         answ = self._read()

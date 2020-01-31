@@ -183,6 +183,7 @@
             <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\rx_buff.h</file>
             <file>$PROJ_DIR$\Debug\Obj\utest_suite.__cstat.et</file>
             <file>$PROJ_DIR$\Debug\Obj\utest_printf_uart.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\unitest.pbd</file>
         </outputs>
         <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.c</name>

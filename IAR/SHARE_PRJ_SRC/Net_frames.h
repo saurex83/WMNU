@@ -9,7 +9,7 @@
 // Перечисления протоколов низкого уровня для ETH_H.ETH_T.PID
 enum PID_e
 {
-  PID_SYNC = 0, PID_IP = 1, PID_NB = 2
+   PID_IP = 1, PID_NB = 2
 };
 
 // Перечисления протоколов высокого уровня для IP_HEADER.IPP
@@ -44,7 +44,6 @@ typedef struct
   uint16_t FDST;
   uint16_t FSRC;
   uint8_t IPP;
-  uint8_t LENGTH;
 } __attribute__((packed)) IP_LAY;
 
 #define IP_LAY_SIZE sizeof(IP_LAY)
@@ -59,3 +58,10 @@ typedef struct
 } __attribute__((packed)) SYNC_LAY;
 
 #define SYNC_LAY_SIZE sizeof(SYNC_LAY)
+
+typedef struct
+{
+  uint8_t port;
+} __attribute__((packed)) UDP_LAY;
+
+#define UDP_LAY_SIZE sizeof(UDP_LAY)

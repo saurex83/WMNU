@@ -17,7 +17,7 @@ static void TB_TimeAlloc_HNDL(void);
 // Глобальные функции
 void TB_Init(void);
 void TB_Reset(void);
-void TB_Receive_HNDL(frame_s *fr);
+void TB_Receive_HNDL(meta_s *meta);
 
 // Локальные переменные
 
@@ -38,5 +38,5 @@ static void TB_TimeAlloc_HNDL(void){
 /**
 @brief Обработка пакета 
 */
-void TB_Receive_HNDL(frame_s *fr){
+void TB_Receive_HNDL(meta_s *meta){
 }

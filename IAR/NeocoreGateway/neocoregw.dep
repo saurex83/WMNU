@@ -187,6 +187,9 @@
             <file>$PROJ_DIR$\Debug\Obj\cmd_0x0C.__cstat.et</file>
             <file>$PROJ_DIR$\Debug\Obj\cmd_0x02.__cstat.et</file>
             <file>$PROJ_DIR$\..\NEOCORETNODE\src\main.c</file>
+            <file>$PROJ_DIR$\..\NEOCORETNODE\src\route.c</file>
+            <file>$PROJ_DIR$\..\NEOCORETNODE\src\ip.c</file>
+            <file>$PROJ_DIR$\..\NEOCORETNODE\src\ethernet.c</file>
         </outputs>
         <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\nwdebuger.c</name>
@@ -510,7 +513,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 143 87 142 38 132 40 34 63 93 90 28 1 42 159 168 144 71 36 3 30 158 128 165</file>
+                    <file> 143 71 87 34 142 38 132 3 40 93 90 21 28 1 42 159 168 144 30 36 63 158 128 165</file>
                 </tool>
             </inputs>
         </file>
@@ -533,7 +536,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 142 132 143 38 71 40 57 87 144 3 34 128 21 28 1 90 159 168 63 30 158 93</file>
+                    <file> 34 132 38 143 142 3 128 40 57 87 144 71 21 28 1 90 159 168 63 30 158 93</file>
                 </tool>
             </inputs>
         </file>
@@ -956,7 +959,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 90 142 143 30 144 93 165 155 87 132 45 1 24 71 159 168 128 158 63</file>
+                    <file> 158 30 159 168 90 71 87 143 165 155 93 45 1 24 142 144 132 128 63</file>
                 </tool>
             </inputs>
         </file>

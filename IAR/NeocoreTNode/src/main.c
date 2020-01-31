@@ -8,7 +8,8 @@
 #include "TIC.h"
 #include "frame.h"
 #include "stdlib.h"
-
+#include "protocol_controller.h"
+#include "udp.h"
 //  
 // Собирать проект с ЗАКОМЕНТИРОВАННЫМ ключем GATEWAY в файле basic.h
 #ifdef GATEWAY
@@ -31,13 +32,21 @@ frame_s* gen_frame(void){
   return fr;
 }
 
+ static bool state = false;
+void UDP_Port_10_HNDL(frame_s *fr){
+ 
+  P1_4 = !state;
+  state = !state;
+  frame_delete(fr);
+}
+
 void main(void)
 {
-  neocore_hw_init();
+  NEOCORE_Init();
   P1DIR = 0x13;
   network_discovery(100);
-  LLC_SetRXCallback(RX_frame);
   MAC_OpenRXSlot(2, 15);
+  UDP_Bind(10, UDP_Port_10_HNDL);
   
   while(1){
     

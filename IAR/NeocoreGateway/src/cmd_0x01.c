@@ -7,7 +7,7 @@
 #define ARGS_SIZE sizeof(cmd_args_s)
 typedef struct //!< Аргументы команды
 {
-  uint16_t panid;
+  uint8_t panid;
   uint16_t crc16;
 } cmd_args_s;
 

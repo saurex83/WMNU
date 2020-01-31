@@ -48,7 +48,7 @@ static uint16_t SYNC_ACCURATE_NETWORK_TIME;
 
 typedef struct // Формат структуры пакета синхронизации
 {
-    uint16_t panid;
+    uint8_t panid;
     uint32_t rtc;
     uint32_t magic;
 } __attribute__((packed)) SYNC_s;

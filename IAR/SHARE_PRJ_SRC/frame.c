@@ -70,7 +70,7 @@ void frame_delHeader(frame_s *fr, uint8_t len)
   if (fr->payload == NULL)
     return;
 
-  if (fr->len <= len)
+  if (fr->len < len)
     return;  
   
   uint8_t new_len = fr->len - len; // Новый размер
