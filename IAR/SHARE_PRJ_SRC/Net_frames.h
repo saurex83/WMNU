@@ -26,7 +26,7 @@ typedef struct
     struct 
     {
       uint8_t PID:4;
-      uint8_t ACK:1;
+      uint8_t UNUSED:1;
       uint8_t ETH_VER:3;
     } bits;
   } ETH_T;
@@ -34,8 +34,6 @@ typedef struct
   uint8_t NETID;
   uint16_t NDST;
   uint16_t NSRC;
-  uint32_t NONCE;
-  uint8_t LENGTH;
 } __attribute__((packed)) ETH_LAY;
 
 #define ETH_LAY_SIZE sizeof(ETH_LAY) 

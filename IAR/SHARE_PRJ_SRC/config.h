@@ -13,6 +13,7 @@ typedef struct
   uint8_t stream_iv[16];
   uint8_t sync_channel;
   uint8_t panid;
+  uint8_t node_adr;
 } database_s;
 
 extern database_s CONFIG;
