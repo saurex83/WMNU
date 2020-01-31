@@ -207,6 +207,9 @@ static bool MAC_ACK_Send(frame_s *fr)
 */
 static bool MAC_ACK_Recv(frame_s *fr)
 {
+  // Приемник чуть позднее присылает ACK
+  // Задержка связана с включением приемника на передачу
+  TIM_delay(800); 
   frame_s *fr_ACK = RI_Receive(ACK_RECV_TIMEOUT);
   
   // Если пакета нет, выходим из обработчика
@@ -291,9 +294,11 @@ static void MAC_RX_HNDL(uint8_t TS)
   
   // Пакеты во временные слоты 1..49 требуют подтверждения
   // Слоты 0 и 1 для швс и синхронизации соответсвенно
+  bool acked ;
   if (TS > 1)
-    MAC_ACK_Send(fr);
+    acked = MAC_ACK_Send(fr);
  
+  // Дешифруем пакет при необходимости
   #ifdef RARIO_STREAM_ENCRYPT
   BitRawDecrypt(fr->payload, fr->len);
   #endif

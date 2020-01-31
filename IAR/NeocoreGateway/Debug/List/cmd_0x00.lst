@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               30/Jan/2020  11:11:37
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               31/Jan/2020  10:13:54
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,7 +13,7 @@
 #                          
 #    Source file        =  E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW2EBC.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW24F.tmp
 #        (E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c -lcN
 #        E:\WMNU\IAR\NeocoreGateway\Debug\List -o
 #        E:\WMNU\IAR\NeocoreGateway\Debug\Obj -e --debug --core=plain
@@ -25,19 +25,19 @@
 #        --no_code_motion --no_tbaa --no_cross_call --mfc
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x01.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x02.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x03.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x03.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x04.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x05.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x06.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x07.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x08.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x08.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x09.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0A.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0B.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0C.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0B.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0C.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0D.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0E.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_parser.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_parser.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\coder.c E:\WMNU\IAR\SHARE_PRJ_SRC\config.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\delays.c E:\WMNU\IAR\SHARE_PRJ_SRC\dma.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\frame.c E:\WMNU\IAR\SHARE_PRJ_SRC\LLC.c
@@ -158,7 +158,7 @@ E:\WMNU\IAR\NeocoreGateway\src\cmd_0x02.c
      36            cmd_answer(ATYPE_CMD_OK, NULL, 0);
      37            return true;
      38          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x03.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x03.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -349,7 +349,7 @@ E:\WMNU\IAR\NeocoreGateway\src\cmd_0x07.c
      36            cmd_answer(ATYPE_CMD_OK, NULL, 0);
      37            return true;
      38          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x08.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x08.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -449,7 +449,7 @@ E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0A.c
      28            LOG_ON("CMD 0x09. TX frame count");
      29            return true;
      30          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0B.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0B.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -514,7 +514,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0B.c
      62            cmd_answer(ATYPE_CMD_OK, NULL, 0);
      63            return true;
      64          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0C.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0C.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -670,7 +670,7 @@ E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0E.c
      34            cmd_answer(ATYPE_CMD_OK, NULL, 0);
      35            return true;
      36          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_parser.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_parser.c
       1          #include "uart_comm.h"
       2          #include "stdbool.h"
       3          #include "cmd_index_list.h"
@@ -2235,190 +2235,195 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\MAC.c
     207          */
     208          static bool MAC_ACK_Recv(frame_s *fr)
     209          {
-    210            frame_s *fr_ACK = RI_Receive(ACK_RECV_TIMEOUT);
-    211            
-    212            // Если пакета нет, выходим из обработчика
-    213            if (fr_ACK == NULL)
-    214              return false;
-    215            
-    216            // Проверим размер пакета
-    217            if (fr_ACK->len != sizeof(ACK_s))
-    218            {
-    219              frame_delete(fr_ACK);
-    220              return false;
-    221            }
-    222              
-    223            ACK_s *ptrACK;
-    224            ptrACK = (ACK_s*)fr_ACK->payload;
-    225            
-    226            uint8_t crc8 = xor_calc(fr);
-    227            uint8_t ack_crc8 = ptrACK->CRC8;
-    228            frame_delete(fr_ACK);
-    229            
-    230            if (crc8 == ack_crc8)
-    231              return true;
-    232            return false;
-    233          }
-    234          
-    235          /**
-    236          @brief Устанавливает функцию обратного вызова при приеме пакета
-    237          @param[in] fn указатель на функцию обработчик
-    238          */
-    239          void MAC_SetRXCallback(void (*fn)(frame_s *fr))
-    240          {
-    241            RXCallback = fn;
-    242          }
-    243          
-    244          /**
-    245          @brief Состояние слота TS передача
-    246          @return возвращает true, если слот содержит пакет для передачи
-    247          */
-    248          bool MAC_GetTXState(uint8_t TS)
-    249          {
-    250            ASSERT(TS < 50  || TS !=0 );
-    251            return MACSlotTable[TS].TX.enable;
-    252          }
-    253          
-    254          /**
-    255          @brief Состояние слота TS приема
-    256          @return возвращает true, если слот принимает пакет
-    257          */
-    258          bool MAC_GetRXState(uint8_t TS)
-    259          {
-    260            ASSERT(TS < 50  || TS !=0);
-    261            return MACSlotTable[TS].RX.enable;
-    262          }
-    263          
-    264          /**
-    265          @brief Обработчик слота приема пакета
-    266          @detail При необходимости подтвеждает пакет
-    267          @param[in] TS номер временного слота
-    268          */
-    269          static void MAC_RX_HNDL(uint8_t TS)
-    270          {
-    271            ASSERT(TS < 50  || TS !=0);
-    272          
-    273            if (!MAC_ENABLE_MODULE) // Модуль откючен
-    274              return;
-    275            
-    276            // Задержка перед приемом. Прием начинается через 427мкс и заканчивается в
-    277            // 3.2 мс от начала слота. Длительность 2.8мс. Длятельность больше 2мс так
-    278            // как SDF приходит позже чем фактическая передача на 400мкс
-    279            TIM_delay(200);
-    280            RI_SetChannel(MACSlotTable[TS].RX.CH);
-    281            frame_s *fr = RI_Receive(RECV_TIMEOUT);
-    282          
-    283          //volatile uint16_t DBGT= NT_GetTime();  
-    284            
-    285           // frame_s *fr = RI_Receive(2000);
-    286            
-    287          //volatile uint16_t DBGT2= NT_GetTime();   
-    288            // Если пакета нет, выходим из обработчика
-    289            if (fr == NULL)
-    290              return;
-    291            
-    292            // Пакеты во временные слоты 1..49 требуют подтверждения
-    293            // Слоты 0 и 1 для швс и синхронизации соответсвенно
-    294            if (TS > 1)
-    295              MAC_ACK_Send(fr);
-    296           
-    297            #ifdef RARIO_STREAM_ENCRYPT
-    298            BitRawDecrypt(fr->payload, fr->len);
-    299            #endif
-    300            
-    301            RXCallback(fr);   // Передаем пакет на дальнейшую обработку
-    302            // Удаление пакета не наша забота
-    303          }
-    304          
-    305          /**
-    306          @brief Обработчик слота пердачи пакета
-    307          @detail После отправки пакета требуется подтверждение приема если meta.ACK = 1.
-    308           После отправки ждем приема ACK. Проверка подлинности ACK происходит с помощью
-    309           обратного вызова isACK_OK(*fr, *fr_ACK). Результат true или false.
-    310           Передача начинается через 1.5 мс.
-    311          @param[in] TS номер временного слота
-    312          */
-    313          static void MAC_TX_HNDL(uint8_t TS)
-    314          {
-    315            ASSERT(TS < 50  || TS !=0);
-    316            
-    317            if (!MAC_ENABLE_MODULE) // Модуль отключен
-    318              return;
-    319            
-    320            // По ошибки вызвали. Такого быть не должно, но подстрахуемся.
-    321            if ((!MACSlotTable[TS].TX.enable) || (MACSlotTable[TS].TX.attempts == 0)) 
-    322            {
-    323              TIC_SetTXState(TS, false);
-    324              return;
-    325            }
-    326            
-    327            RI_SetChannel(MACSlotTable[TS].TX.CH); // Устанавливаем канал передачи
-    328          //volatile uint16_t DBGT = 5;
-    329          //DBGT= NT_GetTime();
-    330            // Задержка перед передачей данных необходима для учета отклонения
-    331            // времени между узлами из-за рассинхронизации узлов.
-    332            // Задержка составляет 1.5 мс (49 тактов сети)
-    333            // В delay число 918, оно учитывает время включения радио, контроля CCA
-    334            // и начал передачи будет чере 1.5мс
-    335          //volatile uint16_t DBGT= NT_GetTime();
-    336              TIM_delay(918);
-    337            // Пробуем передать данные
-    338            bool tx_success = RI_Send(MACSlotTable[TS].TX.fr); 
-    339            bool send_success = false;  
-    340            
-    341            LOG_OFF("RI_Send = %d, CH = %d, TS = %d\r\n",
-    342                tx_success, MACSlotTable[TS].TX.CH, TS);
-    343          //DBGT= NT_GetTime();    
-    344            if (tx_success)
-    345            {
-    346              if (TS > 1) // требуется подтверждение ACK
-    347              {
-    348                if (MAC_ACK_Recv(MACSlotTable[TS].TX.fr))
-    349                    send_success = true;
-    350              }
-    351              else // не требуеться подтверждение
-    352                send_success = true;
-    353            }
-    354            
-    355          
-    356            if (send_success) // В случаи успеха удаляем данные и закрываем слоты 
-    357            { 
-    358              frame_delete(MACSlotTable[TS].TX.fr);
-    359              MACSlotTable[TS].TX.enable = false;
-    360              TIC_SetTXState(TS, false);      
-    361            }
-    362            else // Уменьшаем счетчик попыток передачи и удаляем пакет при достижении 0.
-    363            {
-    364              MACSlotTable[TS].TX.attempts --;
-    365              if (MACSlotTable[TS].TX.attempts == 0)
-    366                {
-    367                  frame_delete(MACSlotTable[TS].TX.fr);
-    368                  MACSlotTable[TS].TX.enable = false;
-    369                  TIC_SetTXState(TS, false);  
-    370                }
-    371            }
-    372          }
-    373          
-    374          /*!
-    375          \brief Расшифровка область памяти
-    376          \param[in,out] *src Указатель на начало области дешифрования
-    377          \param[in] size Размер расшифруемых данных
-    378          */
-    379          static void BitRawDecrypt(uint8_t *src, uint8_t size)
-    380          {
-    381            AES_StreamCoder(false, src, src, KEY, IV, size);
-    382          }
-    383          
-    384          /*!
-    385          \brief Шифрует область памяти
-    386          \param[in,out] *src Указатель на начало области шифрования
-    387          \param[in] size Размер шифруемых данных
-    388          */
-    389          static void BitRawCrypt(uint8_t *src, uint8_t size)
-    390          {
-    391            AES_StreamCoder(true, src, src, KEY, IV, size);
-    392          }
-    393          
+    210            // Приемник чуть позднее присылает ACK
+    211            // Задержка связана с включением приемника на передачу
+    212            TIM_delay(800); 
+    213            frame_s *fr_ACK = RI_Receive(ACK_RECV_TIMEOUT);
+    214            
+    215            // Если пакета нет, выходим из обработчика
+    216            if (fr_ACK == NULL)
+    217              return false;
+    218            
+    219            // Проверим размер пакета
+    220            if (fr_ACK->len != sizeof(ACK_s))
+    221            {
+    222              frame_delete(fr_ACK);
+    223              return false;
+    224            }
+    225              
+    226            ACK_s *ptrACK;
+    227            ptrACK = (ACK_s*)fr_ACK->payload;
+    228            
+    229            uint8_t crc8 = xor_calc(fr);
+    230            uint8_t ack_crc8 = ptrACK->CRC8;
+    231            frame_delete(fr_ACK);
+    232            
+    233            if (crc8 == ack_crc8)
+    234              return true;
+    235            return false;
+    236          }
+    237          
+    238          /**
+    239          @brief Устанавливает функцию обратного вызова при приеме пакета
+    240          @param[in] fn указатель на функцию обработчик
+    241          */
+    242          void MAC_SetRXCallback(void (*fn)(frame_s *fr))
+    243          {
+    244            RXCallback = fn;
+    245          }
+    246          
+    247          /**
+    248          @brief Состояние слота TS передача
+    249          @return возвращает true, если слот содержит пакет для передачи
+    250          */
+    251          bool MAC_GetTXState(uint8_t TS)
+    252          {
+    253            ASSERT(TS < 50  || TS !=0 );
+    254            return MACSlotTable[TS].TX.enable;
+    255          }
+    256          
+    257          /**
+    258          @brief Состояние слота TS приема
+    259          @return возвращает true, если слот принимает пакет
+    260          */
+    261          bool MAC_GetRXState(uint8_t TS)
+    262          {
+    263            ASSERT(TS < 50  || TS !=0);
+    264            return MACSlotTable[TS].RX.enable;
+    265          }
+    266          
+    267          /**
+    268          @brief Обработчик слота приема пакета
+    269          @detail При необходимости подтвеждает пакет
+    270          @param[in] TS номер временного слота
+    271          */
+    272          static void MAC_RX_HNDL(uint8_t TS)
+    273          {
+    274            ASSERT(TS < 50  || TS !=0);
+    275          
+    276            if (!MAC_ENABLE_MODULE) // Модуль откючен
+    277              return;
+    278            
+    279            // Задержка перед приемом. Прием начинается через 427мкс и заканчивается в
+    280            // 3.2 мс от начала слота. Длительность 2.8мс. Длятельность больше 2мс так
+    281            // как SDF приходит позже чем фактическая передача на 400мкс
+    282            TIM_delay(200);
+    283            RI_SetChannel(MACSlotTable[TS].RX.CH);
+    284            frame_s *fr = RI_Receive(RECV_TIMEOUT);
+    285          
+    286          //volatile uint16_t DBGT= NT_GetTime();  
+    287            
+    288           // frame_s *fr = RI_Receive(2000);
+    289            
+    290          //volatile uint16_t DBGT2= NT_GetTime();   
+    291            // Если пакета нет, выходим из обработчика
+    292            if (fr == NULL)
+    293              return;
+    294            
+    295            // Пакеты во временные слоты 1..49 требуют подтверждения
+    296            // Слоты 0 и 1 для швс и синхронизации соответсвенно
+    297            bool acked ;
+    298            if (TS > 1)
+    299              acked = MAC_ACK_Send(fr);
+    300           
+    301            // Дешифруем пакет при необходимости
+    302            #ifdef RARIO_STREAM_ENCRYPT
+    303            BitRawDecrypt(fr->payload, fr->len);
+    304            #endif
+    305            
+    306            RXCallback(fr);   // Передаем пакет на дальнейшую обработку
+    307            // Удаление пакета не наша забота
+    308          }
+    309          
+    310          /**
+    311          @brief Обработчик слота пердачи пакета
+    312          @detail После отправки пакета требуется подтверждение приема если meta.ACK = 1.
+    313           После отправки ждем приема ACK. Проверка подлинности ACK происходит с помощью
+    314           обратного вызова isACK_OK(*fr, *fr_ACK). Результат true или false.
+    315           Передача начинается через 1.5 мс.
+    316          @param[in] TS номер временного слота
+    317          */
+    318          static void MAC_TX_HNDL(uint8_t TS)
+    319          {
+    320            ASSERT(TS < 50  || TS !=0);
+    321            
+    322            if (!MAC_ENABLE_MODULE) // Модуль отключен
+    323              return;
+    324            
+    325            // По ошибки вызвали. Такого быть не должно, но подстрахуемся.
+    326            if ((!MACSlotTable[TS].TX.enable) || (MACSlotTable[TS].TX.attempts == 0)) 
+    327            {
+    328              TIC_SetTXState(TS, false);
+    329              return;
+    330            }
+    331            
+    332            RI_SetChannel(MACSlotTable[TS].TX.CH); // Устанавливаем канал передачи
+    333          //volatile uint16_t DBGT = 5;
+    334          //DBGT= NT_GetTime();
+    335            // Задержка перед передачей данных необходима для учета отклонения
+    336            // времени между узлами из-за рассинхронизации узлов.
+    337            // Задержка составляет 1.5 мс (49 тактов сети)
+    338            // В delay число 918, оно учитывает время включения радио, контроля CCA
+    339            // и начал передачи будет чере 1.5мс
+    340          //volatile uint16_t DBGT= NT_GetTime();
+    341              TIM_delay(918);
+    342            // Пробуем передать данные
+    343            bool tx_success = RI_Send(MACSlotTable[TS].TX.fr); 
+    344            bool send_success = false;  
+    345            
+    346            LOG_OFF("RI_Send = %d, CH = %d, TS = %d\r\n",
+    347                tx_success, MACSlotTable[TS].TX.CH, TS);
+    348          //DBGT= NT_GetTime();    
+    349            if (tx_success)
+    350            {
+    351              if (TS > 1) // требуется подтверждение ACK
+    352              {
+    353                if (MAC_ACK_Recv(MACSlotTable[TS].TX.fr))
+    354                    send_success = true;
+    355              }
+    356              else // не требуеться подтверждение
+    357                send_success = true;
+    358            }
+    359            
+    360          
+    361            if (send_success) // В случаи успеха удаляем данные и закрываем слоты 
+    362            { 
+    363              frame_delete(MACSlotTable[TS].TX.fr);
+    364              MACSlotTable[TS].TX.enable = false;
+    365              TIC_SetTXState(TS, false);      
+    366            }
+    367            else // Уменьшаем счетчик попыток передачи и удаляем пакет при достижении 0.
+    368            {
+    369              MACSlotTable[TS].TX.attempts --;
+    370              if (MACSlotTable[TS].TX.attempts == 0)
+    371                {
+    372                  frame_delete(MACSlotTable[TS].TX.fr);
+    373                  MACSlotTable[TS].TX.enable = false;
+    374                  TIC_SetTXState(TS, false);  
+    375                }
+    376            }
+    377          }
+    378          
+    379          /*!
+    380          \brief Расшифровка область памяти
+    381          \param[in,out] *src Указатель на начало области дешифрования
+    382          \param[in] size Размер расшифруемых данных
+    383          */
+    384          static void BitRawDecrypt(uint8_t *src, uint8_t size)
+    385          {
+    386            AES_StreamCoder(false, src, src, KEY, IV, size);
+    387          }
+    388          
+    389          /*!
+    390          \brief Шифрует область памяти
+    391          \param[in,out] *src Указатель на начало области шифрования
+    392          \param[in] size Размер шифруемых данных
+    393          */
+    394          static void BitRawCrypt(uint8_t *src, uint8_t size)
+    395          {
+    396            AES_StreamCoder(true, src, src, KEY, IV, size);
+    397          }
+    398          
 E:\WMNU\IAR\NEOCOREGATEWAY\src\main.c
       1          #include "manager.h"
       2          #include "nwdebuger.h"
@@ -4752,6 +4757,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       2     12   LoadTXData
       0     24   MAC_ACK_Recv
         0     14   -> RI_Receive
+        0     14   -> TIM_delay
         0     14   -> frame_delete
         0     14   -> xor_calc
       0     24   MAC_ACK_Send
@@ -5231,8 +5237,8 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_7
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_8
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_9
-      42  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">
-      44  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">_1
+      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">
+      44  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_1
       34  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">
       32  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_1
       32  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_2
@@ -5261,8 +5267,8 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_7
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_8
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_9
-      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE
-      44  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE_1
+      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne
+      44  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_1
       34  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH
       32  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_1
       32  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_2
@@ -5292,6 +5298,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        4  ?<Initializer for __Constant_1>
        4  ?<Initializer for __Constant_1f4>
        4  ?<Initializer for __Constant_20>
+       4  ?<Initializer for __Constant_320>
        4  ?<Initializer for __Constant_396>
        4  ?<Initializer for __Constant_3d000000>
        4  ?<Initializer for __Constant_3e8>
@@ -5420,7 +5427,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       50  LoadTXData
        6  LoadTXData::?relay
      350  MACSlotTable
-     113  MAC_ACK_Recv
+     122  MAC_ACK_Recv
        6  MAC_ACK_Recv::?relay
       91  MAC_ACK_Send
        6  MAC_ACK_Send::?relay
@@ -5437,7 +5444,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  MAC_Init::?relay
      167  MAC_OpenRXSlot
        6  MAC_OpenRXSlot::?relay
-     206  MAC_RX_HNDL
+     208  MAC_RX_HNDL
        6  MAC_RX_HNDL::?relay
      135  MAC_Reset
        6  MAC_Reset::?relay
@@ -5653,6 +5660,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        4  __Constant_19833891
        4  __Constant_1f4
        4  __Constant_20
+       4  __Constant_320
        4  __Constant_396
        4  __Constant_3d000000
        4  __Constant_3e8
@@ -5809,19 +5817,19 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
      513  -- Other
 
  
- 18 555 bytes in segment BANKED_CODE
+ 18 566 bytes in segment BANKED_CODE
   1 062 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
      60 bytes in segment NEAR_CODE
      38 bytes in segment SFR_AN
-  1 320 bytes in segment XDATA_I
-  1 320 bytes in segment XDATA_ID
+  1 324 bytes in segment XDATA_I
+  1 324 bytes in segment XDATA_ID
   1 174 bytes in segment XDATA_Z
  
-  2 352 bytes of CODE     memory (+ 93 bytes shared)
+  2 352 bytes of CODE     memory (+ 97 bytes shared)
       0 bytes of DATA     memory (+ 38 bytes shared)
- 18 511 bytes of HUGECODE memory (+ 44 bytes shared)
-  2 422 bytes of XDATA    memory (+ 72 bytes shared)
+ 18 522 bytes of HUGECODE memory (+ 44 bytes shared)
+  2 422 bytes of XDATA    memory (+ 76 bytes shared)
 
 Errors: none
-Warnings: 7
+Warnings: 8
