@@ -1,4 +1,5 @@
 #pragma once
+#include "basic.h"
 
 /**
 @brief Главное хранилище данных и настроек узла.
@@ -16,6 +17,9 @@ typedef struct
   uint8_t tx_power;
   uint8_t panid;
   uint8_t node_adr;
+  uint8_t ETX;  // Текущее значение
+  uint8_t ts_slots[MAX_OPEN_SLOTS]; //  =0 слот закрыт
+  uint8_t ch_slots[MAX_OPEN_SLOTS]; // =0 слот закрыт
 } database_s;
 
 extern database_s CONFIG;

@@ -161,6 +161,10 @@
             <file>$PROJ_DIR$\Debug\Obj\protocol_controller.pbi</file>
             <file>$PROJ_DIR$\Debug\Obj\protocol_controller.r51</file>
             <file>$PROJ_DIR$\Debug\Obj\protocol_controller.__cstat.et</file>
+            <file>$PROJ_DIR$\..\NEOCOREGATEWAY\src\uart_comm.c</file>
+            <file>$PROJ_DIR$\..\NEOCOREGATEWAY\src\cmd_0x10.c</file>
+            <file>$PROJ_DIR$\..\NEOCOREGATEWAY\src\cmd_0x0F.c</file>
+            <file>$PROJ_DIR$\..\NEOCOREGATEWAY\src\cmd_parser.c</file>
         </outputs>
         <file>
             <name>$PROJ_DIR$\src\auth.c</name>
@@ -185,7 +189,7 @@
                 </tool>
                 <tool>
                     <name>ICC8051</name>
-                    <file> 42 132 111 130 137 120 123 125 134 133 135 29 109 122 31 7 2 23 19 20 21 114 110 25 27 22 18 44 24 26 4 38 28 37 136 6 13 17 15 1 30 33 53 32 40 54 35 11 34 51 47 36 8 39 41 131 10 3 5 9 43 45 12 46 50 14 52 16</file>
+                    <file> 42 132 111 130 137 120 123 125 134 133 135 29 109 122 31 7 2 23 18 44 19 20 21 114 110 25 27 22 24 26 4 38 28 37 136 6 13 17 15 1 30 33 53 32 40 54 35 11 34 51 47 36 8 5 39 41 131 10 3 9 43 45 12 46 50 14 52 16</file>
                 </tool>
             </inputs>
         </file>
@@ -204,7 +208,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 111 109 133 125 123 132 120 29 130 135 137 134 122 42 31 23</file>
+                    <file> 125 130 132 29 31 135 111 120 122 23 133 137 123 109 42 134 18 44</file>
                 </tool>
             </inputs>
         </file>
@@ -232,7 +236,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 29 23 135 109 38 132 130 111 122 31 18 133 137 134 42 125 120 123 44</file>
+                    <file> 130 122 23 135 137 134 38 132 111 109 29 31 18 133 42 125 120 123 44</file>
                 </tool>
             </inputs>
         </file>
@@ -251,7 +255,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 122 29 120 38 111 13 15 135 125 23 17 1 132 130 123 42 133 137 134 109</file>
+                    <file> 125 38 111 130 122 13 15 133 120 29 23 17 1 132 135 123 42 137 134 109 18 44</file>
                 </tool>
             </inputs>
         </file>
@@ -263,6 +267,10 @@
                     <file> 92</file>
                 </tool>
                 <tool>
+                    <name>ICC8051</name>
+                    <file> 91</file>
+                </tool>
+                <tool>
                     <name>__cstat</name>
                     <file> 82</file>
                 </tool>
@@ -270,7 +278,11 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 111 109 133 125 123 132 120 31 130 135 137 134 122 42 29 13</file>
+                    <file> 111 137 5 132 109 18 122 136 29 38 53 133 130 25 31 13 110 23 37 135 134 125 42 120 123 44</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 42 132 111 130 137 120 123 125 134 133 135 31 109 122 29 13 18 44 110 38 23 5 37 136 53 25</file>
                 </tool>
             </inputs>
         </file>
@@ -308,7 +320,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 130 125 134 29 23 37 135 137 5 3 31 132 111 133 120 123 109 122 42 136</file>
+                    <file> 130 122 134 29 109 133 23 37 135 137 111 136 5 3 31 132 125 120 123 18 44 42</file>
                 </tool>
             </inputs>
         </file>
@@ -397,7 +409,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 123 111 18 109 110 23 130 125 120 133 44 122 137 134 29</file>
+                    <file> 44 111 18 125 109 120 133 29 110 23 130 123 122 137 134</file>
                 </tool>
             </inputs>
         </file>
@@ -492,7 +504,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 125 111 40 29 21 109 123 122 110 136 53 130 135 133 42 18 44 120 33 137 134 25 132</file>
+                    <file> 40 29 134 109 21 130 110 136 53 111 25 122 133 42 18 44 137 132 125 33 120 123 135</file>
                 </tool>
             </inputs>
         </file>
@@ -511,7 +523,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 109 130 53 137 122 44 31 42 29 25 40 23 134 135 21 33 51 18 114 111 125 120 123 132 133 35 27 47</file>
+                    <file> 109 53 137 122 44 135 31 42 29 25 40 23 130 134 21 33 51 18 114 111 125 120 123 132 133 35 27 47</file>
                 </tool>
             </inputs>
         </file>
@@ -587,7 +599,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 137 134 40 29 130 136 111 53 122 133 114 42 109 37 45 25 110 23 125 120 123 132 135 44</file>
+                    <file> 137 134 40 29 130 136 111 53 122 133 114 42 109 37 45 25 110 23 125 120 123 132 135 18 44</file>
                 </tool>
             </inputs>
         </file>
@@ -625,7 +637,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 111 122 40 42 120 109 29 53 114 133 125 123 130 132 18 110 21 44 23 137 134 25 136 135</file>
+                    <file> 130 133 40 111 42 120 109 122 29 53 114 125 123 135 18 110 21 44 23 137 134 136 132 25</file>
                 </tool>
             </inputs>
         </file>
@@ -644,7 +656,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 122 25 137 134 130 109 125 136 114 135 44 40 42 18 111 120 123 133 132 53 29</file>
+                    <file> 122 25 137 134 130 109 125 136 114 133 40 42 18 111 120 123 53 132 135 44 29</file>
                 </tool>
             </inputs>
         </file>
@@ -660,6 +672,12 @@
                     <file> 126</file>
                 </tool>
             </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 109 29 130 111 31 122 125 114 33 11 137 134 133 44 42 53 136 17 120 123 132 135 25 35</file>
+                </tool>
+            </inputs>
         </file>
         <file>
             <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\ethernet.c</name>
