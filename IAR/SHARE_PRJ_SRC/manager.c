@@ -79,7 +79,7 @@ bool neocore_stack_reset(){
   MAC_Reset();
   SY_Reset();
   LLC_Reset();
-
+  RI_Reset();
 #ifdef GATEWAY
   RXB_Reset();
 #endif

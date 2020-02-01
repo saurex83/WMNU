@@ -18,5 +18,7 @@ void CF_init()
   CONFIG.node_ver = NODE_VER;
   CONFIG.node_type = NODE_TYPE;
   CONFIG.sync_channel = DEFAULT_SYNC_CHANNEL;
+  CONFIG.sys_channel = DEFAULT_SYS_CHANNEL;
+  CONFIG.tx_power = DEFAULT_TX_POWER;
   CONFIG.panid = DEFAULT_PANID;
 }

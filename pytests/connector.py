@@ -291,6 +291,36 @@ class Connector:
             print('Установлен канал синхросигнала = %d!'%(ch[0]))
             return True
 
+    def cmd0F_Set_SYS_CH(self, ch):
+        # ch byte
+        cmd = b'\x0F' + ch  
+        
+        self._write(cmd)
+        answ = self._read()
+        
+        if answ['err'] != '':
+            print(answ['err'])
+            return False
+
+        if (answ['data'] == b''):
+            print('Установлен системный канал = %d!'%(ch[0]))
+            return True
+
+    def cmd10_Set_TX_power(self, tx_pow):
+        # tx_pow byte
+        cmd = b'\x10' + tx_pow  
+        
+        self._write(cmd)
+        answ = self._read()
+        
+        if answ['err'] != '':
+            print(answ['err'])
+            return False
+
+        if (answ['data'] == b''):
+            print('Установлена мощность радиопередатчиков= %d!'%(tx_pow[0]))
+            return True
+
     def cmd0D_Energy_Scan(self, ch, timeout):
         # ch byte from 0 to 113 
         # timeout 2 byte

@@ -2274,6 +2274,12 @@
             <name>$PROJ_DIR$\src\cmd_0x0E.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\src\cmd_0x0F.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\cmd_0x10.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\src\cmd_index_list.h</name>
         </file>
         <file>

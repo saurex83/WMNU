@@ -12,6 +12,8 @@ typedef struct
   uint8_t stream_key[16];
   uint8_t stream_iv[16];
   uint8_t sync_channel;
+  uint8_t sys_channel;
+  uint8_t tx_power;
   uint8_t panid;
   uint8_t node_adr;
 } database_s;
