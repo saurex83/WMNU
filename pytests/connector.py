@@ -1,7 +1,7 @@
 import serial
 import time
 
-COM_PORT = '/dev/ttyUSB0'
+COM_PORT = '/dev/ttyUSB1'
 BOUD = 115200   #2000000
 RX_TIMEOUT = 50e-3
 MAX_RX_BYTES = 255

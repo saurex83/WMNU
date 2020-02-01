@@ -292,6 +292,7 @@ static void MAC_RX_HNDL(uint8_t TS)
   if (fr == NULL)
     return;
   
+  fr->meta.TS = TS;
   // Пакеты во временные слоты 1..49 требуют подтверждения
   // Слоты 0 и 1 для швс и синхронизации соответсвенно
   bool acked ;

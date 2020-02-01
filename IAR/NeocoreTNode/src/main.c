@@ -34,10 +34,13 @@ frame_s* gen_frame(void){
 
  static bool state = false;
 void UDP_Port_10_HNDL(frame_s *fr){
- 
-  P1_4 = !state;
+static int cnt = 0;
+cnt++;
+  P1_4 = state;
   state = !state;
   frame_delete(fr);
+  if (cnt == 10)
+    cnt = 0;
 }
 
 void main(void)
