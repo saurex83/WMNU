@@ -45,6 +45,7 @@ cnt++;
 
 void main(void)
 {
+  SLEEPCMD = 2; // Режим PM2
   NEOCORE_Init();
   P1DIR = 0x13;
   network_discovery(100);

@@ -52,7 +52,7 @@ def SEND_ETHERNET(UART_CONN):
     UART_CONN.cmd04_Set_IV(DEFAULT_IV)
     UART_CONN.cmd05_Set_KEY(DEFAULT_KEY)
     UART_CONN.cmd0F_Set_SYS_CH(b'\x0B')
-    UART_CONN.cmd10_Set_TX_power(b'\x05')
+    UART_CONN.cmd10_Set_TX_power(b'\xF5')  # xF5 +4.5 x05 -22 
     UART_CONN.cmd03_ON_OFF(True)
     UART_CONN.cmd07_OpenSlot(b'\x22',b'\x14')
 

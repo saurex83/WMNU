@@ -48,6 +48,8 @@ static uint16_t SYNC_ACCURATE_NETWORK_TIME;
 
 typedef struct // Формат структуры пакета синхронизации
 {
+    uint8_t sys_ch;
+    uint8_t tx_power;
     uint8_t panid;
     uint32_t rtc;
     uint32_t magic;
@@ -261,6 +263,8 @@ P1_0 = !false; //ОТЛАДКА
 static bool send_sync(void)
 {
   SYNC_s sync;
+  sync.sys_ch = CONFIG.sys_channel;
+  sync.tx_power = CONFIG.tx_power;
   sync.panid = CONFIG.panid;
   sync.rtc = TIC_GetRTC();
   sync.magic = MAGIC;
@@ -354,6 +358,9 @@ bool SY_SYNC_NETWORK(uint16_t *panid,uint16_t timeout)
     // Возвращаем результат
     *panid = sync->panid;
     CONFIG.panid = sync->panid;
+    CONFIG.sys_channel = sync->sys_ch;
+    CONFIG.tx_power = sync->tx_power;
+
     net_found = true;
     
     // Синхронизируемся с сетью
