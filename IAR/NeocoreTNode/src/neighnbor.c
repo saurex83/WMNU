@@ -264,6 +264,7 @@ static void send_card(void){
   fr->meta.NSRC = CONFIG.node_adr; 
   fr->meta.TS = 0;
   fr->meta.CH = CONFIG.sys_channel;
+  fr->meta.TX_METHOD = BROADCAST;
   ETH_Send(fr);
 }
 
@@ -315,6 +316,7 @@ static void send_cmd_req(){
   fr->meta.NSRC = CONFIG.node_adr; 
   fr->meta.TS = 0;
   fr->meta.CH = CONFIG.sys_channel;
+  fr->meta.TX_METHOD = BROADCAST;
   ETH_Send(fr);
 }
 

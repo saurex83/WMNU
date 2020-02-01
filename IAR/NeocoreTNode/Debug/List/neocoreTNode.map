@@ -2,7 +2,7 @@
 #                                                                              #
 #      IAR Universal Linker V6.4.6.89                                          #
 #                                                                              #
-#           Link time     =  01/Feb/2020  22:26:00                             #
+#           Link time     =  01/Feb/2020  22:42:55                             #
 #           Target CPU    =  x51                                               #
 #           List file     =  E:\WMNU\IAR\NeocoreTNode\Debug\List\neocoreTNode. #
 #                            map                                               #
@@ -12,7 +12,7 @@
 #                            UBROF version 10.0.6                              #
 #                            Using library modules for C-SPY (-rt)             #
 #           Command line  =  -f                                                #
-#                            C:\Users\08A4~1\AppData\Local\Temp\EW175E.tmp     #
+#                            C:\Users\08A4~1\AppData\Local\Temp\EW934E.tmp     #
 #                            (E:\WMNU\IAR\NeocoreTNode\Debug\Obj\auth.r51      #
 #                            E:\WMNU\IAR\NeocoreTNode\Debug\Obj\balancer.r51   #
 #                            E:\WMNU\IAR\NeocoreTNode\Debug\Obj\cmd_parser.r51 #
@@ -1879,7 +1879,7 @@ XDATA_Z
                XSTACK = 00000009 ( 0000000A )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003679 - 00003770 (0xf8 bytes), align: 0
+  Relative segment, address: CODE 00003679 - 0000377C (0x104 bytes), align: 0
   Segment part 483.           Intra module refs:   send_card::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
@@ -1889,60 +1889,60 @@ XDATA_Z
                ISTACK = 00000000 ( 00000001 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003771 - 00003822 (0xb2 bytes), align: 0
+  Relative segment, address: CODE 0000377D - 0000382E (0xb2 bytes), align: 0
   Segment part 485.           Intra module refs:   deactivate_unused_records::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
            deactivate_unused_records
-                                   00003771 
+                                   0000377D 
                calls direct
                XSTACK = 00000000 ( 00000010 )
                ISTACK = 00000000 ( 00000001 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003823 - 00003897 (0x75 bytes), align: 0
+  Relative segment, address: CODE 0000382F - 000038A3 (0x75 bytes), align: 0
   Segment part 487.           Intra module refs:   card_send_task::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           card_send_task          00003823 
+           card_send_task          0000382F 
                calls direct
                XSTACK = 00000000 ( 00000010 )
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003898 - 0000398A (0xf3 bytes), align: 0
+  Relative segment, address: CODE 000038A4 - 000039A2 (0xff bytes), align: 0
   Segment part 489.           Intra module refs:   send_cmd_req::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           send_cmd_req            00003898 
+           send_cmd_req            000038A4 
                calls direct
                XSTACK = 00000010 ( 00000011 )
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 0000398B - 000039CA (0x40 bytes), align: 0
+  Relative segment, address: CODE 000039A3 - 000039E2 (0x40 bytes), align: 0
   Segment part 491.           Intra module refs:   is_nb_table_free::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           is_nb_table_free        0000398B 
+           is_nb_table_free        000039A3 
                XSTACK = 00000010 ( 00000000 )
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000039CB - 00003A03 (0x39 bytes), align: 0
+  Relative segment, address: CODE 000039E3 - 00003A1B (0x39 bytes), align: 0
   Segment part 493.           Intra module refs:   card_send_req_task::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           card_send_req_task      000039CB 
+           card_send_req_task      000039E3 
                calls direct
                XSTACK = 00000000 ( 00000010 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003A04 - 00003A17 (0x14 bytes), align: 0
+  Relative segment, address: CODE 00003A1C - 00003A2F (0x14 bytes), align: 0
   Segment part 495.           Intra module refs:   NP_TimeAlloc_HNDL::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           NP_TimeAlloc_HNDL       00003A04 
+           NP_TimeAlloc_HNDL       00003A1C 
                calls direct, is indirectly called
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
@@ -1976,72 +1976,72 @@ XDATA_Z
            TOFFSET                 00000454 
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003A18 - 00003A61 (0x4a bytes), align: 0
+  Relative segment, address: CODE 00003A30 - 00003A79 (0x4a bytes), align: 0
   Segment part 497.           Intra module refs:   NT_Init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           NT_Init                 00003A18 
+           NT_Init                 00003A30 
                calls direct
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003A62 - 00003AFD (0x9c bytes), align: 0
+  Relative segment, address: CODE 00003A7A - 00003B15 (0x9c bytes), align: 0
   Segment part 499.           Intra module refs:   NT_SetTime::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           NT_SetTime              00003A62 
+           NT_SetTime              00003A7A 
                calls direct
                XSTACK = 0000000A ( 00000014 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003AFE - 00003BBA (0xbd bytes), align: 0
+  Relative segment, address: CODE 00003B16 - 00003BD2 (0xbd bytes), align: 0
   Segment part 501.           Intra module refs:   calcCompareTime::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           calcCompareTime         00003AFE 
+           calcCompareTime         00003B16 
                calls direct
                XSTACK = 0000000C ( 00000016 )
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003BBB - 00003C3B (0x81 bytes), align: 0
+  Relative segment, address: CODE 00003BD3 - 00003C53 (0x81 bytes), align: 0
   Segment part 503.           Intra module refs:   NT_SetCompare::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           NT_SetCompare           00003BBB 
+           NT_SetCompare           00003BD3 
                calls direct
                XSTACK = 0000000E ( 00000012 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003C3C - 00003C4E (0x13 bytes), align: 0
+  Relative segment, address: CODE 00003C54 - 00003C66 (0x13 bytes), align: 0
   Segment part 505.           Intra module refs:   NT_IRQEnable::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           NT_IRQEnable            00003C3C 
+           NT_IRQEnable            00003C54 
                XSTACK = 0000000F ( 00000000 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003C4F - 00003C59 (0xb bytes), align: 0
+  Relative segment, address: CODE 00003C67 - 00003C71 (0xb bytes), align: 0
   Segment part 507.           Intra module refs:   isIRQEnable::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           isIRQEnable             00003C4F 
+           isIRQEnable             00003C67 
                XSTACK = 0000000E ( 00000000 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003C5A - 00003C6C (0x13 bytes), align: 0
+  Relative segment, address: CODE 00003C72 - 00003C84 (0x13 bytes), align: 0
   Segment part 509.           Intra module refs:   NT_SetEventCallback::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           NT_SetEventCallback     00003C5A 
+           NT_SetEventCallback     00003C72 
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003C6D - 00003CA3 (0x37 bytes), align: 0
+  Relative segment, address: CODE 00003C85 - 00003CBB (0x37 bytes), align: 0
   Segment part 511.           Intra module refs:   NT_GetTime::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           NT_GetTime              00003C6D 
+           NT_GetTime              00003C85 
                calls direct
                XSTACK = 00000020 ( 00000010 )
     -------------------------------------------------------------------------
@@ -2056,11 +2056,11 @@ NEAR_CODE
                XSTACK = 00000000 ( 0000000F )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003CA4 - 00003D21 (0x7e bytes), align: 0
+  Relative segment, address: CODE 00003CBC - 00003D39 (0x7e bytes), align: 0
   Segment part 513.           Intra module refs:   NT_WaitTime::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           NT_WaitTime             00003CA4 
+           NT_WaitTime             00003CBC 
                XSTACK = 00000010 ( 0000000C )
     -------------------------------------------------------------------------
 XDATA_Z
@@ -2071,11 +2071,11 @@ XDATA_Z
            NT_WaitTime::val        00000456 
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003D22 - 00003D5C (0x3b bytes), align: 0
+  Relative segment, address: CODE 00003D3A - 00003D74 (0x3b bytes), align: 0
   Segment part 515.           Intra module refs:   ReadTimer::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           ReadTimer               00003D22 
+           ReadTimer               00003D3A 
                XSTACK = 00000016 ( 00000000 )
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
@@ -2087,36 +2087,36 @@ XDATA_Z
            ReadTimer::ret_val      0000045A 
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003D5D - 00003DA2 (0x46 bytes), align: 0
+  Relative segment, address: CODE 00003D75 - 00003DBA (0x46 bytes), align: 0
   Segment part 517.           Intra module refs:   loadTimerCompare::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           loadTimerCompare        00003D5D 
+           loadTimerCompare        00003D75 
                XSTACK = 0000000C ( 00000010 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003DA3 - 00003DAE (0xc bytes), align: 0
+  Relative segment, address: CODE 00003DBB - 00003DC6 (0xc bytes), align: 0
   Segment part 523.           Intra module refs:   MyLowLevelPutchar::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           MyLowLevelPutchar       00003DA3 
+           MyLowLevelPutchar       00003DBB 
                XSTACK = 00000010 ( 00000000 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003DAF - 00003E4A (0x9c bytes), align: 0
+  Relative segment, address: CODE 00003DC7 - 00003E62 (0x9c bytes), align: 0
   Segment part 525.           Intra module refs:   __write::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           __write                 00003DAF 
+           __write                 00003DC7 
                calls direct
                XSTACK = 00000002 ( 00000010 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003E4B - 00003E70 (0x26 bytes), align: 0
+  Relative segment, address: CODE 00003E63 - 00003E88 (0x26 bytes), align: 0
   Segment part 527.           Intra module refs:   NEOCORE_Init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           NEOCORE_Init            00003E4B 
+           NEOCORE_Init            00003E63 
                calls direct
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
@@ -2154,130 +2154,130 @@ XDATA_Z
            RADIO_CFG               0000046A 
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003E71 - 00003E8A (0x1a bytes), align: 0
+  Relative segment, address: CODE 00003E89 - 00003EA2 (0x1a bytes), align: 0
   Segment part 531.           Intra module refs:   RI_init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           RI_init                 00003E71 
+           RI_init                 00003E89 
                calls direct
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003E8B - 00003EF7 (0x6d bytes), align: 0
+  Relative segment, address: CODE 00003EA3 - 00003F0F (0x6d bytes), align: 0
   Segment part 535.           Intra module refs:   RI_cfg::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           RI_cfg                  00003E8B 
+           RI_cfg                  00003EA3 
                calls direct
                XSTACK = 0000002A ( 00000001 )
                ISTACK = 00000000 ( 00000003 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003EF8 - 00003F17 (0x20 bytes), align: 0
+  Relative segment, address: CODE 00003F10 - 00003F2F (0x20 bytes), align: 0
   Segment part 537.           Intra module refs:   RI_SetChannel::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           RI_SetChannel           00003EF8 
+           RI_SetChannel           00003F10 
                XSTACK = 0000002C ( 00000000 )
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003F18 - 00003FEF (0xd8 bytes), align: 0
+  Relative segment, address: CODE 00003F30 - 00004007 (0xd8 bytes), align: 0
   Segment part 539.           Intra module refs:   RI_Send::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           RI_Send                 00003F18 
+           RI_Send                 00003F30 
                calls direct
                XSTACK = 00000015 ( 0000002A )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00003FF0 - 0000408E (0x9f bytes), align: 0
+  Relative segment, address: CODE 00004008 - 000040A6 (0x9f bytes), align: 0
   Segment part 541.           Intra module refs:   SendData::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           SendData                00003FF0 
+           SendData                00004008 
                calls direct
                XSTACK = 00000024 ( 0000000C )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 0000408F - 000040C0 (0x32 bytes), align: 0
+  Relative segment, address: CODE 000040A7 - 000040D8 (0x32 bytes), align: 0
   Segment part 543.           Intra module refs:   LoadTXData::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           LoadTXData              0000408F 
+           LoadTXData              000040A7 
                XSTACK = 0000000C ( 00000000 )
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000040C1 - 000040E8 (0x28 bytes), align: 0
+  Relative segment, address: CODE 000040D9 - 00004100 (0x28 bytes), align: 0
   Segment part 545.           Intra module refs:   UnLoadRXData::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           UnLoadRXData            000040C1 
+           UnLoadRXData            000040D9 
                XSTACK = 0000002A ( 00000000 )
                ISTACK = 00000000 ( 00000003 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000040E9 - 00004160 (0x78 bytes), align: 0
+  Relative segment, address: CODE 00004101 - 00004178 (0x78 bytes), align: 0
   Segment part 547.           Intra module refs:   setFreq::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           setFreq                 000040E9 
+           setFreq                 00004101 
                calls direct
                XSTACK = 00000001 ( 00000011 )
                ISTACK = 00000000 ( 00000001 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004161 - 00004353 (0x1f3 bytes), align: 0
+  Relative segment, address: CODE 00004179 - 0000436B (0x1f3 bytes), align: 0
   Segment part 549.           Intra module refs:   RI_Receive::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           RI_Receive              00004161 
+           RI_Receive              00004179 
                calls direct
                XSTACK = 0000000E ( 0000002C )
                ISTACK = 00000000 ( 00000001 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004354 - 000043EB (0x98 bytes), align: 0
+  Relative segment, address: CODE 0000436C - 00004403 (0x98 bytes), align: 0
   Segment part 551.           Intra module refs:   RecvData::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           RecvData                00004354 
+           RecvData                0000436C 
                calls direct
                XSTACK = 0000002C ( 00000020 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000043EC - 0000440D (0x22 bytes), align: 0
+  Relative segment, address: CODE 00004404 - 00004425 (0x22 bytes), align: 0
   Segment part 559.           Intra module refs:   bits_count::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           bits_count              000043EC 
+           bits_count              00004404 
                XSTACK = 00000009 ( 00000000 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 0000440E - 00004442 (0x35 bytes), align: 0
+  Relative segment, address: CODE 00004426 - 0000445A (0x35 bytes), align: 0
   Segment part 561.           Intra module refs:   getRNDByte::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           getRNDByte              0000440E 
+           getRNDByte              00004426 
                XSTACK = 00000009 ( 00000000 )
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004443 - 00004478 (0x36 bytes), align: 0
+  Relative segment, address: CODE 0000445B - 00004490 (0x36 bytes), align: 0
   Segment part 563.           Intra module refs:   readRandom::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           readRandom              00004443 
+           readRandom              0000445B 
                calls direct
                XSTACK = 00000009 ( 00000009 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004479 - 000044C6 (0x4e bytes), align: 0
+  Relative segment, address: CODE 00004491 - 000044DE (0x4e bytes), align: 0
   Segment part 565.           Intra module refs:   random_core_init::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           random_core_init        00004479 
+           random_core_init        00004491 
                calls direct
                XSTACK = 00000000 ( 00000009 )
     -------------------------------------------------------------------------
@@ -2290,62 +2290,62 @@ XDATA_Z
            PID_BIND_TABLE          0000046C 
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000044C7 - 000044E2 (0x1c bytes), align: 0
+  Relative segment, address: CODE 000044DF - 000044FA (0x1c bytes), align: 0
   Segment part 569.           Intra module refs:   RP_Init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           RP_Init                 000044C7 
+           RP_Init                 000044DF 
                calls direct
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000044E3 - 000044E5 (0x3 bytes), align: 0
+  Relative segment, address: CODE 000044FB - 000044FD (0x3 bytes), align: 0
   Segment part 571.           Intra module refs:   RP_Reset::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           RP_Reset                000044E3 
+           RP_Reset                000044FB 
                XSTACK = 0000000A ( 00000000 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000044E6 - 000044E8 (0x3 bytes), align: 0
+  Relative segment, address: CODE 000044FE - 00004500 (0x3 bytes), align: 0
   Segment part 577.           Intra module refs:   RP_SendRT_GW::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           RP_SendRT_GW            000044E6 
+           RP_SendRT_GW            000044FE 
                XSTACK = 00000009 ( 00000000 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000044E9 - 000044EB (0x3 bytes), align: 0
+  Relative segment, address: CODE 00004501 - 00004503 (0x3 bytes), align: 0
   Segment part 579.           Intra module refs:   RP_SendRT_RT::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           RP_SendRT_RT            000044E9 
+           RP_SendRT_RT            00004501 
                XSTACK = 00000009 ( 00000000 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000044EC - 00004583 (0x98 bytes), align: 0
+  Relative segment, address: CODE 00004504 - 0000459B (0x98 bytes), align: 0
   Segment part 581.           Intra module refs:   RP_Bind_PID::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           RP_Bind_PID             000044EC 
+           RP_Bind_PID             00004504 
                XSTACK = 00000000 ( 00000009 )
                ISTACK = 00000000 ( 00000001 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004584 - 00004648 (0xc5 bytes), align: 0
+  Relative segment, address: CODE 0000459C - 00004660 (0xc5 bytes), align: 0
   Segment part 583.           Intra module refs:   RP_Receive_HNDL::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           RP_Receive_HNDL         00004584 
+           RP_Receive_HNDL         0000459C 
                calls direct, is indirectly called
                XSTACK = 00000000 ( 00000021 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004649 - 0000464B (0x3 bytes), align: 0
+  Relative segment, address: CODE 00004661 - 00004663 (0x3 bytes), align: 0
   Segment part 585.           Intra module refs:   RP_TimeAlloc_HNDL::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           RP_TimeAlloc_HNDL       00004649 
+           RP_TimeAlloc_HNDL       00004661 
                is indirectly called
     -------------------------------------------------------------------------
 XDATA_Z
@@ -2608,129 +2608,129 @@ XDATA_Z
                                    00000498 
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 0000464C - 000046C4 (0x79 bytes), align: 0
+  Relative segment, address: CODE 00004664 - 000046DC (0x79 bytes), align: 0
   Segment part 601.           Intra module refs:   SY_Init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           SY_Init                 0000464C 
+           SY_Init                 00004664 
                calls direct
                XSTACK = 00000000 ( 0000000A )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000046C5 - 000046DB (0x17 bytes), align: 0
+  Relative segment, address: CODE 000046DD - 000046F3 (0x17 bytes), align: 0
   Segment part 605.           Intra module refs:   SY_Enable::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           SY_Enable               000046C5 
+           SY_Enable               000046DD 
                XSTACK = 0000000B ( 00000000 )
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000046DC - 00004704 (0x29 bytes), align: 0
+  Relative segment, address: CODE 000046F4 - 0000471C (0x29 bytes), align: 0
   Segment part 609.           Intra module refs:   SY_setIV::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           SY_setIV                000046DC 
+           SY_setIV                000046F4 
                calls direct
                XSTACK = 00000009 ( 0000000C )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004705 - 0000472D (0x29 bytes), align: 0
+  Relative segment, address: CODE 0000471D - 00004745 (0x29 bytes), align: 0
   Segment part 611.           Intra module refs:   SY_setKEY::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           SY_setKEY               00004705 
+           SY_setKEY               0000471D 
                calls direct
                XSTACK = 00000009 ( 0000000C )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 0000472E - 00004796 (0x69 bytes), align: 0
+  Relative segment, address: CODE 00004746 - 000047AE (0x69 bytes), align: 0
   Segment part 613.           Intra module refs:   SY_TIME_ALLOC_SLAVE::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           SY_TIME_ALLOC_SLAVE     0000472E 
+           SY_TIME_ALLOC_SLAVE     00004746 
                calls direct, is indirectly called
                XSTACK = 00000000 ( 0000000C )
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004797 - 000048CB (0x135 bytes), align: 0
+  Relative segment, address: CODE 000047AF - 000048E3 (0x135 bytes), align: 0
   Segment part 615.           Intra module refs:   SY_TS1_HNDL_SLAVE::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           SY_TS1_HNDL_SLAVE       00004797 
+           SY_TS1_HNDL_SLAVE       000047AF 
                calls direct, is indirectly called
                XSTACK = 00000000 ( 00000010 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000048CC - 00004985 (0xba bytes), align: 0
+  Relative segment, address: CODE 000048E4 - 0000499D (0xba bytes), align: 0
   Segment part 617.           Intra module refs:   send_sync::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           send_sync               000048CC 
+           send_sync               000048E4 
                calls direct
                XSTACK = 00000010 ( 00000015 )
                ISTACK = 00000000 ( 00000001 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004986 - 000049EC (0x67 bytes), align: 0
+  Relative segment, address: CODE 0000499E - 00004A04 (0x67 bytes), align: 0
   Segment part 619.           Intra module refs:   get_sync::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           get_sync                00004986 
+           get_sync                0000499E 
                calls direct
                XSTACK = 0000002C ( 0000000E )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000049ED - 00004C04 (0x218 bytes), align: 0
+  Relative segment, address: CODE 00004A05 - 00004C1C (0x218 bytes), align: 0
   Segment part 621.           Intra module refs:   SY_SYNC_NETWORK::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           SY_SYNC_NETWORK         000049ED 
+           SY_SYNC_NETWORK         00004A05 
                calls direct
                XSTACK = 0000000B ( 0000002C )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004C05 - 00004C3E (0x3a bytes), align: 0
+  Relative segment, address: CODE 00004C1D - 00004C56 (0x3a bytes), align: 0
   Segment part 623.           Intra module refs:   BitRawDecrypt::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           BitRawDecrypt           00004C05 
+           BitRawDecrypt           00004C1D 
                calls direct
                XSTACK = 0000000E ( 00000010 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004C3F - 00004C78 (0x3a bytes), align: 0
+  Relative segment, address: CODE 00004C57 - 00004C90 (0x3a bytes), align: 0
   Segment part 625.           Intra module refs:   BitRawCrypt::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           BitRawCrypt             00004C3F 
+           BitRawCrypt             00004C57 
                calls direct
                XSTACK = 00000015 ( 00000010 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004C79 - 00004C86 (0xe bytes), align: 0
+  Relative segment, address: CODE 00004C91 - 00004C9E (0xe bytes), align: 0
   Segment part 627.           Intra module refs:   TCP_Init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TCP_Init                00004C79 
+           TCP_Init                00004C91 
                calls direct
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004C87 - 00004C89 (0x3 bytes), align: 0
+  Relative segment, address: CODE 00004C9F - 00004CA1 (0x3 bytes), align: 0
   Segment part 629.           Intra module refs:   TCP_Reset::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TCP_Reset               00004C87 
+           TCP_Reset               00004C9F 
                XSTACK = 0000000A ( 00000000 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004C8A - 00004C8C (0x3 bytes), align: 0
+  Relative segment, address: CODE 00004CA2 - 00004CA4 (0x3 bytes), align: 0
   Segment part 633.           Intra module refs:   TCP_Receive_HNDL::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TCP_Receive_HNDL        00004C8A 
+           TCP_Receive_HNDL        00004CA2 
                XSTACK = 00000009 ( 00000000 )
     -------------------------------------------------------------------------
 XDATA_Z
@@ -2817,217 +2817,217 @@ XDATA_Z
            TimeStampTS0            000004E2 
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004C8D - 00004CB6 (0x2a bytes), align: 0
+  Relative segment, address: CODE 00004CA5 - 00004CCE (0x2a bytes), align: 0
   Segment part 637.           Intra module refs:   TIC_Init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TIC_Init                00004C8D 
+           TIC_Init                00004CA5 
                calls direct
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004CB7 - 00004CD9 (0x23 bytes), align: 0
+  Relative segment, address: CODE 00004CCF - 00004CF1 (0x23 bytes), align: 0
   Segment part 641.           Intra module refs:   TIC_CloseAllState::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TIC_CloseAllState       00004CB7 
+           TIC_CloseAllState       00004CCF 
                calls direct
                XSTACK = 0000002C ( 00000009 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004CDA - 00004D36 (0x5d bytes), align: 0
+  Relative segment, address: CODE 00004CF2 - 00004D4E (0x5d bytes), align: 0
   Segment part 645.           Intra module refs:   TIC_SetTimer::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TIC_SetTimer            00004CDA 
+           TIC_SetTimer            00004CF2 
                calls direct
                XSTACK = 0000002C ( 00000010 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004D37 - 00004D44 (0xe bytes), align: 0
+  Relative segment, address: CODE 00004D4F - 00004D5C (0xe bytes), align: 0
   Segment part 647.           Intra module refs:   TIC_GetTimer::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TIC_GetTimer            00004D37 
+           TIC_GetTimer            00004D4F 
                calls direct
                XSTACK = 0000002C ( 00000000 )
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004D45 - 00004DC4 (0x80 bytes), align: 0
+  Relative segment, address: CODE 00004D5D - 00004DDC (0x80 bytes), align: 0
   Segment part 649.           Intra module refs:   TIC_SetTXState::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TIC_SetTXState          00004D45 
+           TIC_SetTXState          00004D5D 
                calls direct
                XSTACK = 0000000C ( 00000010 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004DC5 - 00004E44 (0x80 bytes), align: 0
+  Relative segment, address: CODE 00004DDD - 00004E5C (0x80 bytes), align: 0
   Segment part 651.           Intra module refs:   TIC_SetRXState::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TIC_SetRXState          00004DC5 
+           TIC_SetRXState          00004DDD 
                calls direct
                XSTACK = 00000010 ( 00000010 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004E45 - 00004EA6 (0x62 bytes), align: 0
+  Relative segment, address: CODE 00004E5D - 00004EBE (0x62 bytes), align: 0
   Segment part 655.           Intra module refs:   TIC_GetRXState::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TIC_GetRXState          00004E45 
+           TIC_GetRXState          00004E5D 
                calls direct
                XSTACK = 0000000C ( 00000010 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004EA7 - 00004EF6 (0x50 bytes), align: 0
+  Relative segment, address: CODE 00004EBF - 00004F0E (0x50 bytes), align: 0
   Segment part 657.           Intra module refs:   TIC_SetTS1Callback::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TIC_SetTS1Callback      00004EA7 
+           TIC_SetTS1Callback      00004EBF 
                calls direct
                XSTACK = 0000000A ( 00000010 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004EF7 - 00004F46 (0x50 bytes), align: 0
+  Relative segment, address: CODE 00004F0F - 00004F5E (0x50 bytes), align: 0
   Segment part 659.           Intra module refs:   TIC_SetRXCallback::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TIC_SetRXCallback       00004EF7 
+           TIC_SetRXCallback       00004F0F 
                calls direct
                XSTACK = 0000000A ( 00000010 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004F47 - 00004F96 (0x50 bytes), align: 0
+  Relative segment, address: CODE 00004F5F - 00004FAE (0x50 bytes), align: 0
   Segment part 661.           Intra module refs:   TIC_SetSyncTimeAllocCallback::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            TIC_SetSyncTimeAllocCallback
-                                   00004F47 
+                                   00004F5F 
                calls direct
                XSTACK = 0000000A ( 00000010 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004F97 - 00004FE6 (0x50 bytes), align: 0
+  Relative segment, address: CODE 00004FAF - 00004FFE (0x50 bytes), align: 0
   Segment part 663.           Intra module refs:   TIC_SetTXCallback::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TIC_SetTXCallback       00004F97 
+           TIC_SetTXCallback       00004FAF 
                calls direct
                XSTACK = 0000000A ( 00000010 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00004FE7 - 00005036 (0x50 bytes), align: 0
+  Relative segment, address: CODE 00004FFF - 0000504E (0x50 bytes), align: 0
   Segment part 665.           Intra module refs:   TIC_SetSECallback::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TIC_SetSECallback       00004FE7 
+           TIC_SetSECallback       00004FFF 
                calls direct
                XSTACK = 00000000 ( 00000010 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005037 - 00005047 (0x11 bytes), align: 0
+  Relative segment, address: CODE 0000504F - 0000505F (0x11 bytes), align: 0
   Segment part 667.           Intra module refs:   TIC_GetUptime::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TIC_GetUptime           00005037 
+           TIC_GetUptime           0000504F 
                XSTACK = 0000002C ( 00000000 )
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005048 - 00005058 (0x11 bytes), align: 0
+  Relative segment, address: CODE 00005060 - 00005070 (0x11 bytes), align: 0
   Segment part 669.           Intra module refs:   TIC_GetRTC::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TIC_GetRTC              00005048 
+           TIC_GetRTC              00005060 
                XSTACK = 00000015 ( 00000000 )
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005059 - 00005080 (0x28 bytes), align: 0
+  Relative segment, address: CODE 00005071 - 00005098 (0x28 bytes), align: 0
   Segment part 671.           Intra module refs:   TIC_SetRTC::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TIC_SetRTC              00005059 
+           TIC_SetRTC              00005071 
                XSTACK = 0000002C ( 0000000C )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005081 - 000050BD (0x3d bytes), align: 0
+  Relative segment, address: CODE 00005099 - 000050D5 (0x3d bytes), align: 0
   Segment part 673.           Intra module refs:   TIC_getCurrentTS::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           TIC_getCurrentTS        00005081 
+           TIC_getCurrentTS        00005099 
                XSTACK = 00000009 ( 0000000A )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000050BE - 000050E1 (0x24 bytes), align: 0
+  Relative segment, address: CODE 000050D6 - 000050F9 (0x24 bytes), align: 0
   Segment part 675.           Intra module refs:   incrementTS::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           incrementTS             000050BE 
+           incrementTS             000050D6 
                XSTACK = 00000001 ( 00000000 )
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000050E2 - 000050E8 (0x7 bytes), align: 0
+  Relative segment, address: CODE 000050FA - 00005100 (0x7 bytes), align: 0
   Segment part 677.           Intra module refs:   TIC_SlotActivityTime::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TIC_SlotActivityTime    000050E2 
+           TIC_SlotActivityTime    000050FA 
                XSTACK = 0000000A ( 00000000 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000050E9 - 00005104 (0x1c bytes), align: 0
+  Relative segment, address: CODE 00005101 - 0000511C (0x1c bytes), align: 0
   Segment part 681.           Intra module refs:   TIC_SlotTime::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TIC_SlotTime            000050E9 
+           TIC_SlotTime            00005101 
                XSTACK = 0000000A ( 00000000 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005105 - 0000512C (0x28 bytes), align: 0
+  Relative segment, address: CODE 0000511D - 00005144 (0x28 bytes), align: 0
   Segment part 683.           Intra module refs:   set_capture_time::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           set_capture_time        00005105 
+           set_capture_time        0000511D 
                calls direct
                XSTACK = 00000001 ( 00000009 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 0000512D - 00005188 (0x5c bytes), align: 0
+  Relative segment, address: CODE 00005145 - 000051A0 (0x5c bytes), align: 0
   Segment part 685.           Intra module refs:   TIC_TDMAShelduler::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           TIC_TDMAShelduler       0000512D 
+           TIC_TDMAShelduler       00005145 
                calls direct
                XSTACK = 00000009 ( 00000001 )
                ISTACK = 00000000 ( 00000003 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005189 - 000051DF (0x57 bytes), align: 0
+  Relative segment, address: CODE 000051A1 - 000051F7 (0x57 bytes), align: 0
   Segment part 687.           Intra module refs:   Callback_execution::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           Callback_execution      00005189 
+           Callback_execution      000051A1 
                calls direct
                XSTACK = 00000009 ( 00000012 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000051E0 - 000052A5 (0xc6 bytes), align: 0
+  Relative segment, address: CODE 000051F8 - 000052BD (0xc6 bytes), align: 0
   Segment part 689.           Intra module refs:   TIC_HW_Timer_IRQ::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           TIC_HW_Timer_IRQ        000051E0 
+           TIC_HW_Timer_IRQ        000051F8 
                calls direct, is indirectly called
                XSTACK = 00000000 ( 00000009 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000052A6 - 00005303 (0x5e bytes), align: 0
+  Relative segment, address: CODE 000052BE - 0000531B (0x5e bytes), align: 0
   Segment part 691.           Intra module refs:   clocks_update::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           clocks_update           000052A6 
+           clocks_update           000052BE 
                XSTACK = 00000009 ( 0000000C )
     -------------------------------------------------------------------------
 XDATA_Z
@@ -3039,55 +3039,55 @@ XDATA_Z
            UDP_BIND_TABLE          000004EA 
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005304 - 00005311 (0xe bytes), align: 0
+  Relative segment, address: CODE 0000531C - 00005329 (0xe bytes), align: 0
   Segment part 697.           Intra module refs:   UDP_Init::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           UDP_Init                00005304 
+           UDP_Init                0000531C 
                calls direct
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005312 - 00005314 (0x3 bytes), align: 0
+  Relative segment, address: CODE 0000532A - 0000532C (0x3 bytes), align: 0
   Segment part 699.           Intra module refs:   UDP_Reset::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           UDP_Reset               00005312 
+           UDP_Reset               0000532A 
                XSTACK = 0000000A ( 00000000 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005315 - 000053AC (0x98 bytes), align: 0
+  Relative segment, address: CODE 0000532D - 000053C4 (0x98 bytes), align: 0
   Segment part 701.           Intra module refs:   UDP_Bind::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           UDP_Bind                00005315 
+           UDP_Bind                0000532D 
                XSTACK = 00000000 ( 00000009 )
                ISTACK = 00000000 ( 00000001 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000053AD - 0000548C (0xe0 bytes), align: 0
+  Relative segment, address: CODE 000053C5 - 000054A4 (0xe0 bytes), align: 0
   Segment part 705.           Intra module refs:   UDP_Receive_HNDL::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           UDP_Receive_HNDL        000053AD 
+           UDP_Receive_HNDL        000053C5 
                calls direct
                XSTACK = 00000009 ( 0000000B )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 0000548D - 000054A1 (0x15 bytes), align: 0
+  Relative segment, address: CODE 000054A5 - 000054B9 (0x15 bytes), align: 0
   Segment part 707.           Intra module refs:   free::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           free                    0000548D 
+           free                    000054A5 
                calls direct
                XSTACK = 0000000A ( 00000009 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000054A2 - 000054B6 (0x15 bytes), align: 0
+  Relative segment, address: CODE 000054BA - 000054CE (0x15 bytes), align: 0
   Segment part 709.           Intra module refs:   malloc::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           malloc                  000054A2 
+           malloc                  000054BA 
                calls direct
                XSTACK = 0000000E ( 00000009 )
     -------------------------------------------------------------------------
@@ -4811,11 +4811,11 @@ BANK_RELAYS
   SEGMENTS IN THE MODULE
   ======================
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005F3C - 00005F3E (0x3 bytes), align: 0
+  Relative segment, address: CODE 00005F54 - 00005F56 (0x3 bytes), align: 0
   Segment part 6.             Intra module refs:   __DebugBreak::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           __DebugBreak            00005F3C 
+           __DebugBreak            00005F54 
     -------------------------------------------------------------------------
 BANK_RELAYS
   Relative segment, address: CODE 000008A3 - 000008A8 (0x6 bytes), align: 0
@@ -4830,11 +4830,11 @@ BANK_RELAYS
   SEGMENTS IN THE MODULE
   ======================
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005EEC - 00005F0F (0x24 bytes), align: 0
+  Relative segment, address: CODE 00005F04 - 00005F27 (0x24 bytes), align: 0
   Segment part 6.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           __exit                  00005EEC        Segment part 10 (?cexit)
+           __exit                  00005F04        Segment part 10 (?cexit)
                calls direct
                XSTACK = 00000000 ( 0000000B )
 
@@ -5605,11 +5605,11 @@ XSP
   SEGMENTS IN THE MODULE
   ======================
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005F2E - 00005F3B (0xe bytes), align: 0
+  Relative segment, address: CODE 00005F46 - 00005F53 (0xe bytes), align: 0
   Segment part 6.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           exit                    00005F2E        ?call_main (?cmain)
+           exit                    00005F46        ?call_main (?cmain)
                calls direct
                ISTACK = 00000000 ( 00000002 )
 
@@ -7056,11 +7056,11 @@ RCODE
   SEGMENTS IN THE MODULE
   ======================
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005E58 - 00005E94 (0x3d bytes), align: 0
+  Relative segment, address: CODE 00005E70 - 00005EAC (0x3d bytes), align: 0
   Segment part 6.             Intra module refs:   memcpy::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           memcpy                  00005E58 
+           memcpy                  00005E70 
                is indirectly called
                XSTACK = 00000002 ( 00000009 )
                ISTACK = 00000000 ( 00000001 )
@@ -7084,11 +7084,11 @@ BANK_RELAYS
   SEGMENTS IN THE MODULE
   ======================
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005E95 - 00005EC0 (0x2c bytes), align: 0
+  Relative segment, address: CODE 00005EAD - 00005ED8 (0x2c bytes), align: 0
   Segment part 6.             Intra module refs:   memset::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           memset                  00005E95 
+           memset                  00005EAD 
                is indirectly called
                XSTACK = 00000002 ( 00000000 )
                ISTACK = 00000000 ( 00000002 )
@@ -7109,11 +7109,11 @@ BANK_RELAYS
   SEGMENTS IN THE MODULE
   ======================
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005D89 - 00005DD2 (0x4a bytes), align: 0
+  Relative segment, address: CODE 00005DA1 - 00005DEA (0x4a bytes), align: 0
   Segment part 6.             Intra module refs:   printf::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           printf                  00005D89 
+           printf                  00005DA1 
                calls direct
                XSTACK = 00000000 ( 00000010 )
     -------------------------------------------------------------------------
@@ -7157,11 +7157,11 @@ BANK_RELAYS
   SEGMENTS IN THE MODULE
   ======================
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005D30 - 00005D88 (0x59 bytes), align: 0
+  Relative segment, address: CODE 00005D48 - 00005DA0 (0x59 bytes), align: 0
   Segment part 6.             Intra module refs:   putchar::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           putchar                 00005D30 
+           putchar                 00005D48 
                calls direct
                XSTACK = 00000000 ( 0000000D )
                ISTACK = 00000000 ( 00000001 )
@@ -7239,19 +7239,19 @@ XDATA_Z
   Segment part 14.            Intra module refs:   rand
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005A80 - 00005BE1 (0x162 bytes), align: 0
+  Relative segment, address: CODE 00005A98 - 00005BF9 (0x162 bytes), align: 0
   Segment part 19.            Intra module refs:   rand::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           rand                    00005A80 
+           rand                    00005A98 
                XSTACK = 00000000 ( 00000010 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005BE2 - 00005BE7 (0x6 bytes), align: 0
+  Relative segment, address: CODE 00005BFA - 00005BFF (0x6 bytes), align: 0
   Segment part 21.            Intra module refs:   rand
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005BE8 - 00005BEF (0x8 bytes), align: 0
+  Relative segment, address: CODE 00005C00 - 00005C07 (0x8 bytes), align: 0
   Segment part 22.            Intra module refs:   rand
     -------------------------------------------------------------------------
 XDATA_ID
@@ -7282,11 +7282,11 @@ BANK_RELAYS
   SEGMENTS IN THE MODULE
   ======================
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005DD3 - 00005E1A (0x48 bytes), align: 0
+  Relative segment, address: CODE 00005DEB - 00005E32 (0x48 bytes), align: 0
   Segment part 6.             Intra module refs:   srand::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           srand                   00005DD3 
+           srand                   00005DEB 
                XSTACK = 00000000 ( 0000000C )
     -------------------------------------------------------------------------
 BANK_RELAYS
@@ -7302,11 +7302,11 @@ BANK_RELAYS
   SEGMENTS IN THE MODULE
   ======================
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005F10 - 00005F2D (0x1e bytes), align: 0
+  Relative segment, address: CODE 00005F28 - 00005F45 (0x1e bytes), align: 0
   Segment part 6.             Intra module refs:   strlen::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           strlen                  00005F10 
+           strlen                  00005F28 
                is indirectly called
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
@@ -7323,11 +7323,11 @@ BANK_RELAYS
   SEGMENTS IN THE MODULE
   ======================
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005E1B - 00005E57 (0x3d bytes), align: 0
+  Relative segment, address: CODE 00005E33 - 00005E6F (0x3d bytes), align: 0
   Segment part 7.             Intra module refs:   __xdata_GetMemChunk::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           __xdata_GetMemChunk     00005E1B 
+           __xdata_GetMemChunk     00005E33 
                ISTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 XDATA_Z
@@ -7348,70 +7348,70 @@ BANK_RELAYS
   SEGMENTS IN THE MODULE
   ======================
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000054B7 - 00005508 (0x52 bytes), align: 0
+  Relative segment, address: CODE 000054CF - 00005520 (0x52 bytes), align: 0
   Segment part 14.            Intra module refs:   out::?relay
            LOCAL                   ADDRESS         
            =====                   =======         
-           out                     000054B7 
+           out                     000054CF 
                XSTACK = 0000002F ( 0000000E )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005509 - 00005889 (0x381 bytes), align: 0
+  Relative segment, address: CODE 00005521 - 000058A1 (0x381 bytes), align: 0
   Segment part 16.            Intra module refs:   _PrintfTiny::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           _PrintfTiny             00005509 
+           _PrintfTiny             00005521 
                calls direct
                XSTACK = 00000004 ( 0000002F )
                ISTACK = 00000000 ( 00000001 )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 0000588A - 00005892 (0x9 bytes), align: 0
+  Relative segment, address: CODE 000058A2 - 000058AA (0x9 bytes), align: 0
   Segment part 18.            Intra module refs:   _PrintfTiny
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005893 - 00005898 (0x6 bytes), align: 0
+  Relative segment, address: CODE 000058AB - 000058B0 (0x6 bytes), align: 0
   Segment part 19.            Intra module refs:   _PrintfTiny
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005899 - 0000589C (0x4 bytes), align: 0
+  Relative segment, address: CODE 000058B1 - 000058B4 (0x4 bytes), align: 0
   Segment part 20.            Intra module refs:   Segment part 19
                                                    Segment part 27
                                                    _PrintfTiny
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 0000589D - 000058A5 (0x9 bytes), align: 0
+  Relative segment, address: CODE 000058B5 - 000058BD (0x9 bytes), align: 0
   Segment part 21.            Intra module refs:   Segment part 20
                                                    Segment part 23
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000058A6 - 000058A9 (0x4 bytes), align: 0
+  Relative segment, address: CODE 000058BE - 000058C1 (0x4 bytes), align: 0
   Segment part 22.            Intra module refs:   _PrintfTiny
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000058AA - 000058B1 (0x8 bytes), align: 0
+  Relative segment, address: CODE 000058C2 - 000058C9 (0x8 bytes), align: 0
   Segment part 23.            Intra module refs:   Segment part 22
                                                    Segment part 24
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000058B2 - 000058C2 (0x11 bytes), align: 0
+  Relative segment, address: CODE 000058CA - 000058DA (0x11 bytes), align: 0
   Segment part 24.            Intra module refs:   _PrintfTiny
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000058C3 - 000058C7 (0x5 bytes), align: 0
+  Relative segment, address: CODE 000058DB - 000058DF (0x5 bytes), align: 0
   Segment part 25.            Intra module refs:   _PrintfTiny
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000058C8 - 000058D4 (0xd bytes), align: 0
+  Relative segment, address: CODE 000058E0 - 000058EC (0xd bytes), align: 0
   Segment part 26.            Intra module refs:   Segment part 25
                                                    _PrintfTiny
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000058D5 - 000058DD (0x9 bytes), align: 0
+  Relative segment, address: CODE 000058ED - 000058F5 (0x9 bytes), align: 0
   Segment part 27.            Intra module refs:   _PrintfTiny
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000058DE - 000058E7 (0xa bytes), align: 0
+  Relative segment, address: CODE 000058F6 - 000058FF (0xa bytes), align: 0
   Segment part 28.            Intra module refs:   Segment part 27
                                                    _PrintfTiny
     -------------------------------------------------------------------------
@@ -7473,11 +7473,11 @@ XDATA_I
   SEGMENTS IN THE MODULE
   ======================
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005EC1 - 00005EEB (0x2b bytes), align: 0
+  Relative segment, address: CODE 00005ED9 - 00005F03 (0x2b bytes), align: 0
   Segment part 6.             Intra module refs:   _Prout::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           _Prout                  00005EC1 
+           _Prout                  00005ED9 
                calls direct
                XSTACK = 00000000 ( 0000000E )
     -------------------------------------------------------------------------
@@ -7494,15 +7494,15 @@ BANK_RELAYS
   SEGMENTS IN THE MODULE
   ======================
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005BF0 - 00005D27 (0x138 bytes), align: 0
+  Relative segment, address: CODE 00005C08 - 00005D3F (0x138 bytes), align: 0
   Segment part 6.             Intra module refs:   __xdata_free::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           __xdata_free            00005BF0 
+           __xdata_free            00005C08 
                XSTACK = 0000000A ( 0000000E )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005D28 - 00005D2F (0x8 bytes), align: 0
+  Relative segment, address: CODE 00005D40 - 00005D47 (0x8 bytes), align: 0
   Segment part 8.             Intra module refs:   __xdata_free
     -------------------------------------------------------------------------
 BANK_RELAYS
@@ -7526,39 +7526,39 @@ XDATA_Z
            __xdata_Aldata          00000597        __xdata_free (?xxmemxfree)
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 000058E8 - 00005A5A (0x173 bytes), align: 0
+  Relative segment, address: CODE 00005900 - 00005A72 (0x173 bytes), align: 0
   Segment part 8.             Intra module refs:   __xdata_malloc::?relay
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           __xdata_malloc          000058E8 
+           __xdata_malloc          00005900 
                calls direct
                XSTACK = 0000000A ( 0000000F )
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005A5B - 00005A63 (0x9 bytes), align: 0
+  Relative segment, address: CODE 00005A73 - 00005A7B (0x9 bytes), align: 0
   Segment part 10.            Intra module refs:   __xdata_malloc
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005A64 - 00005A67 (0x4 bytes), align: 0
+  Relative segment, address: CODE 00005A7C - 00005A7F (0x4 bytes), align: 0
   Segment part 11.            Intra module refs:   __xdata_malloc
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005A68 - 00005A6D (0x6 bytes), align: 0
+  Relative segment, address: CODE 00005A80 - 00005A85 (0x6 bytes), align: 0
   Segment part 12.            Intra module refs:   Segment part 11
                                                    __xdata_malloc
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005A6E - 00005A71 (0x4 bytes), align: 0
+  Relative segment, address: CODE 00005A86 - 00005A89 (0x4 bytes), align: 0
   Segment part 13.            Intra module refs:   __xdata_malloc
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005A72 - 00005A77 (0x6 bytes), align: 0
+  Relative segment, address: CODE 00005A8A - 00005A8F (0x6 bytes), align: 0
   Segment part 14.            Intra module refs:   Segment part 12
                                                    Segment part 13
                                                    __xdata_malloc
     -------------------------------------------------------------------------
 <BANKED_CODE> 1 (was BANKED_CODE)
-  Relative segment, address: CODE 00005A78 - 00005A7F (0x8 bytes), align: 0
+  Relative segment, address: CODE 00005A90 - 00005A97 (0x8 bytes), align: 0
   Segment part 15.            Intra module refs:   __xdata_malloc
     -------------------------------------------------------------------------
 BANK_RELAYS
@@ -7596,7 +7596,7 @@ CODE_N               CODE               0000150D                     dse    0
 CODE_C               CODE               0000150D                     dse    0
 DIFUNCT              CODE               0000150D                     rel    0
 NEAR_CODE            CODE          0000150D - 00001548          3C   rel    0
-<BANKED_CODE> 1      CODE          00001549 - 00005F3E        49F6   rel    0
+<BANKED_CODE> 1      CODE          00001549 - 00005F56        4A0E   rel    0
 REGISTERS            DATA          00000000 - 00000007           8   rel    0
 VREG                 DATA          00000008 - 0000000F           8   rel    0
 PSP                  DATA               00000010                     dse    0
@@ -7632,7 +7632,7 @@ ISTACK               IDATA         00000080 - 000000FF          80   rel    0
                 *                                      *
                 ****************************************
 
- 24 383 bytes of CODE  memory
+ 24 407 bytes of CODE  memory
      18 bytes of DATA  memory (+ 35 absolute )
   4 534 bytes of XDATA memory
     128 bytes of IDATA memory
