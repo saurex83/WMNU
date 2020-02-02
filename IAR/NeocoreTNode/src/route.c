@@ -26,7 +26,7 @@ static int find_record(uint16_t nsrc, uint16_t fsrc);
 static void update_record_time(uint8_t index);
 static void insert_record(uint8_t index, uint16_t nsrc, uint16_t fsrc);
 static void add_route_record(uint16_t nsrc, uint16_t fsrc);
-static bool find_nsrc_by_fdst(uint16_t fdst, uint16_t *nsrc);
+static bool find_nsrc_by_fdst(uint16_t fdst, uint16_t *nsrc, uint8_t *index);
 
 // Глобальные функции
 void RP_Init(void);
@@ -175,11 +175,12 @@ void RP_SendRT_GW(frame_s *fr){
 /**
 @brief Поиск промежуточного узла по адресу конечного получателя
 */
-static bool find_nsrc_by_fdst(uint16_t fdst, uint16_t *nsrc){
+static bool find_nsrc_by_fdst(uint16_t fdst, uint16_t *nsrc, uint8_t *index){
   for (uint8_t i = 0; i < ROUTE_TABLE_ITEMS; i++)
     if (ROUTE_TABLE[i].record_active)
       if (ROUTE_TABLE[i].fsrc == fdst){
         *nsrc = ROUTE_TABLE[i].nsrc;
+        *index = i;
         return true;
       }
   return false;
@@ -193,8 +194,9 @@ static bool find_nsrc_by_fdst(uint16_t fdst, uint16_t *nsrc){
 void RP_SendRT_RT(frame_s *fr){
   uint16_t fdst = fr->meta.FDST;
   uint16_t nsrc;
+  uint8_t index;
   
-  if (!find_nsrc_by_fdst(fdst, &nsrc)){ // Не нашли пути
+  if (!find_nsrc_by_fdst(fdst, &nsrc, &index)){ // Не нашли пути
     frame_delete(fr);
     return;
   }
@@ -210,6 +212,7 @@ void RP_SendRT_RT(frame_s *fr){
   fr->meta.NDST = nsrc;
   fr->meta.TS = ts;
   fr->meta.CH = ch;
+  update_record_time(index); 
   ETH_Send(fr);  
 }
 
