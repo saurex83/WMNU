@@ -249,10 +249,20 @@
                     <file> 92</file>
                 </tool>
                 <tool>
+                    <name>ICC8051</name>
+                    <file> 91</file>
+                </tool>
+                <tool>
                     <name>__cstat</name>
                     <file> 82</file>
                 </tool>
             </outputs>
+            <inputs>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 42 132 111 130 137 120 123 125 134 133 135 31 109 122 29 13 18 44 110 38 23 5 37 136 53 25</file>
+                </tool>
+            </inputs>
         </file>
         <file>
             <name>$PROJ_DIR$\src\protocol_controller.c</name>
@@ -275,20 +285,10 @@
                     <file> 84</file>
                 </tool>
                 <tool>
-                    <name>ICC8051</name>
-                    <file> 83</file>
-                </tool>
-                <tool>
                     <name>__cstat</name>
                     <file> 76</file>
                 </tool>
             </outputs>
-            <inputs>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 42 132 111 130 137 120 123 125 134 133 135 5 29 109 122 23 18 44 3 31 37 136 9 110 53 25</file>
-                </tool>
-            </inputs>
         </file>
         <file>
             <name>$PROJ_DIR$\src\tcp.c</name>

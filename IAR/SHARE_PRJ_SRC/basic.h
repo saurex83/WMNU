@@ -2,7 +2,7 @@
 #include "stdint.h"
 #include "RADIO.h"
 
-//#define GATEWAY
+#define GATEWAY
 #define NODE_VER 0
 #define NODE_TYPE 1
 

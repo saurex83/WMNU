@@ -13,7 +13,10 @@
 // Собирать проект с ключем GATEWAY в файле basic.h
 void main(void)
 {
+  
   neocore_hw_init();
+  nwDebugerInit();
+  LOG_ON("GatewayStart");
   P1DIR |= 0x01;
   network_seed_enable(false);
   com_uart_init();

@@ -115,7 +115,7 @@ void MAC_Reset(void)
 */
 void MAC_OpenRXSlot(uint8_t TS, uint8_t CH)
 {
-    ASSERT(TS < 50 || TS !=0 );
+    ASSERT(TS < 50 );
     MACSlotTable[TS].RX.enable = true;
     MACSlotTable[TS].RX.CH = CH;
     TIC_SetRXState(TS, true);
@@ -127,7 +127,7 @@ void MAC_OpenRXSlot(uint8_t TS, uint8_t CH)
 */
 void MAC_CloseRXSlot(uint8_t TS)
 {
-  ASSERT(TS < 50 || TS !=0);
+  ASSERT(TS < 50);
   MACSlotTable[TS].RX.enable = false;
   TIC_SetRXState(TS, false);
 }
@@ -141,7 +141,7 @@ void MAC_Send(frame_s *fr, uint8_t attempts)
 {
     ASSERT(fr != NULL);
     ASSERT(attempts != 0);
-    ASSERT(fr->meta.TS != 0);
+    ASSERT(fr->meta.TS < 50);
     
     uint8_t TS = fr->meta.TS; 
     MACSlotTable[TS].TX.attempts = attempts;
@@ -250,7 +250,7 @@ void MAC_SetRXCallback(void (*fn)(frame_s *fr))
 */
 bool MAC_GetTXState(uint8_t TS)
 {
-  ASSERT(TS < 50  || TS !=0 );
+  ASSERT(TS < 50 );
   return MACSlotTable[TS].TX.enable;
 }
 
@@ -260,7 +260,7 @@ bool MAC_GetTXState(uint8_t TS)
 */
 bool MAC_GetRXState(uint8_t TS)
 {
-  ASSERT(TS < 50  || TS !=0);
+  ASSERT(TS < 50);
   return MACSlotTable[TS].RX.enable;
 }
 
@@ -271,7 +271,7 @@ bool MAC_GetRXState(uint8_t TS)
 */
 static void MAC_RX_HNDL(uint8_t TS)
 {
-  ASSERT(TS < 50  || TS !=0);
+  ASSERT(TS < 50);
 
   if (!MAC_ENABLE_MODULE) // Модуль откючен
     return;
@@ -318,7 +318,7 @@ static void MAC_RX_HNDL(uint8_t TS)
 */
 static void MAC_TX_HNDL(uint8_t TS)
 {
-  ASSERT(TS < 50  || TS !=0);
+  ASSERT(TS < 50);
   
   if (!MAC_ENABLE_MODULE) // Модуль отключен
     return;

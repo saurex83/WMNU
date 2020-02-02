@@ -6,7 +6,8 @@ import udp
 import eth
 import matplotlib.pyplot as plt
 import numpy as np
-
+import transiver_control
+import neigh_test
 
 DEFAULT_KEY = b'\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F\x10'
 DEFAULT_IV =  b'\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F\x10'
@@ -21,9 +22,9 @@ def SEND_ETHERNET(UART_CONN):
     udp_h.PAYLOAD = b'HELLO!'
 
     eth_h.META['PID'] = 1 # 1 - IP
-    eth_h.META['NETID'] = 0x12
-    eth_h.META['NDST'] = 0xffff
-    eth_h.META['NSRC'] = 0x1112
+    eth_h.META['NETID'] = transiver_control.DEFAULT_PANID
+    eth_h.META['NDST'] = 0xffff # широковещание
+    eth_h.META['NSRC'] = 0x0000 # от шлюза
     
     ip_h.META['ETX'] = 1 
     ip_h.META['FDST'] = 0xffff
@@ -137,6 +138,10 @@ def energy__scan(UART_CONN):
 def main():
     UART_CONN = connector.Connector()
 
+    transiver_control.TransiverStart(UART_CONN)
+    while(True):
+        neigh_test.test1(UART_CONN)
+    exit(0)
     SEND_ETHERNET(UART_CONN)
     exit(0)
   #  SEND_FRAME(UART_CONN)

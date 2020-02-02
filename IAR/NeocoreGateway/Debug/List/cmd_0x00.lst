@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               01/Feb/2020  17:47:27
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               02/Feb/2020  19:50:14
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,7 +13,7 @@
 #                          
 #    Source file        =  E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW342.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EWDB33.tmp
 #        (E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c -lcN
 #        E:\WMNU\IAR\NeocoreGateway\Debug\List -o
 #        E:\WMNU\IAR\NeocoreGateway\Debug\Obj -e --debug --core=plain
@@ -33,7 +33,7 @@
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x08.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x09.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0A.c
-#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0B.c
+#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0B.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0C.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0D.c
 #        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0E.c
@@ -451,7 +451,7 @@ E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0A.c
      28            LOG_ON("CMD 0x09. TX frame count");
      29            return true;
      30          }
-E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0B.c
+E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0B.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -2222,7 +2222,7 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\MAC.c
     115          */
     116          void MAC_OpenRXSlot(uint8_t TS, uint8_t CH)
     117          {
-    118              ASSERT(TS < 50 || TS !=0 );
+    118              ASSERT(TS < 50 );
     119              MACSlotTable[TS].RX.enable = true;
     120              MACSlotTable[TS].RX.CH = CH;
     121              TIC_SetRXState(TS, true);
@@ -2234,7 +2234,7 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\MAC.c
     127          */
     128          void MAC_CloseRXSlot(uint8_t TS)
     129          {
-    130            ASSERT(TS < 50 || TS !=0);
+    130            ASSERT(TS < 50);
     131            MACSlotTable[TS].RX.enable = false;
     132            TIC_SetRXState(TS, false);
     133          }
@@ -2248,7 +2248,7 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\MAC.c
     141          {
     142              ASSERT(fr != NULL);
     143              ASSERT(attempts != 0);
-    144              ASSERT(fr->meta.TS != 0);
+    144              ASSERT(fr->meta.TS < 50);
     145              
     146              uint8_t TS = fr->meta.TS; 
     147              MACSlotTable[TS].TX.attempts = attempts;
@@ -2357,7 +2357,7 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\MAC.c
     250          */
     251          bool MAC_GetTXState(uint8_t TS)
     252          {
-    253            ASSERT(TS < 50  || TS !=0 );
+    253            ASSERT(TS < 50 );
     254            return MACSlotTable[TS].TX.enable;
     255          }
     256          
@@ -2367,7 +2367,7 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\MAC.c
     260          */
     261          bool MAC_GetRXState(uint8_t TS)
     262          {
-    263            ASSERT(TS < 50  || TS !=0);
+    263            ASSERT(TS < 50);
     264            return MACSlotTable[TS].RX.enable;
     265          }
     266          
@@ -2378,7 +2378,7 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\MAC.c
     271          */
     272          static void MAC_RX_HNDL(uint8_t TS)
     273          {
-    274            ASSERT(TS < 50  || TS !=0);
+    274            ASSERT(TS < 50);
     275          
     276            if (!MAC_ENABLE_MODULE) // Модуль откючен
     277              return;
@@ -2425,7 +2425,7 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\MAC.c
     318          */
     319          static void MAC_TX_HNDL(uint8_t TS)
     320          {
-    321            ASSERT(TS < 50  || TS !=0);
+    321            ASSERT(TS < 50);
     322            
     323            if (!MAC_ENABLE_MODULE) // Модуль отключен
     324              return;
@@ -2520,12 +2520,15 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\main.c
      13          // Собирать проект с ключем GATEWAY в файле basic.h
      14          void main(void)
      15          {
-     16            neocore_hw_init();
-     17            P1DIR |= 0x01;
-     18            network_seed_enable(false);
-     19            com_uart_init();
-     20            parse_uart_stream();
-     21          }
+     16            
+     17            neocore_hw_init();
+     18            nwDebugerInit();
+     19            LOG_ON("GatewayStart");
+     20            P1DIR |= 0x01;
+     21            network_seed_enable(false);
+     22            com_uart_init();
+     23            parse_uart_stream();
+     24          }
 E:\WMNU\IAR\SHARE_PRJ_SRC\manager.c
       1          #include "manager.h"
       2          #include "coder.h"
@@ -4789,7 +4792,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       0    109   CTR_enc_decrypt
         0     39   -> memcpy
         0     39   -> memset
-      0     27   Callback_execution
+      0     30   Callback_execution
         0     12   -> printf
         0     18   -> printf
       0      0   DMA_init
@@ -4801,11 +4804,12 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     10   -> printf
         0     16   -> printf
       0     54   Interval
-      1     34   LLC_AddTask
-        0     12   -> printf
-        0     18   -> printf
-        0     12   -> re_malloc
-      2     10   LLC_GetTaskLen
+      1     42   LLC_AddTask
+        0     14   -> printf
+        0     20   -> printf
+        0     24   -> printf
+        0     14   -> re_malloc
+      2     13   LLC_GetTaskLen
       2      0   LLC_Init
         2      0   -> MAC_SetRXCallback
         2      0   -> TIC_SetSECallback
@@ -4843,7 +4847,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     12   -> frame_create
         0     12   -> frame_delete
         0     12   -> xor_calc
-      1     28   MAC_CloseRXSlot
+      1     30   MAC_CloseRXSlot
         0     10   -> TIC_SetRXState
         0     10   -> printf
         0     16   -> printf
@@ -4858,7 +4862,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     10   -> TIC_SetRXCallback
         0     10   -> TIC_SetTXCallback
         0     12   -> memset
-      1     28   MAC_OpenRXSlot
+      1     30   MAC_OpenRXSlot
         0     10   -> TIC_SetRXState
         0     10   -> printf
         0     16   -> printf
@@ -4931,7 +4935,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       2      0   RI_GetCCAReject
       2      0   RI_GetCRCError
       2      0   RI_GetUptime
-      1     27   RI_Measure_POW
+      1     29   RI_Measure_POW
         0     14   -> RI_cfg
         0     14   -> TIM_delay
       1     58   RI_Receive
@@ -4968,14 +4972,16 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     12   -> Delete_frame
         0     12   -> printf
         0     18   -> printf
-      2     10   RXB_frame_count
+      2     13   RXB_frame_count
       2     14   RXB_get_frame
       2     22   ReadTimer
       0     76   RecvData
         0     32   -> NT_GetTime
         0     32   -> TIM_TimeStamp
         0     32   -> TIM_passedTime
-      0      0   STACK_FAILURE
+      0     16   STACK_FAILURE
+        0     10   -> printf
+        0     16   -> printf
       2     11   SY_Enable
       0     10   SY_Init
         0     10   -> TIC_SetSyncTimeAllocCallback
@@ -4998,8 +5004,10 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     16   -> TIC_GetTXState
         0     16   -> TIC_GetUptime
         0     16   -> TIC_SetTXState
-      0     12   SY_TS1_HNDL_MASTER
+      0     18   SY_TS1_HNDL_MASTER
         0     12   -> TIC_SetTXState
+        0     12   -> printf
+        0     18   -> printf
         0     12   -> send_sync
       0     21   SY_setIV
         0     12   -> memcpy
@@ -5025,12 +5033,14 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       2     44   TIC_GetTimer
         2      0   -> NT_GetTime
       2     44   TIC_GetUptime
-      0      9   TIC_HW_Timer_IRQ
-        0      9   -> Callback_execution
-        0      9   -> TIC_TDMAShelduler
-        0      9   -> TIC_getCurrentTS
-        0      9   -> TIM_TimeStamp
-        0      9   -> clocks_update
+      0     18   TIC_HW_Timer_IRQ
+        0     12   -> Callback_execution
+        0     12   -> TIC_TDMAShelduler
+        0     12   -> TIC_getCurrentTS
+        0     12   -> TIM_TimeStamp
+        0     12   -> clocks_update
+        0     12   -> printf
+        0     18   -> printf
       2      0   TIC_Init
         2      0   -> NT_SetCompare
         2      0   -> NT_SetEventCallback
@@ -5072,13 +5082,13 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       0      0   TIC_SleepTime
       0     10   TIC_SlotActivityTime
       0     10   TIC_SlotTime
-      3     10   TIC_TDMAShelduler
+      3     13   TIC_TDMAShelduler
         2      1   -> incrementTS
         2      1   -> set_capture_time
       0     24   TIC_TimeUsFromTS0
         0     24   -> TIM_TimeStamp
         0     24   -> TIM_passedTime
-      0     19   TIC_getCurrentTS
+      0     22   TIC_getCurrentTS
       3     44   TIM_TimeStamp
       0     14   TIM_copy
         0     14   -> memcpy
@@ -5099,14 +5109,18 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       2     34   calcCompareTime
         0     22   -> ReadTimer
       0     13   check_cmd_frame
-      0     21   clocks_update
-      0     10   cmd_0x00
-        0     10   -> cmd_answer
-        0     10   -> get_network_seed_status
-      0     12   cmd_0x01
-        0     12   -> cmd_answer
-        0     12   -> cmd_answer_err
-        0     12   -> get_network_seed_status
+      0     24   clocks_update
+      0     19   cmd_0x00
+        0     13   -> cmd_answer
+        0     13   -> get_network_seed_status
+        0     13   -> printf
+        0     19   -> printf
+      0     20   cmd_0x01
+        0     14   -> cmd_answer
+        0     14   -> cmd_answer_err
+        0     14   -> get_network_seed_status
+        0     14   -> printf
+        0     20   -> printf
       0     12   cmd_0x02
         0     12   -> TIC_SetRTC
         0     12   -> cmd_answer
@@ -5119,73 +5133,99 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     14   -> network_seed_enable
         0     14   -> printf
         0     20   -> printf
-      0     16   cmd_0x04
+      0     20   cmd_0x04
         0     14   -> cmd_answer
         0     14   -> cmd_answer_err
         0     14   -> get_network_seed_status
         0     16   -> memcpy
-      0     16   cmd_0x05
+        0     14   -> printf
+        0     20   -> printf
+      0     20   cmd_0x05
         0     14   -> cmd_answer
         0     14   -> cmd_answer_err
         0     14   -> get_network_seed_status
         0     16   -> memcpy
-      0      9   cmd_0x06
-        0      9   -> cmd_answer
-        0      9   -> cmd_answer_err
-      0     12   cmd_0x07
-        0     12   -> MAC_OpenRXSlot
+        0     14   -> printf
+        0     20   -> printf
+      0     18   cmd_0x06
         0     12   -> cmd_answer
         0     12   -> cmd_answer_err
-        0     12   -> get_network_seed_status
-      0     12   cmd_0x08
-        0     12   -> MAC_CloseRXSlot
-        0     12   -> cmd_answer
-        0     12   -> cmd_answer_err
-        0     12   -> get_network_seed_status
-      1     10   cmd_0x09
-        0     10   -> RXB_frame_count
-        0     10   -> cmd_answer
-        0     10   -> cmd_answer_err
-      1     10   cmd_0x0A
-        0     10   -> LLC_GetTaskLen
-        0     10   -> cmd_answer
-        0     10   -> cmd_answer_err
-      0     18   cmd_0x0B
-        0     16   -> LLC_AddTask
-        0     16   -> cmd_answer
-        0     16   -> cmd_answer_err
-        0     16   -> frame_addHeader
-        0     16   -> frame_create
-        0     16   -> frame_delete
-        0     16   -> get_network_seed_status
-        0     18   -> re_memcpy
-      0     14   cmd_0x0C
+        0     12   -> printf
+        0     18   -> printf
+      0     20   cmd_0x07
+        0     14   -> MAC_OpenRXSlot
+        0     14   -> cmd_answer
+        0     14   -> cmd_answer_err
+        0     14   -> get_network_seed_status
+        0     14   -> printf
+        0     20   -> printf
+      0     20   cmd_0x08
+        0     14   -> MAC_CloseRXSlot
+        0     14   -> cmd_answer
+        0     14   -> cmd_answer_err
+        0     14   -> get_network_seed_status
+        0     14   -> printf
+        0     20   -> printf
+      1     19   cmd_0x09
+        0     13   -> RXB_frame_count
+        0     13   -> cmd_answer
+        0     13   -> cmd_answer_err
+        0     13   -> printf
+        0     19   -> printf
+      1     19   cmd_0x0A
+        0     13   -> LLC_GetTaskLen
+        0     13   -> cmd_answer
+        0     13   -> cmd_answer_err
+        0     13   -> printf
+        0     19   -> printf
+      0     24   cmd_0x0B
+        0     18   -> LLC_AddTask
+        0     18   -> cmd_answer
+        0     18   -> cmd_answer_err
+        0     18   -> frame_addHeader
+        0     18   -> frame_create
+        0     18   -> frame_delete
+        0     18   -> get_network_seed_status
+        0     18   -> printf
+        0     24   -> printf
+        0     20   -> re_memcpy
+      0     20   cmd_0x0C
         0     14   -> RXB_del_frame
         0     14   -> RXB_get_frame
         0     14   -> cmd_answer_err
         0     14   -> get_network_seed_status
+        0     14   -> printf
+        0     20   -> printf
         0     14   -> upload_frame
-      0     13   cmd_0x0D
-        0     13   -> RI_Measure_POW
-        0     13   -> cmd_answer
-        0     13   -> cmd_answer_err
-        0     13   -> get_network_seed_status
-      0     12   cmd_0x0E
-        0     12   -> cmd_answer
-        0     12   -> cmd_answer_err
-        0     12   -> get_network_seed_status
-      0     12   cmd_0x0F
-        0     12   -> cmd_answer
-        0     12   -> cmd_answer_err
-        0     12   -> get_network_seed_status
-      0     12   cmd_0x10
-        0     12   -> cmd_answer
-        0     12   -> cmd_answer_err
-        0     12   -> get_network_seed_status
-      1     34   cmd_answer
+      0     21   cmd_0x0D
+        0     15   -> RI_Measure_POW
+        0     15   -> cmd_answer
+        0     15   -> cmd_answer_err
+        0     15   -> get_network_seed_status
+        0     15   -> printf
+        0     21   -> printf
+      0     20   cmd_0x0E
+        0     14   -> cmd_answer
+        0     14   -> cmd_answer_err
+        0     14   -> get_network_seed_status
+        0     14   -> printf
+        0     20   -> printf
+      0     20   cmd_0x0F
+        0     14   -> cmd_answer
+        0     14   -> cmd_answer_err
+        0     14   -> get_network_seed_status
+        0     14   -> printf
+        0     20   -> printf
+      0     20   cmd_0x10
+        0     14   -> cmd_answer
+        0     14   -> cmd_answer_err
+        0     14   -> get_network_seed_status
+        0     14   -> printf
+        0     20   -> printf
+      1     36   cmd_answer
         0     18   -> crc16
         0     18   -> uart_write
-      1     27   cmd_answer_err
+      1     29   cmd_answer_err
         0     11   -> stream_write
       0      9   com_uart_init
         0      9   -> uart_dma_init
@@ -5216,7 +5256,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       0     86   generateAuthData
         0     18   -> memcpy
       2      9   getRNDByte
-      2     16   get_network_seed_status
+      2     18   get_network_seed_status
       0     58   get_sync
         0     14   -> BitRawDecrypt
         0     14   -> RI_Receive
@@ -5228,11 +5268,14 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       2      1   incrementTS
       0     14   isIRQEnable
       0     28   loadTimerCompare
-      0      0   main
+      0      6   main
         0      0   -> com_uart_init
         0      0   -> neocore_hw_init
         0      0   -> network_seed_enable
+        0      0   -> nwDebugerInit
         0      0   -> parse_uart_stream
+        0      0   -> printf
+        0      6   -> printf
       0     23   malloc
         0      9   -> __xdata_malloc
       1     18   mem_move
@@ -5325,19 +5368,100 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_7
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_8
       22  ?<Constant "*ASSERT* %s:%d:%s -> ">_9
-      44  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">
+      19  ?<Constant "*LOG* %s:%d:%s -> ">
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_1
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_10
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_11
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_12
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_13
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_14
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_15
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_16
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_17
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_18
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_19
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_2
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_20
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_3
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_4
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_5
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_6
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_7
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_8
+      19  ?<Constant "*LOG* %s:%d:%s -> ">_9
+      51  ?<Constant "Add task = %u, CH = %...">
+      21  ?<Constant "CMD 0x00. No seeding">
+      18  ?<Constant "CMD 0x00. Seeding">
+      20  ?<Constant "CMD 0x01. Set panid">
+      24  ?<Constant "CMD 0x03. Start network">
+      23  ?<Constant "CMD 0x03. Stop network">
+      20  ?<Constant "CMD 0x04. IV loaded">
+      21  ?<Constant "CMD 0x05. KEY loaded">
+      20  ?<Constant "CMD 0x06. HW reload">
+      20  ?<Constant "CMD 0x07. Open slot">
+      24  ?<Constant "CMD 0x08. Close TS slot">
+      25  ?<Constant "CMD 0x09. RX frame count">
+      25  ?<Constant "CMD 0x09. TX frame count">
+      27  ?<Constant "CMD 0x0B. Frame add t...">
+      23  ?<Constant "CMD 0x0B. TX buff full">
+      26  ?<Constant "CMD 0x0C. Upload RX f...">
+      20  ?<Constant "CMD 0x0D. RSSI scan">
+      22  ?<Constant "CMD 0x0E. Set SYNC CH">
+      22  ?<Constant "CMD 0x0\320\220. Set SYS CH">
+      23  ?<Constant "CMD 0x10. Set TX POWER">
+      42  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">
+      42  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">_1
+      42  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">_2
+      42  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">_3
+      44  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">_4
+      38  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">_5
       42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">
+      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_1
+      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_10
+      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_11
+      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_2
+      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_3
+      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_4
+      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_5
+      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_6
+      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_7
+      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_8
+      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_9
       34  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">
       32  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_1
       32  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_2
       36  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_3
       33  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_4
-      34  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_5
-      36  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_6
-      32  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_7
+      38  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_5
+      34  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_6
+      36  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_7
+      33  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_8
+      32  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_9
+      13  ?<Constant "GatewayStart">
+      20  ?<Constant "STACK FAILURE. HALT">
+      11  ?<Constant "Sync send.">
+      12  ?<Constant "TS = 255 \r\n">
        3  ?<Constant "\r\n">
        3  ?<Constant "\r\n">_1
+       3  ?<Constant "\r\n">_10
+       3  ?<Constant "\r\n">_11
+       3  ?<Constant "\r\n">_12
+       3  ?<Constant "\r\n">_13
+       3  ?<Constant "\r\n">_14
+       3  ?<Constant "\r\n">_15
+       3  ?<Constant "\r\n">_16
+       3  ?<Constant "\r\n">_17
+       3  ?<Constant "\r\n">_18
+       3  ?<Constant "\r\n">_19
        3  ?<Constant "\r\n">_2
+       3  ?<Constant "\r\n">_20
+       3  ?<Constant "\r\n">_21
+       3  ?<Constant "\r\n">_22
+       3  ?<Constant "\r\n">_23
+       3  ?<Constant "\r\n">_24
+       3  ?<Constant "\r\n">_25
+       3  ?<Constant "\r\n">_26
+       3  ?<Constant "\r\n">_27
        3  ?<Constant "\r\n">_3
        3  ?<Constant "\r\n">_4
        3  ?<Constant "\r\n">_5
@@ -5355,19 +5479,100 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_7
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_8
       22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_9
-      44  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_1
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_10
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_11
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_12
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_13
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_14
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_15
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_16
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_17
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_18
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_19
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_2
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_20
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_3
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_4
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_5
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_6
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_7
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_8
+      19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_9
+      51  ?<Initializer for <Constant "Add task = %u, CH
+      21  ?<Initializer for <Constant "CMD 0x00. No seed
+      18  ?<Initializer for <Constant "CMD 0x00. Seeding
+      20  ?<Initializer for <Constant "CMD 0x01. Set pan
+      24  ?<Initializer for <Constant "CMD 0x03. Start n
+      23  ?<Initializer for <Constant "CMD 0x03. Stop ne
+      20  ?<Initializer for <Constant "CMD 0x04. IV load
+      21  ?<Initializer for <Constant "CMD 0x05. KEY loa
+      20  ?<Initializer for <Constant "CMD 0x06. HW relo
+      20  ?<Initializer for <Constant "CMD 0x07. Open sl
+      24  ?<Initializer for <Constant "CMD 0x08. Close T
+      25  ?<Initializer for <Constant "CMD 0x09. RX fram
+      25  ?<Initializer for <Constant "CMD 0x09. TX fram
+      27  ?<Initializer for <Constant "CMD 0x0B. Frame a
+      23  ?<Initializer for <Constant "CMD 0x0B. TX buff
+      26  ?<Initializer for <Constant "CMD 0x0C. Upload
+      20  ?<Initializer for <Constant "CMD 0x0D. RSSI sc
+      22  ?<Initializer for <Constant "CMD 0x0E. Set SYN
+      22  ?<Initializer for <Constant "CMD 0x0\320\220.
+      23  ?<Initializer for <Constant "CMD 0x10. Set TX
+      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE
+      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE_1
+      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE_2
+      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE_3
+      44  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE_4
+      38  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE_5
       42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne
+      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_1
+      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_10
+      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_11
+      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_2
+      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_3
+      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_4
+      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_5
+      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_6
+      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_7
+      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_8
+      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_9
       34  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH
       32  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_1
       32  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_2
       36  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_3
       33  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_4
-      34  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_5
-      36  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_6
-      32  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_7
+      38  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_5
+      34  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_6
+      36  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_7
+      33  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_8
+      32  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_9
+      13  ?<Initializer for <Constant "GatewayStart">>
+      20  ?<Initializer for <Constant "STACK FAILURE. HA
+      11  ?<Initializer for <Constant "Sync send.">>
+      12  ?<Initializer for <Constant "TS = 255 \r\n">>
        3  ?<Initializer for <Constant "\r\n">>
        3  ?<Initializer for <Constant "\r\n">>_1
+       3  ?<Initializer for <Constant "\r\n">>_10
+       3  ?<Initializer for <Constant "\r\n">>_11
+       3  ?<Initializer for <Constant "\r\n">>_12
+       3  ?<Initializer for <Constant "\r\n">>_13
+       3  ?<Initializer for <Constant "\r\n">>_14
+       3  ?<Initializer for <Constant "\r\n">>_15
+       3  ?<Initializer for <Constant "\r\n">>_16
+       3  ?<Initializer for <Constant "\r\n">>_17
+       3  ?<Initializer for <Constant "\r\n">>_18
+       3  ?<Initializer for <Constant "\r\n">>_19
        3  ?<Initializer for <Constant "\r\n">>_2
+       3  ?<Initializer for <Constant "\r\n">>_20
+       3  ?<Initializer for <Constant "\r\n">>_21
+       3  ?<Initializer for <Constant "\r\n">>_22
+       3  ?<Initializer for <Constant "\r\n">>_23
+       3  ?<Initializer for <Constant "\r\n">>_24
+       3  ?<Initializer for <Constant "\r\n">>_25
+       3  ?<Initializer for <Constant "\r\n">>_26
+       3  ?<Initializer for <Constant "\r\n">>_27
        3  ?<Initializer for <Constant "\r\n">>_3
        3  ?<Initializer for <Constant "\r\n">>_4
        3  ?<Initializer for <Constant "\r\n">>_5
@@ -5401,40 +5606,59 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        4  ?<Initializer for __Constant_fffffe0c>
        4  ?<Initializer for __Constant_ffffff>
        9  ?<Initializer for __FUNCTION__>
-      13  ?<Initializer for __FUNCTION__>_1
-      15  ?<Initializer for __FUNCTION__>_10
-      16  ?<Initializer for __FUNCTION__>_11
+       9  ?<Initializer for __FUNCTION__>_1
+       9  ?<Initializer for __FUNCTION__>_10
+       9  ?<Initializer for __FUNCTION__>_11
        9  ?<Initializer for __FUNCTION__>_12
-      15  ?<Initializer for __FUNCTION__>_13
-      15  ?<Initializer for __FUNCTION__>_14
-      12  ?<Initializer for __FUNCTION__>_15
-      12  ?<Initializer for __FUNCTION__>_16
-      20  ?<Initializer for __FUNCTION__>_17
-      11  ?<Initializer for __FUNCTION__>_18
-      14  ?<Initializer for __FUNCTION__>_19
-      16  ?<Initializer for __FUNCTION__>_2
-       8  ?<Initializer for __FUNCTION__>_20
-       8  ?<Initializer for __FUNCTION__>_21
-      14  ?<Initializer for __FUNCTION__>_22
-      13  ?<Initializer for __FUNCTION__>_23
-      13  ?<Initializer for __FUNCTION__>_24
+       9  ?<Initializer for __FUNCTION__>_13
+       9  ?<Initializer for __FUNCTION__>_14
+       9  ?<Initializer for __FUNCTION__>_15
+      13  ?<Initializer for __FUNCTION__>_16
+      16  ?<Initializer for __FUNCTION__>_17
+      16  ?<Initializer for __FUNCTION__>_18
+      13  ?<Initializer for __FUNCTION__>_19
+       9  ?<Initializer for __FUNCTION__>_2
+      18  ?<Initializer for __FUNCTION__>_20
+      14  ?<Initializer for __FUNCTION__>_21
+      12  ?<Initializer for __FUNCTION__>_22
+      14  ?<Initializer for __FUNCTION__>_23
+      12  ?<Initializer for __FUNCTION__>_24
       15  ?<Initializer for __FUNCTION__>_25
-      15  ?<Initializer for __FUNCTION__>_26
-      15  ?<Initializer for __FUNCTION__>_27
+      16  ?<Initializer for __FUNCTION__>_26
+       9  ?<Initializer for __FUNCTION__>_27
       15  ?<Initializer for __FUNCTION__>_28
-      19  ?<Initializer for __FUNCTION__>_29
-      16  ?<Initializer for __FUNCTION__>_3
-      18  ?<Initializer for __FUNCTION__>_30
-      29  ?<Initializer for __FUNCTION__>_31
-      18  ?<Initializer for __FUNCTION__>_32
-      18  ?<Initializer for __FUNCTION__>_33
-      19  ?<Initializer for __FUNCTION__>_34
-      13  ?<Initializer for __FUNCTION__>_4
-      18  ?<Initializer for __FUNCTION__>_5
-      14  ?<Initializer for __FUNCTION__>_6
-      12  ?<Initializer for __FUNCTION__>_7
-      14  ?<Initializer for __FUNCTION__>_8
-      12  ?<Initializer for __FUNCTION__>_9
+      15  ?<Initializer for __FUNCTION__>_29
+       9  ?<Initializer for __FUNCTION__>_3
+      12  ?<Initializer for __FUNCTION__>_30
+      12  ?<Initializer for __FUNCTION__>_31
+       5  ?<Initializer for __FUNCTION__>_32
+      20  ?<Initializer for __FUNCTION__>_33
+      11  ?<Initializer for __FUNCTION__>_34
+      14  ?<Initializer for __FUNCTION__>_35
+      14  ?<Initializer for __FUNCTION__>_36
+       8  ?<Initializer for __FUNCTION__>_37
+       8  ?<Initializer for __FUNCTION__>_38
+      14  ?<Initializer for __FUNCTION__>_39
+       9  ?<Initializer for __FUNCTION__>_4
+      13  ?<Initializer for __FUNCTION__>_40
+      19  ?<Initializer for __FUNCTION__>_41
+      13  ?<Initializer for __FUNCTION__>_42
+      15  ?<Initializer for __FUNCTION__>_43
+      15  ?<Initializer for __FUNCTION__>_44
+      15  ?<Initializer for __FUNCTION__>_45
+      15  ?<Initializer for __FUNCTION__>_46
+      19  ?<Initializer for __FUNCTION__>_47
+      18  ?<Initializer for __FUNCTION__>_48
+      29  ?<Initializer for __FUNCTION__>_49
+       9  ?<Initializer for __FUNCTION__>_5
+      18  ?<Initializer for __FUNCTION__>_50
+      18  ?<Initializer for __FUNCTION__>_51
+      19  ?<Initializer for __FUNCTION__>_52
+      17  ?<Initializer for __FUNCTION__>_53
+       9  ?<Initializer for __FUNCTION__>_6
+       9  ?<Initializer for __FUNCTION__>_7
+       9  ?<Initializer for __FUNCTION__>_8
+       9  ?<Initializer for __FUNCTION__>_9
       16  ?<Initializer for default_iv>
       16  ?<Initializer for default_key>
      476  AES_CCMDecrypt
@@ -5461,7 +5685,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        1  CLKCONSTA
       34  CMD_LIST
        4  COMPARE_TIME
-      39  CONFIG
+      45  CONFIG
      608  CTR_enc_decrypt
        6  CTR_enc_decrypt::?relay
       87  Callback_execution
@@ -5492,7 +5716,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       16  KEY
       16  KEY
        4  LAST_SYNC_TIME
-     310  LLC_AddTask
+     465  LLC_AddTask
        6  LLC_AddTask::?relay
       16  LLC_GetTaskLen
        6  LLC_GetTaskLen::?relay
@@ -5519,29 +5743,29 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  MAC_ACK_Recv::?relay
       91  MAC_ACK_Send
        6  MAC_ACK_Send::?relay
-     124  MAC_CloseRXSlot
+     121  MAC_CloseRXSlot
        6  MAC_CloseRXSlot::?relay
        1  MAC_ENABLE_MODULE
       23  MAC_Enable
        6  MAC_Enable::?relay
-     113  MAC_GetRXState
+     110  MAC_GetRXState
        6  MAC_GetRXState::?relay
-     113  MAC_GetTXState
+     110  MAC_GetTXState
        6  MAC_GetTXState::?relay
       57  MAC_Init
        6  MAC_Init::?relay
-     167  MAC_OpenRXSlot
+     164  MAC_OpenRXSlot
        6  MAC_OpenRXSlot::?relay
-     229  MAC_RX_HNDL
+     225  MAC_RX_HNDL
        6  MAC_RX_HNDL::?relay
      135  MAC_Reset
        6  MAC_Reset::?relay
-     422  MAC_Send
+     425  MAC_Send
        6  MAC_Send::?relay
       19  MAC_SetRXCallback
        6  MAC_SetRXCallback::?relay
        4  MAC_TIMER_MAX
-     595  MAC_TX_HNDL
+     592  MAC_TX_HNDL
        6  MAC_TX_HNDL::?relay
       41  MAC_setIV
        6  MAC_setIV::?relay
@@ -5628,7 +5852,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        1  ST0
        1  ST1
        1  ST2
-       2  STACK_FAILURE
+      70  STACK_FAILURE
        6  STACK_FAILURE::?relay
        1  STLOAD
        2  SYNC_ACCURATE_NETWORK_TIME
@@ -5645,7 +5869,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  SY_SYNC_NETWORK::?relay
       73  SY_TIME_ALLOC_MASTER
        6  SY_TIME_ALLOC_MASTER::?relay
-      48  SY_TS1_HNDL_MASTER
+     107  SY_TS1_HNDL_MASTER
        6  SY_TS1_HNDL_MASTER::?relay
       41  SY_setIV
        6  SY_setIV::?relay
@@ -5677,7 +5901,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  TIC_GetTimer::?relay
       17  TIC_GetUptime
        6  TIC_GetUptime::?relay
-     198  TIC_HW_Timer_IRQ
+     257  TIC_HW_Timer_IRQ
        6  TIC_HW_Timer_IRQ::?relay
       42  TIC_Init
        6  TIC_Init::?relay
@@ -5775,39 +5999,39 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  check_cmd_frame::?relay
       94  clocks_update
        6  clocks_update::?relay
-      63  cmd_0x00
+     181  cmd_0x00
        6  cmd_0x00::?relay
-      72  cmd_0x01
+     131  cmd_0x01
        6  cmd_0x01::?relay
       76  cmd_0x02
        6  cmd_0x02::?relay
-     189  cmd_0x03
+     310  cmd_0x03
        6  cmd_0x03::?relay
-      91  cmd_0x04
+     150  cmd_0x04
        6  cmd_0x04::?relay
-      91  cmd_0x05
+     150  cmd_0x05
        6  cmd_0x05::?relay
-      44  cmd_0x06
+     103  cmd_0x06
        6  cmd_0x06::?relay
-      79  cmd_0x07
+     138  cmd_0x07
        6  cmd_0x07::?relay
-      72  cmd_0x08
+     131  cmd_0x08
        6  cmd_0x08::?relay
-      69  cmd_0x09
+     128  cmd_0x09
        6  cmd_0x09::?relay
-      69  cmd_0x0A
+     128  cmd_0x0A
        6  cmd_0x0A::?relay
-     242  cmd_0x0B
+     385  cmd_0x0B
        6  cmd_0x0B::?relay
-      91  cmd_0x0C
+     146  cmd_0x0C
        6  cmd_0x0C::?relay
-     103  cmd_0x0D
+     162  cmd_0x0D
        6  cmd_0x0D::?relay
-      72  cmd_0x0E
+     131  cmd_0x0E
        6  cmd_0x0E::?relay
-      72  cmd_0x0F
+     131  cmd_0x0F
        6  cmd_0x0F::?relay
-      72  cmd_0x10
+     131  cmd_0x10
        6  cmd_0x10::?relay
      104  cmd_answer
        6  cmd_answer::?relay
@@ -5849,7 +6073,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  isIRQEnable::?relay
       70  loadTimerCompare
        6  loadTimerCompare::?relay
-      20  main
+      82  main
        6  main::?relay
       21  malloc
        6  malloc::?relay
@@ -5908,22 +6132,22 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        4  val
       59  xor_calc
        6  xor_calc::?relay
-     513  -- Other
+     703  -- Other
 
  
- 18 809 bytes in segment BANKED_CODE
+ 20 341 bytes in segment BANKED_CODE
   1 080 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
      60 bytes in segment NEAR_CODE
      38 bytes in segment SFR_AN
-  1 328 bytes in segment XDATA_I
-  1 328 bytes in segment XDATA_ID
-  1 176 bytes in segment XDATA_Z
+  3 241 bytes in segment XDATA_I
+  3 241 bytes in segment XDATA_ID
+  1 182 bytes in segment XDATA_Z
  
-  2 374 bytes of CODE     memory (+ 97 bytes shared)
-      0 bytes of DATA     memory (+ 38 bytes shared)
- 18 765 bytes of HUGECODE memory (+ 44 bytes shared)
-  2 428 bytes of XDATA    memory (+ 76 bytes shared)
+  4 287 bytes of CODE     memory (+  97 bytes shared)
+      0 bytes of DATA     memory (+  38 bytes shared)
+ 20 229 bytes of HUGECODE memory (+ 112 bytes shared)
+  4 347 bytes of XDATA    memory (+  76 bytes shared)
 
 Errors: none
 Warnings: 7

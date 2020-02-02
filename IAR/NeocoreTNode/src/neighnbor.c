@@ -30,7 +30,7 @@
 #define NB_TABLE_SIZE sizeof(nb_table_s)
 #define NB_TABLE_ITEMS 5 //!< Максимальное число соседей
 
-enum CMD_REQ{REQ_CRD = 0};
+enum CMD_REQ{REQ_CMD = 0};
 
 // Глобальные функции
 void NP_Reset(void);
@@ -345,7 +345,7 @@ static void process_cmd_req(frame_s *fr){
   nb_frame_req_s *cmd_req = (nb_frame_req_s*)fr->payload;  
    
   // Запрос информации об узле
-  if (cmd_req->cmd_req == REQ_CRD)
+  if (cmd_req->cmd_req == REQ_CMD)
     send_card();
   
   frame_delete(fr);
@@ -419,7 +419,7 @@ static void send_cmd_req(){
       rand()%NEIGHBOR_CARD_REQ_INTERVAL_DEV;  
   
   nb_frame_req_s cmd_req;
-  cmd_req.cmd_req = REQ_CRD;
+  cmd_req.cmd_req = REQ_CMD;
   
   frame_s *fr = frame_create();
   frame_addHeader(fr, &cmd_req, NB_FRAME_REQ_SIZE);
