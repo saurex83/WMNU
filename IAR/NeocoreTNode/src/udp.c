@@ -52,6 +52,11 @@ void UDP_Bind(uint8_t port, void (*fn)(frame_s *fr)){
 @brief Отправка пакета UDP
 */
 void UDP_Send(uint8_t port, frame_s *fr){
+  UDP_LAY udp_header;
+  udp_header.port = port;
+  fr->meta.IPP = IPP_UDP;
+  frame_addHeader(fr, &udp_header, sizeof(udp_bind_s));
+  IP_Send(fr);
 }
 
 /**

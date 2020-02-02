@@ -24,3 +24,5 @@
 #define NEIGHBOR_CARD_REQ_INTERVAL  30 // Как часто можно отправлять запрос карт
 #define NEIGHBOR_CARD_REQ_INTERVAL_DEV  10 // Случайное отклонение
 #define NEIGHBOR_THR_RECV_TIME 220 // Спустя это время, узел начнет запрашивать соседей
+
+#define ROUTE_TABLE_ITEMS 20 // Количество маршрутов в таблице маршрутизации

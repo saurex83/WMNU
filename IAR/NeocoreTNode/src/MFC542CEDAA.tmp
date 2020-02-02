@@ -36,8 +36,6 @@ enum CMD_REQ{REQ_CRD = 0};
 void NP_Reset(void);
 void NP_Init(void);
 int NP_GetETX(void);
-bool NP_Get_info_by_addr(uint16_t addr, uint8_t *ts, uint8_t *ch);
-bool NP_Get_COMM_node_info(uint16_t *addr, uint8_t *ts, uint8_t *ch);
 
 // Локальные переменные
 typedef struct { // Информационная карточка узла
@@ -52,9 +50,6 @@ typedef struct { // Какой то запрос от другого узла
 
 typedef struct{
   uint16_t node_addr; // Адрес узла
-  int8_t RSSI;
-  int8_t LIQ;
-  uint8_t weight; // Качество узла от 0 до 255. 0 - плохо
   nb_frame_card_s card; // Информация об узле
   uint32_t update_time; // Время обновления записи
   bool record_active; // Запись действительна 
@@ -78,12 +73,11 @@ static int find_index(frame_s *fr);
 static void insert_record(frame_s *fr);
 static void update_record(frame_s *fr, uint8_t index);
 static int find_free_index();
+static int compare_card(nb_frame_card_s *card1, nb_frame_card_s *card2);
 static void deactivate_unused_records(void);
 static void card_send_task(void);
 static bool is_nb_table_free(void);
 static void communication_node_chose(void);
-static uint8_t calc_weight(nb_frame_card_s *card);
-static int find_by_addr(uint16_t addr);
 
 void NP_Init(void){
   LLC_TimeAlloc(NP_TimeAlloc_HNDL);
@@ -105,92 +99,16 @@ void NP_Reset(void){
 @return -1 нет ETX
 */
 int NP_GetETX(void){
-  if (COMM_NODE == NULL)
-    return -1;
-  
-  if (!COMM_NODE->record_active)
-    return -1;
-  
-  return COMM_NODE->card.ETX + 1;
-}
-
-
-static int find_by_addr(uint16_t addr){
-  // Попробуем найти пакет по адресу
+  uint16_t min_etx = 0xffff;
+  // Перебираем все активные записи и ищем узел с минимальным ETX
   for (uint8_t i = 0; i < NB_TABLE_ITEMS; i++)
-    if (NB_TABLE[i].node_addr == addr)
-      if (NB_TABLE[i].record_active)
-        return i;
-  return -1;  
+    if (NB_TABLE[i].record_active)
+      if (NB_TABLE[i].card.ETX < min_etx)
+        min_etx = NB_TABLE[i].card.ETX;
+  if (min_etx == 0xffff)
+    return -1;
+  return min_etx + 1; // Значение ETX узла на 1 больше 
 }
-
-/**
-@brief Получить инфу о соседе по адресу
-*/
-bool NP_Get_info_by_addr(uint16_t addr, uint8_t *ts, uint8_t *ch){
-  int index = find_by_addr(addr);
-  if (index == -1)
-    return false;
-
-  nb_frame_card_s *card = &NB_TABLE[index].card;
-  
-  // Считаем что узла всегда открыты как минимум 1 слот
-  // Узнаем сколько открыто слотов. Открываются попорядку в массиве.
-  uint8_t nbSlots = 0;
-  for (uint8_t i = 0; i < MAX_OPEN_SLOTS; i++)
-    if (card->ts_slots[i] != 0)
-      nbSlots++;
-    else
-      break;
-    
-  uint8_t chose = rand() % nbSlots;
-  
-  ASSERT(nbSlots != 0);
-  if (nbSlots == 0) // Вобще то такого не должно быть совсем
-    return false;
-  
-  *ts = card->ts_slots[chose];
-  *ch = card->ch_slots[chose];
-  return true;  
-  
-}
-
-/**
-@brief Получить таймслот, адрес и канал ближайшего соседа для передачи пакета
- в направлении шлюза
-@return -1 нет ETX
-*/
-bool NP_Get_COMM_node_info(uint16_t *addr, uint8_t *ts, uint8_t *ch){
-  if (COMM_NODE == NULL)
-    return false;
-  
-  if (!COMM_NODE->record_active)
-    return false; 
-  
-  *addr = COMM_NODE->node_addr;
-  // У узла может быть несколько временых слотов. Выбираем случайным образом
-  
-  // Считаем что узла всегда открыты как минимум 1 слот
-  // Узнаем сколько открыто слотов. Открываются попорядку в массиве.
-  uint8_t nbSlots = 0;
-  for (uint8_t i = 0; i < MAX_OPEN_SLOTS; i++)
-    if (COMM_NODE->card.ts_slots[i] != 0)
-      nbSlots++;
-    else
-      break;
-    
-  uint8_t chose = rand() % nbSlots;
-  
-  ASSERT(nbSlots != 0);
-  if (nbSlots == 0) // Вобще то такого не должно быть совсем
-    return false;
-  
-  *ts = COMM_NODE->card.ts_slots[chose];
-  *ch = COMM_NODE->card.ch_slots[chose];
-  return true;
-}
-
-
 
 static bool frame_filter_cmd_req(frame_s *fr){
     nb_frame_req_s *cmd_req = (nb_frame_req_s*)fr->payload;
@@ -264,25 +182,16 @@ static int find_free_index(){
 @brief Обновление карточки по индексу
 */
 static void update_record(frame_s *fr, uint8_t index){
-  nb_frame_card_s *card = (nb_frame_card_s*)fr->payload;
-  re_memcpy(&NB_TABLE[index].card, card, NB_FRAME_CARD_SIZE);
+  re_memcpy(&NB_TABLE[index].card, fr->payload, NB_FRAME_CARD_SIZE);
   NB_TABLE[index].update_time = TIC_GetUptime();
-  uint8_t weight = calc_weight(card);
-  NB_TABLE[index].weight = weight;
-  NB_TABLE[index].node_addr = fr->meta.NSRC;
-  NB_TABLE[index].record_active = true;
-  NB_TABLE[index].RSSI = fr->meta.RSSI_SIG;
-  NB_TABLE[index].LIQ = fr->meta.LIQ;
 }
 
 /**
-@brief Вычисляет вес карты
-@return 0 - плохо, 255 отлично
+@brief Сравнивает две карты и возвращает результат
+@return > 0 card1 лучше чем cadr2. Чем больше тем лучше
 */
-static uint8_t calc_weight(nb_frame_card_s *card){
+static int compare_card(nb_frame_card_s *card1, nb_frame_card_s *card2){
   // Сравнивает две карты по ETX, LIQ(пока не доступно), RSSI
-  // ПОДУМАТЬ. При маршрутизаии от шлюза сохраняются маршруты до соседей
-  // Если нет соседа ( выкинули его) то маршрут разрушится
   return 0;
 }
 
@@ -293,32 +202,37 @@ static uint8_t calc_weight(nb_frame_card_s *card){
 */
 static void insert_record(frame_s *fr){
   int index = find_free_index();
-  nb_frame_card_s *card = (nb_frame_card_s*)fr->payload;
-  uint8_t weight = calc_weight(card);
   
   if (index != -1){ // Нашли место, запихиваем карточку
     update_record(fr,index);
+    NB_TABLE[index].node_addr = fr->meta.NSRC;
+    NB_TABLE[index].record_active = true;
     return;
   }
   
-  uint8_t bad_index, bad_weight = 255;
+  nb_frame_card_s *card = (nb_frame_card_s*)fr->payload;
+  int cmp_res, best_cmp_res = 0;
+  uint8_t best_index;
   bool found = false;
   
-  // Свободных мест нет. Ищем самую плохую запись
+  // Свободных мест нет. Выбросим какой нибудь плохой
   for (uint8_t i = 0; i < NB_TABLE_ITEMS; i++)
     if (NB_TABLE[i].record_active){
-      if (NB_TABLE[i].weight < bad_weight){
-        bad_weight = NB_TABLE[i].weight ;
-        bad_index = i;
+       cmp_res = compare_card(card, &NB_TABLE[i].card);
+       if (cmp_res > best_cmp_res){
+        best_cmp_res = cmp_res;
+        best_index = i;
         found = true;
        }
     }
   
-  if (!found) // Если нету записей.
+  if (!found) // Новый сосед не лучше уже имеющихся
     return;
   
-  if (weight > bad_weight) //// Карточка лучше чем самая плохая в таблице
-    update_record(fr, bad_index); 
+  // Обновляем запись на лучшего соседа
+  update_record(fr, best_index);
+  NB_TABLE[index].node_addr = fr->meta.NSRC;
+  NB_TABLE[index].record_active = true;  
 }
 
 /**
@@ -377,7 +291,7 @@ static void send_card(void){
   fr->meta.TS = 0;
   fr->meta.CH = CONFIG.sys_channel;
   fr->meta.TX_METHOD = BROADCAST;
-  RP_Send(fr);
+  ETH_Send(fr);
 }
 
 /**
@@ -429,7 +343,7 @@ static void send_cmd_req(){
   fr->meta.TS = 0;
   fr->meta.CH = CONFIG.sys_channel;
   fr->meta.TX_METHOD = BROADCAST;
-  RP_Send(fr);
+  ETH_Send(fr);
 }
 
 /**
@@ -460,28 +374,32 @@ static void card_send_req_task(void){
 /**
 @brief Выбирает соседний узел для связи
 */
-static void communication_node_chose(void){  
-  uint8_t best_index, best_weight = 0;
+static void communication_node_chose(void){
+  nb_frame_card_s *card = COMM_NODE;
+  int cmp_res, best_cmp_res = 0;
+  uint8_t best_index;
   bool found = false;
   
-  // Ищем самую лучшую запись
+  // Свободных мест нет. Выбросим какой нибудь плохой
   for (uint8_t i = 0; i < NB_TABLE_ITEMS; i++)
     if (NB_TABLE[i].record_active){
-      if (NB_TABLE[i].weight > best_weight){
-        best_weight = NB_TABLE[i].weight ;
+       cmp_res = compare_card(card, &NB_TABLE[i].card);
+       if (cmp_res > best_cmp_res){
+        best_cmp_res = cmp_res;
         best_index = i;
         found = true;
        }
-    }
+    }  
   
-  // Не нашли записей
-  if (!found){
-    COMM_NODE = NULL;
-    return;
-  }
-  
-  // Указываем лучший узел для связи с шлюзом
-  COMM_NODE = &NB_TABLE[best_index];
+  uint16_t min_etx = 0xffff;
+  // Перебираем все активные записи и ищем узел с минимальным ETX
+  for (uint8_t i = 0; i < NB_TABLE_ITEMS; i++)
+    if (NB_TABLE[i].record_active)
+      if (NB_TABLE[i].card.ETX < min_etx)
+        min_etx = NB_TABLE[i].card.ETX;
+  if (min_etx == 0xffff)
+    return -1;
+  return min_etx + 1; // Значение ETX узла на 1 больше 
 }
 
 /**
@@ -492,5 +410,4 @@ static void NP_TimeAlloc_HNDL(void){
   card_send_task();
   card_send_req_task();
   communication_node_chose();
-  // TODO НУЖНО КОНТРЛИРОВАТЬ ИЗМЕНЕНИЯ НАШИХ СЛОТОВ и ОПОВЕЩАТЬ СОСЕДЕЙ 
 }

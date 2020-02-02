@@ -105,7 +105,7 @@ void ETH_Send(frame_s *fr){
   eth_header.NETID = CONFIG.panid;
   eth_header.NDST = fr->meta.NDST;
   eth_header.NSRC = fr->meta.NSRC;
-  
+  // CH и TS заполняет отправитель
   // Добавляем заголовок
   frame_addHeader(fr, &eth_header, ETH_LAY_SIZE);
   
