@@ -140,7 +140,7 @@ def main():
 
     transiver_control.TransiverStart(UART_CONN)
     while(True):
-        neigh_test.test1(UART_CONN)
+        neigh_test.test2(UART_CONN)
     exit(0)
     SEND_ETHERNET(UART_CONN)
     exit(0)

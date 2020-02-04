@@ -1,83 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
     <fileVersion>2</fileVersion>
-    <fileChecksum>2536609697</fileChecksum>
+    <fileChecksum>570903001</fileChecksum>
     <configuration>
         <name>Debug</name>
         <outputs>
-            <file>$PROJ_DIR$\src\auth.c</file>
-            <file>$PROJ_DIR$\src\auth.h</file>
-            <file>$PROJ_DIR$\src\balancer.c</file>
-            <file>$PROJ_DIR$\src\balancer.h</file>
-            <file>$PROJ_DIR$\src\ethernet.c</file>
-            <file>$PROJ_DIR$\src\ethernet.h</file>
-            <file>$PROJ_DIR$\src\ip.c</file>
-            <file>$PROJ_DIR$\src\ip.h</file>
-            <file>$PROJ_DIR$\src\neighnbor.c</file>
-            <file>$PROJ_DIR$\src\neighnbor.h</file>
-            <file>$PROJ_DIR$\src\protocol_controller.c</file>
-            <file>$PROJ_DIR$\src\protocol_controller.h</file>
-            <file>$PROJ_DIR$\src\route.c</file>
-            <file>$PROJ_DIR$\src\route.h</file>
-            <file>$PROJ_DIR$\src\tcp.c</file>
-            <file>$PROJ_DIR$\src\tcp.h</file>
-            <file>$PROJ_DIR$\src\udp.c</file>
-            <file>$PROJ_DIR$\src\udp.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\basic.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\cmd_parser.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\config.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\config.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\delays.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\delays.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\dma.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\dma.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\frame.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\frame.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\LLC.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\LLC.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\MAC.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\MAC.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\manager.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\manager.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\mem.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\mem.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\Net_frames.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\NTMR.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\NTMR.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\nwdebuger.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\nwdebuger.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\Radio_defs.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\rx_buff.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\rx_buff.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\sig_trace.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\sig_trace_defs.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\sync.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\sync.h</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\TIC.c</file>
-            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\TIC.h</file>
-            <file>$PROJ_DIR$\src\main.c</file>
-            <file>$PROJ_DIR$\Debug\Obj\RADIO.r51</file>
-            <file>$PROJ_DIR$\Debug\Obj\NTMR.r51</file>
-            <file>$PROJ_DIR$\Debug\Obj\ethernet.pbi</file>
-            <file>$PROJ_DIR$\Debug\Obj\rx_buff.r51</file>
-            <file>$PROJ_DIR$\Debug\Obj\dma.pbi</file>
-            <file>$PROJ_DIR$\Debug\Obj\mem.r51</file>
-            <file>$PROJ_DIR$\Debug\Obj\delays.pbi</file>
-            <file>$PROJ_DIR$\Debug\Obj\config.pbi</file>
-            <file>$PROJ_DIR$\Debug\Obj\coder.pbi</file>
-            <file>$PROJ_DIR$\Debug\Obj\cmd_parser.pbi</file>
-            <file>$PROJ_DIR$\Debug\Obj\TIC.r51</file>
-            <file>$PROJ_DIR$\Debug\Obj\sync.r51</file>
-            <file>$PROJ_DIR$\Debug\Obj\coder.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\cmd_parser.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\config.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\dma.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\ethernet.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\tcp.r51</file>
             <file>$PROJ_DIR$\Debug\Obj\tcp.pbi</file>
             <file>$PROJ_DIR$\Debug\Obj\auth.r51</file>
             <file>$PROJ_DIR$\Debug\Obj\auth.pbi</file>
@@ -135,6 +62,61 @@
             <file>$PROJ_DIR$\Debug\List\neocoreTNode.map</file>
             <file>$TOOLKIT_DIR$\lib\dlib\dl-pli-blxd-1e16x01n.r51</file>
             <file>$TOOLKIT_DIR$\config\devices\Texas Instruments\lnk51ew_cc2530F256_banked.xcl</file>
+            <file>$PROJ_DIR$\src\auth.c</file>
+            <file>$PROJ_DIR$\src\auth.h</file>
+            <file>$PROJ_DIR$\src\balancer.c</file>
+            <file>$PROJ_DIR$\src\balancer.h</file>
+            <file>$PROJ_DIR$\src\ethernet.c</file>
+            <file>$PROJ_DIR$\src\ethernet.h</file>
+            <file>$PROJ_DIR$\src\ip.c</file>
+            <file>$PROJ_DIR$\src\ip.h</file>
+            <file>$PROJ_DIR$\src\neighnbor.c</file>
+            <file>$PROJ_DIR$\src\neighnbor.h</file>
+            <file>$PROJ_DIR$\src\protocol_controller.c</file>
+            <file>$PROJ_DIR$\src\protocol_controller.h</file>
+            <file>$PROJ_DIR$\src\route.c</file>
+            <file>$PROJ_DIR$\src\route.h</file>
+            <file>$PROJ_DIR$\src\tcp.c</file>
+            <file>$PROJ_DIR$\src\tcp.h</file>
+            <file>$PROJ_DIR$\src\udp.c</file>
+            <file>$PROJ_DIR$\src\udp.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\basic.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\cmd_parser.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\config.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\config.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\delays.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\delays.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\dma.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\dma.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\frame.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\frame.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\LLC.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\LLC.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\MAC.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\MAC.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\manager.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\manager.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\mem.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\mem.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\Net_frames.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\NTMR.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\NTMR.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\nwdebuger.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\nwdebuger.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\Radio_defs.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\rx_buff.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\rx_buff.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\sig_trace.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\sig_trace_defs.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\sync.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\sync.h</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\TIC.c</file>
+            <file>$PROJ_DIR$\..\SHARE_PRJ_SRC\TIC.h</file>
+            <file>$PROJ_DIR$\src\main.c</file>
             <file>$TOOLKIT_DIR$\inc\dlib\c\yvals.h</file>
             <file>$TOOLKIT_DIR$\inc\dlib\c\yfuns.h</file>
             <file>$TOOLKIT_DIR$\inc\dlib\c\stdio.h</file>
@@ -157,449 +139,34 @@
             <file>$PROJ_DIR$\Debug\Obj\MAC.r51</file>
             <file>$PROJ_DIR$\Debug\Obj\LLC.pbi</file>
             <file>$PROJ_DIR$\Debug\Obj\nwdebuger.r51</file>
-            <file>$PROJ_DIR$\..\NEOCOREGATEWAY\src\main.c</file>
             <file>$PROJ_DIR$\Debug\Obj\protocol_controller.pbi</file>
             <file>$PROJ_DIR$\Debug\Obj\protocol_controller.r51</file>
             <file>$PROJ_DIR$\Debug\Obj\protocol_controller.__cstat.et</file>
-            <file>$PROJ_DIR$\..\NEOCOREGATEWAY\src\uart_comm.c</file>
-            <file>$PROJ_DIR$\..\NEOCOREGATEWAY\src\cmd_0x10.c</file>
-            <file>$PROJ_DIR$\..\NEOCOREGATEWAY\src\cmd_0x0F.c</file>
-            <file>$PROJ_DIR$\..\NEOCOREGATEWAY\src\cmd_parser.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\RADIO.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\NTMR.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\ethernet.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\rx_buff.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\dma.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\mem.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\delays.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\config.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\coder.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\cmd_parser.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\TIC.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\sync.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\coder.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\cmd_parser.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\config.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\dma.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\ethernet.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\tcp.r51</file>
         </outputs>
-        <file>
-            <name>$PROJ_DIR$\src\auth.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 75</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 74 87 148 142 140 143 139 144 146 90 147 149 106 145 60 91 56 151 154 55 83 58 66 72 65 85</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 77</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 111 109 133 125 123 132 120 29 130 135 137 134 122 42 31 7</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 42 132 111 130 137 120 123 125 134 133 135 29 109 122 31 7 2 23 18 44 19 20 21 114 110 25 27 22 24 26 4 38 28 37 136 6 13 17 15 1 9 30 33 53 32 40 54 35 11 34 51 47 36 8 5 39 41 131 10 3 43 45 12 46 50 14 52 16</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\balancer.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 88</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 80</file>
-                </tool>
-            </outputs>
-        </file>
         <file>
             <name>[ROOT_NODE]</name>
             <outputs>
                 <tool>
                     <name>XLINK</name>
-                    <file> 119 127</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\ethernet.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 57</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 71</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\ip.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 89</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 81</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\neighnbor.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 92</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 91</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 82</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 42 132 111 130 137 120 123 125 134 133 135 31 109 122 29 13 18 44 110 38 23 5 37 136 53 25</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\protocol_controller.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 153</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 155</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\route.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 84</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 76</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\tcp.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 73</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 79</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 29 133 111 125 123 132 120 122 130 7 135 137 134 109 42</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\udp.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 86</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 78</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 29 133 111 125 123 132 120 122 130 7 135 137 134 109 42 38</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\cmd_parser.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 64</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 68</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 63</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 67</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 111 27 123 122 110 109 125 120 114 25 130 137 134 133 21</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\config.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 62</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 69</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\delays.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 61</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 94</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 111 130 110 120 25 125 123 133 114 122 137 134</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\dma.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 59</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 70</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 130 122 137 125 123 114 111 120 27 134</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\frame.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 141</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 95</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 136 114 137 133 135 37 122 130 134 111 110 42 109 125 120 123 132 29</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\LLC.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 150</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 96</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 133 29 111 109 122 120 42 125 53 123 25 136 130 33 37 114 137 134 44 132 135 31</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\MAC.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 138</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 97</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\manager.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 124</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 98</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\mem.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 112</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 99</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 137 134 130 42 133 122 125 111 136 110 120 123 114 132 135</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\NTMR.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 117</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 100</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 123 111 130 133 114 109 125 120 136 42 122 137 134 132 135 40</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\nwdebuger.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 108</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 101</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 132 111 122 130 134 114 131 135 137 133 42 125 120 123</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 113</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 102</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\rx_buff.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 116</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 103</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 137 29 109 130 134 135 111 42 122 125 120 123 132 133 31</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\sync.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 115</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 104</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\TIC.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 118</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 105</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\main.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 107</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 126</file>
+                    <file> 46 54</file>
                 </tool>
             </outputs>
         </file>
@@ -608,17 +175,17 @@
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 57</file>
+                    <file> 139</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 71</file>
+                    <file> 153</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 125 111 123 109 31 130 122 120 135 38 42 37 137 134 29 132 133 136</file>
+                    <file> 52 38 50 36 88 112 49 47 117 95 99 94 119 116 86 114 115 118</file>
                 </tool>
             </inputs>
         </file>
@@ -627,16 +194,612 @@
             <outputs>
                 <tool>
                     <name>XLINK</name>
-                    <file> 127</file>
+                    <file> 54</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>XLINK</name>
-                    <file> 129 74 87 148 142 140 143 139 144 146 90 147 149 106 145 60 91 56 151 154 55 83 58 66 72 65 85 128</file>
+                    <file> 56 1 14 130 124 122 125 121 126 128 17 129 131 33 127 142 18 138 133 135 137 10 140 148 154 147 12 55</file>
                 </tool>
             </inputs>
         </file>
+        <file>
+            <name>$PROJ_DIR$\src\auth.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 2</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 1 14 130 124 122 125 121 126 128 17 129 131 33 127 142 18 138 133 135 137 10 140 148 154 147 12</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 4</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 38 47 114 115 52 50 36 86 112 117 119 116 49 99 88 64</file>
+                </tool>
+                <tool>
+                    <name>ICC8051</name>
+                    <file> 99 114 38 112 119 47 50 52 116 115 117 86 36 49 88 64 59 80 75 101 76 77 78 41 37 82 84 79 81 83 61 95 85 94 118 63 70 74 72 58 66 87 90 110 89 97 111 92 68 91 108 104 93 65 62 96 98 113 67 60 100 102 69 103 107 71 109 73</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\balancer.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 15</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 7</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 38 114 117 88 112 116 86 80 115 119 36 49 75 101 99 52 47 50</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\ethernet.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 139</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 153</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 36 101 80 112 50 95 114 117 49 75 86 88 38 115 52 47 99 119 116</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\ip.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 16</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 8</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 38 75 66 47 49 95 114 117 52 112 70 72 50 86 80 74 58 115 119 116 36 99 101</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\neighnbor.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 19</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 9</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 36 38 62 114 117 52 75 108 47 49 82 86 95 110 112 50 118 88 70 37 80 94 115 119 116 99 101</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\protocol_controller.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 134</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 136</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 38 47 114 115 52 50 36 92 112 117 119 116 49 99 58 60 62 64 66 70 86 72 74</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\route.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 11</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 3</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 112 36 86 37 118 38 115 49 80 94 119 116 75 62 60 88 66 110 114 117 52 47 50 101 99 82</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\tcp.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 0</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 6</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 38 47 49 112 114 115 52 50 86 64 117 119 116 36 99</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\udp.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 13</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 5</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 38 47 49 112 114 115 52 50 86 64 117 119 116 36 99 95</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\cmd_parser.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 146</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 150</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 145</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 149</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 38 84 50 49 37 36 52 47 41 82 112 119 116 115 78</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\config.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 144</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 151</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 38 75 36 119 116 112 86 37 80 49 52 47 50 115 101</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\delays.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 143</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 21</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 38 112 37 47 82 52 50 115 41 49 119 116</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\dma.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 141</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 152</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 112 49 119 52 50 41 38 47 84 116</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\frame.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 123</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 22</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 118 41 119 115 112 94 49 116 38 117 37 99 36 52 47 50 114 86</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\LLC.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 132</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 23</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 112 49 86 99 101 110 119 116 36 52 38 114 117 90 94 41 47 50 82 118 115 88</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\MAC.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 120</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 24</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 49 97 86 78 36 37 118 110 38 47 117 115 99 75 101 112 52 50 90 119 116 82 114</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\manager.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 51</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 25</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 36 110 119 49 101 75 88 99 86 117 82 97 80 112 116 78 90 108 41 38 52 47 50 114 115 92 84 104</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\mem.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 39</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 26</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 119 116 112 99 115 49 52 38 118 37 47 50 41 114 117</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\NTMR.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 44</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 27</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 50 38 112 41 36 52 47 115 118 99 49 119 116 114 117 97</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\nwdebuger.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 35</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 28</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 114 38 49 112 116 41 113 117 119 115 99 52 47 50</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 40</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 29</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 119 116 97 86 112 118 38 110 49 99 36 115 41 94 102 82 37 80 52 47 50 114 117 101 75</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\rx_buff.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 43</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 30</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 119 86 36 112 116 117 38 99 49 52 47 50 114 115 88</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\sync.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 42</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 31</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 97 119 99 112 38 86 110 41 52 50 49 36 75 37 78 101 80 115 47 114 117 82 118 116</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\TIC.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 45</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 32</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 49 82 119 116 112 36 52 38 118 41 114 117 101 97 99 75 47 50 115 110 86</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\main.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 34</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 53</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 86 38 49 47 112 88 52 114 117 36 115 41 90 68 50 110 82 99 118 74 119 116 101 92</file>
+                </tool>
+            </inputs>
+        </file>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\src\balancer.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\src\ethernet.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\src\ip.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\src\neighnbor.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\src\protocol_controller.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\src\route.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\src\tcp.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\src\udp.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\cmd_parser.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\coder.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\config.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\delays.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\dma.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\frame.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\LLC.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\MAC.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\manager.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\mem.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\NTMR.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\nwdebuger.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\RADIO.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\rx_buff.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\sync.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\..\SHARE_PRJ_SRC\TIC.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\src\main.c</name>
+            <tool>ICC8051</tool>
+        </forcedrebuild>
     </configuration>
     <configuration>
         <name>Release</name>

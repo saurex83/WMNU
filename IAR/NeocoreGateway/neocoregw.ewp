@@ -457,11 +457,11 @@
                 </option>
                 <option>
                     <name>Compiler Extra Options Check</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>Compiler Extra Options Edit</name>
-                    <state></state>
+                    <state>--no_path_in_file_macros</state>
                 </option>
                 <option>
                     <name>CCIncludePath2</name>

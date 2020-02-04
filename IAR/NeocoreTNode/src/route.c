@@ -224,6 +224,7 @@ void RP_Bind_PID(uint8_t pid, void (*fn)(frame_s *fr)){
     if (PID_BIND_TABLE[i].fn == NULL){
       PID_BIND_TABLE[i].fn = fn;
       PID_BIND_TABLE[i].pid = pid;
+      return;
     }     
   }
 }

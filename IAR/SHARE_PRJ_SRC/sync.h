@@ -9,3 +9,4 @@ void SY_setKEY(void* ptr_KEY);
 bool SY_SYNC_NETWORK(uint16_t *panid,uint16_t timeout);
 void SY_Enable(bool en);
 uint32_t SY_sync_sended(void);
+bool SY_is_synced(void);

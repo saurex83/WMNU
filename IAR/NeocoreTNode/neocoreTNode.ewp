@@ -171,11 +171,11 @@
                 </option>
                 <option>
                     <name>General Pdata Stack Size</name>
-                    <state>0x80</state>
+                    <state>0xff</state>
                 </option>
                 <option>
                     <name>General Xdata Stack Size</name>
-                    <state>0x22c</state>
+                    <state>0x300</state>
                 </option>
                 <option>
                     <name>General Ext Stack Size</name>
@@ -457,11 +457,11 @@
                 </option>
                 <option>
                     <name>Compiler Extra Options Check</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>Compiler Extra Options Edit</name>
-                    <state></state>
+                    <state>--no_path_in_file_macros</state>
                 </option>
                 <option>
                     <name>CCIncludePath2</name>
@@ -575,7 +575,7 @@
                 </option>
                 <option>
                     <name>OutputFile</name>
-                    <state></state>
+                    <state>$FILE_BNAME$.r51</state>
                 </option>
                 <option>
                     <name>ACaseSensitivity</name>

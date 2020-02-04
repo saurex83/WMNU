@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               02/Feb/2020  19:50:14
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               04/Feb/2020  21:17:18
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,17 +13,17 @@
 #                          
 #    Source file        =  E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EWDB33.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW7919.tmp
 #        (E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c -lcN
 #        E:\WMNU\IAR\NeocoreGateway\Debug\List -o
 #        E:\WMNU\IAR\NeocoreGateway\Debug\Obj -e --debug --core=plain
 #        --dptr=16,1 --data_model=large --code_model=banked
 #        --calling_convention=xdata_reentrant --place_constants=data
 #        --nr_virtual_regs 8 --dlib_config "C:\Program Files (x86)\IAR
-#        Systems\Embedded Workbench 8.0\8051\LIB\DLIB\dl8051Normal.h" -I
-#        E:\WMNU\IAR\SHARE_PRJ_SRC\ -On --no_cse --no_unroll --no_inline
-#        --no_code_motion --no_tbaa --no_cross_call --mfc
-#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x01.c
+#        Systems\Embedded Workbench 8.0\8051\LIB\DLIB\dl8051Normal.h"
+#        --no_path_in_file_macros -I E:\WMNU\IAR\SHARE_PRJ_SRC\ -On --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --no_cross_call
+#        --mfc E:\WMNU\IAR\NeocoreGateway\src\cmd_0x01.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x02.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x03.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x04.c
@@ -33,22 +33,22 @@
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x08.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x09.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0A.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0B.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0B.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0C.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0D.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0E.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0F.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x10.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_parser.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0E.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0F.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x10.c
+#        E:\WMNU\IAR\NeocoreGateway\src\cmd_parser.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\coder.c E:\WMNU\IAR\SHARE_PRJ_SRC\config.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\delays.c E:\WMNU\IAR\SHARE_PRJ_SRC\dma.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\frame.c E:\WMNU\IAR\SHARE_PRJ_SRC\LLC.c
-#        E:\WMNU\IAR\SHARE_PRJ_SRC\MAC.c E:\WMNU\IAR\NEOCOREGATEWAY\src\main.c
+#        E:\WMNU\IAR\SHARE_PRJ_SRC\MAC.c E:\WMNU\IAR\NeocoreGateway\src\main.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\manager.c E:\WMNU\IAR\SHARE_PRJ_SRC\mem.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\NTMR.c E:\WMNU\IAR\SHARE_PRJ_SRC\nwdebuger.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\RADIO.c E:\WMNU\IAR\SHARE_PRJ_SRC\rx_buff.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\sync.c E:\WMNU\IAR\SHARE_PRJ_SRC\TIC.c
-#        E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c)
+#        E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c)
 #    Locale             =  Russian_Russia.1251
 #    List file          =  E:\WMNU\IAR\NeocoreGateway\Debug\List\cmd_0x00.lst
 #    Object file        =  E:\WMNU\IAR\NeocoreGateway\Debug\Obj\cmd_0x00.r51
@@ -451,7 +451,7 @@ E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0A.c
      28            LOG_ON("CMD 0x09. TX frame count");
      29            return true;
      30          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0B.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0B.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -635,7 +635,7 @@ E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0D.c
      39            cmd_answer(ATYPE_CMD_OK, (uint8_t*)&rssi, sizeof(rssi));
      40            return true;
      41          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0E.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0E.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -672,7 +672,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0E.c
      34            cmd_answer(ATYPE_CMD_OK, NULL, 0);
      35            return true;
      36          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0F.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x0F.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -710,7 +710,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x0F.c
      35            cmd_answer(ATYPE_CMD_OK, NULL, 0);
      36            return true;
      37          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x10.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_0x10.c
       1          #include "stdint.h"
       2          #include "cmd_parser.h"
       3          #include "manager.h"
@@ -747,7 +747,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_0x10.c
      34            cmd_answer(ATYPE_CMD_OK, NULL, 0);
      35            return true;
      36          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\cmd_parser.c
+E:\WMNU\IAR\NeocoreGateway\src\cmd_parser.c
       1          #include "uart_comm.h"
       2          #include "stdbool.h"
       3          #include "cmd_index_list.h"
@@ -2504,7 +2504,7 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\MAC.c
     397            AES_StreamCoder(true, src, src, KEY, IV, size);
     398          }
     399          
-E:\WMNU\IAR\NEOCOREGATEWAY\src\main.c
+E:\WMNU\IAR\NeocoreGateway\src\main.c
       1          #include "manager.h"
       2          #include "nwdebuger.h"
       3          #include "ioCC2530.h"
@@ -3867,386 +3867,401 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\sync.c
      17          bool SY_SYNC_NETWORK(uint16_t *panid,uint16_t timeout);
      18          void SY_Enable(bool en);
      19          uint32_t SY_sync_sended(void);
-     20          
-     21          static void SY_TS1_HNDL_MASTER(void);
-     22          static void SY_TS1_HNDL_SLAVE(void);
-     23          static void SY_TIME_ALLOC_SLAVE(void);
-     24          static void SY_TIME_ALLOC_MASTER(void);
-     25          static void BitRawDecrypt(uint8_t *src, uint8_t size);
-     26          static void BitRawCrypt(uint8_t *src, uint8_t size);
-     27          static frame_s* get_sync(uint32_t timeout);
-     28          static bool send_sync(void);
-     29          
-     30          static uint32_t LAST_SYNC_TIME = 0; //!< Время последней синхр.
-     31          static uint32_t NEXT_SYNC_TIME = 0; //!< Время следующей синхр.
-     32          static uint32_t SYNC_SENDED = 0; //!< Количество успешно ретранслированых пакетов
-     33          static uint32_t SYNC_SEND_TIME = 0;
-     34          static bool NEED_SEND_SYNC = false; //!< Нужно отослать синхропакет
-     35          static bool SY_ENABLE_MODULE = false;
-     36          
-     37          // Ключ потокового шифрования и вектор иницилизации
-     38          static uint8_t KEY[16] = DEFAULT_KEY;
-     39          static uint8_t IV[16] = DEFAULT_IV;
-     40          //@brief Точное время приема/передачи пакета синхронизации времени
-     41          // Расчитывается при иницилизации
-     42          static uint16_t SYNC_ACCURATE_NETWORK_TIME; 
-     43          
-     44          #define SYNC_TS 1 //!< Номер временного слота синхросигнала
-     45          #define SYNC_RECV_TIMEOUT 2000 // Время ожидания приема пакета в мкс
-     46          #define SYNC_TIMEOUT 110//!< Время в сек после которого сеть не синхронна
-     47          
-     48          
-     49          typedef struct // Формат структуры пакета синхронизации
-     50          {
-     51              uint8_t sys_ch;
-     52              uint8_t tx_power;
-     53              uint8_t panid;
-     54              uint32_t rtc;
-     55              uint32_t magic;
-     56          } __attribute__((packed)) SYNC_s;
-     57          
-     58          #define MAGIC 0x19833891 // Проверка что пакет действительно sync
-     59          #define RAND_SYNC_RX_DELAY  9 // Фиксированое время приема rand()%10 + 5
-     60          #define RAND_SYNC_TX_DELAY  10 // Фиксированное время передачи сигнала
-     61          // Максимальное отклонение при приеме sync в тактах сети
-     62          #define SYNC_TIME_DRIFT 35  
-     63          
-     64          #ifdef GATEWAY
-     65            #define SYNC_MASTER     // Если определено, то узел является шлюзом
-     66          #endif
-     67          
-     68          void SY_Init(void)
-     69          {
-     70            SYNC_SENDED = 0;
-     71            LAST_SYNC_TIME = 0;
-     72            NEXT_SYNC_TIME = 0;
-     73            SY_ENABLE_MODULE = false;
-     74            SYNC_ACCURATE_NETWORK_TIME = TIC_SlotTime(SYNC_TS) + TIC_SlotActivityTime()/2;
-     75          #ifdef SYNC_MASTER
-     76            TIC_SetTS1Callback(SY_TS1_HNDL_MASTER);
-     77            TIC_SetSyncTimeAllocCallback(SY_TIME_ALLOC_MASTER);
-     78          #else
-     79            TIC_SetTS1Callback(SY_TS1_HNDL_SLAVE);
-     80            TIC_SetSyncTimeAllocCallback(SY_TIME_ALLOC_SLAVE);
-     81          #endif
-     82          }
-     83          
-     84          void SY_Reset(void)
-     85          {
-     86            SYNC_SENDED = 0;
-     87            LAST_SYNC_TIME = 0;
-     88            NEXT_SYNC_TIME = 0;
-     89            SYNC_SEND_TIME = 0;
-     90            SY_ENABLE_MODULE = false;
-     91          }
-     92          
-     93          void SY_Enable(bool en)
-     94          {
-     95            SY_ENABLE_MODULE = en;
-     96          }
-     97          
-     98          /**
-     99          @brief Количество успешно переданных пакетов синхронизации
-    100          @return Количечтво пакетов
-    101          */
-    102          uint32_t SY_sync_sended(void)
-    103          {
-    104            return SYNC_SENDED;
-    105          }
-    106          
-    107          /**
-    108          @brief Установить вектор иницилизации для шифрования
-    109          @param[in] ptr_IV указатель на 16 байтный вектор иницилизации
-    110          */
-    111          void SY_setIV(void* ptr_IV)
-    112          {
-    113            memcpy(IV, ptr_IV, 16);
-    114          }
-    115          
-    116          /**
-    117          @brief Установить ключ шифрования
-    118          @param[in] ptr_KEY указатель на 16 байтный ключ
-    119          */
-    120          void SY_setKEY(void* ptr_KEY)
-    121          {
-    122            memcpy(KEY, ptr_KEY, 16);
-    123          }
-    124          
-    125          /**
-    126          @brief Функция вызывается после каждого завершенного слота времени
-    127          @detail Детектирует потерю синхронизации, активирует процесс синхронизации
-    128           активирует слот для ретрансляцию сигнала
-    129          */
-    130          static void SY_TIME_ALLOC_SLAVE(void)
-    131          { 
-    132            if (!SY_ENABLE_MODULE) // Модуль отключен
-    133              return;  
-    134            
-    135            // Потеря синхронизации
-    136            if ( (TIC_GetUptime() - LAST_SYNC_TIME) > SYNC_TIMEOUT)
-    137            {
-    138                LOG_ON("Network out of sync.");
-    139                return;
-    140            }
-    141            
-    142            if (TIC_GetRXState(SYNC_TS)) // Если прием уже активен
-    143              return;
-    144            
-    145            // Ретрансляция синхропакета
-    146            if (NEED_SEND_SYNC)
-    147            {
-    148              LOG_OFF("Need to send resync");
-    149              TIC_SetRXState(SYNC_TS, true);
-    150              return;
-    151            }
-    152            
-    153            // Необходимо начать процесс синхронизации
-    154            if (TIC_GetUptime() > NEXT_SYNC_TIME)
-    155            {
-    156              LOG_ON("Begin resync");
-    157              P1_0 = !true; 
-    158              TIC_SetRXState(SYNC_TS, true);
-    159            }
-    160          }
-    161          
-    162          /**
-    163          @brief Функция вызывается после каждого завершенного слота времени
-    164          @detail Запускает процесс передачи синхросигнала в равные промежутки времени
-    165          */
-    166          static void SY_TIME_ALLOC_MASTER(void)
-    167          { 
-    168            if (TIC_GetTXState(SYNC_TS)) // Если передача уже активна.
-    169              return;
-    170            
-    171            uint32_t now = TIC_GetUptime();
-    172            if ( now < SYNC_SEND_TIME) // Если время новой передачи не наступило
-    173              return;
-    174            
-    175            TIC_SetTXState(SYNC_TS,true); // Разрешаем передачу
-    176             
-    177             // Определяем следующее время передачи
-    178             SYNC_SEND_TIME = now + RAND_SYNC_TX_DELAY;
-    179          }
-    180          
-    181          /**
-    182          @brief Вызывает при активности TS1 RX или TX
-    183          @detail Выполняет две функции: синхронизацию с сетью или передачу синхр.
-    184          */
-    185          static void SY_TS1_HNDL_SLAVE(void)
-    186          {
-    187            if (!SY_ENABLE_MODULE) // Модуль отключен
-    188              return;
-    189              
-    190            // Нужно отослать синхропакет
-    191            if (NEED_SEND_SYNC)
-    192            {
-    193              if (send_sync())
-    194                SYNC_SENDED++;
-    195              LOG_ON("Resync TX. CNT=%d",(uint16_t)SYNC_SENDED);
-    196              NEED_SEND_SYNC = false;
-    197              TIC_SetRXState(SYNC_TS, false);
-    198            }
-    199            
-    200            // Ждем начала точного времени начала передачи сигнала заранее
-    201            // Время в тактах сети
-    202            NT_WaitTime(SYNC_ACCURATE_NETWORK_TIME - SYNC_TIME_DRIFT);
-    203           
-    204            // Время в мс
-    205            frame_s *fr_SYNC = get_sync(SYNC_RECV_TIMEOUT); 
-    206            
-    207            if (!fr_SYNC)
-    208              return;
-    209            
-    210            SYNC_s *sync;
-    211            sync = (SYNC_s*)fr_SYNC->payload;
-    212            
-    213            // Проверяем принадлежность пакета
-    214            if (( sync->panid != CONFIG.panid) && (sync->magic != MAGIC))
-    215            {
-    216              frame_delete(fr_SYNC);
-    217              return;
-    218            }
-    219            
-    220            // Синхронизируемся
-    221            // Время прошедшее с момента приема пакета в тактах сети
-    222            uint16_t delta = TIC_GetTimer() - fr_SYNC->meta.TIMESTAMP;
-    223            TIC_SetTimer(SYNC_ACCURATE_NETWORK_TIME + delta);
-    224            TIC_SetRTC(sync->rtc);
-    225            
-    226            LAST_SYNC_TIME = TIC_GetUptime();
-    227            NEXT_SYNC_TIME = LAST_SYNC_TIME + RAND_SYNC_RX_DELAY; 
-    228            TIC_SetRXState(SYNC_TS, false);
-    229            LOG_ON("Node Synced. TS=%d, AT=%d, DEL=%d, AD=%d, RTC=%d, NRTC=%d, SRTC=%d",
-    230                   fr_SYNC->meta.TIMESTAMP,SYNC_ACCURATE_NETWORK_TIME, delta,
-    231                   SYNC_ACCURATE_NETWORK_TIME - fr_SYNC->meta.TIMESTAMP, 
-    232                   (uint16_t)LAST_SYNC_TIME,
-    233                   (uint16_t)NEXT_SYNC_TIME,
-    234                   (uint16_t)TIC_GetRTC());
-    235            frame_delete(fr_SYNC);
-    236            // После приема нужно ретранслировать синхропакет
-    237            NEED_SEND_SYNC = true; 
-    238          P1_0 = !false; // ОТЛАДКА
-    239          }
-    240          
-    241          /**
-    242          @brief Вызывает при активносм TS1 RX или TX
-    243          @detail Формирует кадр синхронизации и передает его в строго определенное время
-    244          */
-    245          static void SY_TS1_HNDL_MASTER(void)
-    246          {
-    247            if (!SY_ENABLE_MODULE) // Модуль отключен
-    248              return;  
-    249             
-    250          P1_0 = !true; //ОТЛАДКА  
-    251            if (send_sync())
-    252              SYNC_SENDED++;
-    253            
-    254            LOG_ON("Sync send."); 
-    255          P1_0 = !false; //ОТЛАДКА
-    256            
-    257            TIC_SetTXState(SYNC_TS, false);
-    258          }
-    259          
-    260          /**
-    261          @brief Создать и отправить синхропакет
-    262          */
-    263          static bool send_sync(void)
-    264          {
-    265            SYNC_s sync;
-    266            sync.sys_ch = CONFIG.sys_channel;
-    267            sync.tx_power = CONFIG.tx_power;
-    268            sync.panid = CONFIG.panid;
-    269            sync.rtc = TIC_GetRTC();
-    270            sync.magic = MAGIC;
-    271            
-    272            frame_s *fr_SYNC = frame_create();
-    273            frame_addHeader(fr_SYNC, &sync, sizeof(SYNC_s));
-    274            fr_SYNC->meta.SEND_TIME = SYNC_ACCURATE_NETWORK_TIME; // время в тактах сети. ((1/32768)*164)*1000
-    275              
-    276          #ifdef RARIO_STREAM_ENCRYPT
-    277            BitRawCrypt(fr_SYNC->payload, fr_SYNC->len);
-    278          #endif
-    279            
-    280            RI_SetChannel(CONFIG.sync_channel);
-    281            bool res = RI_Send(fr_SYNC);
-    282            
-    283            frame_delete(fr_SYNC);
-    284            return res;
-    285          }
-    286          
-    287          /**
-    288          @brief Прием пакет синхронизации
-    289          @param[in] Время ожидания в мс
-    290          @return Указатель на пакет или NULL
-    291          */
-    292          static frame_s* get_sync(uint32_t timeout)
-    293          {
+     20          bool SY_is_synced(void);
+     21          
+     22          static void SY_TS1_HNDL_MASTER(void);
+     23          static void SY_TS1_HNDL_SLAVE(void);
+     24          static void SY_TIME_ALLOC_SLAVE(void);
+     25          static void SY_TIME_ALLOC_MASTER(void);
+     26          static void BitRawDecrypt(uint8_t *src, uint8_t size);
+     27          static void BitRawCrypt(uint8_t *src, uint8_t size);
+     28          static frame_s* get_sync(uint32_t timeout);
+     29          static bool send_sync(void);
+     30          
+     31          static uint32_t LAST_SYNC_TIME = 0; //!< Время последней синхр.
+     32          static uint32_t NEXT_SYNC_TIME = 0; //!< Время следующей синхр.
+     33          static uint32_t SYNC_SENDED = 0; //!< Количество успешно ретранслированых пакетов
+     34          static uint32_t SYNC_SEND_TIME = 0;
+     35          static bool NEED_SEND_SYNC = false; //!< Нужно отослать синхропакет
+     36          static bool SY_ENABLE_MODULE = false;
+     37          static bool NETWORK_SYNCED = false;
+     38          
+     39          // Ключ потокового шифрования и вектор иницилизации
+     40          static uint8_t KEY[16] = DEFAULT_KEY;
+     41          static uint8_t IV[16] = DEFAULT_IV;
+     42          //@brief Точное время приема/передачи пакета синхронизации времени
+     43          // Расчитывается при иницилизации
+     44          static uint16_t SYNC_ACCURATE_NETWORK_TIME; 
+     45          
+     46          #define SYNC_TS 1 //!< Номер временного слота синхросигнала
+     47          #define SYNC_RECV_TIMEOUT 2000 // Время ожидания приема пакета в мкс
+     48          #define SYNC_TIMEOUT 110//!< Время в сек после которого сеть не синхронна
+     49          
+     50          
+     51          typedef struct // Формат структуры пакета синхронизации
+     52          {
+     53              uint8_t sys_ch;
+     54              uint8_t tx_power;
+     55              uint8_t panid;
+     56              uint32_t rtc;
+     57              uint32_t magic;
+     58          } __attribute__((packed)) SYNC_s;
+     59          
+     60          #define MAGIC 0x19833891 // Проверка что пакет действительно sync
+     61          #define RAND_SYNC_RX_DELAY  9 // Фиксированое время приема rand()%10 + 5
+     62          #define RAND_SYNC_TX_DELAY  10 // Фиксированное время передачи сигнала
+     63          // Максимальное отклонение при приеме sync в тактах сети
+     64          #define SYNC_TIME_DRIFT 35  
+     65          
+     66          #ifdef GATEWAY
+     67            #define SYNC_MASTER     // Если определено, то узел является шлюзом
+     68          #endif
+     69          
+     70          void SY_Init(void)
+     71          {
+     72            SYNC_SENDED = 0;
+     73            LAST_SYNC_TIME = 0;
+     74            NEXT_SYNC_TIME = 0;
+     75            NETWORK_SYNCED = false;
+     76            SY_ENABLE_MODULE = false;
+     77            SYNC_ACCURATE_NETWORK_TIME = TIC_SlotTime(SYNC_TS) + TIC_SlotActivityTime()/2;
+     78          #ifdef SYNC_MASTER
+     79            TIC_SetTS1Callback(SY_TS1_HNDL_MASTER);
+     80            TIC_SetSyncTimeAllocCallback(SY_TIME_ALLOC_MASTER);
+     81          #else
+     82            TIC_SetTS1Callback(SY_TS1_HNDL_SLAVE);
+     83            TIC_SetSyncTimeAllocCallback(SY_TIME_ALLOC_SLAVE);
+     84          #endif
+     85          }
+     86          
+     87          void SY_Reset(void)
+     88          {
+     89            SYNC_SENDED = 0;
+     90            NETWORK_SYNCED = false;
+     91            LAST_SYNC_TIME = 0;
+     92            NEXT_SYNC_TIME = 0;
+     93            SYNC_SEND_TIME = 0;
+     94            SY_ENABLE_MODULE = false;
+     95          }
+     96          
+     97          void SY_Enable(bool en)
+     98          {
+     99            SY_ENABLE_MODULE = en;
+    100          }
+    101          
+    102          /**
+    103          @ Состояние сети
+    104          */
+    105          bool SY_is_synced(void){
+    106            return NETWORK_SYNCED;
+    107          }
+    108          
+    109          /**
+    110          @brief Количество успешно переданных пакетов синхронизации
+    111          @return Количечтво пакетов
+    112          */
+    113          uint32_t SY_sync_sended(void)
+    114          {
+    115            return SYNC_SENDED;
+    116          }
+    117          
+    118          /**
+    119          @brief Установить вектор иницилизации для шифрования
+    120          @param[in] ptr_IV указатель на 16 байтный вектор иницилизации
+    121          */
+    122          void SY_setIV(void* ptr_IV)
+    123          {
+    124            memcpy(IV, ptr_IV, 16);
+    125          }
+    126          
+    127          /**
+    128          @brief Установить ключ шифрования
+    129          @param[in] ptr_KEY указатель на 16 байтный ключ
+    130          */
+    131          void SY_setKEY(void* ptr_KEY)
+    132          {
+    133            memcpy(KEY, ptr_KEY, 16);
+    134          }
+    135          
+    136          /**
+    137          @brief Функция вызывается после каждого завершенного слота времени
+    138          @detail Детектирует потерю синхронизации, активирует процесс синхронизации
+    139           активирует слот для ретрансляцию сигнала
+    140          */
+    141          static void SY_TIME_ALLOC_SLAVE(void)
+    142          { 
+    143            if (!SY_ENABLE_MODULE) // Модуль отключен
+    144              return;  
+    145            
+    146            // Потеря синхронизации
+    147            if ( (TIC_GetUptime() - LAST_SYNC_TIME) > SYNC_TIMEOUT)
+    148            {
+    149              if (NETWORK_SYNCED){ // Пишем лог 1 раз
+    150                LOG_ON("Network out of sync.");
+    151              }
+    152              NETWORK_SYNCED = false;
+    153              return;
+    154            }
+    155            
+    156            if (TIC_GetRXState(SYNC_TS)) // Если прием уже активен
+    157              return;
+    158            
+    159            // Ретрансляция синхропакета
+    160            if (NEED_SEND_SYNC)
+    161            {
+    162              LOG_OFF("Need to send resync");
+    163              TIC_SetRXState(SYNC_TS, true);
+    164              return;
+    165            }
+    166            
+    167            // Необходимо начать процесс синхронизации
+    168            if (TIC_GetUptime() > NEXT_SYNC_TIME)
+    169            {
+    170              LOG_OFF("Begin resync");
+    171              P1_0 = !true; 
+    172              TIC_SetRXState(SYNC_TS, true);
+    173            }
+    174          }
+    175          
+    176          /**
+    177          @brief Функция вызывается после каждого завершенного слота времени
+    178          @detail Запускает процесс передачи синхросигнала в равные промежутки времени
+    179          */
+    180          static void SY_TIME_ALLOC_MASTER(void)
+    181          { 
+    182            if (TIC_GetTXState(SYNC_TS)) // Если передача уже активна.
+    183              return;
+    184            
+    185            uint32_t now = TIC_GetUptime();
+    186            if ( now < SYNC_SEND_TIME) // Если время новой передачи не наступило
+    187              return;
+    188            
+    189            TIC_SetTXState(SYNC_TS,true); // Разрешаем передачу
+    190             
+    191             // Определяем следующее время передачи
+    192             SYNC_SEND_TIME = now + RAND_SYNC_TX_DELAY;
+    193          }
+    194          
+    195          /**
+    196          @brief Вызывает при активности TS1 RX или TX
+    197          @detail Выполняет две функции: синхронизацию с сетью или передачу синхр.
+    198          */
+    199          static void SY_TS1_HNDL_SLAVE(void)
+    200          {
+    201            if (!SY_ENABLE_MODULE) // Модуль отключен
+    202              return;
+    203              
+    204            // Нужно отослать синхропакет
+    205            if (NEED_SEND_SYNC)
+    206            {
+    207              if (send_sync())
+    208                SYNC_SENDED++;
+    209              LOG_OFF("Resync TX. CNT=%d",(uint16_t)SYNC_SENDED);
+    210              NEED_SEND_SYNC = false;
+    211              TIC_SetRXState(SYNC_TS, false);
+    212            }
+    213            
+    214            // Ждем начала точного времени начала передачи сигнала заранее
+    215            // Время в тактах сети
+    216            NT_WaitTime(SYNC_ACCURATE_NETWORK_TIME - SYNC_TIME_DRIFT);
+    217           
+    218            // Время в мс
+    219            frame_s *fr_SYNC = get_sync(SYNC_RECV_TIMEOUT); 
+    220            
+    221            if (!fr_SYNC)
+    222              return;
+    223            
+    224            SYNC_s *sync;
+    225            sync = (SYNC_s*)fr_SYNC->payload;
+    226            
+    227            // Проверяем принадлежность пакета
+    228            if (( sync->panid != CONFIG.panid) && (sync->magic != MAGIC))
+    229            {
+    230              frame_delete(fr_SYNC);
+    231              return;
+    232            }
+    233            
+    234            // Синхронизируемся
+    235            // Время прошедшее с момента приема пакета в тактах сети
+    236            uint16_t delta = TIC_GetTimer() - fr_SYNC->meta.TIMESTAMP;
+    237            TIC_SetTimer(SYNC_ACCURATE_NETWORK_TIME + delta);
+    238            TIC_SetRTC(sync->rtc);
+    239            
+    240            LAST_SYNC_TIME = TIC_GetUptime();
+    241            NEXT_SYNC_TIME = LAST_SYNC_TIME + RAND_SYNC_RX_DELAY; 
+    242            TIC_SetRXState(SYNC_TS, false);
+    243            LOG_OFF("Node Synced. TS=%d, AT=%d, DEL=%d, AD=%d, RTC=%d, NRTC=%d, SRTC=%d",
+    244                   fr_SYNC->meta.TIMESTAMP,SYNC_ACCURATE_NETWORK_TIME, delta,
+    245                   SYNC_ACCURATE_NETWORK_TIME - fr_SYNC->meta.TIMESTAMP, 
+    246                   (uint16_t)LAST_SYNC_TIME,
+    247                   (uint16_t)NEXT_SYNC_TIME,
+    248                   (uint16_t)TIC_GetRTC());
+    249            frame_delete(fr_SYNC);
+    250            // После приема нужно ретранслировать синхропакет
+    251            NEED_SEND_SYNC = true; 
+    252          P1_0 = !false; // ОТЛАДКА
+    253          }
+    254          
+    255          /**
+    256          @brief Вызывает при активносм TS1 RX или TX
+    257          @detail Формирует кадр синхронизации и передает его в строго определенное время
+    258          */
+    259          static void SY_TS1_HNDL_MASTER(void)
+    260          {
+    261            if (!SY_ENABLE_MODULE) // Модуль отключен
+    262              return;  
+    263             
+    264          P1_0 = !true; //ОТЛАДКА  
+    265            if (send_sync())
+    266              SYNC_SENDED++;
+    267            
+    268            LOG_ON("Sync send."); 
+    269          P1_0 = !false; //ОТЛАДКА
+    270            
+    271            TIC_SetTXState(SYNC_TS, false);
+    272          }
+    273          
+    274          /**
+    275          @brief Создать и отправить синхропакет
+    276          */
+    277          static bool send_sync(void)
+    278          {
+    279            SYNC_s sync;
+    280            sync.sys_ch = CONFIG.sys_channel;
+    281            sync.tx_power = CONFIG.tx_power;
+    282            sync.panid = CONFIG.panid;
+    283            sync.rtc = TIC_GetRTC();
+    284            sync.magic = MAGIC;
+    285            
+    286            frame_s *fr_SYNC = frame_create();
+    287            frame_addHeader(fr_SYNC, &sync, sizeof(SYNC_s));
+    288            fr_SYNC->meta.SEND_TIME = SYNC_ACCURATE_NETWORK_TIME; // время в тактах сети. ((1/32768)*164)*1000
+    289              
+    290          #ifdef RARIO_STREAM_ENCRYPT
+    291            BitRawCrypt(fr_SYNC->payload, fr_SYNC->len);
+    292          #endif
+    293            
     294            RI_SetChannel(CONFIG.sync_channel);
-    295            frame_s *fr_SYNC = RI_Receive(timeout);
+    295            bool res = RI_Send(fr_SYNC);
     296            
-    297            // Если пакета нет, выходим из обработчика
-    298            if (fr_SYNC == NULL)
-    299              return NULL;
-    300            
-    301            // Проверим размер пакета
-    302            if (fr_SYNC->len != sizeof(SYNC_s))
-    303            {
-    304              frame_delete(fr_SYNC);
-    305              return NULL;
-    306            }
-    307            
-    308            #ifdef RARIO_STREAM_ENCRYPT
-    309            BitRawDecrypt(fr_SYNC->payload, fr_SYNC->len);
-    310            #endif
-    311            return fr_SYNC;
-    312          }
-    313          
-    314          /**
-    315          @brief Процедура синхронизации с сетью
-    316          @detail Процедура изет сеть в течении времени timeout и синхронизируется с ней
-    317          @param[in] timeout время в милисекундах
-    318          @param[out] panid указатель на идентификатор найденой сети
-    319          @return true если сеть найдета
-    320          */
-    321          bool SY_SYNC_NETWORK(uint16_t *panid,uint16_t timeout)
-    322          {
-    323            // TODO Нужно обнулить настройки всех модулей
-    324            // Или об этом будет заботиться верхний уровень?
-    325            TIC_CloseAllState();
-    326            
-    327            RI_SetChannel(CONFIG.sync_channel);
-    328            
-    329            TimeStamp_s begin, end;
-    330            TIM_TimeStamp(&begin);
-    331            TIM_TimeStamp(&end);
-    332            
-    333            bool net_found = false;
-    334            uint32_t passed = 0;
-    335            frame_s *fr_SYNC;
-    336            SYNC_s *sync;
-    337            uint32_t timeout_us = timeout * 1000;
-    338            
-    339            while (passed < timeout_us)
-    340            {
-    341              fr_SYNC = get_sync(timeout_us);
-    342              if (fr_SYNC == NULL)
-    343              {
-    344                passed = TIM_passedTime(&begin, &end);
-    345                continue;
-    346              }
-    347              
-    348              // Приняли какойто пакет, декодируем.
-    349              sync = (SYNC_s*)fr_SYNC->payload;
-    350              
-    351              if (sync->magic != MAGIC)
-    352              { // Проверим что пакет именно тот а не эфирный мусор
-    353                frame_delete(fr_SYNC);
-    354                passed = TIM_passedTime(&begin, &end);
-    355                continue;
-    356              }   
-    357              
-    358              // Возвращаем результат
-    359              *panid = sync->panid;
-    360              CONFIG.panid = sync->panid;
-    361              CONFIG.sys_channel = sync->sys_ch;
-    362              CONFIG.tx_power = sync->tx_power;
-    363          
-    364              net_found = true;
-    365              
-    366              // Синхронизируемся с сетью
-    367              // Время прошедшее с момента приема пакета в тактах сети
-    368              uint16_t delta = TIC_GetTimer() - fr_SYNC->meta.TIMESTAMP;
-    369              TIC_SetTimer(SYNC_ACCURATE_NETWORK_TIME + delta);
-    370              TIC_SetRTC(sync->rtc);
-    371              LAST_SYNC_TIME = TIC_GetUptime();
-    372              NEXT_SYNC_TIME = LAST_SYNC_TIME + RAND_SYNC_RX_DELAY; 
-    373              frame_delete(fr_SYNC);
-    374              break;
-    375            } 
-    376            
-    377            return net_found;
-    378          }
-    379          
-    380          /*!
-    381          \brief Расшифровка область памяти
-    382          \param[in,out] *src Указатель на начало области дешифрования
-    383          \param[in] size Размер расшифруемых данных
-    384          */
-    385          static void BitRawDecrypt(uint8_t *src, uint8_t size)
-    386          {
-    387            AES_StreamCoder(false, src, src, KEY, IV, size);
-    388          }
-    389          
-    390          /*!
-    391          \brief Шифрует область памяти
-    392          \param[in,out] *src Указатель на начало области шифрования
-    393          \param[in] size Размер шифруемых данных
-    394          */
-    395          static void BitRawCrypt(uint8_t *src, uint8_t size)
-    396          {
-    397            AES_StreamCoder(true, src, src, KEY, IV, size);
-    398          }
-    399          
+    297            frame_delete(fr_SYNC);
+    298            return res;
+    299          }
+    300          
+    301          /**
+    302          @brief Прием пакет синхронизации
+    303          @param[in] Время ожидания в мс
+    304          @return Указатель на пакет или NULL
+    305          */
+    306          static frame_s* get_sync(uint32_t timeout)
+    307          {
+    308            RI_SetChannel(CONFIG.sync_channel);
+    309            frame_s *fr_SYNC = RI_Receive(timeout);
+    310            
+    311            // Если пакета нет, выходим из обработчика
+    312            if (fr_SYNC == NULL)
+    313              return NULL;
+    314            
+    315            // Проверим размер пакета
+    316            if (fr_SYNC->len != sizeof(SYNC_s))
+    317            {
+    318              frame_delete(fr_SYNC);
+    319              return NULL;
+    320            }
+    321            
+    322            #ifdef RARIO_STREAM_ENCRYPT
+    323            BitRawDecrypt(fr_SYNC->payload, fr_SYNC->len);
+    324            #endif
+    325            return fr_SYNC;
+    326          }
+    327          
+    328          /**
+    329          @brief Процедура синхронизации с сетью
+    330          @detail Процедура изет сеть в течении времени timeout и синхронизируется с ней
+    331          @param[in] timeout время в милисекундах
+    332          @param[out] panid указатель на идентификатор найденой сети
+    333          @return true если сеть найдета
+    334          */
+    335          bool SY_SYNC_NETWORK(uint16_t *panid,uint16_t timeout)
+    336          {
+    337            // TODO Нужно обнулить настройки всех модулей
+    338            // Или об этом будет заботиться верхний уровень?
+    339            TIC_CloseAllState();
+    340            
+    341            RI_SetChannel(CONFIG.sync_channel);
+    342            
+    343            TimeStamp_s begin, end;
+    344            TIM_TimeStamp(&begin);
+    345            TIM_TimeStamp(&end);
+    346            
+    347            bool net_found = false;
+    348            uint32_t passed = 0;
+    349            frame_s *fr_SYNC;
+    350            SYNC_s *sync;
+    351            uint32_t timeout_us = timeout * 1000;
+    352            
+    353            while (passed < timeout_us)
+    354            {
+    355              fr_SYNC = get_sync(timeout_us);
+    356              if (fr_SYNC == NULL)
+    357              {
+    358                passed = TIM_passedTime(&begin, &end);
+    359                continue;
+    360              }
+    361              
+    362              // Приняли какойто пакет, декодируем.
+    363              sync = (SYNC_s*)fr_SYNC->payload;
+    364              
+    365              if (sync->magic != MAGIC)
+    366              { // Проверим что пакет именно тот а не эфирный мусор
+    367                frame_delete(fr_SYNC);
+    368                passed = TIM_passedTime(&begin, &end);
+    369                continue;
+    370              }   
+    371              
+    372              // Возвращаем результат
+    373              *panid = sync->panid;
+    374              CONFIG.panid = sync->panid;
+    375              CONFIG.sys_channel = sync->sys_ch;
+    376              CONFIG.tx_power = sync->tx_power;
+    377          
+    378              net_found = true;
+    379              NETWORK_SYNCED = true;
+    380              
+    381              // Синхронизируемся с сетью
+    382              // Время прошедшее с момента приема пакета в тактах сети
+    383              uint16_t delta = TIC_GetTimer() - fr_SYNC->meta.TIMESTAMP;
+    384              TIC_SetTimer(SYNC_ACCURATE_NETWORK_TIME + delta);
+    385              TIC_SetRTC(sync->rtc);
+    386              LAST_SYNC_TIME = TIC_GetUptime();
+    387              NEXT_SYNC_TIME = LAST_SYNC_TIME + RAND_SYNC_RX_DELAY; 
+    388              frame_delete(fr_SYNC);
+    389              break;
+    390            } 
+    391            
+    392            return net_found;
+    393          }
+    394          
+    395          /*!
+    396          \brief Расшифровка область памяти
+    397          \param[in,out] *src Указатель на начало области дешифрования
+    398          \param[in] size Размер расшифруемых данных
+    399          */
+    400          static void BitRawDecrypt(uint8_t *src, uint8_t size)
+    401          {
+    402            AES_StreamCoder(false, src, src, KEY, IV, size);
+    403          }
+    404          
+    405          /*!
+    406          \brief Шифрует область памяти
+    407          \param[in,out] *src Указатель на начало области шифрования
+    408          \param[in] size Размер шифруемых данных
+    409          */
+    410          static void BitRawCrypt(uint8_t *src, uint8_t size)
+    411          {
+    412            AES_StreamCoder(true, src, src, KEY, IV, size);
+    413          }
+    414          
 E:\WMNU\IAR\SHARE_PRJ_SRC\TIC.c
       1          #include "TIC.h"
       2          #include "NTMR.h"
@@ -4648,7 +4663,7 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\TIC.c
     398          {
     399            return NODE_NONCE;
     400          }
-E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
+E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
       1          #include "nwdebuger.h"
       2          #include "ioCC2530.h"
       3          #include "stdint.h"
@@ -4793,7 +4808,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     39   -> memcpy
         0     39   -> memset
       0     30   Callback_execution
-        0     12   -> printf
         0     18   -> printf
       0      0   DMA_init
       0     40   DelayCalibrate
@@ -4801,7 +4815,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     40   -> TIM_delay
         0     40   -> TIM_passedTime
       1     28   Delete_frame
-        0     10   -> printf
         0     16   -> printf
       0     54   Interval
       1     42   LLC_AddTask
@@ -4814,7 +4827,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         2      0   -> MAC_SetRXCallback
         2      0   -> TIC_SetSECallback
       0     16   LLC_RX_HNDL
-        0     10   -> printf
         0     16   -> printf
       0     20   LLC_Reset
         0     10   -> re_free
@@ -4823,16 +4835,13 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0      9   -> LLC_RunTimeAlloc
         0      9   -> LLC_Shelduler
       0     16   LLC_SetRXCallback
-        0     10   -> printf
         0     16   -> printf
       0     31   LLC_Shelduler
         0     16   -> MAC_GetTXState
         0     16   -> MAC_Send
-        0     16   -> printf
         0     22   -> printf
         0     16   -> re_free
       0     18   LLC_TimeAlloc
-        0     12   -> printf
         0     18   -> printf
         0     12   -> re_malloc
       2     12   LoadTXData
@@ -4849,14 +4858,11 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     12   -> xor_calc
       1     30   MAC_CloseRXSlot
         0     10   -> TIC_SetRXState
-        0     10   -> printf
         0     16   -> printf
       2     11   MAC_Enable
       0     16   MAC_GetRXState
-        0     10   -> printf
         0     16   -> printf
       0     32   MAC_GetTXState
-        0     10   -> printf
         0     16   -> printf
       0     12   MAC_Init
         0     10   -> TIC_SetRXCallback
@@ -4864,7 +4870,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     12   -> memset
       1     30   MAC_OpenRXSlot
         0     10   -> TIC_SetRXState
-        0     10   -> printf
         0     16   -> printf
       1     18   MAC_RX_HNDL
         0     12   -> BitRawDecrypt
@@ -4872,7 +4877,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     12   -> RI_Receive
         0     12   -> RI_SetChannel
         0     12   -> TIM_delay
-        0     12   -> printf
         0     18   -> printf
       0     22   MAC_Reset
         0     10   -> frame_delete
@@ -4880,7 +4884,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       1     34   MAC_Send
         0     12   -> BitRawCrypt
         0     12   -> TIC_SetTXState
-        0     12   -> printf
         0     18   -> printf
       2      0   MAC_SetRXCallback
       1     16   MAC_TX_HNDL
@@ -4890,7 +4893,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     10   -> TIC_SetTXState
         0     10   -> TIM_delay
         0     10   -> frame_delete
-        0     10   -> printf
         0     16   -> printf
       0     21   MAC_setIV
         0     12   -> memcpy
@@ -4922,14 +4924,12 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     12   -> NT_IRQEnable
         0     12   -> calcCompareTime
         0     12   -> loadTimerCompare
-        0     12   -> printf
         0     18   -> printf
       2      0   NT_SetEventCallback
       0     30   NT_SetTime
         0     14   -> NT_SetCompare
         0     14   -> ReadTimer
         0     14   -> isIRQEnable
-        0     14   -> printf
         0     20   -> printf
       0     24   NT_WaitTime
       2      0   RI_GetCCAReject
@@ -4955,7 +4955,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     36   -> SendData
         0     36   -> TIM_TimeStamp
         0     36   -> TIM_passedTime
-        0     36   -> printf
         0     42   -> printf
       2     44   RI_SetChannel
       3     43   RI_cfg
@@ -4970,7 +4969,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0      9   -> Delete_frame
       0     32   RXB_del_frame
         0     12   -> Delete_frame
-        0     12   -> printf
         0     18   -> printf
       2     13   RXB_frame_count
       2     14   RXB_get_frame
@@ -5009,6 +5007,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     12   -> printf
         0     18   -> printf
         0     12   -> send_sync
+      2      0   SY_is_synced
       0     21   SY_setIV
         0     12   -> memcpy
       0     21   SY_setKEY
@@ -5024,10 +5023,8 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       2      0   TIC_GetNonce
       2     21   TIC_GetRTC
       0     16   TIC_GetRXState
-        0     10   -> printf
         0     16   -> printf
       0     32   TIC_GetTXState
-        0     10   -> printf
         0     16   -> printf
       0      0   TIC_GetTimeStampTS0
       2     44   TIC_GetTimer
@@ -5055,29 +5052,21 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       0     12   TIC_SetNonce
       0     56   TIC_SetRTC
       0     26   TIC_SetRXCallback
-        0     10   -> printf
         0     16   -> printf
       0     26   TIC_SetRXState
-        0     10   -> printf
         0     16   -> printf
       0     16   TIC_SetSECallback
-        0     10   -> printf
         0     16   -> printf
       0     26   TIC_SetSyncTimeAllocCallback
-        0     10   -> printf
         0     16   -> printf
       0     26   TIC_SetTS1Callback
-        0     10   -> printf
         0     16   -> printf
       0     26   TIC_SetTXCallback
-        0     10   -> printf
         0     16   -> printf
       0     32   TIC_SetTXState
-        0     10   -> printf
         0     16   -> printf
       0     60   TIC_SetTimer
         0     10   -> NT_SetTime
-        0     10   -> printf
         0     16   -> printf
       0      0   TIC_SleepTime
       0     10   TIC_SlotActivityTime
@@ -5231,18 +5220,15 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0      9   -> uart_dma_init
       0     27   crc16
       1     66   frame_addHeader
-        0     18   -> printf
         0     24   -> printf
         0     18   -> re_free
         0     18   -> re_malloc
         0     20   -> re_memcpy
       0     60   frame_create
         0     14   -> memset
-        0     12   -> printf
         0     18   -> printf
         0     12   -> re_malloc
       1     20   frame_delHeader
-        0     14   -> printf
         0     20   -> printf
         0     14   -> re_free
         0     14   -> re_malloc
@@ -5290,7 +5276,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     10   -> TIC_Reset
         0     10   -> frame_getCount
         0     10   -> network_seed_enable
-        0     10   -> printf
         0     16   -> printf
       0     11   network_discovery
         0     11   -> MAC_Enable
@@ -5332,13 +5317,11 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
         0     21   -> frame_create
         0     21   -> frame_delete
       1     18   setFreq
-        0     11   -> printf
         0     17   -> printf
       0     10   set_capture_time
         0      9   -> NT_SetCompare
       1     32   stream_write
         0     15   -> crc16
-        0     15   -> printf
         0     21   -> printf
         0     15   -> uart_write
       2      9   uart_dma_init
@@ -5358,16 +5341,16 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
 
    Bytes  Function/Label
    -----  --------------
-      22  ?<Constant "*ASSERT* %s:%d:%s -> ">
-      22  ?<Constant "*ASSERT* %s:%d:%s -> ">_1
-      22  ?<Constant "*ASSERT* %s:%d:%s -> ">_2
-      22  ?<Constant "*ASSERT* %s:%d:%s -> ">_3
-      22  ?<Constant "*ASSERT* %s:%d:%s -> ">_4
-      22  ?<Constant "*ASSERT* %s:%d:%s -> ">_5
-      22  ?<Constant "*ASSERT* %s:%d:%s -> ">_6
-      22  ?<Constant "*ASSERT* %s:%d:%s -> ">_7
-      22  ?<Constant "*ASSERT* %s:%d:%s -> ">_8
-      22  ?<Constant "*ASSERT* %s:%d:%s -> ">_9
+      27  ?<Constant "*ASSERT* %s:%d:%s -> ...">
+      27  ?<Constant "*ASSERT* %s:%d:%s -> ...">_1
+      27  ?<Constant "*ASSERT* %s:%d:%s -> ...">_2
+      27  ?<Constant "*ASSERT* %s:%d:%s -> ...">_3
+      27  ?<Constant "*ASSERT* %s:%d:%s -> ...">_4
+      27  ?<Constant "*ASSERT* %s:%d:%s -> ...">_5
+      27  ?<Constant "*ASSERT* %s:%d:%s -> ...">_6
+      27  ?<Constant "*ASSERT* %s:%d:%s -> ...">_7
+      27  ?<Constant "*ASSERT* %s:%d:%s -> ...">_8
+      27  ?<Constant "*ASSERT* %s:%d:%s -> ...">_9
       19  ?<Constant "*LOG* %s:%d:%s -> ">
       19  ?<Constant "*LOG* %s:%d:%s -> ">_1
       19  ?<Constant "*LOG* %s:%d:%s -> ">_10
@@ -5409,37 +5392,14 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       22  ?<Constant "CMD 0x0E. Set SYNC CH">
       22  ?<Constant "CMD 0x0\320\220. Set SYS CH">
       23  ?<Constant "CMD 0x10. Set TX POWER">
-      42  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">
-      42  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">_1
-      42  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">_2
-      42  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">_3
-      44  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">_4
-      38  ?<Constant "E:\\WMNU\\IAR\\NEOCOREGA...">_5
-      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">
-      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_1
-      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_10
-      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_11
-      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_2
-      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_3
-      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_4
-      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_5
-      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_6
-      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_7
-      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_8
-      42  ?<Constant "E:\\WMNU\\IAR\\NeocoreGa...">_9
-      34  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">
-      32  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_1
-      32  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_2
-      36  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_3
-      33  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_4
-      38  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_5
-      34  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_6
-      36  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_7
-      33  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_8
-      32  ?<Constant "E:\\WMNU\\IAR\\SHARE_PRJ...">_9
       13  ?<Constant "GatewayStart">
+       6  ?<Constant "LLC.c">
+       6  ?<Constant "MAC.c">
+       7  ?<Constant "NTMR.c">
+       8  ?<Constant "RADIO.c">
       20  ?<Constant "STACK FAILURE. HALT">
       11  ?<Constant "Sync send.">
+       6  ?<Constant "TIC.c">
       12  ?<Constant "TS = 255 \r\n">
        3  ?<Constant "\r\n">
        3  ?<Constant "\r\n">_1
@@ -5455,13 +5415,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        3  ?<Constant "\r\n">_19
        3  ?<Constant "\r\n">_2
        3  ?<Constant "\r\n">_20
-       3  ?<Constant "\r\n">_21
-       3  ?<Constant "\r\n">_22
-       3  ?<Constant "\r\n">_23
-       3  ?<Constant "\r\n">_24
-       3  ?<Constant "\r\n">_25
-       3  ?<Constant "\r\n">_26
-       3  ?<Constant "\r\n">_27
        3  ?<Constant "\r\n">_3
        3  ?<Constant "\r\n">_4
        3  ?<Constant "\r\n">_5
@@ -5469,16 +5422,39 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        3  ?<Constant "\r\n">_7
        3  ?<Constant "\r\n">_8
        3  ?<Constant "\r\n">_9
-      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s
-      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_1
-      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_2
-      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_3
-      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_4
-      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_5
-      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_6
-      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_7
-      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_8
-      22  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_9
+      11  ?<Constant "cmd_0x00.c">
+      11  ?<Constant "cmd_0x01.c">
+      11  ?<Constant "cmd_0x03.c">
+      11  ?<Constant "cmd_0x04.c">
+      11  ?<Constant "cmd_0x05.c">
+      11  ?<Constant "cmd_0x06.c">
+      11  ?<Constant "cmd_0x07.c">
+      11  ?<Constant "cmd_0x08.c">
+      11  ?<Constant "cmd_0x09.c">
+      11  ?<Constant "cmd_0x0A.c">
+      11  ?<Constant "cmd_0x0B.c">
+      11  ?<Constant "cmd_0x0C.c">
+      11  ?<Constant "cmd_0x0D.c">
+      11  ?<Constant "cmd_0x0E.c">
+      11  ?<Constant "cmd_0x0F.c">
+      11  ?<Constant "cmd_0x10.c">
+      13  ?<Constant "cmd_parser.c">
+       8  ?<Constant "frame.c">
+       7  ?<Constant "main.c">
+      10  ?<Constant "manager.c">
+      12  ?<Constant "nwdebuger.c">
+      10  ?<Constant "rx_buff.c">
+       7  ?<Constant "sync.c">
+      27  ?<Initializer for <Constant "*ASSERT* %s:%d:%s
+      27  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_1
+      27  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_2
+      27  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_3
+      27  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_4
+      27  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_5
+      27  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_6
+      27  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_7
+      27  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_8
+      27  ?<Initializer for <Constant "*ASSERT* %s:%d:%s_9
       19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->
       19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_1
       19  ?<Initializer for <Constant "*LOG* %s:%d:%s ->_10
@@ -5520,37 +5496,14 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       22  ?<Initializer for <Constant "CMD 0x0E. Set SYN
       22  ?<Initializer for <Constant "CMD 0x0\320\220.
       23  ?<Initializer for <Constant "CMD 0x10. Set TX
-      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE
-      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE_1
-      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE_2
-      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE_3
-      44  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE_4
-      38  ?<Initializer for <Constant "E:\\WMNU\\IAR\\NE_5
-      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne
-      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_1
-      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_10
-      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_11
-      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_2
-      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_3
-      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_4
-      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_5
-      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_6
-      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_7
-      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_8
-      42  ?<Initializer for <Constant "E:\\WMNU\\IAR\\Ne_9
-      34  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH
-      32  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_1
-      32  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_2
-      36  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_3
-      33  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_4
-      38  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_5
-      34  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_6
-      36  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_7
-      33  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_8
-      32  ?<Initializer for <Constant "E:\\WMNU\\IAR\\SH_9
       13  ?<Initializer for <Constant "GatewayStart">>
+       6  ?<Initializer for <Constant "LLC.c">>
+       6  ?<Initializer for <Constant "MAC.c">>
+       7  ?<Initializer for <Constant "NTMR.c">>
+       8  ?<Initializer for <Constant "RADIO.c">>
       20  ?<Initializer for <Constant "STACK FAILURE. HA
       11  ?<Initializer for <Constant "Sync send.">>
+       6  ?<Initializer for <Constant "TIC.c">>
       12  ?<Initializer for <Constant "TS = 255 \r\n">>
        3  ?<Initializer for <Constant "\r\n">>
        3  ?<Initializer for <Constant "\r\n">>_1
@@ -5566,13 +5519,6 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        3  ?<Initializer for <Constant "\r\n">>_19
        3  ?<Initializer for <Constant "\r\n">>_2
        3  ?<Initializer for <Constant "\r\n">>_20
-       3  ?<Initializer for <Constant "\r\n">>_21
-       3  ?<Initializer for <Constant "\r\n">>_22
-       3  ?<Initializer for <Constant "\r\n">>_23
-       3  ?<Initializer for <Constant "\r\n">>_24
-       3  ?<Initializer for <Constant "\r\n">>_25
-       3  ?<Initializer for <Constant "\r\n">>_26
-       3  ?<Initializer for <Constant "\r\n">>_27
        3  ?<Initializer for <Constant "\r\n">>_3
        3  ?<Initializer for <Constant "\r\n">>_4
        3  ?<Initializer for <Constant "\r\n">>_5
@@ -5580,6 +5526,29 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        3  ?<Initializer for <Constant "\r\n">>_7
        3  ?<Initializer for <Constant "\r\n">>_8
        3  ?<Initializer for <Constant "\r\n">>_9
+      11  ?<Initializer for <Constant "cmd_0x00.c">>
+      11  ?<Initializer for <Constant "cmd_0x01.c">>
+      11  ?<Initializer for <Constant "cmd_0x03.c">>
+      11  ?<Initializer for <Constant "cmd_0x04.c">>
+      11  ?<Initializer for <Constant "cmd_0x05.c">>
+      11  ?<Initializer for <Constant "cmd_0x06.c">>
+      11  ?<Initializer for <Constant "cmd_0x07.c">>
+      11  ?<Initializer for <Constant "cmd_0x08.c">>
+      11  ?<Initializer for <Constant "cmd_0x09.c">>
+      11  ?<Initializer for <Constant "cmd_0x0A.c">>
+      11  ?<Initializer for <Constant "cmd_0x0B.c">>
+      11  ?<Initializer for <Constant "cmd_0x0C.c">>
+      11  ?<Initializer for <Constant "cmd_0x0D.c">>
+      11  ?<Initializer for <Constant "cmd_0x0E.c">>
+      11  ?<Initializer for <Constant "cmd_0x0F.c">>
+      11  ?<Initializer for <Constant "cmd_0x10.c">>
+      13  ?<Initializer for <Constant "cmd_parser.c">>
+       8  ?<Initializer for <Constant "frame.c">>
+       7  ?<Initializer for <Constant "main.c">>
+      10  ?<Initializer for <Constant "manager.c">>
+      12  ?<Initializer for <Constant "nwdebuger.c">>
+      10  ?<Initializer for <Constant "rx_buff.c">>
+       7  ?<Initializer for <Constant "sync.c">>
       34  ?<Initializer for CMD_LIST>
       16  ?<Initializer for IV>
       16  ?<Initializer for IV>_1
@@ -5688,7 +5657,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       45  CONFIG
      608  CTR_enc_decrypt
        6  CTR_enc_decrypt::?relay
-      87  Callback_execution
+      80  Callback_execution
        6  Callback_execution::?relay
        4  DELAY_CALIBRATE_TICS
        1  DMA0CFGH
@@ -5702,7 +5671,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  DMA_init::?relay
      147  DelayCalibrate
        6  DelayCalibrate::?relay
-     114  Delete_frame
+     107  Delete_frame
        6  Delete_frame::?relay
        1  ENCCS
        2  EventCallback
@@ -5716,13 +5685,13 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
       16  KEY
       16  KEY
        4  LAST_SYNC_TIME
-     465  LLC_AddTask
+     451  LLC_AddTask
        6  LLC_AddTask::?relay
       16  LLC_GetTaskLen
        6  LLC_GetTaskLen::?relay
       47  LLC_Init
        6  LLC_Init::?relay
-      98  LLC_RX_HNDL
+      91  LLC_RX_HNDL
        6  LLC_RX_HNDL::?relay
       43  LLC_Reset
        6  LLC_Reset::?relay
@@ -5730,11 +5699,11 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  LLC_RunTimeAlloc::?relay
       20  LLC_SE_HNDL
        6  LLC_SE_HNDL::?relay
-      80  LLC_SetRXCallback
+      73  LLC_SetRXCallback
        6  LLC_SetRXCallback::?relay
-     317  LLC_Shelduler
+     310  LLC_Shelduler
        6  LLC_Shelduler::?relay
-     148  LLC_TimeAlloc
+     141  LLC_TimeAlloc
        6  LLC_TimeAlloc::?relay
       50  LoadTXData
        6  LoadTXData::?relay
@@ -5743,29 +5712,29 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  MAC_ACK_Recv::?relay
       91  MAC_ACK_Send
        6  MAC_ACK_Send::?relay
-     121  MAC_CloseRXSlot
+     114  MAC_CloseRXSlot
        6  MAC_CloseRXSlot::?relay
        1  MAC_ENABLE_MODULE
       23  MAC_Enable
        6  MAC_Enable::?relay
-     110  MAC_GetRXState
+     103  MAC_GetRXState
        6  MAC_GetRXState::?relay
-     110  MAC_GetTXState
+     103  MAC_GetTXState
        6  MAC_GetTXState::?relay
       57  MAC_Init
        6  MAC_Init::?relay
-     164  MAC_OpenRXSlot
+     157  MAC_OpenRXSlot
        6  MAC_OpenRXSlot::?relay
-     225  MAC_RX_HNDL
+     218  MAC_RX_HNDL
        6  MAC_RX_HNDL::?relay
      135  MAC_Reset
        6  MAC_Reset::?relay
-     425  MAC_Send
+     404  MAC_Send
        6  MAC_Send::?relay
       19  MAC_SetRXCallback
        6  MAC_SetRXCallback::?relay
        4  MAC_TIMER_MAX
-     592  MAC_TX_HNDL
+     585  MAC_TX_HNDL
        6  MAC_TX_HNDL::?relay
       41  MAC_setIV
        6  MAC_setIV::?relay
@@ -5778,6 +5747,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  MyLowLevelPutchar::?relay
        1  NBR_FRAME
        1  NETWORK_SEED
+       1  NETWORK_SYNCED
        4  NEXT_SYNC_TIME
        4  NODE_NONCE
        4  NODE_RTC
@@ -5788,11 +5758,11 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  NT_IRQEnable::?relay
       74  NT_Init
        6  NT_Init::?relay
-     129  NT_SetCompare
+     122  NT_SetCompare
        6  NT_SetCompare::?relay
       19  NT_SetEventCallback
        6  NT_SetEventCallback::?relay
-     156  NT_SetTime
+     149  NT_SetTime
        6  NT_SetTime::?relay
      126  NT_WaitTime
        6  NT_WaitTime::?relay
@@ -5819,7 +5789,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  RI_Receive::?relay
       14  RI_Reset
        6  RI_Reset::?relay
-     216  RI_Send
+     209  RI_Send
        6  RI_Send::?relay
       32  RI_SetChannel
        6  RI_SetChannel::?relay
@@ -5834,7 +5804,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  RXB_Init::?relay
       26  RXB_Reset
        6  RXB_Reset::?relay
-     162  RXB_del_frame
+     155  RXB_del_frame
        6  RXB_del_frame::?relay
      107  RXB_frame_count
        6  RXB_frame_count::?relay
@@ -5861,16 +5831,18 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        1  SY_ENABLE_MODULE
       23  SY_Enable
        6  SY_Enable::?relay
-     121  SY_Init
+     127  SY_Init
        6  SY_Init::?relay
-      89  SY_Reset
+      95  SY_Reset
        6  SY_Reset::?relay
-     536  SY_SYNC_NETWORK
+     542  SY_SYNC_NETWORK
        6  SY_SYNC_NETWORK::?relay
       73  SY_TIME_ALLOC_MASTER
        6  SY_TIME_ALLOC_MASTER::?relay
      107  SY_TS1_HNDL_MASTER
        6  SY_TS1_HNDL_MASTER::?relay
+      17  SY_is_synced
+       6  SY_is_synced::?relay
       41  SY_setIV
        6  SY_setIV::?relay
       41  SY_setKEY
@@ -5891,9 +5863,9 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  TIC_GetNonce::?relay
       17  TIC_GetRTC
        6  TIC_GetRTC::?relay
-      98  TIC_GetRXState
+      91  TIC_GetRXState
        6  TIC_GetRXState::?relay
-      98  TIC_GetTXState
+      91  TIC_GetTXState
        6  TIC_GetTXState::?relay
        7  TIC_GetTimeStampTS0
        6  TIC_GetTimeStampTS0::?relay
@@ -5911,21 +5883,21 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  TIC_SetNonce::?relay
       40  TIC_SetRTC
        6  TIC_SetRTC::?relay
-      80  TIC_SetRXCallback
+      73  TIC_SetRXCallback
        6  TIC_SetRXCallback::?relay
-     128  TIC_SetRXState
+     121  TIC_SetRXState
        6  TIC_SetRXState::?relay
-      80  TIC_SetSECallback
+      73  TIC_SetSECallback
        6  TIC_SetSECallback::?relay
-      80  TIC_SetSyncTimeAllocCallback
+      73  TIC_SetSyncTimeAllocCallback
        6  TIC_SetSyncTimeAllocCallback::?relay
-      80  TIC_SetTS1Callback
+      73  TIC_SetTS1Callback
        6  TIC_SetTS1Callback::?relay
-      80  TIC_SetTXCallback
+      73  TIC_SetTXCallback
        6  TIC_SetTXCallback::?relay
-     128  TIC_SetTXState
+     121  TIC_SetTXState
        6  TIC_SetTXState::?relay
-      93  TIC_SetTimer
+      86  TIC_SetTimer
        6  TIC_SetTimer::?relay
        7  TIC_SleepTime
        6  TIC_SleepTime::?relay
@@ -6005,7 +5977,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  cmd_0x01::?relay
       76  cmd_0x02
        6  cmd_0x02::?relay
-     310  cmd_0x03
+     293  cmd_0x03
        6  cmd_0x03::?relay
      150  cmd_0x04
        6  cmd_0x04::?relay
@@ -6043,11 +6015,11 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        6  crc16::?relay
       16  default_iv
       16  default_key
-     367  frame_addHeader
+     360  frame_addHeader
        6  frame_addHeader::?relay
-     168  frame_create
+     161  frame_create
        6  frame_create::?relay
-     213  frame_delHeader
+     206  frame_delHeader
        6  frame_delHeader::?relay
       71  frame_delete
        6  frame_delete::?relay
@@ -6082,7 +6054,7 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        1  nbrTasks
       26  neocore_hw_init
        6  neocore_hw_init::?relay
-     102  neocore_stack_reset
+      95  neocore_stack_reset
        6  neocore_stack_reset::?relay
       65  network_discovery
        6  network_discovery::?relay
@@ -6106,11 +6078,11 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
        4  ret_val
      186  send_sync
        6  send_sync::?relay
-     120  setFreq
+     113  setFreq
        6  setFreq::?relay
       40  set_capture_time
        6  set_capture_time::?relay
-     156  stream_write
+     149  stream_write
        6  stream_write::?relay
        1  tasksBLOCK
      132  uart_dma_init
@@ -6135,19 +6107,19 @@ E:\WMNU\IAR\NEOCOREGATEWAY\src\uart_comm.c
      703  -- Other
 
  
- 20 341 bytes in segment BANKED_CODE
-  1 080 bytes in segment BANK_RELAYS
+ 20 100 bytes in segment BANKED_CODE
+  1 086 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
      60 bytes in segment NEAR_CODE
      38 bytes in segment SFR_AN
-  3 241 bytes in segment XDATA_I
-  3 241 bytes in segment XDATA_ID
-  1 182 bytes in segment XDATA_Z
+  2 452 bytes in segment XDATA_I
+  2 452 bytes in segment XDATA_ID
+  1 183 bytes in segment XDATA_Z
  
-  4 287 bytes of CODE     memory (+  97 bytes shared)
+  3 504 bytes of CODE     memory (+  97 bytes shared)
       0 bytes of DATA     memory (+  38 bytes shared)
- 20 229 bytes of HUGECODE memory (+ 112 bytes shared)
-  4 347 bytes of XDATA    memory (+  76 bytes shared)
+ 19 988 bytes of HUGECODE memory (+ 112 bytes shared)
+  3 559 bytes of XDATA    memory (+  76 bytes shared)
 
 Errors: none
 Warnings: 7

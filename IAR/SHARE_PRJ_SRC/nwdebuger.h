@@ -33,8 +33,7 @@ __attribute__((weak)) void STACK_FAILURE(char* msg);
 #ifdef ASSERT_ENABLE
   #define ASSERT(condition) {\
     if (!(condition)) {\
-      printf("*ASSERT* %s:%d:%s -> ",__FILE__, __LINE__, __FUNCTION__);\
-      printf("\r\n");\
+      printf("*ASSERT* %s:%d:%s -> !!!!!",__FILE__, __LINE__, __FUNCTION__);\
       while(1);\
     }\
   }

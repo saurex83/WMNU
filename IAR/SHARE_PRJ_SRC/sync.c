@@ -17,6 +17,7 @@ void SY_setKEY(void* ptr_KEY);
 bool SY_SYNC_NETWORK(uint16_t *panid,uint16_t timeout);
 void SY_Enable(bool en);
 uint32_t SY_sync_sended(void);
+bool SY_is_synced(void);
 
 static void SY_TS1_HNDL_MASTER(void);
 static void SY_TS1_HNDL_SLAVE(void);
@@ -33,6 +34,7 @@ static uint32_t SYNC_SENDED = 0; //!< Количество успешно рет
 static uint32_t SYNC_SEND_TIME = 0;
 static bool NEED_SEND_SYNC = false; //!< Нужно отослать синхропакет
 static bool SY_ENABLE_MODULE = false;
+static bool NETWORK_SYNCED = false;
 
 // Ключ потокового шифрования и вектор иницилизации
 static uint8_t KEY[16] = DEFAULT_KEY;
@@ -70,6 +72,7 @@ void SY_Init(void)
   SYNC_SENDED = 0;
   LAST_SYNC_TIME = 0;
   NEXT_SYNC_TIME = 0;
+  NETWORK_SYNCED = false;
   SY_ENABLE_MODULE = false;
   SYNC_ACCURATE_NETWORK_TIME = TIC_SlotTime(SYNC_TS) + TIC_SlotActivityTime()/2;
 #ifdef SYNC_MASTER
@@ -84,6 +87,7 @@ void SY_Init(void)
 void SY_Reset(void)
 {
   SYNC_SENDED = 0;
+  NETWORK_SYNCED = false;
   LAST_SYNC_TIME = 0;
   NEXT_SYNC_TIME = 0;
   SYNC_SEND_TIME = 0;
@@ -93,6 +97,13 @@ void SY_Reset(void)
 void SY_Enable(bool en)
 {
   SY_ENABLE_MODULE = en;
+}
+
+/**
+@ Состояние сети
+*/
+bool SY_is_synced(void){
+  return NETWORK_SYNCED;
 }
 
 /**
@@ -135,8 +146,11 @@ static void SY_TIME_ALLOC_SLAVE(void)
   // Потеря синхронизации
   if ( (TIC_GetUptime() - LAST_SYNC_TIME) > SYNC_TIMEOUT)
   {
+    if (NETWORK_SYNCED){ // Пишем лог 1 раз
       LOG_ON("Network out of sync.");
-      return;
+    }
+    NETWORK_SYNCED = false;
+    return;
   }
   
   if (TIC_GetRXState(SYNC_TS)) // Если прием уже активен
@@ -153,7 +167,7 @@ static void SY_TIME_ALLOC_SLAVE(void)
   // Необходимо начать процесс синхронизации
   if (TIC_GetUptime() > NEXT_SYNC_TIME)
   {
-    LOG_ON("Begin resync");
+    LOG_OFF("Begin resync");
     P1_0 = !true; 
     TIC_SetRXState(SYNC_TS, true);
   }
@@ -192,7 +206,7 @@ static void SY_TS1_HNDL_SLAVE(void)
   {
     if (send_sync())
       SYNC_SENDED++;
-    LOG_ON("Resync TX. CNT=%d",(uint16_t)SYNC_SENDED);
+    LOG_OFF("Resync TX. CNT=%d",(uint16_t)SYNC_SENDED);
     NEED_SEND_SYNC = false;
     TIC_SetRXState(SYNC_TS, false);
   }
@@ -226,7 +240,7 @@ static void SY_TS1_HNDL_SLAVE(void)
   LAST_SYNC_TIME = TIC_GetUptime();
   NEXT_SYNC_TIME = LAST_SYNC_TIME + RAND_SYNC_RX_DELAY; 
   TIC_SetRXState(SYNC_TS, false);
-  LOG_ON("Node Synced. TS=%d, AT=%d, DEL=%d, AD=%d, RTC=%d, NRTC=%d, SRTC=%d",
+  LOG_OFF("Node Synced. TS=%d, AT=%d, DEL=%d, AD=%d, RTC=%d, NRTC=%d, SRTC=%d",
          fr_SYNC->meta.TIMESTAMP,SYNC_ACCURATE_NETWORK_TIME, delta,
          SYNC_ACCURATE_NETWORK_TIME - fr_SYNC->meta.TIMESTAMP, 
          (uint16_t)LAST_SYNC_TIME,
@@ -362,6 +376,7 @@ bool SY_SYNC_NETWORK(uint16_t *panid,uint16_t timeout)
     CONFIG.tx_power = sync->tx_power;
 
     net_found = true;
+    NETWORK_SYNCED = true;
     
     // Синхронизируемся с сетью
     // Время прошедшее с момента приема пакета в тактах сети

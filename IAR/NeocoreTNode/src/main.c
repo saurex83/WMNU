@@ -46,20 +46,22 @@ cnt++;
 void main(void)
 {
   SLEEPCMD = 2; // Режим PM2
+  nwDebugerInit();
   NEOCORE_Init();
+  LOG_ON("Node Start");  
   P1DIR = 0x13;
   network_discovery(100);
-  MAC_OpenRXSlot(2, 15);
+  MAC_OpenRXSlot(0, 11);
   UDP_Bind(10, UDP_Port_10_HNDL);
   
   while(1){
     
-    if ((TIC_GetUptime() % 5) == 0)
-      if (LLC_GetTaskLen() == 0){
-        P1_1 = false;
-        LLC_AddTask(gen_frame());
-        P1_1 = true;
-      }
+//    if ((TIC_GetUptime() % 5) == 0)
+//      if (LLC_GetTaskLen() == 0){
+//        P1_1 = false;
+//        LLC_AddTask(gen_frame());
+//        P1_1 = true;
+//      }
     
     PCON = 1;
   }

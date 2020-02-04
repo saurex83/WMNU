@@ -10,6 +10,7 @@
 #include "mem.h"
 #include "TIC.h"
 #include "stdlib.h"
+#include "sync.h"
 
 /**
 @file
@@ -98,6 +99,7 @@ void NP_Reset(void){
   NEXT_CARD_REQ_TIME =0;
   LAST_TIME_CARD_RECIEVED = 0;
   COMM_NODE = NULL;
+  LOG_ON("NP Reset");
 }
 
 /**
@@ -190,8 +192,6 @@ bool NP_Get_COMM_node_info(uint16_t *addr, uint8_t *ts, uint8_t *ch){
   return true;
 }
 
-
-
 static bool frame_filter_cmd_req(frame_s *fr){
     nb_frame_req_s *cmd_req = (nb_frame_req_s*)fr->payload;
   
@@ -230,9 +230,10 @@ static void NP_Receive_HNDL(frame_s *fr){
   }   
   if (frame_filter_card(fr))
       process_card(fr);
-  if (frame_filter_cmd_req(fr))
+  else if (frame_filter_cmd_req(fr))
       process_cmd_req(fr);
-  
+    else 
+      frame_delete(fr); // Если под фильтры не подходит пакет
   // Пакет уничтожают функции
 }
 
@@ -298,6 +299,7 @@ static void insert_record(frame_s *fr){
   
   if (index != -1){ // Нашли место, запихиваем карточку
     update_record(fr,index);
+    LOG_ON("Card inserted.")
     return;
   }
   
@@ -314,11 +316,15 @@ static void insert_record(frame_s *fr){
        }
     }
   
-  if (!found) // Если нету записей.
+  if (!found){ // Если нету записей.
+    LOG_ON("Card is bad. not inserted")
     return;
+  }
   
-  if (weight > bad_weight) //// Карточка лучше чем самая плохая в таблице
-    update_record(fr, bad_index); 
+  if (weight > bad_weight){ //// Карточка лучше чем самая плохая в таблице
+    LOG_ON("Better card inserted")
+    update_record(fr, bad_index);
+  }
 }
 
 /**
@@ -329,8 +335,10 @@ static void process_card(frame_s *fr){
   
   if (index == -1) // Если нет записи об этом узле, вставим
     insert_record(fr);
-  else // Если запись есть, то обновим 
+  else{ // Если запись есть, то обновим 
+    LOG_ON("Update card")
     update_record(fr, index);
+  }
 
   // Обновим время получения последней карточки
   // мне не важно вставили или нет, главное что они регулярно приходят
@@ -347,7 +355,7 @@ static void process_cmd_req(frame_s *fr){
   // Запрос информации об узле
   if (cmd_req->cmd_req == REQ_CMD)
     send_card();
-  
+  LOG_ON("CMD reques processed.")
   frame_delete(fr);
 }
 
@@ -359,8 +367,14 @@ static void send_card(void){
   
   int etx = NP_GetETX();
   // Выходим если ETX не определен
-  if (etx == -1)
+  if (etx == -1){
+    // Раз нет ETX то продлим время отправки карты
+    uint32_t now = TIC_GetUptime();
+    NEXT_CARD_SEND_TIME = now + NEIGHBOR_CARD_SEND_INTERVAL + 
+      rand() % NEIGHBOR_CARD_SEND_INTERVAL_DEV;
+    LOG_ON("ETX not defind. Card not sended.")
     return;
+  }
   
   card.ETX = etx;
   
@@ -378,6 +392,7 @@ static void send_card(void){
   fr->meta.CH = CONFIG.sys_channel;
   fr->meta.TX_METHOD = BROADCAST;
   RP_Send(fr);
+  LOG_ON("NP Card sended");
 }
 
 /**
@@ -388,8 +403,10 @@ static void deactivate_unused_records(void){
   for (uint8_t i = 0; i < NB_TABLE_ITEMS; i++)
     if (NB_TABLE[i].record_active){
       alive_time = TIC_GetUptime() - NB_TABLE[i].update_time;
-        if (alive_time > NEIGHBOR_ALIVE_TIME)
-            NB_TABLE[i].record_active = false;
+      if (alive_time > NEIGHBOR_ALIVE_TIME){
+        LOG_ON("Record deactivated"); 
+        NB_TABLE[i].record_active = false;
+      }
     }
 }
 
@@ -399,6 +416,7 @@ static void deactivate_unused_records(void){
 static void card_send_task(void){
   uint32_t now = TIC_GetUptime();
   if (now > NEXT_CARD_SEND_TIME){
+    LOG_ON("Time to send our card"); 
     send_card();
     NEXT_CARD_SEND_TIME = now + NEIGHBOR_CARD_SEND_INTERVAL + 
       rand() % NEIGHBOR_CARD_SEND_INTERVAL_DEV;
@@ -429,7 +447,8 @@ static void send_cmd_req(){
   fr->meta.TS = 0;
   fr->meta.CH = CONFIG.sys_channel;
   fr->meta.TX_METHOD = BROADCAST;
-  RP_Send(fr);
+  LOG_ON("CMD request cards send")
+  RP_Send(fr); 
 }
 
 /**
@@ -449,19 +468,22 @@ static bool is_nb_table_free(void){
 static void card_send_req_task(void){
   uint32_t now = TIC_GetUptime();
   // Если долго не принимали карточки от соседей 
-  if (now > LAST_TIME_CARD_RECIEVED + NEIGHBOR_THR_RECV_TIME)
+  if (now > LAST_TIME_CARD_RECIEVED + NEIGHBOR_THR_RECV_TIME){
     send_cmd_req();
+  }
   
   // Если в таблице записей нет, то посылаем запрос
-  if (is_nb_table_free())
+  if (is_nb_table_free()){
     send_cmd_req();
+  }
 }
 
 /**
 @brief Выбирает соседний узел для связи
 */
 static void communication_node_chose(void){  
-  uint8_t best_index, best_weight = 0;
+  uint8_t best_index; 
+  int best_weight = -1;
   bool found = false;
   
   // Ищем самую лучшую запись
@@ -488,6 +510,18 @@ static void communication_node_chose(void){
 @brief Рабочее время модуля
 */
 static void NP_TimeAlloc_HNDL(void){
+  static bool need_reset = true;
+  // Если сеть неактивна
+  if (!SY_is_synced()){
+    need_reset = true;
+    return;
+  }
+  
+  if (need_reset){
+    NP_Reset();
+    need_reset = false;
+  }
+  
   deactivate_unused_records();
   card_send_task();
   card_send_req_task();
