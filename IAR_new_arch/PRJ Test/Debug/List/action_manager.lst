@@ -1,0 +1,542 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               06/Feb/2020  02:24:34
+# Copyright 2004-2017 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for 8051
+#
+#    Core               =  plain
+#    Code model         =  banked
+#    Data model         =  large
+#    Calling convention =  xdata reentrant
+#    Constant location  =  data
+#    Dptr setup         =  1,16
+#                          
+#    Source file        =  E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c
+#    Command line       =  
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EWAE7.tmp
+#        (E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c -lC
+#        "E:\WMNU\IAR_new_arch\PRJ Test\Debug\List" -o
+#        "E:\WMNU\IAR_new_arch\PRJ Test\Debug\Obj" -e --debug --core=plain
+#        --dptr=16,1 --data_model=large --code_model=banked
+#        --calling_convention=xdata_reentrant --place_constants=data
+#        --nr_virtual_regs 8 --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.0\8051\LIB\DLIB\dl8051Normal.h" -I
+#        E:\WMNU\IAR_new_arch\Stack_core_src\ -On --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --no_cross_call)
+#    Locale             =  Russian_Russia.1251
+#    List file          =  
+#        E:\WMNU\IAR_new_arch\PRJ Test\Debug\List\action_manager.lst
+#    Object file        =  
+#        E:\WMNU\IAR_new_arch\PRJ Test\Debug\Obj\action_manager.r51
+#
+###############################################################################
+
+E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c
+      1          #include "action_manager.h"
+      2          #include "modules_list.h"
+      3          #include "model.h"
+      4          
+      5          /**
+      6          @file
+      7          */
+      8          
+      9          /* Определения */
+     10          #define ITEMS_COUNT(name) (sizeof(name)/sizeof(module_s*))
+     11          #define RUNNER(array, fun) {\
+     12            for (char i = 0; i < ITEMS_COUNT(array); i++)\
+     13              array[i]->fun();\
+     14          };
+     15          
+     16          
+     17          /* Локальные переменные */
+
+   \                                 In  segment XDATA_Z, align 1, keep-with-next
+     18          static module_s* COLD_MOD[] = COLD_MOD_DEF;
+   \                     COLD_MOD:
+   \   000000                DS 2
+   \   000002                REQUIRE __INIT_XDATA_Z
+
+   \                                 In  segment XDATA_Z, align 1, keep-with-next
+     19          static module_s* HOT_MOD[] = HOT_MOD_DEF;
+   \                     HOT_MOD:
+   \   000000                DS 2
+   \   000002                REQUIRE __INIT_XDATA_Z
+
+   \                                 In  segment XDATA_I, align 1, keep-with-next
+     20          static module_s* HW_MOD[] = HW_MOD_DEF;
+   \                     HW_MOD:
+   \   000000                DS 2
+   \   000002                REQUIRE `?<Initializer for HW_MOD>`
+   \   000002                REQUIRE __INIT_XDATA_I
+
+   \                                 In  segment XDATA_I, align 1, keep-with-next
+     21          static module_s* SW_MOD[] = SW_MOD_DEF;
+   \                     SW_MOD:
+   \   000000                DS 6
+   \   000006                REQUIRE `?<Initializer for SW_MOD>`
+   \   000006                REQUIRE __INIT_XDATA_I
+
+   \                                 In  segment XDATA_I, align 1, keep-with-next
+     22          static module_s* POW_MOD[] = POW_MOD_DEF;
+   \                     POW_MOD:
+   \   000000                DS 2
+   \   000002                REQUIRE `?<Initializer for POW_MOD>`
+   \   000002                REQUIRE __INIT_XDATA_I
+     23          
+     24          /* Локальные функции */
+     25          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     26          void AM_Cold_start(void){
+   \                     AM_Cold_start:
+   \   000000   74F7         MOV       A,#-0x9
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 9
+   \   000005                ; Auto size: 0
+     27            RUNNER(COLD_MOD, Cold_Start);
+   \   000005   7E00         MOV       R6,#0x0
+   \                     ??AM_Cold_start_0:
+   \   000007   EE           MOV       A,R6
+   \   000008   703F         JNZ       ??AM_Cold_start_1
+   \   00000A                ; Setup parameters for indirect call
+   \   00000A   EE           MOV       A,R6
+   \   00000B   F8           MOV       R0,A
+   \   00000C   7900         MOV       R1,#0x0
+   \   00000E   E8           MOV       A,R0
+   \   00000F   75F002       MOV       B,#0x2
+   \   000012   A4           MUL       AB
+   \   000013   C8           XCH       A,R0
+   \   000014   AAF0         MOV       R2,B
+   \   000016   75F000       MOV       B,#0x0
+   \   000019   A4           MUL       AB
+   \   00001A   2A           ADD       A,R2
+   \   00001B   FA           MOV       R2,A
+   \   00001C   75F002       MOV       B,#0x2
+   \   00001F   E9           MOV       A,R1
+   \   000020   A4           MUL       AB
+   \   000021   2A           ADD       A,R2
+   \   000022   F9           MOV       R1,A
+   \   000023   74..         MOV       A,#COLD_MOD & 0xff
+   \   000025   28           ADD       A,R0
+   \   000026   F582         MOV       DPL,A
+   \   000028   74..         MOV       A,#(COLD_MOD >> 8) & 0xff
+   \   00002A   39           ADDC      A,R1
+   \   00002B   F583         MOV       DPH,A
+   \   00002D   E0           MOVX      A,@DPTR
+   \   00002E   F8           MOV       R0,A
+   \   00002F   A3           INC       DPTR
+   \   000030   E0           MOVX      A,@DPTR
+   \   000031   C8           XCH       A,R0
+   \   000032   2408         ADD       A,#0x8
+   \   000034   F582         MOV       DPL,A
+   \   000036   C8           XCH       A,R0
+   \   000037   3400         ADDC      A,#0x0
+   \   000039   F583         MOV       DPH,A
+   \   00003B   E0           MOVX      A,@DPTR
+   \   00003C   F8           MOV       R0,A
+   \   00003D   A3           INC       DPTR
+   \   00003E   E0           MOVX      A,@DPTR
+   \   00003F   F583         MOV       DPH,A
+   \   000041   8882         MOV       DPL,R0
+   \   000043   12....       LCALL     ?CALL_IND
+   \   000046   0E           INC       R6
+   \   000047   80BE         SJMP      ??AM_Cold_start_0
+     28          }
+   \                     ??AM_Cold_start_1:
+   \   000049   7F01         MOV       R7,#0x1
+   \   00004B   02....       LJMP      ?BANKED_LEAVE_XDATA
+     29          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     30          void AM_Hot_start(void){
+   \                     AM_Hot_start:
+   \   000000   74F7         MOV       A,#-0x9
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 9
+   \   000005                ; Auto size: 0
+     31            RUNNER(HOT_MOD, Hot_Start);  
+   \   000005   7E00         MOV       R6,#0x0
+   \                     ??AM_Hot_start_0:
+   \   000007   EE           MOV       A,R6
+   \   000008   703F         JNZ       ??AM_Hot_start_1
+   \   00000A                ; Setup parameters for indirect call
+   \   00000A   EE           MOV       A,R6
+   \   00000B   F8           MOV       R0,A
+   \   00000C   7900         MOV       R1,#0x0
+   \   00000E   E8           MOV       A,R0
+   \   00000F   75F002       MOV       B,#0x2
+   \   000012   A4           MUL       AB
+   \   000013   C8           XCH       A,R0
+   \   000014   AAF0         MOV       R2,B
+   \   000016   75F000       MOV       B,#0x0
+   \   000019   A4           MUL       AB
+   \   00001A   2A           ADD       A,R2
+   \   00001B   FA           MOV       R2,A
+   \   00001C   75F002       MOV       B,#0x2
+   \   00001F   E9           MOV       A,R1
+   \   000020   A4           MUL       AB
+   \   000021   2A           ADD       A,R2
+   \   000022   F9           MOV       R1,A
+   \   000023   74..         MOV       A,#HOT_MOD & 0xff
+   \   000025   28           ADD       A,R0
+   \   000026   F582         MOV       DPL,A
+   \   000028   74..         MOV       A,#(HOT_MOD >> 8) & 0xff
+   \   00002A   39           ADDC      A,R1
+   \   00002B   F583         MOV       DPH,A
+   \   00002D   E0           MOVX      A,@DPTR
+   \   00002E   F8           MOV       R0,A
+   \   00002F   A3           INC       DPTR
+   \   000030   E0           MOVX      A,@DPTR
+   \   000031   C8           XCH       A,R0
+   \   000032   240A         ADD       A,#0xa
+   \   000034   F582         MOV       DPL,A
+   \   000036   C8           XCH       A,R0
+   \   000037   3400         ADDC      A,#0x0
+   \   000039   F583         MOV       DPH,A
+   \   00003B   E0           MOVX      A,@DPTR
+   \   00003C   F8           MOV       R0,A
+   \   00003D   A3           INC       DPTR
+   \   00003E   E0           MOVX      A,@DPTR
+   \   00003F   F583         MOV       DPH,A
+   \   000041   8882         MOV       DPL,R0
+   \   000043   12....       LCALL     ?CALL_IND
+   \   000046   0E           INC       R6
+   \   000047   80BE         SJMP      ??AM_Hot_start_0
+     32          }
+   \                     ??AM_Hot_start_1:
+   \   000049   7F01         MOV       R7,#0x1
+   \   00004B   02....       LJMP      ?BANKED_LEAVE_XDATA
+     33          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     34          void AM_HW_Init(void){
+   \                     AM_HW_Init:
+   \   000000   74F7         MOV       A,#-0x9
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 9
+   \   000005                ; Auto size: 0
+     35            RUNNER(HW_MOD, HW_Init);      
+   \   000005   7E00         MOV       R6,#0x0
+   \                     ??AM_HW_Init_0:
+   \   000007   EE           MOV       A,R6
+   \   000008   7039         JNZ       ??AM_HW_Init_1
+   \   00000A                ; Setup parameters for indirect call
+   \   00000A   EE           MOV       A,R6
+   \   00000B   F8           MOV       R0,A
+   \   00000C   7900         MOV       R1,#0x0
+   \   00000E   E8           MOV       A,R0
+   \   00000F   75F002       MOV       B,#0x2
+   \   000012   A4           MUL       AB
+   \   000013   C8           XCH       A,R0
+   \   000014   AAF0         MOV       R2,B
+   \   000016   75F000       MOV       B,#0x0
+   \   000019   A4           MUL       AB
+   \   00001A   2A           ADD       A,R2
+   \   00001B   FA           MOV       R2,A
+   \   00001C   75F002       MOV       B,#0x2
+   \   00001F   E9           MOV       A,R1
+   \   000020   A4           MUL       AB
+   \   000021   2A           ADD       A,R2
+   \   000022   F9           MOV       R1,A
+   \   000023   74..         MOV       A,#HW_MOD & 0xff
+   \   000025   28           ADD       A,R0
+   \   000026   F582         MOV       DPL,A
+   \   000028   74..         MOV       A,#(HW_MOD >> 8) & 0xff
+   \   00002A   39           ADDC      A,R1
+   \   00002B   F583         MOV       DPH,A
+   \   00002D   E0           MOVX      A,@DPTR
+   \   00002E   F8           MOV       R0,A
+   \   00002F   A3           INC       DPTR
+   \   000030   E0           MOVX      A,@DPTR
+   \   000031   F583         MOV       DPH,A
+   \   000033   8882         MOV       DPL,R0
+   \   000035   E0           MOVX      A,@DPTR
+   \   000036   F8           MOV       R0,A
+   \   000037   A3           INC       DPTR
+   \   000038   E0           MOVX      A,@DPTR
+   \   000039   F583         MOV       DPH,A
+   \   00003B   8882         MOV       DPL,R0
+   \   00003D   12....       LCALL     ?CALL_IND
+   \   000040   0E           INC       R6
+   \   000041   80C4         SJMP      ??AM_HW_Init_0
+     36          }
+   \                     ??AM_HW_Init_1:
+   \   000043   7F01         MOV       R7,#0x1
+   \   000045   02....       LJMP      ?BANKED_LEAVE_XDATA
+     37          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     38          void AM_SW_Init(void){
+   \                     AM_SW_Init:
+   \   000000   74F7         MOV       A,#-0x9
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 9
+   \   000005                ; Auto size: 0
+     39            RUNNER(SW_MOD, SW_Init);
+   \   000005   7E00         MOV       R6,#0x0
+   \                     ??AM_SW_Init_0:
+   \   000007   EE           MOV       A,R6
+   \   000008   C3           CLR       C
+   \   000009   9403         SUBB      A,#0x3
+   \   00000B   503B         JNC       ??AM_SW_Init_1
+   \   00000D                ; Setup parameters for indirect call
+   \   00000D   EE           MOV       A,R6
+   \   00000E   F8           MOV       R0,A
+   \   00000F   7900         MOV       R1,#0x0
+   \   000011   E8           MOV       A,R0
+   \   000012   75F002       MOV       B,#0x2
+   \   000015   A4           MUL       AB
+   \   000016   C8           XCH       A,R0
+   \   000017   AAF0         MOV       R2,B
+   \   000019   75F000       MOV       B,#0x0
+   \   00001C   A4           MUL       AB
+   \   00001D   2A           ADD       A,R2
+   \   00001E   FA           MOV       R2,A
+   \   00001F   75F002       MOV       B,#0x2
+   \   000022   E9           MOV       A,R1
+   \   000023   A4           MUL       AB
+   \   000024   2A           ADD       A,R2
+   \   000025   F9           MOV       R1,A
+   \   000026   74..         MOV       A,#SW_MOD & 0xff
+   \   000028   28           ADD       A,R0
+   \   000029   F582         MOV       DPL,A
+   \   00002B   74..         MOV       A,#(SW_MOD >> 8) & 0xff
+   \   00002D   39           ADDC      A,R1
+   \   00002E   F583         MOV       DPH,A
+   \   000030   E0           MOVX      A,@DPTR
+   \   000031   F8           MOV       R0,A
+   \   000032   A3           INC       DPTR
+   \   000033   E0           MOVX      A,@DPTR
+   \   000034   F583         MOV       DPH,A
+   \   000036   8882         MOV       DPL,R0
+   \   000038   A3           INC       DPTR
+   \   000039   A3           INC       DPTR
+   \   00003A   E0           MOVX      A,@DPTR
+   \   00003B   F8           MOV       R0,A
+   \   00003C   A3           INC       DPTR
+   \   00003D   E0           MOVX      A,@DPTR
+   \   00003E   F583         MOV       DPH,A
+   \   000040   8882         MOV       DPL,R0
+   \   000042   12....       LCALL     ?CALL_IND
+   \   000045   0E           INC       R6
+   \   000046   80BF         SJMP      ??AM_SW_Init_0
+     40          }
+   \                     ??AM_SW_Init_1:
+   \   000048   7F01         MOV       R7,#0x1
+   \   00004A   02....       LJMP      ?BANKED_LEAVE_XDATA
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     41          void AM_Sleep(void){
+   \                     AM_Sleep:
+   \   000000   74F7         MOV       A,#-0x9
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 9
+   \   000005                ; Auto size: 0
+     42            RUNNER(POW_MOD, Sleep);
+   \   000005   7E00         MOV       R6,#0x0
+   \                     ??AM_Sleep_0:
+   \   000007   EE           MOV       A,R6
+   \   000008   703D         JNZ       ??AM_Sleep_1
+   \   00000A                ; Setup parameters for indirect call
+   \   00000A   EE           MOV       A,R6
+   \   00000B   F8           MOV       R0,A
+   \   00000C   7900         MOV       R1,#0x0
+   \   00000E   E8           MOV       A,R0
+   \   00000F   75F002       MOV       B,#0x2
+   \   000012   A4           MUL       AB
+   \   000013   C8           XCH       A,R0
+   \   000014   AAF0         MOV       R2,B
+   \   000016   75F000       MOV       B,#0x0
+   \   000019   A4           MUL       AB
+   \   00001A   2A           ADD       A,R2
+   \   00001B   FA           MOV       R2,A
+   \   00001C   75F002       MOV       B,#0x2
+   \   00001F   E9           MOV       A,R1
+   \   000020   A4           MUL       AB
+   \   000021   2A           ADD       A,R2
+   \   000022   F9           MOV       R1,A
+   \   000023   74..         MOV       A,#POW_MOD & 0xff
+   \   000025   28           ADD       A,R0
+   \   000026   F582         MOV       DPL,A
+   \   000028   74..         MOV       A,#(POW_MOD >> 8) & 0xff
+   \   00002A   39           ADDC      A,R1
+   \   00002B   F583         MOV       DPH,A
+   \   00002D   E0           MOVX      A,@DPTR
+   \   00002E   F8           MOV       R0,A
+   \   00002F   A3           INC       DPTR
+   \   000030   E0           MOVX      A,@DPTR
+   \   000031   F583         MOV       DPH,A
+   \   000033   8882         MOV       DPL,R0
+   \   000035   A3           INC       DPTR
+   \   000036   A3           INC       DPTR
+   \   000037   A3           INC       DPTR
+   \   000038   A3           INC       DPTR
+   \   000039   E0           MOVX      A,@DPTR
+   \   00003A   F8           MOV       R0,A
+   \   00003B   A3           INC       DPTR
+   \   00003C   E0           MOVX      A,@DPTR
+   \   00003D   F583         MOV       DPH,A
+   \   00003F   8882         MOV       DPL,R0
+   \   000041   12....       LCALL     ?CALL_IND
+   \   000044   0E           INC       R6
+   \   000045   80C0         SJMP      ??AM_Sleep_0
+     43          }
+   \                     ??AM_Sleep_1:
+   \   000047   7F01         MOV       R7,#0x1
+   \   000049   02....       LJMP      ?BANKED_LEAVE_XDATA
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     44          void AM_Wakeup(void){
+   \                     AM_Wakeup:
+   \   000000   74F7         MOV       A,#-0x9
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 9
+   \   000005                ; Auto size: 0
+     45            RUNNER(POW_MOD, Wakeup);
+   \   000005   7E00         MOV       R6,#0x0
+   \                     ??AM_Wakeup_0:
+   \   000007   EE           MOV       A,R6
+   \   000008   703F         JNZ       ??AM_Wakeup_1
+   \   00000A                ; Setup parameters for indirect call
+   \   00000A   EE           MOV       A,R6
+   \   00000B   F8           MOV       R0,A
+   \   00000C   7900         MOV       R1,#0x0
+   \   00000E   E8           MOV       A,R0
+   \   00000F   75F002       MOV       B,#0x2
+   \   000012   A4           MUL       AB
+   \   000013   C8           XCH       A,R0
+   \   000014   AAF0         MOV       R2,B
+   \   000016   75F000       MOV       B,#0x0
+   \   000019   A4           MUL       AB
+   \   00001A   2A           ADD       A,R2
+   \   00001B   FA           MOV       R2,A
+   \   00001C   75F002       MOV       B,#0x2
+   \   00001F   E9           MOV       A,R1
+   \   000020   A4           MUL       AB
+   \   000021   2A           ADD       A,R2
+   \   000022   F9           MOV       R1,A
+   \   000023   74..         MOV       A,#POW_MOD & 0xff
+   \   000025   28           ADD       A,R0
+   \   000026   F582         MOV       DPL,A
+   \   000028   74..         MOV       A,#(POW_MOD >> 8) & 0xff
+   \   00002A   39           ADDC      A,R1
+   \   00002B   F583         MOV       DPH,A
+   \   00002D   E0           MOVX      A,@DPTR
+   \   00002E   F8           MOV       R0,A
+   \   00002F   A3           INC       DPTR
+   \   000030   E0           MOVX      A,@DPTR
+   \   000031   C8           XCH       A,R0
+   \   000032   2406         ADD       A,#0x6
+   \   000034   F582         MOV       DPL,A
+   \   000036   C8           XCH       A,R0
+   \   000037   3400         ADDC      A,#0x0
+   \   000039   F583         MOV       DPH,A
+   \   00003B   E0           MOVX      A,@DPTR
+   \   00003C   F8           MOV       R0,A
+   \   00003D   A3           INC       DPTR
+   \   00003E   E0           MOVX      A,@DPTR
+   \   00003F   F583         MOV       DPH,A
+   \   000041   8882         MOV       DPL,R0
+   \   000043   12....       LCALL     ?CALL_IND
+   \   000046   0E           INC       R6
+   \   000047   80BE         SJMP      ??AM_Wakeup_0
+     46          }
+   \                     ??AM_Wakeup_1:
+   \   000049   7F01         MOV       R7,#0x1
+   \   00004B   02....       LJMP      ?BANKED_LEAVE_XDATA
+
+   \                                 In  segment XDATA_ID, align 1, keep-with-next
+   \                     `?<Initializer for HW_MOD>`:
+   \   000000   ....         DW AT_MODULE
+
+   \                                 In  segment XDATA_ID, align 1, keep-with-next
+   \                     `?<Initializer for SW_MOD>`:
+   \   000000   ....         DW TM_MODULE
+   \   000002   ....         DW FR_MODULE
+   \   000004   ....         DW MD_MODULE
+
+   \                                 In  segment XDATA_ID, align 1, keep-with-next
+   \                     `?<Initializer for POW_MOD>`:
+   \   000000   ....         DW RTC_MODULE
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??AM_Cold_start::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    AM_Cold_start
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??AM_Hot_start::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    AM_Hot_start
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??AM_HW_Init::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    AM_HW_Init
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??AM_SW_Init::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    AM_SW_Init
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??AM_Sleep::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    AM_Sleep
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??AM_Wakeup::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    AM_Wakeup
+     47          
+
+   Maximum stack usage in bytes:
+
+   XSTACK Function
+   ------ --------
+      9   AM_Cold_start
+      9   AM_HW_Init
+      9   AM_Hot_start
+      9   AM_SW_Init
+      9   AM_Sleep
+      9   AM_Wakeup
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       2  ?<Initializer for HW_MOD>
+       2  ?<Initializer for POW_MOD>
+       6  ?<Initializer for SW_MOD>
+      78  AM_Cold_start
+       6  AM_Cold_start::?relay
+      72  AM_HW_Init
+       6  AM_HW_Init::?relay
+      78  AM_Hot_start
+       6  AM_Hot_start::?relay
+      77  AM_SW_Init
+       6  AM_SW_Init::?relay
+      76  AM_Sleep
+       6  AM_Sleep::?relay
+      78  AM_Wakeup
+       6  AM_Wakeup::?relay
+       2  COLD_MOD
+       2  HOT_MOD
+       2  HW_MOD
+       2  POW_MOD
+       6  SW_MOD
+
+ 
+ 459 bytes in segment BANKED_CODE
+  36 bytes in segment BANK_RELAYS
+  10 bytes in segment XDATA_I
+  10 bytes in segment XDATA_ID
+   4 bytes in segment XDATA_Z
+ 
+  46 bytes of CODE     memory
+ 459 bytes of HUGECODE memory
+  14 bytes of XDATA    memory
+
+Errors: none
+Warnings: none

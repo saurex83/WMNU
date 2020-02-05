@@ -1,0 +1,183 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               06/Feb/2020  02:19:48
+# Copyright 2004-2017 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for 8051
+#
+#    Core               =  plain
+#    Code model         =  banked
+#    Data model         =  large
+#    Calling convention =  xdata reentrant
+#    Constant location  =  data
+#    Dptr setup         =  1,16
+#                          
+#    Source file        =  E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\rtc.c
+#    Command line       =  
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EWAF10.tmp
+#        (E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\rtc.c -lC
+#        "E:\WMNU\IAR_new_arch\PRJ Test\Debug\List" -o
+#        "E:\WMNU\IAR_new_arch\PRJ Test\Debug\Obj" -e --debug --core=plain
+#        --dptr=16,1 --data_model=large --code_model=banked
+#        --calling_convention=xdata_reentrant --place_constants=data
+#        --nr_virtual_regs 8 --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.0\8051\LIB\DLIB\dl8051Normal.h" -I
+#        E:\WMNU\IAR_new_arch\Stack_core_src\ -On --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --no_cross_call)
+#    Locale             =  Russian_Russia.1251
+#    List file          =  E:\WMNU\IAR_new_arch\PRJ Test\Debug\List\rtc.lst
+#    Object file        =  E:\WMNU\IAR_new_arch\PRJ Test\Debug\Obj\rtc.r51
+#
+###############################################################################
+
+E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\rtc.c
+      1          #include "action_manager.h"
+      2          
+      3          /**
+      4          @file
+      5          */
+      6          
+      7          // Определения
+      8          // Локальные переменные
+      9          // Локальные функции
+     10          
+     11          static void HW_Init(void);  
+     12          static void SW_Init(void); 
+     13          static void Sleep(void); 
+     14          static void Wakeup(void); 
+     15          static void Cold_Start(void); 
+     16          static void Hot_Start(void); 
+     17          
+
+   \                                 In  segment XDATA_I, align 1, keep-with-next
+     18          module_s RTC_MODULE = {ALIAS(HW_Init),ALIAS(SW_Init),ALIAS(Sleep),
+   \                     RTC_MODULE:
+   \   000000                DS 12
+   \   00000C                REQUIRE `?<Initializer for RTC_MODULE>`
+   \   00000C                REQUIRE __INIT_XDATA_I
+     19            ALIAS(Wakeup),ALIAS(Cold_Start), ALIAS(Hot_Start)};
+     20          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     21          static void HW_Init(void){};  
+   \                     HW_Init:
+   \   000000                ; Saved register size: 0
+   \   000000                ; Auto size: 0
+   \   000000   02....       LJMP      ?BRET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     22          static void SW_Init(void){}; 
+   \                     SW_Init:
+   \   000000                ; Saved register size: 0
+   \   000000                ; Auto size: 0
+   \   000000   02....       LJMP      ?BRET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     23          static void Sleep(void){}; 
+   \                     Sleep:
+   \   000000                ; Saved register size: 0
+   \   000000                ; Auto size: 0
+   \   000000   02....       LJMP      ?BRET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     24          static void Wakeup(void){}; 
+   \                     Wakeup:
+   \   000000                ; Saved register size: 0
+   \   000000                ; Auto size: 0
+   \   000000   02....       LJMP      ?BRET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     25          static void Cold_Start(void){}; 
+   \                     Cold_Start:
+   \   000000                ; Saved register size: 0
+   \   000000                ; Auto size: 0
+   \   000000   02....       LJMP      ?BRET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     26          static void Hot_Start(void){};
+   \                     Hot_Start:
+   \   000000                ; Saved register size: 0
+   \   000000                ; Auto size: 0
+   \   000000   02....       LJMP      ?BRET
+
+   \                                 In  segment XDATA_ID, align 1, keep-with-next
+   \                     `?<Initializer for RTC_MODULE>`:
+   \   000000   ....         DW `??HW_Init::?relay`
+   \   000002   ....         DW `??SW_Init::?relay`
+   \   000004   ....         DW `??Sleep::?relay`
+   \   000006   ....         DW `??Wakeup::?relay`
+   \   000008   ....         DW `??Cold_Start::?relay`
+   \   00000A   ....         DW `??Hot_Start::?relay`
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??HW_Init::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    HW_Init
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??SW_Init::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    SW_Init
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??Sleep::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    Sleep
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??Wakeup::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    Wakeup
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??Cold_Start::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    Cold_Start
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??Hot_Start::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    Hot_Start
+
+   Maximum stack usage in bytes:
+
+   ISTACK Function
+   ------ --------
+      0   Cold_Start
+      0   HW_Init
+      0   Hot_Start
+      0   SW_Init
+      0   Sleep
+      0   Wakeup
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      12  ?<Initializer for RTC_MODULE>
+       3  Cold_Start
+       6  Cold_Start::?relay
+       3  HW_Init
+       6  HW_Init::?relay
+       3  Hot_Start
+       6  Hot_Start::?relay
+      12  RTC_MODULE
+       3  SW_Init
+       6  SW_Init::?relay
+       3  Sleep
+       6  Sleep::?relay
+       3  Wakeup
+       6  Wakeup::?relay
+
+ 
+ 18 bytes in segment BANKED_CODE
+ 36 bytes in segment BANK_RELAYS
+ 12 bytes in segment XDATA_I
+ 12 bytes in segment XDATA_ID
+ 
+ 48 bytes of CODE     memory
+ 18 bytes of HUGECODE memory
+ 12 bytes of XDATA    memory
+
+Errors: none
+Warnings: none

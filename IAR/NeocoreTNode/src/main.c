@@ -51,7 +51,6 @@ void main(void)
   LOG_ON("Node Start");  
   P1DIR = 0x13;
   network_discovery(100);
-  MAC_OpenRXSlot(0, 11);
   UDP_Bind(10, UDP_Port_10_HNDL);
   
   while(1){

@@ -220,7 +220,14 @@ uint16_t NT_GetTime(void)
 */
 #pragma vector=ST_VECTOR
 __interrupt void TimerCompareInterrupt(void)
-{  
+{ 
+  // Защита от повторного входа в прерывание
+  static bool irq_entered = false;
+  
+  ASSERT(irq_entered == false);
+ 
+  irq_entered = true; // Включаем защиту от повторного входа
+ 
   uint16_t ticks = NT_GetTime();
   if (EventCallback == NULL)
     return;
@@ -228,6 +235,7 @@ __interrupt void TimerCompareInterrupt(void)
   NT_IRQEnable(false); 
   EventCallback(ticks); // Вызываем пользовательский обработчик
   STIF = 0; // Очищаем флаг прерывания
+  irq_entered = false; // Отключаем защиту
 }
 
 /**

@@ -13,7 +13,7 @@
 
 // Максимальное кол-во тактов таймера. Константа 40 бит, 5 байт
 static const uint32_t MAC_TIMER_MAX = 0xFFFFFFFFUL; 
-static uint32_t DELAY_CALIBRATE_TICS; // Колибровка функции задержки
+static uint32_t DELAY_CALIBRATE_TICS; // Калибровка функции задержки
 
 // Публичные методы
 void TIM_init(void);

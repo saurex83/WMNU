@@ -2,7 +2,7 @@
 #include "stdint.h"
 #include "RADIO.h"
 //C compiler options->extra options add  --no_path_in_file_macros
-//#define GATEWAY
+#define GATEWAY
 #define NODE_VER 0
 #define NODE_TYPE 1
 
@@ -26,3 +26,6 @@
 #define NEIGHBOR_THR_RECV_TIME 220 // Спустя это время, узел начнет запрашивать соседей
 
 #define ROUTE_TABLE_ITEMS 20 // Количество маршрутов в таблице маршрутизации
+
+#define TB_START_DELAY 120 // После этого времени узел начнет открывать свои слоты
+#define TB_START_DEV 20 // Случайное отклонение

@@ -1,0 +1,71 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               06/Feb/2020  02:16:04
+# Copyright 2004-2017 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for 8051
+#
+#    Core               =  plain
+#    Code model         =  banked
+#    Data model         =  large
+#    Calling convention =  xdata reentrant
+#    Constant location  =  data
+#    Dptr setup         =  1,16
+#                          
+#    Source file        =  E:\WMNU\IAR_NEW_ARCH\PRJ Test\main.c
+#    Command line       =  
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW4193.tmp
+#        ("E:\WMNU\IAR_NEW_ARCH\PRJ Test\main.c" -lC "E:\WMNU\IAR_new_arch\PRJ
+#        Test\Debug\List" -o "E:\WMNU\IAR_new_arch\PRJ Test\Debug\Obj" -e
+#        --debug --core=plain --dptr=16,1 --data_model=large
+#        --code_model=banked --calling_convention=xdata_reentrant
+#        --place_constants=data --nr_virtual_regs 8 --dlib_config "C:\Program
+#        Files (x86)\IAR Systems\Embedded Workbench
+#        8.0\8051\LIB\DLIB\dl8051Normal.h" -I
+#        E:\WMNU\IAR_new_arch\Stack_core_src\ -On --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --no_cross_call)
+#    Locale             =  Russian_Russia.1251
+#    List file          =  E:\WMNU\IAR_new_arch\PRJ Test\Debug\List\main.lst
+#    Object file        =  E:\WMNU\IAR_new_arch\PRJ Test\Debug\Obj\main.r51
+#
+###############################################################################
+
+E:\WMNU\IAR_NEW_ARCH\PRJ Test\main.c
+      1          #include "action_manager.h"
+      2          extern module_s TEST;
+      3          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+      4          void main(){
+   \                     main:
+   \   000000                ; Auto size: 0
+      5          }
+   \   000000   02....       LJMP      ?BRET
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??main::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    main
+
+   Maximum stack usage in bytes:
+
+   ISTACK Function
+   ------ --------
+      0   main
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       3  main
+       6  main::?relay
+
+ 
+ 3 bytes in segment BANKED_CODE
+ 6 bytes in segment BANK_RELAYS
+ 
+ 6 bytes of CODE     memory
+ 3 bytes of HUGECODE memory
+
+Errors: none
+Warnings: none

@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               05/Feb/2020  13:53:29
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               05/Feb/2020  19:41:19
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,7 +13,7 @@
 #                          
 #    Source file        =  E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW54AB.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EWCC81.tmp
 #        (E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c -lcN
 #        E:\WMNU\IAR\NeocoreGateway\Debug\List -o
 #        E:\WMNU\IAR\NeocoreGateway\Debug\Obj -e --debug --core=plain
@@ -2971,94 +2971,102 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\NTMR.c
     220          */
     221          #pragma vector=ST_VECTOR
     222          __interrupt void TimerCompareInterrupt(void)
-    223          {  
-    224            uint16_t ticks = NT_GetTime();
-    225            if (EventCallback == NULL)
-    226              return;
-    227            // Отключаем прерывание таймера. Забота пользователя его включить
-    228            NT_IRQEnable(false); 
-    229            EventCallback(ticks); // Вызываем пользовательский обработчик
-    230            STIF = 0; // Очищаем флаг прерывания
-    231          }
-    232          
-    233          /**
-    234          @breif Ожидание наступления времени сети
-    235          @param[in] ticks время в тактах
-    236          @return фактическое время сети
-    237          */
-    238          uint16_t NT_WaitTime(uint16_t ticks)
-    239          {
-    240            static union 
-    241            {
-    242              uint32_t val;
-    243              uint8_t fild[4];
-    244            } val;
-    245            
-    246            val.val = 0;
-    247            // TOFFSET = NETWORK TIME - TIMER
-    248            // NETWORK TIME = TIMER + TOFFSET
-    249            
-    250            // Ждем синхронизацию таймера после пробуждения
-    251            while (!(SLEEPSTA & 0x01));
-    252            
-    253            do
-    254            {
-    255              // Соблюдаем порядок чтения регисторов ST  
-    256              val.fild[0] = ST0;
-    257              val.fild[1] = ST1;
-    258              val.fild[2] = ST2;
-    259              val.val +=TOFFSET;
-    260              val.val &= 0x7FFF; // Приводим значения таймера к 0-32767    
-    261            } while (val.val < ticks);
-    262            return val.val;
-    263          }
-    264          
-    265          /**
-    266          @brief Возвращает текущее значение таймера
-    267          @return Текущие ticks
-    268          */
-    269          static uint32_t ReadTimer(void)
-    270          {
-    271            static union 
-    272            {
-    273              uint32_t val;
-    274              uint8_t fild[4];
-    275            } ret_val;
-    276            
-    277            ret_val.val = 0;
-    278            
-    279            // Ждем синхронизацию таймера после пробуждения
-    280            while (!(SLEEPSTA & 0x01));
-    281            
-    282            // Соблюдаем порядок чтения регисторов ST  
-    283            ret_val.fild[0] = ST0;
-    284            ret_val.fild[1] = ST1;
-    285            ret_val.fild[2] = ST2;
-    286            return ret_val.val;
-    287          }
-    288          
-    289          /**
-    290          @brief Устанавливает время пробуждения микроконтролера
-    291          @params[in] ticks 24 битное значение времени пробуждения в ticks
-    292          */
-    293          static void loadTimerCompare(uint32_t ticks)
-    294          {
-    295            union 
-    296            {
-    297              uint32_t val;
-    298              uint8_t fild[4];
-    299            } value;
-    300            
-    301            value.val = ticks;
-    302            
-    303            // Ждем разрешения на запись нового значения
-    304            while (!(STLOAD & 0x01));
-    305            
-    306            // Регистр ST0 должен быть записан в последнию очередь
-    307            ST2 = value.fild[2];
-    308            ST1 = value.fild[1];
-    309            ST0 = value.fild[0];
-    310          }
+    223          { 
+    224            // Защита от повторного входа в прерывание
+    225            static bool irq_entered = false;
+    226            
+    227            ASSERT(irq_entered == false);
+    228           
+    229            irq_entered = true; // Включаем защиту от повторного входа
+    230           
+    231            uint16_t ticks = NT_GetTime();
+    232            if (EventCallback == NULL)
+    233              return;
+    234            // Отключаем прерывание таймера. Забота пользователя его включить
+    235            NT_IRQEnable(false); 
+    236            EventCallback(ticks); // Вызываем пользовательский обработчик
+    237            STIF = 0; // Очищаем флаг прерывания
+    238            irq_entered = false; // Отключаем защиту
+    239          }
+    240          
+    241          /**
+    242          @breif Ожидание наступления времени сети
+    243          @param[in] ticks время в тактах
+    244          @return фактическое время сети
+    245          */
+    246          uint16_t NT_WaitTime(uint16_t ticks)
+    247          {
+    248            static union 
+    249            {
+    250              uint32_t val;
+    251              uint8_t fild[4];
+    252            } val;
+    253            
+    254            val.val = 0;
+    255            // TOFFSET = NETWORK TIME - TIMER
+    256            // NETWORK TIME = TIMER + TOFFSET
+    257            
+    258            // Ждем синхронизацию таймера после пробуждения
+    259            while (!(SLEEPSTA & 0x01));
+    260            
+    261            do
+    262            {
+    263              // Соблюдаем порядок чтения регисторов ST  
+    264              val.fild[0] = ST0;
+    265              val.fild[1] = ST1;
+    266              val.fild[2] = ST2;
+    267              val.val +=TOFFSET;
+    268              val.val &= 0x7FFF; // Приводим значения таймера к 0-32767    
+    269            } while (val.val < ticks);
+    270            return val.val;
+    271          }
+    272          
+    273          /**
+    274          @brief Возвращает текущее значение таймера
+    275          @return Текущие ticks
+    276          */
+    277          static uint32_t ReadTimer(void)
+    278          {
+    279            static union 
+    280            {
+    281              uint32_t val;
+    282              uint8_t fild[4];
+    283            } ret_val;
+    284            
+    285            ret_val.val = 0;
+    286            
+    287            // Ждем синхронизацию таймера после пробуждения
+    288            while (!(SLEEPSTA & 0x01));
+    289            
+    290            // Соблюдаем порядок чтения регисторов ST  
+    291            ret_val.fild[0] = ST0;
+    292            ret_val.fild[1] = ST1;
+    293            ret_val.fild[2] = ST2;
+    294            return ret_val.val;
+    295          }
+    296          
+    297          /**
+    298          @brief Устанавливает время пробуждения микроконтролера
+    299          @params[in] ticks 24 битное значение времени пробуждения в ticks
+    300          */
+    301          static void loadTimerCompare(uint32_t ticks)
+    302          {
+    303            union 
+    304            {
+    305              uint32_t val;
+    306              uint8_t fild[4];
+    307            } value;
+    308            
+    309            value.val = ticks;
+    310            
+    311            // Ждем разрешения на запись нового значения
+    312            while (!(STLOAD & 0x01));
+    313            
+    314            // Регистр ST0 должен быть записан в последнию очередь
+    315            ST2 = value.fild[2];
+    316            ST1 = value.fild[1];
+    317            ST0 = value.fild[0];
+    318          }
 E:\WMNU\IAR\SHARE_PRJ_SRC\nwdebuger.c
       1          #include "nwdebuger.h"
       2          #include "ioCC2530.h"
@@ -5089,9 +5097,10 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
         2      0   -> DelayCalibrate
       0     52   TIM_passedTime
         0     16   -> Interval
-      0     15   TimerCompareInterrupt
+      0     21   TimerCompareInterrupt
         0     15   -> NT_GetTime
         0     15   -> NT_IRQEnable
+        0     21   -> printf
       3     34   UnLoadRXData
       0     16   __write
         0     14   -> MyLowLevelPutchar
@@ -5605,26 +5614,27 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
       20  ?<Initializer for __FUNCTION__>_33
       11  ?<Initializer for __FUNCTION__>_34
       14  ?<Initializer for __FUNCTION__>_35
-      14  ?<Initializer for __FUNCTION__>_36
-       8  ?<Initializer for __FUNCTION__>_37
+      22  ?<Initializer for __FUNCTION__>_36
+      14  ?<Initializer for __FUNCTION__>_37
        8  ?<Initializer for __FUNCTION__>_38
-      14  ?<Initializer for __FUNCTION__>_39
+       8  ?<Initializer for __FUNCTION__>_39
        9  ?<Initializer for __FUNCTION__>_4
-      13  ?<Initializer for __FUNCTION__>_40
-      19  ?<Initializer for __FUNCTION__>_41
-      13  ?<Initializer for __FUNCTION__>_42
-      15  ?<Initializer for __FUNCTION__>_43
+      14  ?<Initializer for __FUNCTION__>_40
+      13  ?<Initializer for __FUNCTION__>_41
+      19  ?<Initializer for __FUNCTION__>_42
+      13  ?<Initializer for __FUNCTION__>_43
       15  ?<Initializer for __FUNCTION__>_44
       15  ?<Initializer for __FUNCTION__>_45
       15  ?<Initializer for __FUNCTION__>_46
-      19  ?<Initializer for __FUNCTION__>_47
-      18  ?<Initializer for __FUNCTION__>_48
-      29  ?<Initializer for __FUNCTION__>_49
+      15  ?<Initializer for __FUNCTION__>_47
+      19  ?<Initializer for __FUNCTION__>_48
+      18  ?<Initializer for __FUNCTION__>_49
        9  ?<Initializer for __FUNCTION__>_5
-      18  ?<Initializer for __FUNCTION__>_50
+      29  ?<Initializer for __FUNCTION__>_50
       18  ?<Initializer for __FUNCTION__>_51
-      19  ?<Initializer for __FUNCTION__>_52
-      17  ?<Initializer for __FUNCTION__>_53
+      18  ?<Initializer for __FUNCTION__>_52
+      19  ?<Initializer for __FUNCTION__>_53
+      17  ?<Initializer for __FUNCTION__>_54
        9  ?<Initializer for __FUNCTION__>_6
        9  ?<Initializer for __FUNCTION__>_7
        9  ?<Initializer for __FUNCTION__>_8
@@ -5927,7 +5937,7 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
       50  TSStateTable
        2  TXCallback
        8  TimeStampTS0
-      60  TimerCompareInterrupt
+     125  TimerCompareInterrupt
        3  TimerCompareInterrupt::??INTVEC 43
        1  U0BAUD
        1  U0CSR
@@ -6042,6 +6052,7 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
        6  heap_ptr::?relay
       36  incrementTS
        6  incrementTS::?relay
+       1  irq_entered
       11  isIRQEnable
        6  isIRQEnable::?relay
       70  loadTimerCompare
@@ -6105,22 +6116,22 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
        4  val
       55  xor_calc
        6  xor_calc::?relay
-     703  -- Other
+     725  -- Other
 
  
  19 136 bytes in segment BANKED_CODE
   1 086 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
-     60 bytes in segment NEAR_CODE
+    125 bytes in segment NEAR_CODE
      38 bytes in segment SFR_AN
-  2 452 bytes in segment XDATA_I
-  2 452 bytes in segment XDATA_ID
-  1 183 bytes in segment XDATA_Z
+  2 474 bytes in segment XDATA_I
+  2 474 bytes in segment XDATA_ID
+  1 184 bytes in segment XDATA_Z
  
-  3 504 bytes of CODE     memory (+ 97 bytes shared)
+  3 591 bytes of CODE     memory (+ 97 bytes shared)
       0 bytes of DATA     memory (+ 38 bytes shared)
  19 042 bytes of HUGECODE memory (+ 94 bytes shared)
-  3 559 bytes of XDATA    memory (+ 76 bytes shared)
+  3 582 bytes of XDATA    memory (+ 76 bytes shared)
 
 Errors: none
 Warnings: 7

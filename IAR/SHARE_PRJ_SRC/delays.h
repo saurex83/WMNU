@@ -13,7 +13,7 @@ typedef struct
   union
   {
     uint32_t timer;
-    uint8_t  byte[8];
+    uint8_t  byte[8]; // тут походу ошибка. должно быть 4???
   };
 } TimeStamp_s;
 

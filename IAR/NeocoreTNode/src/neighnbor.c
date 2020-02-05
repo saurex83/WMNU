@@ -39,6 +39,7 @@ void NP_Init(void);
 int NP_GetETX(void);
 bool NP_Get_info_by_addr(uint16_t addr, uint8_t *ts, uint8_t *ch);
 bool NP_Get_COMM_node_info(uint16_t *addr, uint8_t *ts, uint8_t *ch);
+bool NP_is_pair_exist(uint8_t ts, uint8_t ch);
 
 // Локальные переменные
 typedef struct { // Информационная карточка узла
@@ -116,6 +117,19 @@ int NP_GetETX(void){
   return COMM_NODE->card.ETX + 1;
 }
 
+/**
+@brief Проверить использования пары(ts,ch) соседом
+*/
+bool NP_is_pair_exist(uint8_t ts, uint8_t ch){
+  for (uint8_t i = 0; i < NB_TABLE_ITEMS; i++)
+    if (NB_TABLE[i].record_active){
+      for (uint8_t j = 0; j < MAX_OPEN_SLOTS; j++)
+        if (NB_TABLE[i].card.ts_slots[j] == ts &&
+            NB_TABLE[i].card.ch_slots[j] == ch)
+          return true;
+    }
+  return false;
+}
 
 static int find_by_addr(uint16_t addr){
   // Попробуем найти пакет по адресу
