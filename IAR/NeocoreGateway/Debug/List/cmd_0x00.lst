@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               04/Feb/2020  21:17:18
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               05/Feb/2020  13:53:29
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,7 +13,7 @@
 #                          
 #    Source file        =  E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW7919.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW54AB.tmp
 #        (E:\WMNU\IAR\NeocoreGateway\src\cmd_0x00.c -lcN
 #        E:\WMNU\IAR\NeocoreGateway\Debug\List -o
 #        E:\WMNU\IAR\NeocoreGateway\Debug\Obj -e --debug --core=plain
@@ -21,7 +21,7 @@
 #        --calling_convention=xdata_reentrant --place_constants=data
 #        --nr_virtual_regs 8 --dlib_config "C:\Program Files (x86)\IAR
 #        Systems\Embedded Workbench 8.0\8051\LIB\DLIB\dl8051Normal.h"
-#        --no_path_in_file_macros -I E:\WMNU\IAR\SHARE_PRJ_SRC\ -On --no_cse
+#        --no_path_in_file_macros -I E:\WMNU\IAR\SHARE_PRJ_SRC\ -Ol --no_cse
 #        --no_unroll --no_inline --no_code_motion --no_tbaa --no_cross_call
 #        --mfc E:\WMNU\IAR\NeocoreGateway\src\cmd_0x01.c
 #        E:\WMNU\IAR\NeocoreGateway\src\cmd_0x02.c
@@ -43,7 +43,7 @@
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\coder.c E:\WMNU\IAR\SHARE_PRJ_SRC\config.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\delays.c E:\WMNU\IAR\SHARE_PRJ_SRC\dma.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\frame.c E:\WMNU\IAR\SHARE_PRJ_SRC\LLC.c
-#        E:\WMNU\IAR\SHARE_PRJ_SRC\MAC.c E:\WMNU\IAR\NeocoreGateway\src\main.c
+#        E:\WMNU\IAR\SHARE_PRJ_SRC\MAC.c E:\WMNU\IAR\NEOCOREGATEWAY\src\main.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\manager.c E:\WMNU\IAR\SHARE_PRJ_SRC\mem.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\NTMR.c E:\WMNU\IAR\SHARE_PRJ_SRC\nwdebuger.c
 #        E:\WMNU\IAR\SHARE_PRJ_SRC\RADIO.c E:\WMNU\IAR\SHARE_PRJ_SRC\rx_buff.c
@@ -2504,7 +2504,7 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\MAC.c
     397            AES_StreamCoder(true, src, src, KEY, IV, size);
     398          }
     399          
-E:\WMNU\IAR\NeocoreGateway\src\main.c
+E:\WMNU\IAR\NEOCOREGATEWAY\src\main.c
       1          #include "manager.h"
       2          #include "nwdebuger.h"
       3          #include "ioCC2530.h"
@@ -4112,156 +4112,157 @@ E:\WMNU\IAR\SHARE_PRJ_SRC\sync.c
     262              return;  
     263             
     264          P1_0 = !true; //ОТЛАДКА  
-    265            if (send_sync())
-    266              SYNC_SENDED++;
-    267            
+    265            
+    266            if (send_sync())
+    267              SYNC_SENDED++;
     268            LOG_ON("Sync send."); 
-    269          P1_0 = !false; //ОТЛАДКА
-    270            
-    271            TIC_SetTXState(SYNC_TS, false);
-    272          }
-    273          
-    274          /**
-    275          @brief Создать и отправить синхропакет
-    276          */
-    277          static bool send_sync(void)
-    278          {
-    279            SYNC_s sync;
-    280            sync.sys_ch = CONFIG.sys_channel;
-    281            sync.tx_power = CONFIG.tx_power;
-    282            sync.panid = CONFIG.panid;
-    283            sync.rtc = TIC_GetRTC();
-    284            sync.magic = MAGIC;
-    285            
-    286            frame_s *fr_SYNC = frame_create();
-    287            frame_addHeader(fr_SYNC, &sync, sizeof(SYNC_s));
-    288            fr_SYNC->meta.SEND_TIME = SYNC_ACCURATE_NETWORK_TIME; // время в тактах сети. ((1/32768)*164)*1000
-    289              
-    290          #ifdef RARIO_STREAM_ENCRYPT
-    291            BitRawCrypt(fr_SYNC->payload, fr_SYNC->len);
-    292          #endif
-    293            
-    294            RI_SetChannel(CONFIG.sync_channel);
-    295            bool res = RI_Send(fr_SYNC);
-    296            
-    297            frame_delete(fr_SYNC);
-    298            return res;
-    299          }
-    300          
-    301          /**
-    302          @brief Прием пакет синхронизации
-    303          @param[in] Время ожидания в мс
-    304          @return Указатель на пакет или NULL
-    305          */
-    306          static frame_s* get_sync(uint32_t timeout)
-    307          {
-    308            RI_SetChannel(CONFIG.sync_channel);
-    309            frame_s *fr_SYNC = RI_Receive(timeout);
-    310            
-    311            // Если пакета нет, выходим из обработчика
-    312            if (fr_SYNC == NULL)
-    313              return NULL;
-    314            
-    315            // Проверим размер пакета
-    316            if (fr_SYNC->len != sizeof(SYNC_s))
-    317            {
-    318              frame_delete(fr_SYNC);
-    319              return NULL;
-    320            }
-    321            
-    322            #ifdef RARIO_STREAM_ENCRYPT
-    323            BitRawDecrypt(fr_SYNC->payload, fr_SYNC->len);
-    324            #endif
-    325            return fr_SYNC;
-    326          }
-    327          
-    328          /**
-    329          @brief Процедура синхронизации с сетью
-    330          @detail Процедура изет сеть в течении времени timeout и синхронизируется с ней
-    331          @param[in] timeout время в милисекундах
-    332          @param[out] panid указатель на идентификатор найденой сети
-    333          @return true если сеть найдета
-    334          */
-    335          bool SY_SYNC_NETWORK(uint16_t *panid,uint16_t timeout)
-    336          {
-    337            // TODO Нужно обнулить настройки всех модулей
-    338            // Или об этом будет заботиться верхний уровень?
-    339            TIC_CloseAllState();
-    340            
-    341            RI_SetChannel(CONFIG.sync_channel);
-    342            
-    343            TimeStamp_s begin, end;
-    344            TIM_TimeStamp(&begin);
-    345            TIM_TimeStamp(&end);
-    346            
-    347            bool net_found = false;
-    348            uint32_t passed = 0;
-    349            frame_s *fr_SYNC;
-    350            SYNC_s *sync;
-    351            uint32_t timeout_us = timeout * 1000;
-    352            
-    353            while (passed < timeout_us)
-    354            {
-    355              fr_SYNC = get_sync(timeout_us);
-    356              if (fr_SYNC == NULL)
-    357              {
-    358                passed = TIM_passedTime(&begin, &end);
-    359                continue;
-    360              }
-    361              
-    362              // Приняли какойто пакет, декодируем.
-    363              sync = (SYNC_s*)fr_SYNC->payload;
-    364              
-    365              if (sync->magic != MAGIC)
-    366              { // Проверим что пакет именно тот а не эфирный мусор
-    367                frame_delete(fr_SYNC);
-    368                passed = TIM_passedTime(&begin, &end);
-    369                continue;
-    370              }   
-    371              
-    372              // Возвращаем результат
-    373              *panid = sync->panid;
-    374              CONFIG.panid = sync->panid;
-    375              CONFIG.sys_channel = sync->sys_ch;
-    376              CONFIG.tx_power = sync->tx_power;
-    377          
-    378              net_found = true;
-    379              NETWORK_SYNCED = true;
-    380              
-    381              // Синхронизируемся с сетью
-    382              // Время прошедшее с момента приема пакета в тактах сети
-    383              uint16_t delta = TIC_GetTimer() - fr_SYNC->meta.TIMESTAMP;
-    384              TIC_SetTimer(SYNC_ACCURATE_NETWORK_TIME + delta);
-    385              TIC_SetRTC(sync->rtc);
-    386              LAST_SYNC_TIME = TIC_GetUptime();
-    387              NEXT_SYNC_TIME = LAST_SYNC_TIME + RAND_SYNC_RX_DELAY; 
-    388              frame_delete(fr_SYNC);
-    389              break;
-    390            } 
-    391            
-    392            return net_found;
-    393          }
-    394          
-    395          /*!
-    396          \brief Расшифровка область памяти
-    397          \param[in,out] *src Указатель на начало области дешифрования
-    398          \param[in] size Размер расшифруемых данных
-    399          */
-    400          static void BitRawDecrypt(uint8_t *src, uint8_t size)
-    401          {
-    402            AES_StreamCoder(false, src, src, KEY, IV, size);
-    403          }
-    404          
-    405          /*!
-    406          \brief Шифрует область памяти
-    407          \param[in,out] *src Указатель на начало области шифрования
-    408          \param[in] size Размер шифруемых данных
-    409          */
-    410          static void BitRawCrypt(uint8_t *src, uint8_t size)
-    411          {
-    412            AES_StreamCoder(true, src, src, KEY, IV, size);
-    413          }
-    414          
+    269            
+    270          P1_0 = !false; //ОТЛАДКА
+    271            
+    272            TIC_SetTXState(SYNC_TS, false);
+    273          }
+    274          
+    275          /**
+    276          @brief Создать и отправить синхропакет
+    277          */
+    278          static bool send_sync(void)
+    279          {
+    280            SYNC_s sync;
+    281            sync.sys_ch = CONFIG.sys_channel;
+    282            sync.tx_power = CONFIG.tx_power;
+    283            sync.panid = CONFIG.panid;
+    284            sync.rtc = TIC_GetRTC();
+    285            sync.magic = MAGIC;
+    286            
+    287            frame_s *fr_SYNC = frame_create();
+    288            frame_addHeader(fr_SYNC, &sync, sizeof(SYNC_s));
+    289            fr_SYNC->meta.SEND_TIME = SYNC_ACCURATE_NETWORK_TIME; // время в тактах сети. ((1/32768)*164)*1000
+    290              
+    291          #ifdef RARIO_STREAM_ENCRYPT
+    292            BitRawCrypt(fr_SYNC->payload, fr_SYNC->len);
+    293          #endif
+    294            
+    295            RI_SetChannel(CONFIG.sync_channel);
+    296            bool res = RI_Send(fr_SYNC);
+    297            
+    298            frame_delete(fr_SYNC);
+    299            return res;
+    300          }
+    301          
+    302          /**
+    303          @brief Прием пакет синхронизации
+    304          @param[in] Время ожидания в мс
+    305          @return Указатель на пакет или NULL
+    306          */
+    307          static frame_s* get_sync(uint32_t timeout)
+    308          {
+    309            RI_SetChannel(CONFIG.sync_channel);
+    310            frame_s *fr_SYNC = RI_Receive(timeout);
+    311            
+    312            // Если пакета нет, выходим из обработчика
+    313            if (fr_SYNC == NULL)
+    314              return NULL;
+    315            
+    316            // Проверим размер пакета
+    317            if (fr_SYNC->len != sizeof(SYNC_s))
+    318            {
+    319              frame_delete(fr_SYNC);
+    320              return NULL;
+    321            }
+    322            
+    323            #ifdef RARIO_STREAM_ENCRYPT
+    324            BitRawDecrypt(fr_SYNC->payload, fr_SYNC->len);
+    325            #endif
+    326            return fr_SYNC;
+    327          }
+    328          
+    329          /**
+    330          @brief Процедура синхронизации с сетью
+    331          @detail Процедура изет сеть в течении времени timeout и синхронизируется с ней
+    332          @param[in] timeout время в милисекундах
+    333          @param[out] panid указатель на идентификатор найденой сети
+    334          @return true если сеть найдета
+    335          */
+    336          bool SY_SYNC_NETWORK(uint16_t *panid,uint16_t timeout)
+    337          {
+    338            // TODO Нужно обнулить настройки всех модулей
+    339            // Или об этом будет заботиться верхний уровень?
+    340            TIC_CloseAllState();
+    341            
+    342            RI_SetChannel(CONFIG.sync_channel);
+    343            
+    344            TimeStamp_s begin, end;
+    345            TIM_TimeStamp(&begin);
+    346            TIM_TimeStamp(&end);
+    347            
+    348            bool net_found = false;
+    349            uint32_t passed = 0;
+    350            frame_s *fr_SYNC;
+    351            SYNC_s *sync;
+    352            uint32_t timeout_us = timeout * 1000;
+    353            
+    354            while (passed < timeout_us)
+    355            {
+    356              fr_SYNC = get_sync(timeout_us);
+    357              if (fr_SYNC == NULL)
+    358              {
+    359                passed = TIM_passedTime(&begin, &end);
+    360                continue;
+    361              }
+    362              
+    363              // Приняли какойто пакет, декодируем.
+    364              sync = (SYNC_s*)fr_SYNC->payload;
+    365              
+    366              if (sync->magic != MAGIC)
+    367              { // Проверим что пакет именно тот а не эфирный мусор
+    368                frame_delete(fr_SYNC);
+    369                passed = TIM_passedTime(&begin, &end);
+    370                continue;
+    371              }   
+    372              
+    373              // Возвращаем результат
+    374              *panid = sync->panid;
+    375              CONFIG.panid = sync->panid;
+    376              CONFIG.sys_channel = sync->sys_ch;
+    377              CONFIG.tx_power = sync->tx_power;
+    378          
+    379              net_found = true;
+    380              NETWORK_SYNCED = true;
+    381              
+    382              // Синхронизируемся с сетью
+    383              // Время прошедшее с момента приема пакета в тактах сети
+    384              uint16_t delta = TIC_GetTimer() - fr_SYNC->meta.TIMESTAMP;
+    385              TIC_SetTimer(SYNC_ACCURATE_NETWORK_TIME + delta);
+    386              TIC_SetRTC(sync->rtc);
+    387              LAST_SYNC_TIME = TIC_GetUptime();
+    388              NEXT_SYNC_TIME = LAST_SYNC_TIME + RAND_SYNC_RX_DELAY; 
+    389              frame_delete(fr_SYNC);
+    390              break;
+    391            } 
+    392            
+    393            return net_found;
+    394          }
+    395          
+    396          /*!
+    397          \brief Расшифровка область памяти
+    398          \param[in,out] *src Указатель на начало области дешифрования
+    399          \param[in] size Размер расшифруемых данных
+    400          */
+    401          static void BitRawDecrypt(uint8_t *src, uint8_t size)
+    402          {
+    403            AES_StreamCoder(false, src, src, KEY, IV, size);
+    404          }
+    405          
+    406          /*!
+    407          \brief Шифрует область памяти
+    408          \param[in,out] *src Указатель на начало области шифрования
+    409          \param[in] size Размер шифруемых данных
+    410          */
+    411          static void BitRawCrypt(uint8_t *src, uint8_t size)
+    412          {
+    413            AES_StreamCoder(true, src, src, KEY, IV, size);
+    414          }
+    415          
 E:\WMNU\IAR\SHARE_PRJ_SRC\TIC.c
       1          #include "TIC.h"
       2          #include "NTMR.h"
@@ -4775,100 +4776,100 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
 
    ISTACK XSTACK Function
    ------ ------ --------
-      1     76   AES_CCMDecrypt
-        0     66   -> CBCMAC_buf_encrypt
-        0     70   -> CTR_enc_decrypt
-        0     68   -> generateAuthData
-        0     68   -> memcpy
-        0     68   -> memset
-      1     60   AES_CCMEncrypt
-        0     50   -> CBCMAC_buf_encrypt
-        0     54   -> CTR_enc_decrypt
-        0     52   -> generateAuthData
-        0     52   -> memcpy
-        0     52   -> memset
-      0     55   AES_StreamCoder
-        0     39   -> memcpy
-        0     39   -> memset
+      1     77   AES_CCMDecrypt
+        0     67   -> CBCMAC_buf_encrypt
+        0     71   -> CTR_enc_decrypt
+        0     69   -> generateAuthData
+        0     69   -> memcpy
+        0     69   -> memset
+      1     62   AES_CCMEncrypt
+        0     52   -> CBCMAC_buf_encrypt
+        0     56   -> CTR_enc_decrypt
+        0     54   -> generateAuthData
+        0     54   -> memcpy
+        0     54   -> memset
+      0     48   AES_StreamCoder
+        0     34   -> memcpy
+        0     34   -> memset
       2      0   AES_init
-      0     28   BitRawCrypt
-        0     16   -> AES_StreamCoder
-      0     37   BitRawCrypt
-        0     16   -> AES_StreamCoder
-      0     28   BitRawDecrypt
-        0     16   -> AES_StreamCoder
-      0     30   BitRawDecrypt
-        0     16   -> AES_StreamCoder
-      0    116   CBCMAC_buf_encrypt
-        0     50   -> memcpy
-        0     50   -> memset
+      0     24   BitRawCrypt
+        0     14   -> AES_StreamCoder
+      0     35   BitRawCrypt
+        0     14   -> AES_StreamCoder
+      0     26   BitRawDecrypt
+        0     14   -> AES_StreamCoder
+      0     26   BitRawDecrypt
+        0     14   -> AES_StreamCoder
+      0    115   CBCMAC_buf_encrypt
+        0     48   -> memcpy
+        0     48   -> memset
       0     12   CF_init
         0     12   -> memcpy
-      0    109   CTR_enc_decrypt
-        0     39   -> memcpy
-        0     39   -> memset
-      0     30   Callback_execution
-        0     18   -> printf
-      0      0   DMA_init
-      0     40   DelayCalibrate
-        0     40   -> TIM_TimeStamp
-        0     40   -> TIM_delay
-        0     40   -> TIM_passedTime
-      1     28   Delete_frame
+      0    105   CTR_enc_decrypt
+        0     34   -> memcpy
+        0     34   -> memset
+      0     26   Callback_execution
         0     16   -> printf
-      0     54   Interval
-      1     42   LLC_AddTask
+      0      0   DMA_init
+      0     32   DelayCalibrate
+        0     32   -> TIM_TimeStamp
+        0     32   -> TIM_delay
+        0     32   -> TIM_passedTime
+      1     26   Delete_frame
+        0     16   -> printf
+      0     48   Interval
+      1     38   LLC_AddTask
         0     14   -> printf
         0     20   -> printf
         0     24   -> printf
         0     14   -> re_malloc
-      2     13   LLC_GetTaskLen
+      2     11   LLC_GetTaskLen
       2      0   LLC_Init
         2      0   -> MAC_SetRXCallback
         2      0   -> TIC_SetSECallback
       0     16   LLC_RX_HNDL
         0     16   -> printf
-      0     20   LLC_Reset
-        0     10   -> re_free
+      0     19   LLC_Reset
+        0      9   -> re_free
       0     18   LLC_RunTimeAlloc
       0      9   LLC_SE_HNDL
         0      9   -> LLC_RunTimeAlloc
         0      9   -> LLC_Shelduler
       0     16   LLC_SetRXCallback
         0     16   -> printf
-      0     31   LLC_Shelduler
-        0     16   -> MAC_GetTXState
-        0     16   -> MAC_Send
-        0     22   -> printf
-        0     16   -> re_free
-      0     18   LLC_TimeAlloc
+      0     27   LLC_Shelduler
+        0     12   -> MAC_GetTXState
+        0     12   -> MAC_Send
         0     18   -> printf
-        0     12   -> re_malloc
-      2     12   LoadTXData
-      0     24   MAC_ACK_Recv
-        0     14   -> RI_Receive
-        0     14   -> TIM_delay
-        0     14   -> frame_delete
-        0     14   -> xor_calc
-      0     24   MAC_ACK_Send
-        0     12   -> RI_Send
-        0     12   -> frame_addHeader
-        0     12   -> frame_create
+        0     12   -> re_free
+      0     16   LLC_TimeAlloc
+        0     16   -> printf
+        0     10   -> re_malloc
+      2     10   LoadTXData
+      0     22   MAC_ACK_Recv
+        0     12   -> RI_Receive
+        0     12   -> TIM_delay
         0     12   -> frame_delete
         0     12   -> xor_calc
-      1     30   MAC_CloseRXSlot
+      0     22   MAC_ACK_Send
+        0     10   -> RI_Send
+        0     10   -> frame_addHeader
+        0     10   -> frame_create
+        0     10   -> frame_delete
+        0     10   -> xor_calc
+      1     28   MAC_CloseRXSlot
         0     10   -> TIC_SetRXState
         0     16   -> printf
       2     11   MAC_Enable
       0     16   MAC_GetRXState
         0     16   -> printf
-      0     32   MAC_GetTXState
+      0     28   MAC_GetTXState
         0     16   -> printf
       0     12   MAC_Init
         0     10   -> TIC_SetRXCallback
         0     10   -> TIC_SetTXCallback
         0     12   -> memset
-      1     30   MAC_OpenRXSlot
+      1     28   MAC_OpenRXSlot
         0     10   -> TIC_SetRXState
         0     16   -> printf
       1     18   MAC_RX_HNDL
@@ -4881,10 +4882,10 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
       0     22   MAC_Reset
         0     10   -> frame_delete
         0     12   -> memset
-      1     34   MAC_Send
-        0     12   -> BitRawCrypt
-        0     12   -> TIC_SetTXState
-        0     18   -> printf
+      1     28   MAC_Send
+        0     10   -> BitRawCrypt
+        0     10   -> TIC_SetTXState
+        0     16   -> printf
       2      0   MAC_SetRXCallback
       1     16   MAC_TX_HNDL
         0     10   -> MAC_ACK_Recv
@@ -4894,9 +4895,9 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
         0     10   -> TIM_delay
         0     10   -> frame_delete
         0     16   -> printf
-      0     21   MAC_setIV
+      0     12   MAC_setIV
         0     12   -> memcpy
-      0     21   MAC_setKEY
+      0     12   MAC_setKEY
         0     12   -> memcpy
       2      0   MG_Init
         2      0   -> AES_init
@@ -4914,50 +4915,50 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
         2      0   -> SY_setKEY
         2      0   -> TIC_Init
         2      0   -> TIM_init
-      0     16   MyLowLevelPutchar
+      0     14   MyLowLevelPutchar
       0     48   NT_GetTime
         0     16   -> ReadTimer
       0     15   NT_IRQEnable
       2      0   NT_Init
         2      0   -> NT_IRQEnable
-      0     32   NT_SetCompare
+      0     30   NT_SetCompare
         0     12   -> NT_IRQEnable
         0     12   -> calcCompareTime
         0     12   -> loadTimerCompare
         0     18   -> printf
       2      0   NT_SetEventCallback
-      0     30   NT_SetTime
-        0     14   -> NT_SetCompare
-        0     14   -> ReadTimer
-        0     14   -> isIRQEnable
-        0     20   -> printf
-      0     24   NT_WaitTime
+      0     28   NT_SetTime
+        0     12   -> NT_SetCompare
+        0     12   -> ReadTimer
+        0     12   -> isIRQEnable
+        0     18   -> printf
+      0     22   NT_WaitTime
       2      0   RI_GetCCAReject
       2      0   RI_GetCRCError
       2      0   RI_GetUptime
-      1     29   RI_Measure_POW
-        0     14   -> RI_cfg
-        0     14   -> TIM_delay
-      1     58   RI_Receive
-        0     42   -> RI_cfg
-        0     44   -> RecvData
-        0     42   -> TIM_TimeStamp
-        0     42   -> TIM_passedTime
-        0     42   -> UnLoadRXData
-        0     42   -> frame_addHeader
-        0     42   -> frame_create
-        0     42   -> re_free
-        0     42   -> re_malloc
+      1     25   RI_Measure_POW
+        0     12   -> RI_cfg
+        0     12   -> TIM_delay
+      1     48   RI_Receive
+        0     34   -> RI_cfg
+        0     36   -> RecvData
+        0     34   -> TIM_TimeStamp
+        0     34   -> TIM_passedTime
+        0     34   -> UnLoadRXData
+        0     34   -> frame_addHeader
+        0     34   -> frame_create
+        0     34   -> re_free
+        0     34   -> re_malloc
       2     10   RI_Reset
         2      0   -> RI_init
-      0     63   RI_Send
-        0     36   -> RI_cfg
-        0     36   -> SendData
-        0     36   -> TIM_TimeStamp
-        0     36   -> TIM_passedTime
-        0     42   -> printf
-      2     44   RI_SetChannel
-      3     43   RI_cfg
+      0     59   RI_Send
+        0     32   -> RI_cfg
+        0     32   -> SendData
+        0     32   -> TIM_TimeStamp
+        0     32   -> TIM_passedTime
+        0     38   -> printf
+      2     36   RI_SetChannel
+      3     35   RI_cfg
         2      1   -> setFreq
       2      0   RI_init
         2      0   -> random_core_init
@@ -4967,13 +4968,13 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
         2      0   -> LLC_SetRXCallback
       0     19   RXB_Reset
         0      9   -> Delete_frame
-      0     32   RXB_del_frame
-        0     12   -> Delete_frame
-        0     18   -> printf
-      2     13   RXB_frame_count
-      2     14   RXB_get_frame
-      2     22   ReadTimer
-      0     76   RecvData
+      0     28   RXB_del_frame
+        0     10   -> Delete_frame
+        0     16   -> printf
+      2     11   RXB_frame_count
+      2     12   RXB_get_frame
+      2     20   ReadTimer
+      0     68   RecvData
         0     32   -> NT_GetTime
         0     32   -> TIM_TimeStamp
         0     32   -> TIM_passedTime
@@ -4987,57 +4988,57 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
         0     10   -> TIC_SlotActivityTime
         0     10   -> TIC_SlotTime
       2     10   SY_Reset
-      0     55   SY_SYNC_NETWORK
-        0     44   -> RI_SetChannel
-        0     44   -> TIC_CloseAllState
-        0     44   -> TIC_GetTimer
-        0     44   -> TIC_GetUptime
-        0     44   -> TIC_SetRTC
-        0     44   -> TIC_SetTimer
-        0     44   -> TIM_TimeStamp
-        0     44   -> TIM_passedTime
-        0     44   -> frame_delete
-        0     44   -> get_sync
-      0     16   SY_TIME_ALLOC_MASTER
-        0     16   -> TIC_GetTXState
-        0     16   -> TIC_GetUptime
-        0     16   -> TIC_SetTXState
+      0     47   SY_SYNC_NETWORK
+        0     36   -> RI_SetChannel
+        0     36   -> TIC_CloseAllState
+        0     36   -> TIC_GetTimer
+        0     36   -> TIC_GetUptime
+        0     36   -> TIC_SetRTC
+        0     36   -> TIC_SetTimer
+        0     36   -> TIM_TimeStamp
+        0     36   -> TIM_passedTime
+        0     36   -> frame_delete
+        0     36   -> get_sync
+      0     12   SY_TIME_ALLOC_MASTER
+        0     12   -> TIC_GetTXState
+        0     12   -> TIC_GetUptime
+        0     12   -> TIC_SetTXState
       0     18   SY_TS1_HNDL_MASTER
         0     12   -> TIC_SetTXState
         0     12   -> printf
         0     18   -> printf
         0     12   -> send_sync
       2      0   SY_is_synced
-      0     21   SY_setIV
+      0     12   SY_setIV
         0     12   -> memcpy
-      0     21   SY_setKEY
+      0     12   SY_setKEY
         0     12   -> memcpy
       2      0   SY_sync_sended
-      0     48   SendData
-        0     12   -> LoadTXData
-        0     12   -> NT_GetTime
-        0     12   -> NT_WaitTime
-      0     53   TIC_CloseAllState
+      0     42   SendData
+        0     10   -> LoadTXData
+        0     10   -> NT_GetTime
+        0     10   -> NT_WaitTime
+      0     45   TIC_CloseAllState
         0      9   -> TIC_SetRXState
         0      9   -> TIC_SetTXState
       2      0   TIC_GetNonce
       2     21   TIC_GetRTC
       0     16   TIC_GetRXState
         0     16   -> printf
-      0     32   TIC_GetTXState
+      0     28   TIC_GetTXState
         0     16   -> printf
       0      0   TIC_GetTimeStampTS0
-      2     44   TIC_GetTimer
+      2     36   TIC_GetTimer
         2      0   -> NT_GetTime
-      2     44   TIC_GetUptime
-      0     18   TIC_HW_Timer_IRQ
-        0     12   -> Callback_execution
-        0     12   -> TIC_TDMAShelduler
-        0     12   -> TIC_getCurrentTS
-        0     12   -> TIM_TimeStamp
-        0     12   -> clocks_update
-        0     12   -> printf
-        0     18   -> printf
+      2     36   TIC_GetUptime
+      0     16   TIC_HW_Timer_IRQ
+        0     10   -> Callback_execution
+        0     10   -> TIC_TDMAShelduler
+        0     10   -> TIC_getCurrentTS
+        0     10   -> TIM_TimeStamp
+        0     10   -> clocks_update
+        0     10   -> printf
+        0     16   -> printf
       2      0   TIC_Init
         2      0   -> NT_SetCompare
         2      0   -> NT_SetEventCallback
@@ -5050,7 +5051,7 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
         2      0   -> TIC_SetTimer
         2      0   -> TIM_TimeStamp
       0     12   TIC_SetNonce
-      0     56   TIC_SetRTC
+      0     48   TIC_SetRTC
       0     26   TIC_SetRXCallback
         0     16   -> printf
       0     26   TIC_SetRXState
@@ -5063,168 +5064,168 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
         0     16   -> printf
       0     26   TIC_SetTXCallback
         0     16   -> printf
-      0     32   TIC_SetTXState
+      0     28   TIC_SetTXState
         0     16   -> printf
-      0     60   TIC_SetTimer
+      0     52   TIC_SetTimer
         0     10   -> NT_SetTime
         0     16   -> printf
       0      0   TIC_SleepTime
       0     10   TIC_SlotActivityTime
       0     10   TIC_SlotTime
-      3     13   TIC_TDMAShelduler
+      3     11   TIC_TDMAShelduler
         2      1   -> incrementTS
         2      1   -> set_capture_time
-      0     24   TIC_TimeUsFromTS0
-        0     24   -> TIM_TimeStamp
-        0     24   -> TIM_passedTime
-      0     22   TIC_getCurrentTS
-      3     44   TIM_TimeStamp
-      0     14   TIM_copy
-        0     14   -> memcpy
-      0     76   TIM_delay
+      0     20   TIC_TimeUsFromTS0
+        0     20   -> TIM_TimeStamp
+        0     20   -> TIM_passedTime
+      0     20   TIC_getCurrentTS
+      3     36   TIM_TimeStamp
+      0     12   TIM_copy
+        0     12   -> memcpy
+      0     68   TIM_delay
         0     36   -> Interval
         0     36   -> TIM_TimeStamp
       2      0   TIM_init
         2      0   -> DelayCalibrate
-      0     62   TIM_passedTime
-        0     18   -> Interval
+      0     52   TIM_passedTime
+        0     16   -> Interval
       0     15   TimerCompareInterrupt
         0     15   -> NT_GetTime
         0     15   -> NT_IRQEnable
-      3     42   UnLoadRXData
-      0     18   __write
-        0     16   -> MyLowLevelPutchar
+      3     34   UnLoadRXData
+      0     16   __write
+        0     14   -> MyLowLevelPutchar
       0      9   bits_count
-      2     34   calcCompareTime
-        0     22   -> ReadTimer
-      0     13   check_cmd_frame
-      0     24   clocks_update
-      0     19   cmd_0x00
-        0     13   -> cmd_answer
-        0     13   -> get_network_seed_status
-        0     13   -> printf
-        0     19   -> printf
-      0     20   cmd_0x01
-        0     14   -> cmd_answer
-        0     14   -> cmd_answer_err
-        0     14   -> get_network_seed_status
-        0     14   -> printf
-        0     20   -> printf
-      0     12   cmd_0x02
-        0     12   -> TIC_SetRTC
+      0     32   calcCompareTime
+        0     20   -> ReadTimer
+      0     11   check_cmd_frame
+      0     22   clocks_update
+      0     17   cmd_0x00
+        0     11   -> cmd_answer
+        0     11   -> get_network_seed_status
+        0     11   -> printf
+        0     17   -> printf
+      0     18   cmd_0x01
         0     12   -> cmd_answer
         0     12   -> cmd_answer_err
         0     12   -> get_network_seed_status
-      0     20   cmd_0x03
-        0     14   -> cmd_answer
-        0     14   -> cmd_answer_err
-        0     14   -> neocore_stack_reset
-        0     14   -> network_seed_enable
-        0     14   -> printf
-        0     20   -> printf
-      0     20   cmd_0x04
-        0     14   -> cmd_answer
-        0     14   -> cmd_answer_err
-        0     14   -> get_network_seed_status
-        0     16   -> memcpy
-        0     14   -> printf
-        0     20   -> printf
-      0     20   cmd_0x05
-        0     14   -> cmd_answer
-        0     14   -> cmd_answer_err
-        0     14   -> get_network_seed_status
-        0     16   -> memcpy
-        0     14   -> printf
-        0     20   -> printf
-      0     18   cmd_0x06
-        0     12   -> cmd_answer
-        0     12   -> cmd_answer_err
         0     12   -> printf
         0     18   -> printf
-      0     20   cmd_0x07
-        0     14   -> MAC_OpenRXSlot
-        0     14   -> cmd_answer
-        0     14   -> cmd_answer_err
-        0     14   -> get_network_seed_status
-        0     14   -> printf
-        0     20   -> printf
-      0     20   cmd_0x08
-        0     14   -> MAC_CloseRXSlot
-        0     14   -> cmd_answer
-        0     14   -> cmd_answer_err
-        0     14   -> get_network_seed_status
-        0     14   -> printf
-        0     20   -> printf
-      1     19   cmd_0x09
-        0     13   -> RXB_frame_count
-        0     13   -> cmd_answer
-        0     13   -> cmd_answer_err
-        0     13   -> printf
-        0     19   -> printf
-      1     19   cmd_0x0A
-        0     13   -> LLC_GetTaskLen
-        0     13   -> cmd_answer
-        0     13   -> cmd_answer_err
-        0     13   -> printf
-        0     19   -> printf
-      0     24   cmd_0x0B
-        0     18   -> LLC_AddTask
-        0     18   -> cmd_answer
-        0     18   -> cmd_answer_err
-        0     18   -> frame_addHeader
-        0     18   -> frame_create
-        0     18   -> frame_delete
-        0     18   -> get_network_seed_status
+      0      9   cmd_0x02
+        0      9   -> TIC_SetRTC
+        0      9   -> cmd_answer
+        0      9   -> cmd_answer_err
+        0      9   -> get_network_seed_status
+      0     16   cmd_0x03
+        0     10   -> cmd_answer
+        0     10   -> cmd_answer_err
+        0     10   -> neocore_stack_reset
+        0     10   -> network_seed_enable
+        0     10   -> printf
+        0     16   -> printf
+      0     18   cmd_0x04
+        0     12   -> cmd_answer
+        0     12   -> cmd_answer_err
+        0     12   -> get_network_seed_status
+        0     14   -> memcpy
+        0     12   -> printf
         0     18   -> printf
-        0     24   -> printf
-        0     20   -> re_memcpy
-      0     20   cmd_0x0C
-        0     14   -> RXB_del_frame
-        0     14   -> RXB_get_frame
-        0     14   -> cmd_answer_err
-        0     14   -> get_network_seed_status
-        0     14   -> printf
-        0     20   -> printf
-        0     14   -> upload_frame
-      0     21   cmd_0x0D
-        0     15   -> RI_Measure_POW
-        0     15   -> cmd_answer
-        0     15   -> cmd_answer_err
-        0     15   -> get_network_seed_status
-        0     15   -> printf
-        0     21   -> printf
-      0     20   cmd_0x0E
+      0     18   cmd_0x05
+        0     12   -> cmd_answer
+        0     12   -> cmd_answer_err
+        0     12   -> get_network_seed_status
+        0     14   -> memcpy
+        0     12   -> printf
+        0     18   -> printf
+      0     16   cmd_0x06
+        0     10   -> cmd_answer
+        0     10   -> cmd_answer_err
+        0     10   -> printf
+        0     16   -> printf
+      0     18   cmd_0x07
+        0     12   -> MAC_OpenRXSlot
+        0     12   -> cmd_answer
+        0     12   -> cmd_answer_err
+        0     12   -> get_network_seed_status
+        0     12   -> printf
+        0     18   -> printf
+      0     18   cmd_0x08
+        0     12   -> MAC_CloseRXSlot
+        0     12   -> cmd_answer
+        0     12   -> cmd_answer_err
+        0     12   -> get_network_seed_status
+        0     12   -> printf
+        0     18   -> printf
+      1     17   cmd_0x09
+        0     11   -> RXB_frame_count
+        0     11   -> cmd_answer
+        0     11   -> cmd_answer_err
+        0     11   -> printf
+        0     17   -> printf
+      1     17   cmd_0x0A
+        0     11   -> LLC_GetTaskLen
+        0     11   -> cmd_answer
+        0     11   -> cmd_answer_err
+        0     11   -> printf
+        0     17   -> printf
+      0     20   cmd_0x0B
+        0     14   -> LLC_AddTask
         0     14   -> cmd_answer
         0     14   -> cmd_answer_err
+        0     14   -> frame_addHeader
+        0     14   -> frame_create
+        0     14   -> frame_delete
         0     14   -> get_network_seed_status
         0     14   -> printf
         0     20   -> printf
-      0     20   cmd_0x0F
-        0     14   -> cmd_answer
-        0     14   -> cmd_answer_err
-        0     14   -> get_network_seed_status
-        0     14   -> printf
-        0     20   -> printf
-      0     20   cmd_0x10
-        0     14   -> cmd_answer
-        0     14   -> cmd_answer_err
-        0     14   -> get_network_seed_status
-        0     14   -> printf
-        0     20   -> printf
-      1     36   cmd_answer
-        0     18   -> crc16
-        0     18   -> uart_write
-      1     29   cmd_answer_err
+        0     16   -> re_memcpy
+      0     18   cmd_0x0C
+        0     12   -> RXB_del_frame
+        0     12   -> RXB_get_frame
+        0     12   -> cmd_answer_err
+        0     12   -> get_network_seed_status
+        0     12   -> printf
+        0     18   -> printf
+        0     12   -> upload_frame
+      0     19   cmd_0x0D
+        0     13   -> RI_Measure_POW
+        0     13   -> cmd_answer
+        0     13   -> cmd_answer_err
+        0     13   -> get_network_seed_status
+        0     13   -> printf
+        0     19   -> printf
+      0     18   cmd_0x0E
+        0     12   -> cmd_answer
+        0     12   -> cmd_answer_err
+        0     12   -> get_network_seed_status
+        0     12   -> printf
+        0     18   -> printf
+      0     18   cmd_0x0F
+        0     12   -> cmd_answer
+        0     12   -> cmd_answer_err
+        0     12   -> get_network_seed_status
+        0     12   -> printf
+        0     18   -> printf
+      0     18   cmd_0x10
+        0     12   -> cmd_answer
+        0     12   -> cmd_answer_err
+        0     12   -> get_network_seed_status
+        0     12   -> printf
+        0     18   -> printf
+      1     28   cmd_answer
+        0     14   -> crc16
+        0     14   -> uart_write
+      1     25   cmd_answer_err
         0     11   -> stream_write
-      0      9   com_uart_init
-        0      9   -> uart_dma_init
-      0     27   crc16
-      1     66   frame_addHeader
+      2      0   com_uart_init
+        2      0   -> uart_dma_init
+      0     24   crc16
+      1     58   frame_addHeader
         0     24   -> printf
         0     18   -> re_free
         0     18   -> re_malloc
         0     20   -> re_memcpy
-      0     60   frame_create
+      0     52   frame_create
         0     14   -> memset
         0     18   -> printf
         0     12   -> re_malloc
@@ -5233,26 +5234,26 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
         0     14   -> re_free
         0     14   -> re_malloc
         0     16   -> re_memcpy
-      0     54   frame_delete
+      0     46   frame_delete
         0     10   -> re_free
       2     10   frame_getCount
       2      0   frame_len
-      0     19   free
-        0      9   -> __xdata_free
-      0     86   generateAuthData
-        0     18   -> memcpy
+      2      9   free
+        2      0   -> __xdata_free
+      0     85   generateAuthData
+        0     16   -> memcpy
       2      9   getRNDByte
-      2     18   get_network_seed_status
-      0     58   get_sync
-        0     14   -> BitRawDecrypt
-        0     14   -> RI_Receive
-        0     14   -> RI_SetChannel
-        0     14   -> frame_delete
-      0     14   heap_ptr
-        0     14   -> re_free
-        0     14   -> re_malloc
+      2     14   get_network_seed_status
+      0     48   get_sync
+        0     12   -> BitRawDecrypt
+        0     12   -> RI_Receive
+        0     12   -> RI_SetChannel
+        0     12   -> frame_delete
+      0     12   heap_ptr
+        0     12   -> re_free
+        0     12   -> re_malloc
       2      1   incrementTS
-      0     14   isIRQEnable
+      0     12   isIRQEnable
       0     28   loadTimerCompare
       0      6   main
         0      0   -> com_uart_init
@@ -5262,12 +5263,12 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
         0      0   -> parse_uart_stream
         0      0   -> printf
         0      6   -> printf
-      0     23   malloc
-        0      9   -> __xdata_malloc
+      2     10   malloc
+        2      0   -> __xdata_malloc
       1     18   mem_move
       2      0   neocore_hw_init
         2      0   -> MG_Init
-      0     30   neocore_stack_reset
+      0     26   neocore_stack_reset
         0     10   -> LLC_Reset
         0     10   -> MAC_Reset
         0     10   -> RI_Reset
@@ -5281,30 +5282,30 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
         0     11   -> MAC_Enable
         0     11   -> SY_Enable
         0     11   -> SY_SYNC_NETWORK
-      0     23   network_seed_enable
-        0      9   -> MAC_Enable
-        0      9   -> MAC_setIV
-        0      9   -> MAC_setKEY
-        0      9   -> SY_Enable
-        0      9   -> SY_setIV
-        0      9   -> SY_setKEY
+      2     10   network_seed_enable
+        2      0   -> MAC_Enable
+        2      0   -> MAC_setIV
+        2      0   -> MAC_setKEY
+        2      0   -> SY_Enable
+        2      0   -> SY_setIV
+        2      0   -> SY_setKEY
       2      0   nwDebugerInit
         2      0   -> uart_init
-      0     13   parse_uart_stream
-        0     13   -> check_cmd_frame
-        0     13   -> cmd_answer_err
-        0     13   -> uart_recv_cmd
+      0     11   parse_uart_stream
+        0     11   -> check_cmd_frame
+        0     11   -> cmd_answer_err
+        0     11   -> uart_recv_cmd
       0      9   random_core_init
         0      9   -> RI_cfg
         0      9   -> rand
         0      9   -> readRandom
         0      9   -> srand
-      0     52   re_free
-        0     10   -> free
-      0     56   re_malloc
-        0     14   -> malloc
-      0     36   re_memcpy
-        0     16   -> memcpy
+      0     43   re_free
+        0      9   -> free
+      0     44   re_malloc
+        0     10   -> malloc
+      0     31   re_memcpy
+        0     11   -> memcpy
       0     18   readRandom
         0      9   -> bits_count
         0      9   -> getRNDByte
@@ -5324,17 +5325,17 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
         0     15   -> crc16
         0     21   -> printf
         0     15   -> uart_write
-      2      9   uart_dma_init
+      2      0   uart_dma_init
       0      0   uart_getchar
       0      0   uart_init
       0     10   uart_putchar
-      3     13   uart_recv_cmd
-      0     28   uart_write
+      3     11   uart_recv_cmd
+      0     25   uart_write
         0     10   -> uart_putchar
-      0     23   upload_frame
+      0     21   upload_frame
         0      9   -> cmd_answer
         0      9   -> mem_move
-      0     23   xor_calc
+      0     21   xor_calc
 
 
    Segment part sizes:
@@ -5630,23 +5631,23 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
        9  ?<Initializer for __FUNCTION__>_9
       16  ?<Initializer for default_iv>
       16  ?<Initializer for default_key>
-     476  AES_CCMDecrypt
+     496  AES_CCMDecrypt
        6  AES_CCMDecrypt::?relay
-     446  AES_CCMEncrypt
+     464  AES_CCMEncrypt
        6  AES_CCMEncrypt::?relay
-     608  AES_StreamCoder
+     501  AES_StreamCoder
        6  AES_StreamCoder::?relay
      205  AES_init
        6  AES_init::?relay
-      58  BitRawCrypt
-      58  BitRawCrypt
+      54  BitRawCrypt
+      54  BitRawCrypt
        6  BitRawCrypt::?relay
        6  BitRawCrypt::?relay
-      58  BitRawDecrypt
-      58  BitRawDecrypt
+      54  BitRawDecrypt
+      54  BitRawDecrypt
        6  BitRawDecrypt::?relay
        6  BitRawDecrypt::?relay
-     469  CBCMAC_buf_encrypt
+     463  CBCMAC_buf_encrypt
        6  CBCMAC_buf_encrypt::?relay
      100  CF_init
        6  CF_init::?relay
@@ -5655,9 +5656,9 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
       34  CMD_LIST
        4  COMPARE_TIME
       45  CONFIG
-     608  CTR_enc_decrypt
+     501  CTR_enc_decrypt
        6  CTR_enc_decrypt::?relay
-      80  Callback_execution
+      76  Callback_execution
        6  Callback_execution::?relay
        4  DELAY_CALIBRATE_TICS
        1  DMA0CFGH
@@ -5669,7 +5670,7 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
       40  DMA_CH
       37  DMA_init
        6  DMA_init::?relay
-     147  DelayCalibrate
+     113  DelayCalibrate
        6  DelayCalibrate::?relay
      107  Delete_frame
        6  Delete_frame::?relay
@@ -5680,7 +5681,7 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
        4  HeadAllocFunc
       16  IV
       16  IV
-     163  Interval
+      84  Interval
        6  Interval::?relay
       16  KEY
       16  KEY
@@ -5691,26 +5692,26 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
        6  LLC_GetTaskLen::?relay
       47  LLC_Init
        6  LLC_Init::?relay
-      91  LLC_RX_HNDL
+      83  LLC_RX_HNDL
        6  LLC_RX_HNDL::?relay
-      43  LLC_Reset
+      35  LLC_Reset
        6  LLC_Reset::?relay
       67  LLC_RunTimeAlloc
        6  LLC_RunTimeAlloc::?relay
       20  LLC_SE_HNDL
        6  LLC_SE_HNDL::?relay
-      73  LLC_SetRXCallback
+      69  LLC_SetRXCallback
        6  LLC_SetRXCallback::?relay
-     310  LLC_Shelduler
+     298  LLC_Shelduler
        6  LLC_Shelduler::?relay
-     141  LLC_TimeAlloc
+     139  LLC_TimeAlloc
        6  LLC_TimeAlloc::?relay
       50  LoadTXData
        6  LoadTXData::?relay
      350  MACSlotTable
-     122  MAC_ACK_Recv
+     120  MAC_ACK_Recv
        6  MAC_ACK_Recv::?relay
-      91  MAC_ACK_Send
+      83  MAC_ACK_Send
        6  MAC_ACK_Send::?relay
      114  MAC_CloseRXSlot
        6  MAC_CloseRXSlot::?relay
@@ -5729,16 +5730,16 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
        6  MAC_RX_HNDL::?relay
      135  MAC_Reset
        6  MAC_Reset::?relay
-     404  MAC_Send
+     393  MAC_Send
        6  MAC_Send::?relay
       19  MAC_SetRXCallback
        6  MAC_SetRXCallback::?relay
        4  MAC_TIMER_MAX
      585  MAC_TX_HNDL
        6  MAC_TX_HNDL::?relay
-      41  MAC_setIV
+      37  MAC_setIV
        6  MAC_setIV::?relay
-      41  MAC_setKEY
+      37  MAC_setKEY
        6  MAC_setKEY::?relay
       78  MG_Init
        6  MG_Init::?relay
@@ -5758,13 +5759,13 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
        6  NT_IRQEnable::?relay
       74  NT_Init
        6  NT_Init::?relay
-     122  NT_SetCompare
+     114  NT_SetCompare
        6  NT_SetCompare::?relay
       19  NT_SetEventCallback
        6  NT_SetEventCallback::?relay
-     149  NT_SetTime
+     145  NT_SetTime
        6  NT_SetTime::?relay
-     126  NT_WaitTime
+     122  NT_WaitTime
        6  NT_WaitTime::?relay
        1  P0SEL
        1  P1DIR
@@ -5783,15 +5784,15 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
        6  RI_GetCRCError::?relay
       17  RI_GetUptime
        6  RI_GetUptime::?relay
-     117  RI_Measure_POW
+     109  RI_Measure_POW
        6  RI_Measure_POW::?relay
-     499  RI_Receive
+     475  RI_Receive
        6  RI_Receive::?relay
       14  RI_Reset
        6  RI_Reset::?relay
-     209  RI_Send
+     187  RI_Send
        6  RI_Send::?relay
-      32  RI_SetChannel
+      29  RI_SetChannel
        6  RI_SetChannel::?relay
        4  RI_UPTIME
      109  RI_cfg
@@ -5804,11 +5805,11 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
        6  RXB_Init::?relay
       26  RXB_Reset
        6  RXB_Reset::?relay
-     155  RXB_del_frame
+     143  RXB_del_frame
        6  RXB_del_frame::?relay
      107  RXB_frame_count
        6  RXB_frame_count::?relay
-     158  RXB_get_frame
+     148  RXB_get_frame
        6  RXB_get_frame::?relay
        2  RXCallback
        2  RXCallback
@@ -5822,7 +5823,7 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
        1  ST0
        1  ST1
        1  ST2
-      70  STACK_FAILURE
+      66  STACK_FAILURE
        6  STACK_FAILURE::?relay
        1  STLOAD
        2  SYNC_ACCURATE_NETWORK_TIME
@@ -5835,21 +5836,21 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
        6  SY_Init::?relay
       95  SY_Reset
        6  SY_Reset::?relay
-     542  SY_SYNC_NETWORK
+     441  SY_SYNC_NETWORK
        6  SY_SYNC_NETWORK::?relay
-      73  SY_TIME_ALLOC_MASTER
+      61  SY_TIME_ALLOC_MASTER
        6  SY_TIME_ALLOC_MASTER::?relay
      107  SY_TS1_HNDL_MASTER
        6  SY_TS1_HNDL_MASTER::?relay
       17  SY_is_synced
        6  SY_is_synced::?relay
-      41  SY_setIV
+      37  SY_setIV
        6  SY_setIV::?relay
-      41  SY_setKEY
+      37  SY_setKEY
        6  SY_setKEY::?relay
       17  SY_sync_sended
        6  SY_sync_sended::?relay
-     159  SendData
+     155  SendData
        6  SendData::?relay
        2  SyncTimeAllocCallback
        1  T2CTRL
@@ -5873,7 +5874,7 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
        6  TIC_GetTimer::?relay
       17  TIC_GetUptime
        6  TIC_GetUptime::?relay
-     257  TIC_HW_Timer_IRQ
+     243  TIC_HW_Timer_IRQ
        6  TIC_HW_Timer_IRQ::?relay
       42  TIC_Init
        6  TIC_Init::?relay
@@ -5883,21 +5884,21 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
        6  TIC_SetNonce::?relay
       40  TIC_SetRTC
        6  TIC_SetRTC::?relay
-      73  TIC_SetRXCallback
+      69  TIC_SetRXCallback
        6  TIC_SetRXCallback::?relay
      121  TIC_SetRXState
        6  TIC_SetRXState::?relay
-      73  TIC_SetSECallback
+      69  TIC_SetSECallback
        6  TIC_SetSECallback::?relay
-      73  TIC_SetSyncTimeAllocCallback
+      69  TIC_SetSyncTimeAllocCallback
        6  TIC_SetSyncTimeAllocCallback::?relay
-      73  TIC_SetTS1Callback
+      69  TIC_SetTS1Callback
        6  TIC_SetTS1Callback::?relay
-      73  TIC_SetTXCallback
+      69  TIC_SetTXCallback
        6  TIC_SetTXCallback::?relay
      121  TIC_SetTXState
        6  TIC_SetTXState::?relay
-      86  TIC_SetTimer
+      78  TIC_SetTimer
        6  TIC_SetTimer::?relay
        7  TIC_SleepTime
        6  TIC_SleepTime::?relay
@@ -5907,19 +5908,19 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
        6  TIC_SlotTime::?relay
       92  TIC_TDMAShelduler
        6  TIC_TDMAShelduler::?relay
-      66  TIC_TimeUsFromTS0
+      54  TIC_TimeUsFromTS0
        6  TIC_TimeUsFromTS0::?relay
       61  TIC_getCurrentTS
        6  TIC_getCurrentTS::?relay
       61  TIM_TimeStamp
        6  TIM_TimeStamp::?relay
-      45  TIM_copy
+      29  TIM_copy
        6  TIM_copy::?relay
      133  TIM_delay
        6  TIM_delay::?relay
       17  TIM_init
        6  TIM_init::?relay
-      94  TIM_passedTime
+      54  TIM_passedTime
        6  TIM_passedTime::?relay
        2  TOFFSET
        2  TS1Callback
@@ -5960,52 +5961,52 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
        4  __Constant_ffff8000
        4  __Constant_fffffe0c
        4  __Constant_ffffff
-     156  __write
+     148  __write
        6  __write::?relay
       34  bits_count
        6  bits_count::?relay
      162  buf
-     189  calcCompareTime
+     183  calcCompareTime
        6  calcCompareTime::?relay
       13  check_cmd_frame
        6  check_cmd_frame::?relay
       94  clocks_update
        6  clocks_update::?relay
-     181  cmd_0x00
+     175  cmd_0x00
        6  cmd_0x00::?relay
-     131  cmd_0x01
+     127  cmd_0x01
        6  cmd_0x01::?relay
-      76  cmd_0x02
+      69  cmd_0x02
        6  cmd_0x02::?relay
-     293  cmd_0x03
+     284  cmd_0x03
        6  cmd_0x03::?relay
-     150  cmd_0x04
+     145  cmd_0x04
        6  cmd_0x04::?relay
-     150  cmd_0x05
+     145  cmd_0x05
        6  cmd_0x05::?relay
-     103  cmd_0x06
+      98  cmd_0x06
        6  cmd_0x06::?relay
      138  cmd_0x07
        6  cmd_0x07::?relay
-     131  cmd_0x08
+     127  cmd_0x08
        6  cmd_0x08::?relay
-     128  cmd_0x09
+     123  cmd_0x09
        6  cmd_0x09::?relay
-     128  cmd_0x0A
+     123  cmd_0x0A
        6  cmd_0x0A::?relay
-     385  cmd_0x0B
+     347  cmd_0x0B
        6  cmd_0x0B::?relay
-     146  cmd_0x0C
+     142  cmd_0x0C
        6  cmd_0x0C::?relay
-     162  cmd_0x0D
+     153  cmd_0x0D
        6  cmd_0x0D::?relay
-     131  cmd_0x0E
+     127  cmd_0x0E
        6  cmd_0x0E::?relay
-     131  cmd_0x0F
+     127  cmd_0x0F
        6  cmd_0x0F::?relay
-     131  cmd_0x10
+     127  cmd_0x10
        6  cmd_0x10::?relay
-     104  cmd_answer
+      98  cmd_answer
        6  cmd_answer::?relay
       56  cmd_answer_err
        6  cmd_answer_err::?relay
@@ -6027,9 +6028,9 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
        6  frame_getCount::?relay
       19  frame_len
        6  frame_len::?relay
-      21  free
+      14  free
        6  free::?relay
-     241  generateAuthData
+     226  generateAuthData
        6  generateAuthData::?relay
       53  getRNDByte
        6  getRNDByte::?relay
@@ -6037,7 +6038,7 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
        6  get_network_seed_status::?relay
      103  get_sync
        6  get_sync::?relay
-      56  heap_ptr
+      48  heap_ptr
        6  heap_ptr::?relay
       36  incrementTS
        6  incrementTS::?relay
@@ -6047,38 +6048,38 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
        6  loadTimerCompare::?relay
       82  main
        6  main::?relay
-      21  malloc
+      14  malloc
        6  malloc::?relay
       50  mem_move
        6  mem_move::?relay
        1  nbrTasks
       26  neocore_hw_init
        6  neocore_hw_init::?relay
-      95  neocore_stack_reset
+      92  neocore_stack_reset
        6  neocore_stack_reset::?relay
       65  network_discovery
        6  network_discovery::?relay
-      80  network_seed_enable
+      81  network_seed_enable
        6  network_seed_enable::?relay
       14  nwDebugerInit
        6  nwDebugerInit::?relay
        2  pACK
-     148  parse_uart_stream
+     141  parse_uart_stream
        6  parse_uart_stream::?relay
-      78  random_core_init
+      74  random_core_init
        6  random_core_init::?relay
-      35  re_free
+      27  re_free
        6  re_free::?relay
-      49  re_malloc
+      35  re_malloc
        6  re_malloc::?relay
-      65  re_memcpy
+      40  re_memcpy
        6  re_memcpy::?relay
-      54  readRandom
+      49  readRandom
        6  readRandom::?relay
        4  ret_val
      186  send_sync
        6  send_sync::?relay
-     113  setFreq
+     110  setFreq
        6  setFreq::?relay
       40  set_capture_time
        6  set_capture_time::?relay
@@ -6089,11 +6090,11 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
        6  uart_dma_init::?relay
        9  uart_getchar
        6  uart_getchar::?relay
-      23  uart_init
+      22  uart_init
        6  uart_init::?relay
        9  uart_putchar
        6  uart_putchar::?relay
-      41  uart_recv_cmd
+      37  uart_recv_cmd
        6  uart_recv_cmd::?relay
      255  uart_rx_buff
       48  uart_write
@@ -6102,12 +6103,12 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
       87  upload_frame
        6  upload_frame::?relay
        4  val
-      59  xor_calc
+      55  xor_calc
        6  xor_calc::?relay
      703  -- Other
 
  
- 20 100 bytes in segment BANKED_CODE
+ 19 136 bytes in segment BANKED_CODE
   1 086 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
      60 bytes in segment NEAR_CODE
@@ -6116,10 +6117,10 @@ E:\WMNU\IAR\NeocoreGateway\src\uart_comm.c
   2 452 bytes in segment XDATA_ID
   1 183 bytes in segment XDATA_Z
  
-  3 504 bytes of CODE     memory (+  97 bytes shared)
-      0 bytes of DATA     memory (+  38 bytes shared)
- 19 988 bytes of HUGECODE memory (+ 112 bytes shared)
-  3 559 bytes of XDATA    memory (+  76 bytes shared)
+  3 504 bytes of CODE     memory (+ 97 bytes shared)
+      0 bytes of DATA     memory (+ 38 bytes shared)
+ 19 042 bytes of HUGECODE memory (+ 94 bytes shared)
+  3 559 bytes of XDATA    memory (+ 76 bytes shared)
 
 Errors: none
 Warnings: 7

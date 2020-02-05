@@ -262,10 +262,11 @@ static void SY_TS1_HNDL_MASTER(void)
     return;  
    
 P1_0 = !true; //ОТЛАДКА  
+  
   if (send_sync())
     SYNC_SENDED++;
-  
   LOG_ON("Sync send."); 
+  
 P1_0 = !false; //ОТЛАДКА
   
   TIC_SetTXState(SYNC_TS, false);

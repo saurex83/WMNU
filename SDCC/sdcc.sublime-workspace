@@ -464,6 +464,17 @@
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
+		},
+		{
+			"contents": "Package Control Messages\n========================\n\nEasyClangComplete\n-----------------\n\n  Version 6.2.2\n  =============\n  \n  Improvements and bug fixes:\n  ---------------------------\n  - Strip \"(framework directory)\" for macOS builds, thanks @saagarjha\n  - Disambiguate warnings from errors by the gutter icon\n  - Disable loading default definitions from a compiler by default as it seems\n    to cause quite a bit of problems. To restore the behavior just enable:\n    \"use_default_definitions\": true\n  \n  💜 this plugin? Consider supporting its development! 💰💸💶\n  ------------------------------------------------------------\n  ‼️NEW‼️ Head to GitHub Sponsors and support my work if you enjoy the plugin!\n  https://github.com/sponsors/niosus\n  \n  Alternatively, become a backer on Open Collective!\n  https://opencollective.com/EasyClangComplete#backers\n  \n  I you use this plugin in a company, push to become a sponsor!\n  https://opencollective.com/EasyClangComplete#sponsor\n  \n  This plugin took a significant amount of effort. It is available and will always\n  be available for free, both as freedom and as beer.\n  \n  If you appreciate it - support it. How much would you say it is worth to you?\n  \n  For more info head here:\n  https://github.com/niosus/EasyClangComplete#support-it\n",
+			"settings":
+			{
+				"buffer_size": 1283,
+				"line_ending": "Unix",
+				"name": "Package Control Messages",
+				"read_only": true,
+				"scratch": true
+			}
 		}
 	],
 	"build_system": "Packages/Makefile/Make.sublime-build",
@@ -606,8 +617,8 @@
 	],
 	"file_history":
 	[
-		"/run/user/1000/gvfs/smb-share:server=192.168.17.168,share=storage/Developments/Neocore/Cases/case_versions_order.md",
 		"/run/user/1000/gvfs/smb-share:server=192.168.17.168,share=storage/Admin/common_ssh_access/access_to_server_via_ssh.md",
+		"/run/user/1000/gvfs/smb-share:server=192.168.17.168,share=storage/Developments/Neocore/Cases/case_versions_order.md",
 		"/run/user/1000/gvfs/smb-share:server=192.168.17.168,share=storage/Developments/Neocore/Cases/изменения_узла.md",
 		"/home/saurex83/Projects/WMNU/SDCC/core/LLC.h",
 		"/home/saurex83/Projects/WMNU/SDCC/core/FChain.c",
@@ -838,7 +849,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
@@ -868,7 +879,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -884,8 +895,8 @@
 						"selection":
 						[
 							[
-								434,
-								434
+								511,
+								511
 							]
 						],
 						"settings":
@@ -897,6 +908,36 @@
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1283,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1283,
+								1283
+							]
+						],
+						"settings":
+						{
+							"auto_indent": false,
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_width": 2,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
 					"type": "text"
 				}
 			]
