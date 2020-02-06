@@ -11,7 +11,7 @@
 #define ITEMS_COUNT(name) (sizeof(name)/sizeof(module_s*))
 #define RUNNER(array, fun) {\
 for (char i = 0; i < ITEMS_COUNT(array); i++){\
-    ASSERT(array[i]->fun() == NULL);\
+    ASSERT(array[i]->fun == NULL);\
     array[i]->fun();\
     }\
 };

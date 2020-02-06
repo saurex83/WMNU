@@ -457,11 +457,11 @@
                 </option>
                 <option>
                     <name>Compiler Extra Options Check</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>Compiler Extra Options Edit</name>
-                    <state></state>
+                    <state>--no_path_in_file_macros</state>
                 </option>
                 <option>
                     <name>CCIncludePath2</name>
@@ -2223,6 +2223,9 @@
             <data />
         </settings>
     </configuration>
+    <mfc>
+        <configuration>Debug</configuration>
+    </mfc>
     <group>
         <name>stack core</name>
         <file>
@@ -2250,7 +2253,7 @@
             <name>$PROJ_DIR$\..\Stack_core_src\frame.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\global.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\global.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\mem_utils.c</name>
@@ -2292,6 +2295,12 @@
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\ustimer.h</name>
         </file>
     </group>
+    <file>
+        <name>$PROJ_DIR$\..\STACK_CORE_SRC\cpu.c</name>
+    </file>
+    <file>
+        <name>$PROJ_DIR$\..\STACK_CORE_SRC\cpu.h</name>
+    </file>
     <file>
         <name>$PROJ_DIR$\main.c</name>
     </file>

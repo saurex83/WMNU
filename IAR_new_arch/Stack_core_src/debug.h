@@ -1,22 +1,49 @@
 #pragma once
 #include "global.h"
+#include "ioCC2530.h"
+#include "stdio.h"
 
-//#define DEBUG
-//#define SIG_DEBUG
+extern void DBG_CORE_HALT(void);
+extern void DBG_CORE_FAULT(void);
 
-#define PIN1
-#define PIN2
-#define PIN3
+#ifdef DEBUG
+  #define LOG_ON(...) {\
+    printf("%s:%d:%s -> ",__FILE__, __LINE__, __FUNCTION__); \
+    printf(__VA_ARGS__); \
+    printf("\r\n"); \
+      }
+  #define ASSERT(cond) {\
+    if (cond) {\
+      printf("%s:%d:%s -> ",__FILE__, __LINE__, __FUNCTION__);\
+      printf("\""#cond"\" Faild! \r\n");\
+      DBG_CORE_HALT();\
+    }\
+  }
+#else
+  #define LOG_ON(...) {}
+  #define ASSERT(cond) {if (cond){DBG_CORE_FAULT();};}
+#endif
 
-#define HIGH(pin)
-#define LOW(pin)
-#define BLINK(pin)
+#ifdef SIG_DEBUG
+  #define PIN1
+  #define PIN2
+  #define PIN3
+  #define HIGH(pin) pin = 1
+  #define LOW(pin) pin = 0
+  #define BLINK(pin) {pin = 1; pin = 0}
+  #define SIG_ON(action, pin) action(pin)
+#else
+  #define PIN1
+  #define PIN2
+  #define PIN3
+  #define HIGH(pin) {}
+  #define LOW(pin) {}
+  #define BLINK(pin) {}
+  #define SIG_ON(action, pin) {}
+#endif
 
-#define SIG_ON(action, pin) action(pin)
+
+#define LOG_OFF(log)
 #define SIG_OFF(action, pin)
 
-#define LOG_ON(log)
-#define LOG_OFF(log)
 
-// Срабатывает если true
-#define ASSERT(cond)

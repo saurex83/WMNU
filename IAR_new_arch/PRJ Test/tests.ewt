@@ -2124,7 +2124,7 @@
             <name>$PROJ_DIR$\..\Stack_core_src\frame.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\global.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\global.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\mem_utils.c</name>
@@ -2166,6 +2166,12 @@
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\ustimer.h</name>
         </file>
     </group>
+    <file>
+        <name>$PROJ_DIR$\..\STACK_CORE_SRC\cpu.c</name>
+    </file>
+    <file>
+        <name>$PROJ_DIR$\..\STACK_CORE_SRC\cpu.h</name>
+    </file>
     <file>
         <name>$PROJ_DIR$\main.c</name>
     </file>
