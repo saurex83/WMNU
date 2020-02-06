@@ -2115,7 +2115,7 @@
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\cpu.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\cpu.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\cpu.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\debug.c</name>
@@ -2136,7 +2136,7 @@
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\mem_utils.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\mem_utils.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\mem_utils.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\model.c</name>
@@ -2179,6 +2179,9 @@
         </file>
         <file>
             <name>$PROJ_DIR$\u_debug.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\u_mem_utils.c</name>
         </file>
     </group>
     <file>

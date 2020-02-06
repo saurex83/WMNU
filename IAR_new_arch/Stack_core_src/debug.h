@@ -19,9 +19,15 @@ extern void DBG_CORE_FAULT(void);
       DBG_CORE_HALT();\
     }\
   }
+  #define HALT(...) {\
+      printf("%s:%d:%s -> ",__FILE__, __LINE__, __FUNCTION__);\
+       printf(__VA_ARGS__); \
+      DBG_CORE_HALT();\
+  }
 #else
   #define LOG_ON(...) {}
   #define ASSERT(cond) {if (cond){DBG_CORE_FAULT();};}
+  #define HALT(...) {DBG_CORE_FAULT();} 
 #endif
 
 #ifdef SIG_DEBUG
