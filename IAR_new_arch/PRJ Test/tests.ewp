@@ -2238,10 +2238,19 @@
             <name>$PROJ_DIR$\..\Stack_core_src\alarm_timer.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\debug.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Stack_core_src\debug.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\frame.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\Stack_core_src\frame.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\global.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\mem_utils.c</name>
@@ -2274,7 +2283,7 @@
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\time_manager.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\time_manager.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\time_manager.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\ustimer.c</name>

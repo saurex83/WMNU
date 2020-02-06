@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               06/Feb/2020  02:24:34
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               06/Feb/2020  03:12:52
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,7 +13,7 @@
 #                          
 #    Source file        =  E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EWAE7.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW441F.tmp
 #        (E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c -lC
 #        "E:\WMNU\IAR_new_arch\PRJ Test\Debug\List" -o
 #        "E:\WMNU\IAR_new_arch\PRJ Test\Debug\Obj" -e --debug --core=plain
@@ -35,65 +35,68 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c
       1          #include "action_manager.h"
       2          #include "modules_list.h"
       3          #include "model.h"
-      4          
-      5          /**
-      6          @file
-      7          */
-      8          
-      9          /* Определения */
-     10          #define ITEMS_COUNT(name) (sizeof(name)/sizeof(module_s*))
-     11          #define RUNNER(array, fun) {\
-     12            for (char i = 0; i < ITEMS_COUNT(array); i++)\
-     13              array[i]->fun();\
-     14          };
-     15          
-     16          
-     17          /* Локальные переменные */
+      4          #include "debug.h"
+      5          
+      6          /**
+      7          @file
+      8          */
+      9          
+     10          /* Определения */
+     11          #define ITEMS_COUNT(name) (sizeof(name)/sizeof(module_s*))
+     12          #define RUNNER(array, fun) {\
+     13          for (char i = 0; i < ITEMS_COUNT(array); i++){\
+     14              ASSERT(array[i]->fun() == NULL);\
+     15              array[i]->fun();\
+     16              }\
+     17          };
+     18          
+     19          
+     20          /* Локальные переменные */
 
    \                                 In  segment XDATA_Z, align 1, keep-with-next
-     18          static module_s* COLD_MOD[] = COLD_MOD_DEF;
+     21          static module_s* COLD_MOD[] = COLD_MOD_DEF;
    \                     COLD_MOD:
    \   000000                DS 2
    \   000002                REQUIRE __INIT_XDATA_Z
 
    \                                 In  segment XDATA_Z, align 1, keep-with-next
-     19          static module_s* HOT_MOD[] = HOT_MOD_DEF;
+     22          static module_s* HOT_MOD[] = HOT_MOD_DEF;
    \                     HOT_MOD:
    \   000000                DS 2
    \   000002                REQUIRE __INIT_XDATA_Z
 
    \                                 In  segment XDATA_I, align 1, keep-with-next
-     20          static module_s* HW_MOD[] = HW_MOD_DEF;
+     23          static module_s* HW_MOD[] = HW_MOD_DEF;
    \                     HW_MOD:
    \   000000                DS 2
    \   000002                REQUIRE `?<Initializer for HW_MOD>`
    \   000002                REQUIRE __INIT_XDATA_I
 
    \                                 In  segment XDATA_I, align 1, keep-with-next
-     21          static module_s* SW_MOD[] = SW_MOD_DEF;
+     24          static module_s* SW_MOD[] = SW_MOD_DEF;
    \                     SW_MOD:
    \   000000                DS 6
    \   000006                REQUIRE `?<Initializer for SW_MOD>`
    \   000006                REQUIRE __INIT_XDATA_I
 
    \                                 In  segment XDATA_I, align 1, keep-with-next
-     22          static module_s* POW_MOD[] = POW_MOD_DEF;
+     25          static module_s* POW_MOD[] = POW_MOD_DEF;
    \                     POW_MOD:
    \   000000                DS 2
    \   000002                REQUIRE `?<Initializer for POW_MOD>`
    \   000002                REQUIRE __INIT_XDATA_I
-     23          
-     24          /* Локальные функции */
-     25          
+     26          
+     27          /* Локальные функции */
+     28          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     26          void AM_Cold_start(void){
+     29          void AM_Cold_start(void){
    \                     AM_Cold_start:
    \   000000   74F7         MOV       A,#-0x9
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
    \   000005                ; Saved register size: 9
    \   000005                ; Auto size: 0
-     27            RUNNER(COLD_MOD, Cold_Start);
+     30            RUNNER(COLD_MOD, Cold_Start);
    \   000005   7E00         MOV       R6,#0x0
    \                     ??AM_Cold_start_0:
    \   000007   EE           MOV       A,R6
@@ -141,20 +144,20 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c
    \   000043   12....       LCALL     ?CALL_IND
    \   000046   0E           INC       R6
    \   000047   80BE         SJMP      ??AM_Cold_start_0
-     28          }
+     31          }
    \                     ??AM_Cold_start_1:
    \   000049   7F01         MOV       R7,#0x1
    \   00004B   02....       LJMP      ?BANKED_LEAVE_XDATA
-     29          
+     32          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     30          void AM_Hot_start(void){
+     33          void AM_Hot_start(void){
    \                     AM_Hot_start:
    \   000000   74F7         MOV       A,#-0x9
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
    \   000005                ; Saved register size: 9
    \   000005                ; Auto size: 0
-     31            RUNNER(HOT_MOD, Hot_Start);  
+     34            RUNNER(HOT_MOD, Hot_Start);  
    \   000005   7E00         MOV       R6,#0x0
    \                     ??AM_Hot_start_0:
    \   000007   EE           MOV       A,R6
@@ -202,20 +205,20 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c
    \   000043   12....       LCALL     ?CALL_IND
    \   000046   0E           INC       R6
    \   000047   80BE         SJMP      ??AM_Hot_start_0
-     32          }
+     35          }
    \                     ??AM_Hot_start_1:
    \   000049   7F01         MOV       R7,#0x1
    \   00004B   02....       LJMP      ?BANKED_LEAVE_XDATA
-     33          
+     36          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     34          void AM_HW_Init(void){
+     37          void AM_HW_Init(void){
    \                     AM_HW_Init:
    \   000000   74F7         MOV       A,#-0x9
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
    \   000005                ; Saved register size: 9
    \   000005                ; Auto size: 0
-     35            RUNNER(HW_MOD, HW_Init);      
+     38            RUNNER(HW_MOD, HW_Init);      
    \   000005   7E00         MOV       R6,#0x0
    \                     ??AM_HW_Init_0:
    \   000007   EE           MOV       A,R6
@@ -259,20 +262,20 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c
    \   00003D   12....       LCALL     ?CALL_IND
    \   000040   0E           INC       R6
    \   000041   80C4         SJMP      ??AM_HW_Init_0
-     36          }
+     39          }
    \                     ??AM_HW_Init_1:
    \   000043   7F01         MOV       R7,#0x1
    \   000045   02....       LJMP      ?BANKED_LEAVE_XDATA
-     37          
+     40          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     38          void AM_SW_Init(void){
+     41          void AM_SW_Init(void){
    \                     AM_SW_Init:
    \   000000   74F7         MOV       A,#-0x9
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
    \   000005                ; Saved register size: 9
    \   000005                ; Auto size: 0
-     39            RUNNER(SW_MOD, SW_Init);
+     42            RUNNER(SW_MOD, SW_Init);
    \   000005   7E00         MOV       R6,#0x0
    \                     ??AM_SW_Init_0:
    \   000007   EE           MOV       A,R6
@@ -320,19 +323,19 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c
    \   000042   12....       LCALL     ?CALL_IND
    \   000045   0E           INC       R6
    \   000046   80BF         SJMP      ??AM_SW_Init_0
-     40          }
+     43          }
    \                     ??AM_SW_Init_1:
    \   000048   7F01         MOV       R7,#0x1
    \   00004A   02....       LJMP      ?BANKED_LEAVE_XDATA
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     41          void AM_Sleep(void){
+     44          void AM_Sleep(void){
    \                     AM_Sleep:
    \   000000   74F7         MOV       A,#-0x9
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
    \   000005                ; Saved register size: 9
    \   000005                ; Auto size: 0
-     42            RUNNER(POW_MOD, Sleep);
+     45            RUNNER(POW_MOD, Sleep);
    \   000005   7E00         MOV       R6,#0x0
    \                     ??AM_Sleep_0:
    \   000007   EE           MOV       A,R6
@@ -380,19 +383,19 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c
    \   000041   12....       LCALL     ?CALL_IND
    \   000044   0E           INC       R6
    \   000045   80C0         SJMP      ??AM_Sleep_0
-     43          }
+     46          }
    \                     ??AM_Sleep_1:
    \   000047   7F01         MOV       R7,#0x1
    \   000049   02....       LJMP      ?BANKED_LEAVE_XDATA
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     44          void AM_Wakeup(void){
+     47          void AM_Wakeup(void){
    \                     AM_Wakeup:
    \   000000   74F7         MOV       A,#-0x9
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
    \   000005                ; Saved register size: 9
    \   000005                ; Auto size: 0
-     45            RUNNER(POW_MOD, Wakeup);
+     48            RUNNER(POW_MOD, Wakeup);
    \   000005   7E00         MOV       R6,#0x0
    \                     ??AM_Wakeup_0:
    \   000007   EE           MOV       A,R6
@@ -440,7 +443,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c
    \   000043   12....       LCALL     ?CALL_IND
    \   000046   0E           INC       R6
    \   000047   80BE         SJMP      ??AM_Wakeup_0
-     46          }
+     49          }
    \                     ??AM_Wakeup_1:
    \   000049   7F01         MOV       R7,#0x1
    \   00004B   02....       LJMP      ?BANKED_LEAVE_XDATA
@@ -488,7 +491,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c
    \                     `??AM_Wakeup::?relay`:
    \   000000   12....       LCALL   ?BDISPATCH
    \   000003   ......       DC24    AM_Wakeup
-     47          
+     50          
 
    Maximum stack usage in bytes:
 

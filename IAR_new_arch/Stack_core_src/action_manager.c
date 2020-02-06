@@ -1,6 +1,7 @@
 #include "action_manager.h"
 #include "modules_list.h"
 #include "model.h"
+#include "debug.h"
 
 /**
 @file
@@ -9,8 +10,10 @@
 /* Определения */
 #define ITEMS_COUNT(name) (sizeof(name)/sizeof(module_s*))
 #define RUNNER(array, fun) {\
-  for (char i = 0; i < ITEMS_COUNT(array); i++)\
+for (char i = 0; i < ITEMS_COUNT(array); i++){\
+    ASSERT(array[i]->fun() == NULL);\
     array[i]->fun();\
+    }\
 };
 
 

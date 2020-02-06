@@ -11,4 +11,4 @@
 
 /* Обьявления всех модулей */
 extern module_s TM_MODULE, AT_MODULE, FR_MODULE, RTC_MODULE,
-  MD_MODULE;
+  MD_MODULE, DBG_MODULE;
