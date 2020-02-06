@@ -2241,6 +2241,12 @@
             <name>$PROJ_DIR$\..\Stack_core_src\alarm_timer.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\cpu.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Stack_core_src\cpu.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\debug.c</name>
         </file>
         <file>
@@ -2295,12 +2301,15 @@
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\ustimer.h</name>
         </file>
     </group>
-    <file>
-        <name>$PROJ_DIR$\..\STACK_CORE_SRC\cpu.c</name>
-    </file>
-    <file>
-        <name>$PROJ_DIR$\..\STACK_CORE_SRC\cpu.h</name>
-    </file>
+    <group>
+        <name>unit tests</name>
+        <file>
+            <name>$PROJ_DIR$\u_alarm_timer.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\u_debug.c</name>
+        </file>
+    </group>
     <file>
         <name>$PROJ_DIR$\main.c</name>
     </file>

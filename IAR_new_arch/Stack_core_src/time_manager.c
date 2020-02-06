@@ -1,6 +1,7 @@
 #include "time_manager.h"
 #include "model.h"
 #include "action_manager.h"
+#include "debug.h"
 
 /**
 @file
@@ -39,4 +40,5 @@ void TM_AdjustTime(nwtime_t time){
 }
 
 void TM_IRQ(nwtime_t time){
+  LOG_ON("ALARM! %d", time);
 }

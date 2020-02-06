@@ -1,10 +1,15 @@
 #include "action_manager.h"
 #include "debug.h"
 
+
+extern void u_test(void);
+extern void u_alarm_timer(void);
+
 void main(){
   AM_HW_Init();
   
-  LOG_ON("HELLO");
-  ASSERT(2>0);
-  while(1);
+  //u_test();
+  u_alarm_timer();
+  
+  DBG_CORE_HALT();
 }

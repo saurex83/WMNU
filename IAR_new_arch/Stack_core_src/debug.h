@@ -43,7 +43,7 @@ extern void DBG_CORE_FAULT(void);
 #endif
 
 
-#define LOG_OFF(log)
+#define LOG_OFF(...)
 #define SIG_OFF(action, pin)
 
 
