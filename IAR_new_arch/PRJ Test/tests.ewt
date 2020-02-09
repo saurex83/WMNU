@@ -2112,6 +2112,12 @@
             <name>$PROJ_DIR$\..\Stack_core_src\alarm_timer.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\buffer.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\buffer.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\cpu.c</name>
         </file>
         <file>
@@ -2131,6 +2137,15 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\Stack_core_src\global.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Stack_core_src\macros.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\mem_slots.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\mem_slots.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\mem_utils.c</name>
@@ -2157,9 +2172,6 @@
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\rtc.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\tempalte.txt</name>
-        </file>
-        <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\time_manager.c</name>
         </file>
         <file>
@@ -2173,12 +2185,30 @@
         </file>
     </group>
     <group>
+        <name>text</name>
+        <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\ideas.txt</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\rules.txt</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\tempalte.txt</name>
+        </file>
+    </group>
+    <group>
         <name>unit tests</name>
         <file>
             <name>$PROJ_DIR$\u_alarm_timer.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\u_debug.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\u_macros.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\u_mem_slots.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\u_mem_utils.c</name>

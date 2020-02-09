@@ -2,43 +2,45 @@
 #include "model.h"
 #include "action_manager.h"
 #include "debug.h"
+#include "action_manager.h"
 
 /**
 @file
 */
 
-// Определения
-// Локальные переменные
-// Локальные функции
-static void HW_Init(void);  
+#define MAX_TIME_SLOTS 50
+
+#define ACTIVE_INTERVAL (nwtime_t)327 // 9.979 мс
+#define SLEEP_INTERVAL (nwtime_t)327  // 9.979 мс
+#define UNACCOUNTED 68 // Остаток времени после 50ого интервала.
+#define FULL_INTERVAL (ACTIVE_INTERVAL + SLEEP_INTERVAL)
+#define SLOT_TO_NWTIME(slot) ((nwtime_t)(slot * FULL_INTERVAL))
+
 static void SW_Init(void); 
-static void Sleep(void); 
-static void Wakeup(void); 
-static void Cold_Start(void); 
-static void Hot_Start(void); 
 
-module_s TM_MODULE = {ALIAS(HW_Init),ALIAS(SW_Init),ALIAS(Sleep),
-  ALIAS(Wakeup),ALIAS(Cold_Start), ALIAS(Hot_Start)};
+module_s TM_MODULE = {ALIAS(SW_Init)};
+ 
+//!< Список задач менеджера. Индекс - номер слота, значение-действие
+static alarm_t ALARMS[MAX_TIME_SLOTS];
 
-static void HW_Init(void){};  
 static void SW_Init(void){}; 
-static void Sleep(void){}; 
-static void Wakeup(void){}; 
-static void Cold_Start(void){}; 
-static void Hot_Start(void){}; 
-
-
 
 
 void TM_SetAlarm(timeslot_t slot, alarm_t alarm){
+  ASSERT(slot < MAX_TIME_SLOTS);
+  ALARMS[slot] |= alarm;
 }
 
 void TM_ClrAlarm(timeslot_t slot, alarm_t alarm){
+  ASSERT(slot < MAX_TIME_SLOTS);
+  ALARMS[slot] &= (~alarm);
 }
 
 void TM_AdjustTime(nwtime_t time){
+  
 }
 
 void TM_IRQ(nwtime_t time){
-  LOG_ON("ALARM! %d", time);
+  LOG_OFF("ALARM! %d", time);
+  AM_Hot_start();
 }

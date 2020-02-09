@@ -13,7 +13,7 @@ extern void DBG_CORE_FAULT(void);
     printf("\r\n"); \
       }
   #define ASSERT(cond) {\
-    if (cond) {\
+    if (!(cond)) {\
       printf("%s:%d:%s -> ",__FILE__, __LINE__, __FUNCTION__);\
       printf("\""#cond"\" Faild! \r\n");\
       DBG_CORE_HALT();\
@@ -26,7 +26,7 @@ extern void DBG_CORE_FAULT(void);
   }
 #else
   #define LOG_ON(...) {}
-  #define ASSERT(cond) {if (cond){DBG_CORE_FAULT();};}
+  #define ASSERT(cond) {if (!(cond)){DBG_CORE_FAULT();};}
   #define HALT(...) {DBG_CORE_FAULT();} 
 #endif
 

@@ -11,6 +11,8 @@
 @file
 */
 
+#define MAX_NWTIME (nwtime_t)32767
+
 static void HW_Init(void);  
 static inline void IRQEnable(bool state);
 static uint32_t ReadTimer(void);
@@ -28,7 +30,7 @@ static void HW_Init(void){
 }; 
 
 void AT_set_time(nwtime_t time){
-  ASSERT(time > 32767);
+  ASSERT(time <= MAX_NWTIME);
   nwtime_t timer = ReadTimer();
   TOFFSET = time - timer;
   TOFFSET &= 0x7FFF;
@@ -51,7 +53,7 @@ nwtime_t AT_time(void){
 @brief Ждем наступления определенного момента времени
 */
 void AT_wait(nwtime_t time){
-  ASSERT(time > 32767);  
+  ASSERT(time <= MAX_NWTIME);  
   static union 
   {
     uint32_t val;
@@ -91,7 +93,7 @@ static inline void IRQEnable(bool state){
 @params[in] ticks время сети в тиках когда нужно проснуться
 */
 void AT_set_alarm(nwtime_t alarm){
-  ASSERT(alarm > 32767);
+  ASSERT(alarm <= MAX_NWTIME);
   COMPARE_TIME = alarm; // Сохраняем установленное значение
   uint32_t compare_time = calcCompareTime(alarm);
   loadTimerCompare(compare_time);

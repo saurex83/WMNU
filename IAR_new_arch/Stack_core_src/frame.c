@@ -2,55 +2,66 @@
 #include "frame.h"
 #include "debug.h"
 #include "global.h"
-#include "frame.h"
+#include "mem_utils.h"
+#include "mem_slots.h"
 
 /**
 @file Статическое хранение принятых пакетов
 */
-#define FOR_EACH(ptr) for (                     \
-     struct frame *ptr = FRAME_POOL;            \
-     ptr <= &FRAME_POOL[FRAME_POOL_ITEMS_COUNT]; \
-     ptr++)
-
-#define MARK_CLEAR(slot) {slot->slot_flag = 0;}
-
-enum slot_flags {
-  TAKEN = 1<<0, SPACE = 1<<1, TX_READY = 1<<2, RX_READY = 1<<3
-};
-
 static void SW_Init(void); 
-static frame_id user_space_create(void);
-static frame_id irq_space_create(void);
 
 module_s FR_MODULE = {ALIAS(SW_Init)};
-static int USER_SPACE_INDEX;
-static struct frame FRAME_POOL[FRAME_POOL_ITEMS_COUNT];
+static int FRAME_COUNT = 0;
 
-static void SW_Init(void){  
-  FOR_EACH(slot)
-    MARK_CLEAR(slot);
-  USER_SPACE_INDEX = -1;
+static void SW_Init(void){ 
+  FRAME_COUNT = 0;
 }; 
 
+struct frame* FR_create(){
+  FRAME_COUNT++;
+  return (struct frame*)SL_alloc();
+};
 
-frame_id FR_Create(space sp){
-  if (sp == USER_SPACE)
-    return user_space_create();
-  else if (sp == IRQ_SPACE)
-    return irq_space_create();
-  HALT("Space not exist");
-  return -1;
+void FR_delete(struct frame *frame){
+  FRAME_COUNT--;
+  SL_free((char*)frame);
 }
 
-/**
-@brief
-@detail Использует знание об элементе который ищет сосед
-*/
-static frame_id user_space_create(void){
-  return -1;
+void FR_add_header(struct frame* frame ,void *head, char len){
+  int new_len = frame->len + len;
+  ASSERT( new_len < MAX_PAYLOAD_SIZE);
+  
+  // Сдвинем данные на размер вставки
+  struct memcpy memcpy = {
+    .src = frame->payload,
+    .dst = &frame->payload[len],
+    .len = frame->len
+  };
+  MEM_memcpy(&memcpy);
+  // Скопируем новые данные
+  memcpy.src = head;
+  memcpy.dst = frame->payload;
+  memcpy.len = len;
+  MEM_memcpy(&memcpy);
+  frame->len = new_len;
+};
+
+void FR_del_header(struct frame* frame, char len){
+  ASSERT(frame->len >= len);
+  int new_len = frame->len - len;
+  frame->len = new_len;
+  struct memcpy memcpy = {
+    .src = &frame->payload[len],
+    .dst = frame->payload,
+    .len = new_len
+  };  
+  MEM_memcpy(&memcpy);  
 }
 
-static frame_id irq_space_create(void){
-  //USER_SPACE_INDEX
-  return -1;
+int FR_busy(){
+  return SL_busy();
 }
+
+int FR_available(){
+  return SL_available();
+};
