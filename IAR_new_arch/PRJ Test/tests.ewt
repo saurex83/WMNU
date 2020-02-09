@@ -2145,7 +2145,7 @@
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\mem_slots.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\mem_slots.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\mem_slots.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\mem_utils.c</name>
@@ -2203,6 +2203,9 @@
         </file>
         <file>
             <name>$PROJ_DIR$\u_debug.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\u_frame.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\u_macros.c</name>

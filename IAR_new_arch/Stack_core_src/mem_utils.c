@@ -17,6 +17,7 @@ void MEM_memcpy(struct memcpy *memcpy){
 void MEM_memset(struct memset *memset){
   while (memset->len > 0){
     *memset->dst = memset->val;
+    memset->dst++;
     memset->len--;
   }  
 };

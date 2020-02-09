@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               09/Feb/2020  19:54:12
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               09/Feb/2020  20:54:18
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,7 +13,7 @@
 #                          
 #    Source file        =  E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EWBC2F.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EWCA98.tmp
 #        (E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c -lC
 #        "E:\WMNU\IAR_new_arch\PRJ Test\Debug\List" -o
 #        "E:\WMNU\IAR_new_arch\PRJ Test\Debug\Obj" -e --debug --core=plain
@@ -36,7 +36,8 @@
 #        E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
 #        "E:\WMNU\IAR_new_arch\PRJ Test\u_alarm_timer.c"
 #        "E:\WMNU\IAR_NEW_ARCH\PRJ Test\u_debug.c" "E:\WMNU\IAR_NEW_ARCH\PRJ
-#        Test\u_macros.c" "E:\WMNU\IAR_NEW_ARCH\PRJ Test\u_mem_slots.c"
+#        Test\u_frame.c" "E:\WMNU\IAR_NEW_ARCH\PRJ Test\u_macros.c"
+#        "E:\WMNU\IAR_NEW_ARCH\PRJ Test\u_mem_slots.c"
 #        "E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c"
 #        E:\WMNU\IAR_new_arch\STACK_CORE_SRC\ustimer.c)
 #    Locale             =  Russian_Russia.1251
@@ -2459,70 +2460,45 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\frame.c
       8          /**
       9          @file Статическое хранение принятых пакетов
      10          */
-     11          static void SW_Init(void); 
-     12          
+     11          
+     12          static void SW_Init(void); 
+     13          
 
    \                                 In  segment XDATA_I, align 1, keep-with-next
-     13          module_s FR_MODULE = {ALIAS(SW_Init)};
+     14          module_s FR_MODULE = {ALIAS(SW_Init)};
    \                     FR_MODULE:
    \   000000                DS 12
    \   00000C                REQUIRE `?<Initializer for FR_MODULE>`
    \   00000C                REQUIRE __INIT_XDATA_I
-
-   \                                 In  segment XDATA_Z, align 1, keep-with-next
-     14          static int FRAME_COUNT = 0;
-   \                     ??FRAME_COUNT:
-   \   000000                DS 2
-   \   000002                REQUIRE __INIT_XDATA_Z
      15          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
      16          static void SW_Init(void){ 
    \                     ??SW_Init_1:
-   \   000000   C082         PUSH      DPL
-   \   000002   C083         PUSH      DPH
-   \   000004                ; Saved register size: 2
-   \   000004                ; Auto size: 0
-     17            FRAME_COUNT = 0;
-   \   000004   90....       MOV       DPTR,#??FRAME_COUNT
-   \   000007   7400         MOV       A,#0x0
-   \   000009   F0           MOVX      @DPTR,A
-   \   00000A   A3           INC       DPTR
-   \   00000B   7400         MOV       A,#0x0
-   \   00000D   F0           MOVX      @DPTR,A
-     18          }; 
-   \   00000E   D083         POP       DPH
-   \   000010   D082         POP       DPL
-   \   000012   02....       LJMP      ?BRET
-     19          
+   \   000000                ; Saved register size: 0
+   \   000000                ; Auto size: 0
+     17          }; 
+   \   000000   02....       LJMP      ?BRET
+     18          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     20          struct frame* FR_create(){
+     19          struct frame* FR_create(){
    \                     FR_create:
    \   000000   C082         PUSH      DPL
    \   000002   C083         PUSH      DPH
    \   000004                ; Saved register size: 2
    \   000004                ; Auto size: 0
-     21            FRAME_COUNT++;
-   \   000004   90....       MOV       DPTR,#??FRAME_COUNT
-   \   000007   E0           MOVX      A,@DPTR
-   \   000008   2401         ADD       A,#0x1
-   \   00000A   F0           MOVX      @DPTR,A
-   \   00000B   A3           INC       DPTR
-   \   00000C   E0           MOVX      A,@DPTR
-   \   00000D   3400         ADDC      A,#0x0
-   \   00000F   F0           MOVX      @DPTR,A
-     22            return (struct frame*)SL_alloc();
-   \   000010                ; Setup parameters for call to function SL_alloc
-   \   000010   12....       LCALL     `??SL_alloc::?relay`; Banked call to: SL_alloc
-   \   000013   D083         POP       DPH
-   \   000015   D082         POP       DPL
-   \   000017   02....       LJMP      ?BRET
-     23          };
-     24          
+     20            return (struct frame*)SL_alloc();
+   \   000004                ; Setup parameters for call to function SL_alloc
+   \   000004   12....       LCALL     `??SL_alloc::?relay`; Banked call to: SL_alloc
+   \   000007   D083         POP       DPH
+   \   000009   D082         POP       DPL
+   \   00000B   02....       LJMP      ?BRET
+     21          };
+     22          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     25          void FR_delete(struct frame *frame){
+     23          void FR_delete(struct frame *frame){
    \                     FR_delete:
    \   000000   74F7         MOV       A,#-0x9
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
@@ -2532,29 +2508,20 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\frame.c
    \   000006   FE           MOV       R6,A
    \   000007   EB           MOV       A,R3
    \   000008   FF           MOV       R7,A
-     26            FRAME_COUNT--;
-   \   000009   90....       MOV       DPTR,#??FRAME_COUNT
-   \   00000C   E0           MOVX      A,@DPTR
-   \   00000D   24FF         ADD       A,#-0x1
-   \   00000F   F0           MOVX      @DPTR,A
-   \   000010   A3           INC       DPTR
-   \   000011   E0           MOVX      A,@DPTR
-   \   000012   34FF         ADDC      A,#-0x1
-   \   000014   F0           MOVX      @DPTR,A
-     27            SL_free((char*)frame);
-   \   000015                ; Setup parameters for call to function SL_free
-   \   000015   EE           MOV       A,R6
-   \   000016   FA           MOV       R2,A
-   \   000017   EF           MOV       A,R7
-   \   000018   FB           MOV       R3,A
-   \   000019   12....       LCALL     `??SL_free::?relay`; Banked call to: SL_free
-     28          }
-   \   00001C   7F01         MOV       R7,#0x1
-   \   00001E   02....       LJMP      ?BANKED_LEAVE_XDATA
-     29          
+     24            SL_free((char*)frame);
+   \   000009                ; Setup parameters for call to function SL_free
+   \   000009   EE           MOV       A,R6
+   \   00000A   FA           MOV       R2,A
+   \   00000B   EF           MOV       A,R7
+   \   00000C   FB           MOV       R3,A
+   \   00000D   12....       LCALL     `??SL_free::?relay`; Banked call to: SL_free
+     25          }
+   \   000010   7F01         MOV       R7,#0x1
+   \   000012   02....       LJMP      ?BANKED_LEAVE_XDATA
+     26          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     30          void FR_add_header(struct frame* frame ,void *head, char len){
+     27          void FR_add_header(struct frame* frame ,void *head, char len){
    \                     FR_add_header:
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
@@ -2566,15 +2533,15 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\frame.c
    \   000000   74F0         MOV       A,#-0x10
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
    \   000005                ; Saved register size: 16
-   \   000005                ; Auto size: 5
-   \   000005   74FB         MOV       A,#-0x5
+   \   000005                ; Auto size: 10
+   \   000005   74F6         MOV       A,#-0xa
    \   000007   12....       LCALL     ?ALLOC_XSTACK8
    \   00000A   8A..         MOV       ?V0,R2
    \   00000C   8B..         MOV       ?V1,R3
    \   00000E   8C..         MOV       ?V6,R4
    \   000010   8D..         MOV       ?V7,R5
    \   000012   89..         MOV       ?V2,R1
-     31            int new_len = frame->len + len;
+     28            int new_len = frame->len + len;
    \   000014   85..82       MOV       DPL,?V0
    \   000017   85..83       MOV       DPH,?V1
    \   00001A   E0           MOVX      A,@DPTR
@@ -2589,10 +2556,10 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\frame.c
    \   000026   EB           MOV       A,R3
    \   000027   39           ADDC      A,R1
    \   000028   FF           MOV       R7,A
-     32            ASSERT( new_len < MAX_PAYLOAD_SIZE);
+     29            ASSERT( new_len < MAX_PAYLOAD_SIZE);
    \   000029   C3           CLR       C
    \   00002A   EE           MOV       A,R6
-   \   00002B   9480         SUBB      A,#-0x80
+   \   00002B   947F         SUBB      A,#0x7f
    \   00002D   EF           MOV       A,R7
    \   00002E   9400         SUBB      A,#0x0
    \   000030   A2D2         MOV       C,0xD0 /* PSW */.2
@@ -2604,7 +2571,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\frame.c
    \   00003A   75....       MOV       ?V5,#(??__FUNCTION___11 >> 8) & 0xff
    \   00003D   78..         MOV       R0,#?V4
    \   00003F   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   000042   75..20       MOV       ?V4,#0x20
+   \   000042   75..1D       MOV       ?V4,#0x1d
    \   000045   75..00       MOV       ?V5,#0x0
    \   000048   78..         MOV       R0,#?V4
    \   00004A   12....       LCALL     ?PUSH_XSTACK_I_TWO
@@ -2623,271 +2590,323 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\frame.c
    \   000068   12....       LCALL     `??printf::?relay`; Banked call to: printf
    \   00006B                ; Setup parameters for call to function DBG_CORE_HALT
    \   00006B   12....       LCALL     `??DBG_CORE_HALT::?relay`; Banked call to: DBG_CORE_HALT
-     33            
-     34            // Сдвинем данные на размер вставки
-     35            struct memcpy memcpy = {
-     36              .src = frame->payload,
-     37              .dst = &frame->payload[len],
-     38              .len = frame->len
-     39            };
+     30            
+     31            // Сдвинем данные на размер вставки при необходимости
+     32            if (frame->len != 0)
    \                     ??FR_add_header_0:
-   \   00006E   E5..         MOV       A,?V2
-   \   000070   F8           MOV       R0,A
-   \   000071   7900         MOV       R1,#0x0
-   \   000073   E5..         MOV       A,?V0
-   \   000075   28           ADD       A,R0
-   \   000076   F8           MOV       R0,A
-   \   000077   E5..         MOV       A,?V1
-   \   000079   39           ADDC      A,R1
-   \   00007A   F9           MOV       R1,A
-   \   00007B   E8           MOV       A,R0
-   \   00007C   2415         ADD       A,#0x15
-   \   00007E   F8           MOV       R0,A
-   \   00007F   5001         JNC       ??FR_add_header_1
-   \   000081   09           INC       R1
-   \                     ??FR_add_header_1:
-   \   000082   85..82       MOV       DPL,?XSP + 0
-   \   000085   85..83       MOV       DPH,?XSP + 1
-   \   000088   E8           MOV       A,R0
-   \   000089   F0           MOVX      @DPTR,A
-   \   00008A   A3           INC       DPTR
-   \   00008B   E9           MOV       A,R1
-   \   00008C   F0           MOVX      @DPTR,A
-   \   00008D   E5..         MOV       A,?V0
-   \   00008F   2415         ADD       A,#0x15
-   \   000091   F8           MOV       R0,A
-   \   000092   E4           CLR       A
-   \   000093   35..         ADDC      A,?V1
-   \   000095   F9           MOV       R1,A
-   \   000096   7402         MOV       A,#0x2
-   \   000098   12....       LCALL     ?XSTACK_DISP0_8
-   \   00009B   E8           MOV       A,R0
-   \   00009C   F0           MOVX      @DPTR,A
-   \   00009D   A3           INC       DPTR
-   \   00009E   E9           MOV       A,R1
-   \   00009F   F0           MOVX      @DPTR,A
-   \   0000A0   85..82       MOV       DPL,?V0
-   \   0000A3   85..83       MOV       DPH,?V1
-   \   0000A6   E0           MOVX      A,@DPTR
-   \   0000A7   C0E0         PUSH      A
-   \   0000A9   7404         MOV       A,#0x4
-   \   0000AB   12....       LCALL     ?XSTACK_DISP0_8
-   \   0000AE   D0E0         POP       A
-   \   0000B0   F0           MOVX      @DPTR,A
-     40            MEM_memcpy(&memcpy);
-   \   0000B1                ; Setup parameters for call to function MEM_memcpy
-   \   0000B1   AA..         MOV       R2,?XSP + 0
-   \   0000B3   AB..         MOV       R3,?XSP + 1
-   \   0000B5   12....       LCALL     `??MEM_memcpy::?relay`; Banked call to: MEM_memcpy
-     41            // Скопируем новые данные
-     42            memcpy.src = head;
-   \   0000B8   7402         MOV       A,#0x2
-   \   0000BA   12....       LCALL     ?XSTACK_DISP0_8
-   \   0000BD   E5..         MOV       A,?V6
-   \   0000BF   F0           MOVX      @DPTR,A
-   \   0000C0   A3           INC       DPTR
-   \   0000C1   E5..         MOV       A,?V7
-   \   0000C3   F0           MOVX      @DPTR,A
-     43            memcpy.dst = frame->payload;
-   \   0000C4   E5..         MOV       A,?V0
-   \   0000C6   2415         ADD       A,#0x15
-   \   0000C8   F8           MOV       R0,A
-   \   0000C9   E4           CLR       A
-   \   0000CA   35..         ADDC      A,?V1
-   \   0000CC   F9           MOV       R1,A
-   \   0000CD   85..82       MOV       DPL,?XSP + 0
-   \   0000D0   85..83       MOV       DPH,?XSP + 1
-   \   0000D3   E8           MOV       A,R0
-   \   0000D4   F0           MOVX      @DPTR,A
-   \   0000D5   A3           INC       DPTR
-   \   0000D6   E9           MOV       A,R1
-   \   0000D7   F0           MOVX      @DPTR,A
-     44            memcpy.len = len;
-   \   0000D8   E5..         MOV       A,?V2
-   \   0000DA   C0E0         PUSH      A
-   \   0000DC   7404         MOV       A,#0x4
-   \   0000DE   12....       LCALL     ?XSTACK_DISP0_8
-   \   0000E1   D0E0         POP       A
-   \   0000E3   F0           MOVX      @DPTR,A
-     45            MEM_memcpy(&memcpy);
-   \   0000E4                ; Setup parameters for call to function MEM_memcpy
-   \   0000E4   AA..         MOV       R2,?XSP + 0
-   \   0000E6   AB..         MOV       R3,?XSP + 1
-   \   0000E8   12....       LCALL     `??MEM_memcpy::?relay`; Banked call to: MEM_memcpy
-     46            frame->len = new_len;
-   \   0000EB   EE           MOV       A,R6
-   \   0000EC   C0E0         PUSH      A
-   \   0000EE   85..82       MOV       DPL,?V0
-   \   0000F1   85..83       MOV       DPH,?V1
-   \   0000F4   D0E0         POP       A
-   \   0000F6   F0           MOVX      @DPTR,A
-     47          };
-   \   0000F7   7405         MOV       A,#0x5
-   \   0000F9   12....       LCALL     ?DEALLOC_XSTACK8
-   \   0000FC   7F08         MOV       R7,#0x8
-   \   0000FE   02....       LJMP      ?BANKED_LEAVE_XDATA
-     48          
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     49          void FR_del_header(struct frame* frame, char len){
-   \                     FR_del_header:
-   \   000000                REQUIRE ?V0
-   \   000000                REQUIRE ?V1
-   \   000000                REQUIRE ?V2
-   \   000000                REQUIRE ?V4
-   \   000000                REQUIRE ?V5
-   \   000000   74F2         MOV       A,#-0xe
-   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
-   \   000005                ; Saved register size: 14
-   \   000005                ; Auto size: 5
-   \   000005   74FB         MOV       A,#-0x5
-   \   000007   12....       LCALL     ?ALLOC_XSTACK8
-   \   00000A   8A..         MOV       ?V0,R2
-   \   00000C   8B..         MOV       ?V1,R3
-   \   00000E   89..         MOV       ?V2,R1
-     50            ASSERT(frame->len >= len);
-   \   000010   85..82       MOV       DPL,?V0
-   \   000013   85..83       MOV       DPH,?V1
-   \   000016   E0           MOVX      A,@DPTR
-   \   000017   C3           CLR       C
-   \   000018   95..         SUBB      A,?V2
-   \   00001A   5037         JNC       ??FR_del_header_0
-   \   00001C                ; Setup parameters for call to function printf
-   \   00001C   75....       MOV       ?V4,#??__FUNCTION___12 & 0xff
-   \   00001F   75....       MOV       ?V5,#(??__FUNCTION___12 >> 8) & 0xff
-   \   000022   78..         MOV       R0,#?V4
-   \   000024   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   000027   75..32       MOV       ?V4,#0x32
-   \   00002A   75..00       MOV       ?V5,#0x0
-   \   00002D   78..         MOV       R0,#?V4
-   \   00002F   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   000032   75....       MOV       ?V4,#`?<Constant "frame.c">` & 0xff
-   \   000035   75....       MOV       ?V5,#(`?<Constant "frame.c">` >> 8) & 0xff
-   \   000038   78..         MOV       R0,#?V4
-   \   00003A   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   00003D   7A..         MOV       R2,#`?<Constant "%s:%d:%s -> ">_3` & 0xff
-   \   00003F   7B..         MOV       R3,#(`?<Constant "%s:%d:%s -> ">_3` >> 8) & 0xff
-   \   000041   12....       LCALL     `??printf::?relay`; Banked call to: printf
-   \   000044   7406         MOV       A,#0x6
-   \   000046   12....       LCALL     ?DEALLOC_XSTACK8
-   \   000049                ; Setup parameters for call to function printf
-   \   000049   7A..         MOV       R2,#`?<Constant "\\"frame->len >= len\\" F...">` & 0xff
-   \   00004B   7B..         MOV       R3,#(`?<Constant "\\"frame->len >= len\\" F...">` >> 8) & 0xff
-   \   00004D   12....       LCALL     `??printf::?relay`; Banked call to: printf
-   \   000050                ; Setup parameters for call to function DBG_CORE_HALT
-   \   000050   12....       LCALL     `??DBG_CORE_HALT::?relay`; Banked call to: DBG_CORE_HALT
-     51            int new_len = frame->len - len;
-   \                     ??FR_del_header_0:
-   \   000053   85..82       MOV       DPL,?V0
-   \   000056   85..83       MOV       DPH,?V1
-   \   000059   E0           MOVX      A,@DPTR
-   \   00005A   FA           MOV       R2,A
-   \   00005B   7B00         MOV       R3,#0x0
-   \   00005D   E5..         MOV       A,?V2
-   \   00005F   F8           MOV       R0,A
-   \   000060   7900         MOV       R1,#0x0
-   \   000062   EA           MOV       A,R2
-   \   000063   C3           CLR       C
-   \   000064   98           SUBB      A,R0
-   \   000065   FE           MOV       R6,A
-   \   000066   EB           MOV       A,R3
-   \   000067   99           SUBB      A,R1
-   \   000068   FF           MOV       R7,A
-     52            frame->len = new_len;
-   \   000069   EE           MOV       A,R6
-   \   00006A   C0E0         PUSH      A
-   \   00006C   85..82       MOV       DPL,?V0
-   \   00006F   85..83       MOV       DPH,?V1
-   \   000072   D0E0         POP       A
-   \   000074   F0           MOVX      @DPTR,A
-     53            struct memcpy memcpy = {
-     54              .src = &frame->payload[len],
-     55              .dst = frame->payload,
-     56              .len = new_len
-     57            };  
-   \   000075   E5..         MOV       A,?V0
-   \   000077   2415         ADD       A,#0x15
+   \   00006E   85..82       MOV       DPL,?V0
+   \   000071   85..83       MOV       DPH,?V1
+   \   000074   E0           MOVX      A,@DPTR
+   \   000075   6045         JZ        ??FR_add_header_1
+     33              MEMCPY(&frame->payload[len], frame->payload, len);
+   \   000077   E5..         MOV       A,?V2
    \   000079   F8           MOV       R0,A
-   \   00007A   E4           CLR       A
-   \   00007B   35..         ADDC      A,?V1
-   \   00007D   F9           MOV       R1,A
-   \   00007E   85..82       MOV       DPL,?XSP + 0
-   \   000081   85..83       MOV       DPH,?XSP + 1
+   \   00007A   7900         MOV       R1,#0x0
+   \   00007C   E5..         MOV       A,?V0
+   \   00007E   28           ADD       A,R0
+   \   00007F   F8           MOV       R0,A
+   \   000080   E5..         MOV       A,?V1
+   \   000082   39           ADDC      A,R1
+   \   000083   F9           MOV       R1,A
    \   000084   E8           MOV       A,R0
-   \   000085   F0           MOVX      @DPTR,A
-   \   000086   A3           INC       DPTR
-   \   000087   E9           MOV       A,R1
-   \   000088   F0           MOVX      @DPTR,A
-   \   000089   E5..         MOV       A,?V2
-   \   00008B   F8           MOV       R0,A
-   \   00008C   7900         MOV       R1,#0x0
-   \   00008E   E5..         MOV       A,?V0
-   \   000090   28           ADD       A,R0
-   \   000091   F8           MOV       R0,A
-   \   000092   E5..         MOV       A,?V1
-   \   000094   39           ADDC      A,R1
-   \   000095   F9           MOV       R1,A
-   \   000096   E8           MOV       A,R0
+   \   000085   2415         ADD       A,#0x15
+   \   000087   F8           MOV       R0,A
+   \   000088   5001         JNC       ??FR_add_header_2
+   \   00008A   09           INC       R1
+   \                     ??FR_add_header_2:
+   \   00008B   7405         MOV       A,#0x5
+   \   00008D   12....       LCALL     ?XSTACK_DISP0_8
+   \   000090   E8           MOV       A,R0
+   \   000091   F0           MOVX      @DPTR,A
+   \   000092   A3           INC       DPTR
+   \   000093   E9           MOV       A,R1
+   \   000094   F0           MOVX      @DPTR,A
+   \   000095   E5..         MOV       A,?V0
    \   000097   2415         ADD       A,#0x15
    \   000099   F8           MOV       R0,A
-   \   00009A   5001         JNC       ??FR_del_header_1
-   \   00009C   09           INC       R1
-   \                     ??FR_del_header_1:
-   \   00009D   7402         MOV       A,#0x2
-   \   00009F   12....       LCALL     ?XSTACK_DISP0_8
-   \   0000A2   E8           MOV       A,R0
-   \   0000A3   F0           MOVX      @DPTR,A
-   \   0000A4   A3           INC       DPTR
-   \   0000A5   E9           MOV       A,R1
-   \   0000A6   F0           MOVX      @DPTR,A
-   \   0000A7   EE           MOV       A,R6
-   \   0000A8   C0E0         PUSH      A
-   \   0000AA   7404         MOV       A,#0x4
-   \   0000AC   12....       LCALL     ?XSTACK_DISP0_8
-   \   0000AF   D0E0         POP       A
-   \   0000B1   F0           MOVX      @DPTR,A
-     58            MEM_memcpy(&memcpy);  
-   \   0000B2                ; Setup parameters for call to function MEM_memcpy
-   \   0000B2   AA..         MOV       R2,?XSP + 0
-   \   0000B4   AB..         MOV       R3,?XSP + 1
-   \   0000B6   12....       LCALL     `??MEM_memcpy::?relay`; Banked call to: MEM_memcpy
-     59          }
-   \   0000B9   7405         MOV       A,#0x5
-   \   0000BB   12....       LCALL     ?DEALLOC_XSTACK8
-   \   0000BE   7F06         MOV       R7,#0x6
-   \   0000C0   02....       LJMP      ?BANKED_LEAVE_XDATA
-     60          
+   \   00009A   E4           CLR       A
+   \   00009B   35..         ADDC      A,?V1
+   \   00009D   F9           MOV       R1,A
+   \   00009E   7407         MOV       A,#0x7
+   \   0000A0   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000A3   E8           MOV       A,R0
+   \   0000A4   F0           MOVX      @DPTR,A
+   \   0000A5   A3           INC       DPTR
+   \   0000A6   E9           MOV       A,R1
+   \   0000A7   F0           MOVX      @DPTR,A
+   \   0000A8   E5..         MOV       A,?V2
+   \   0000AA   C0E0         PUSH      A
+   \   0000AC   7409         MOV       A,#0x9
+   \   0000AE   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000B1   D0E0         POP       A
+   \   0000B3   F0           MOVX      @DPTR,A
+   \   0000B4                ; Setup parameters for call to function MEM_memcpy
+   \   0000B4   7405         MOV       A,#0x5
+   \   0000B6   12....       LCALL     ?XSTACK_DISP101_8
+   \   0000B9   12....       LCALL     `??MEM_memcpy::?relay`; Banked call to: MEM_memcpy
+     34            
+     35            // Скопируем новые данные
+     36            MEMCPY(frame->payload, head, len);
+   \                     ??FR_add_header_1:
+   \   0000BC   E5..         MOV       A,?V0
+   \   0000BE   2415         ADD       A,#0x15
+   \   0000C0   F8           MOV       R0,A
+   \   0000C1   E4           CLR       A
+   \   0000C2   35..         ADDC      A,?V1
+   \   0000C4   F9           MOV       R1,A
+   \   0000C5   85..82       MOV       DPL,?XSP + 0
+   \   0000C8   85..83       MOV       DPH,?XSP + 1
+   \   0000CB   E8           MOV       A,R0
+   \   0000CC   F0           MOVX      @DPTR,A
+   \   0000CD   A3           INC       DPTR
+   \   0000CE   E9           MOV       A,R1
+   \   0000CF   F0           MOVX      @DPTR,A
+   \   0000D0   7402         MOV       A,#0x2
+   \   0000D2   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000D5   E5..         MOV       A,?V6
+   \   0000D7   F0           MOVX      @DPTR,A
+   \   0000D8   A3           INC       DPTR
+   \   0000D9   E5..         MOV       A,?V7
+   \   0000DB   F0           MOVX      @DPTR,A
+   \   0000DC   E5..         MOV       A,?V2
+   \   0000DE   C0E0         PUSH      A
+   \   0000E0   7404         MOV       A,#0x4
+   \   0000E2   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000E5   D0E0         POP       A
+   \   0000E7   F0           MOVX      @DPTR,A
+   \   0000E8                ; Setup parameters for call to function MEM_memcpy
+   \   0000E8   AA..         MOV       R2,?XSP + 0
+   \   0000EA   AB..         MOV       R3,?XSP + 1
+   \   0000EC   12....       LCALL     `??MEM_memcpy::?relay`; Banked call to: MEM_memcpy
+     37            frame->len = new_len;
+   \   0000EF   EE           MOV       A,R6
+   \   0000F0   C0E0         PUSH      A
+   \   0000F2   85..82       MOV       DPL,?V0
+   \   0000F5   85..83       MOV       DPH,?V1
+   \   0000F8   D0E0         POP       A
+   \   0000FA   F0           MOVX      @DPTR,A
+     38          };
+   \   0000FB   740A         MOV       A,#0xa
+   \   0000FD   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000100   7F08         MOV       R7,#0x8
+   \   000102   02....       LJMP      ?BANKED_LEAVE_XDATA
+     39          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     61          int FR_busy(){
+     40          void FR_del_header(struct frame* frame, char len){
+   \                     FR_del_header:
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
+   \   000000   74F4         MOV       A,#-0xc
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 12
+   \   000005                ; Auto size: 9
+   \   000005   74F7         MOV       A,#-0x9
+   \   000007   12....       LCALL     ?ALLOC_XSTACK8
+   \   00000A   EA           MOV       A,R2
+   \   00000B   FE           MOV       R6,A
+   \   00000C   EB           MOV       A,R3
+   \   00000D   FF           MOV       R7,A
+   \   00000E   89..         MOV       ?V0,R1
+     41            ASSERT(len != NULL);
+   \   000010   E5..         MOV       A,?V0
+   \   000012   7037         JNZ       ??FR_del_header_0
+   \   000014                ; Setup parameters for call to function printf
+   \   000014   75....       MOV       ?V2,#??__FUNCTION___12 & 0xff
+   \   000017   75....       MOV       ?V3,#(??__FUNCTION___12 >> 8) & 0xff
+   \   00001A   78..         MOV       R0,#?V2
+   \   00001C   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00001F   75..29       MOV       ?V2,#0x29
+   \   000022   75..00       MOV       ?V3,#0x0
+   \   000025   78..         MOV       R0,#?V2
+   \   000027   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00002A   75....       MOV       ?V2,#`?<Constant "frame.c">` & 0xff
+   \   00002D   75....       MOV       ?V3,#(`?<Constant "frame.c">` >> 8) & 0xff
+   \   000030   78..         MOV       R0,#?V2
+   \   000032   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000035   7A..         MOV       R2,#`?<Constant "%s:%d:%s -> ">_3` & 0xff
+   \   000037   7B..         MOV       R3,#(`?<Constant "%s:%d:%s -> ">_3` >> 8) & 0xff
+   \   000039   12....       LCALL     `??printf::?relay`; Banked call to: printf
+   \   00003C   7406         MOV       A,#0x6
+   \   00003E   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000041                ; Setup parameters for call to function printf
+   \   000041   7A..         MOV       R2,#`?<Constant "\\"len != NULL\\" Faild! \\r\\n">` & 0xff
+   \   000043   7B..         MOV       R3,#(`?<Constant "\\"len != NULL\\" Faild! \\r\\n">` >> 8) & 0xff
+   \   000045   12....       LCALL     `??printf::?relay`; Banked call to: printf
+   \   000048                ; Setup parameters for call to function DBG_CORE_HALT
+   \   000048   12....       LCALL     `??DBG_CORE_HALT::?relay`; Banked call to: DBG_CORE_HALT
+     42            ASSERT(frame->len >= len);
+   \                     ??FR_del_header_0:
+   \   00004B   8E82         MOV       DPL,R6
+   \   00004D   8F83         MOV       DPH,R7
+   \   00004F   E0           MOVX      A,@DPTR
+   \   000050   C3           CLR       C
+   \   000051   95..         SUBB      A,?V0
+   \   000053   5037         JNC       ??FR_del_header_1
+   \   000055                ; Setup parameters for call to function printf
+   \   000055   75....       MOV       ?V2,#??__FUNCTION___12 & 0xff
+   \   000058   75....       MOV       ?V3,#(??__FUNCTION___12 >> 8) & 0xff
+   \   00005B   78..         MOV       R0,#?V2
+   \   00005D   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000060   75..2A       MOV       ?V2,#0x2a
+   \   000063   75..00       MOV       ?V3,#0x0
+   \   000066   78..         MOV       R0,#?V2
+   \   000068   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00006B   75....       MOV       ?V2,#`?<Constant "frame.c">` & 0xff
+   \   00006E   75....       MOV       ?V3,#(`?<Constant "frame.c">` >> 8) & 0xff
+   \   000071   78..         MOV       R0,#?V2
+   \   000073   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000076   7A..         MOV       R2,#`?<Constant "%s:%d:%s -> ">_3` & 0xff
+   \   000078   7B..         MOV       R3,#(`?<Constant "%s:%d:%s -> ">_3` >> 8) & 0xff
+   \   00007A   12....       LCALL     `??printf::?relay`; Banked call to: printf
+   \   00007D   7406         MOV       A,#0x6
+   \   00007F   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000082                ; Setup parameters for call to function printf
+   \   000082   7A..         MOV       R2,#`?<Constant "\\"frame->len >= len\\" F...">` & 0xff
+   \   000084   7B..         MOV       R3,#(`?<Constant "\\"frame->len >= len\\" F...">` >> 8) & 0xff
+   \   000086   12....       LCALL     `??printf::?relay`; Banked call to: printf
+   \   000089                ; Setup parameters for call to function DBG_CORE_HALT
+   \   000089   12....       LCALL     `??DBG_CORE_HALT::?relay`; Banked call to: DBG_CORE_HALT
+     43            MEMCPY(frame->payload, &frame->payload[len], len);
+   \                     ??FR_del_header_1:
+   \   00008C   EE           MOV       A,R6
+   \   00008D   2415         ADD       A,#0x15
+   \   00008F   F8           MOV       R0,A
+   \   000090   E4           CLR       A
+   \   000091   3F           ADDC      A,R7
+   \   000092   F9           MOV       R1,A
+   \   000093   7404         MOV       A,#0x4
+   \   000095   12....       LCALL     ?XSTACK_DISP0_8
+   \   000098   E8           MOV       A,R0
+   \   000099   F0           MOVX      @DPTR,A
+   \   00009A   A3           INC       DPTR
+   \   00009B   E9           MOV       A,R1
+   \   00009C   F0           MOVX      @DPTR,A
+   \   00009D   E5..         MOV       A,?V0
+   \   00009F   F8           MOV       R0,A
+   \   0000A0   7900         MOV       R1,#0x0
+   \   0000A2   EE           MOV       A,R6
+   \   0000A3   28           ADD       A,R0
+   \   0000A4   F8           MOV       R0,A
+   \   0000A5   EF           MOV       A,R7
+   \   0000A6   39           ADDC      A,R1
+   \   0000A7   F9           MOV       R1,A
+   \   0000A8   E8           MOV       A,R0
+   \   0000A9   2415         ADD       A,#0x15
+   \   0000AB   F8           MOV       R0,A
+   \   0000AC   5001         JNC       ??FR_del_header_2
+   \   0000AE   09           INC       R1
+   \                     ??FR_del_header_2:
+   \   0000AF   7406         MOV       A,#0x6
+   \   0000B1   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000B4   E8           MOV       A,R0
+   \   0000B5   F0           MOVX      @DPTR,A
+   \   0000B6   A3           INC       DPTR
+   \   0000B7   E9           MOV       A,R1
+   \   0000B8   F0           MOVX      @DPTR,A
+   \   0000B9   E5..         MOV       A,?V0
+   \   0000BB   C0E0         PUSH      A
+   \   0000BD   7408         MOV       A,#0x8
+   \   0000BF   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000C2   D0E0         POP       A
+   \   0000C4   F0           MOVX      @DPTR,A
+   \   0000C5                ; Setup parameters for call to function MEM_memcpy
+   \   0000C5   7404         MOV       A,#0x4
+   \   0000C7   12....       LCALL     ?XSTACK_DISP101_8
+   \   0000CA   12....       LCALL     `??MEM_memcpy::?relay`; Banked call to: MEM_memcpy
+     44            
+     45            #ifdef FRAME_FOOTER_DEL
+     46            MEMSET(&frame->payload[len], 0, len);
+   \   0000CD   90....       MOV       DPTR,#`?<Constant {(char *)0, 0, 0}>`
+   \   0000D0   AC..         MOV       R4,?XSP + 0
+   \   0000D2   AD..         MOV       R5,?XSP + 1
+   \   0000D4   7404         MOV       A,#0x4
+   \   0000D6   12....       LCALL     ?MOVE_LONG8_XDATA_XDATA
+   \   0000D9   E5..         MOV       A,?V0
+   \   0000DB   F8           MOV       R0,A
+   \   0000DC   7900         MOV       R1,#0x0
+   \   0000DE   EE           MOV       A,R6
+   \   0000DF   28           ADD       A,R0
+   \   0000E0   F8           MOV       R0,A
+   \   0000E1   EF           MOV       A,R7
+   \   0000E2   39           ADDC      A,R1
+   \   0000E3   F9           MOV       R1,A
+   \   0000E4   E8           MOV       A,R0
+   \   0000E5   2415         ADD       A,#0x15
+   \   0000E7   F8           MOV       R0,A
+   \   0000E8   5001         JNC       ??FR_del_header_3
+   \   0000EA   09           INC       R1
+   \                     ??FR_del_header_3:
+   \   0000EB   85..82       MOV       DPL,?XSP + 0
+   \   0000EE   85..83       MOV       DPH,?XSP + 1
+   \   0000F1   E8           MOV       A,R0
+   \   0000F2   F0           MOVX      @DPTR,A
+   \   0000F3   A3           INC       DPTR
+   \   0000F4   E9           MOV       A,R1
+   \   0000F5   F0           MOVX      @DPTR,A
+   \   0000F6   E5..         MOV       A,?V0
+   \   0000F8   C0E0         PUSH      A
+   \   0000FA   7402         MOV       A,#0x2
+   \   0000FC   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000FF   D0E0         POP       A
+   \   000101   F0           MOVX      @DPTR,A
+   \   000102                ; Setup parameters for call to function MEM_memset
+   \   000102   AA..         MOV       R2,?XSP + 0
+   \   000104   AB..         MOV       R3,?XSP + 1
+   \   000106   12....       LCALL     `??MEM_memset::?relay`; Banked call to: MEM_memset
+     47            #endif
+     48            
+     49            frame->len = frame->len - len;;
+   \   000109   8E82         MOV       DPL,R6
+   \   00010B   8F83         MOV       DPH,R7
+   \   00010D   E0           MOVX      A,@DPTR
+   \   00010E   C3           CLR       C
+   \   00010F   95..         SUBB      A,?V0
+   \   000111   F0           MOVX      @DPTR,A
+     50          }
+   \   000112   7409         MOV       A,#0x9
+   \   000114   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000117   7F04         MOV       R7,#0x4
+   \   000119   02....       LJMP      ?BANKED_LEAVE_XDATA
+
+   \                                 In  segment XDATA_I, align 1, keep-with-next
+   \                     `?<Constant {(char *)0, 0, 0}>`:
+   \   000000                DS 4
+   \   000004                REQUIRE `?<Initializer for <Constant {(char *)0, 0, 0}>`
+   \   000004                REQUIRE __INIT_XDATA_I
+     51          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     52          int FR_busy(){
    \                     FR_busy:
    \   000000   C082         PUSH      DPL
    \   000002   C083         PUSH      DPH
    \   000004                ; Saved register size: 2
    \   000004                ; Auto size: 0
-     62            return SL_busy();
+     53            return SL_busy();
    \   000004                ; Setup parameters for call to function SL_busy
    \   000004   12....       LCALL     `??SL_busy::?relay`; Banked call to: SL_busy
    \   000007   D083         POP       DPH
    \   000009   D082         POP       DPL
    \   00000B   02....       LJMP      ?BRET
-     63          }
-     64          
+     54          }
+     55          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     65          int FR_available(){
+     56          int FR_available(){
    \                     FR_available:
    \   000000   C082         PUSH      DPL
    \   000002   C083         PUSH      DPH
    \   000004                ; Saved register size: 2
    \   000004                ; Auto size: 0
-     66            return SL_available();
+     57            return SL_available();
    \   000004                ; Setup parameters for call to function SL_available
    \   000004   12....       LCALL     `??SL_available::?relay`; Banked call to: SL_available
    \   000007   D083         POP       DPH
    \   000009   D082         POP       DPL
    \   00000B   02....       LJMP      ?BRET
-     67          };
+     58          };
 E:\WMNU\IAR_NEW_ARCH\PRJ Test\main.c
       1          #include "action_manager.h"
       2          #include "debug.h"
@@ -2897,28 +2916,30 @@ E:\WMNU\IAR_NEW_ARCH\PRJ Test\main.c
       6          extern void u_mem_utils(void);
       7          extern void u_macros(void);
       8          extern void u_mem_slots(void);
-      9          
+      9          extern void u_frame(void);
+     10          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     10          void main(){
+     11          void main(){
    \                     main:
    \   000000                ; Auto size: 0
-     11          //  AM_HW_Init();
-     12              AM_SW_Init();
+     12          //  AM_HW_Init();
+     13              AM_SW_Init();
    \   000000                ; Setup parameters for call to function AM_SW_Init
    \   000000   12....       LCALL     `??AM_SW_Init::?relay`; Banked call to: AM_SW_Init
-     13            
-     14            //u_test();
-     15           // u_alarm_timer();
-     16            //u_macros();
-     17            //u_mem_utils(); // TODO красные зоны
-     18            u_mem_slots();
-   \   000003                ; Setup parameters for call to function u_mem_slots
-   \   000003   12....       LCALL     `??u_mem_slots::?relay`; Banked call to: u_mem_slots
-     19            DBG_CORE_HALT();
+     14            
+     15            //u_test();
+     16           // u_alarm_timer();
+     17            //u_macros();
+     18            //u_mem_utils(); // TODO красные зоны
+     19            //u_mem_slots();
+     20            u_frame();
+   \   000003                ; Setup parameters for call to function u_frame
+   \   000003   12....       LCALL     `??u_frame::?relay`; Banked call to: u_frame
+     21            DBG_CORE_HALT();
    \   000006                ; Setup parameters for call to function DBG_CORE_HALT
    \   000006   12....       LCALL     `??DBG_CORE_HALT::?relay`; Banked call to: DBG_CORE_HALT
-     20          }
+     22          }
    \   000009   02....       LJMP      ?BRET
 E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\mem_slots.c
       1          #include "debug.h"
@@ -3253,7 +3274,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\mem_slots.c
      82          }
      83          
      84          /**
-     85          @brief Выделяем слот.
+     85          @brief Возвращает указатель на буфер или NULL. Буфер заполнен 0
      86          @detail Алгоритм имеет защиту от повторного входа. Защита организована
      87          через использование глобального указателя slot_ptr. Если slot_ptr NULL,
      88          для выделения слота вызывается фун-я alloc, которая в качестве итератора
@@ -3830,7 +3851,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\mem_utils.c
    \   000008   A3           INC       DPTR
    \   000009   A3           INC       DPTR
    \   00000A   E0           MOVX      A,@DPTR
-   \   00000B   6025         JZ        ??MEM_memset_1
+   \   00000B   603B         JZ        ??MEM_memset_1
      19              *memset->dst = memset->val;
    \   00000D   8A82         MOV       DPL,R2
    \   00000F   8B83         MOV       DPH,R3
@@ -3849,23 +3870,40 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\mem_utils.c
    \   000021   8882         MOV       DPL,R0
    \   000023   D0E0         POP       A
    \   000025   F0           MOVX      @DPTR,A
-     20              memset->len--;
+     20              memset->dst++;
    \   000026   8A82         MOV       DPL,R2
    \   000028   8B83         MOV       DPH,R3
-   \   00002A   A3           INC       DPTR
-   \   00002B   A3           INC       DPTR
-   \   00002C   E0           MOVX      A,@DPTR
-   \   00002D   24FF         ADD       A,#-0x1
-   \   00002F   F0           MOVX      @DPTR,A
-   \   000030   80D2         SJMP      ??MEM_memset_0
-     21            }  
-     22          };
+   \   00002A   E0           MOVX      A,@DPTR
+   \   00002B   2401         ADD       A,#0x1
+   \   00002D   F8           MOV       R0,A
+   \   00002E   A3           INC       DPTR
+   \   00002F   E0           MOVX      A,@DPTR
+   \   000030   3400         ADDC      A,#0x0
+   \   000032   F9           MOV       R1,A
+   \   000033   8A82         MOV       DPL,R2
+   \   000035   8B83         MOV       DPH,R3
+   \   000037   E8           MOV       A,R0
+   \   000038   F0           MOVX      @DPTR,A
+   \   000039   A3           INC       DPTR
+   \   00003A   E9           MOV       A,R1
+   \   00003B   F0           MOVX      @DPTR,A
+     21              memset->len--;
+   \   00003C   8A82         MOV       DPL,R2
+   \   00003E   8B83         MOV       DPH,R3
+   \   000040   A3           INC       DPTR
+   \   000041   A3           INC       DPTR
+   \   000042   E0           MOVX      A,@DPTR
+   \   000043   24FF         ADD       A,#-0x1
+   \   000045   F0           MOVX      @DPTR,A
+   \   000046   80BC         SJMP      ??MEM_memset_0
+     22            }  
+     23          };
    \                     ??MEM_memset_1:
-   \   000032   D083         POP       DPH
-   \   000034   D082         POP       DPL
-   \   000036   02....       LJMP      ?BRET
-     23          
+   \   000048   D083         POP       DPH
+   \   00004A   D082         POP       DPL
+   \   00004C   02....       LJMP      ?BRET
      24          
+     25          
 E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\model.c
       1          #include "model.h"
       2          #include "action_manager.h"
@@ -4009,10 +4047,9 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
    \   000000                ; Auto size: 0
    \   000000   02....       LJMP      ?BRET
      27          
-     28          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     29          void TM_SetAlarm(timeslot_t slot, alarm_t alarm){
+     28          void TM_SetAlarm(timeslot_t slot, alarm_t alarm){
    \                     TM_SetAlarm:
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
@@ -4024,7 +4061,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
    \   000006   FE           MOV       R6,A
    \   000007   EA           MOV       A,R2
    \   000008   FF           MOV       R7,A
-     30            ASSERT(slot < MAX_TIME_SLOTS);
+     29            ASSERT(slot < MAX_TIME_SLOTS);
    \   000009   EE           MOV       A,R6
    \   00000A   C3           CLR       C
    \   00000B   9432         SUBB      A,#0x32
@@ -4034,7 +4071,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
    \   000012   75....       MOV       ?V1,#(??__FUNCTION___16 >> 8) & 0xff
    \   000015   78..         MOV       R0,#?V0
    \   000017   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   00001A   75..1E       MOV       ?V0,#0x1e
+   \   00001A   75..1D       MOV       ?V0,#0x1d
    \   00001D   75..00       MOV       ?V1,#0x0
    \   000020   78..         MOV       R0,#?V0
    \   000022   12....       LCALL     ?PUSH_XSTACK_I_TWO
@@ -4053,7 +4090,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
    \   000040   12....       LCALL     `??printf::?relay`; Banked call to: printf
    \   000043                ; Setup parameters for call to function DBG_CORE_HALT
    \   000043   12....       LCALL     `??DBG_CORE_HALT::?relay`; Banked call to: DBG_CORE_HALT
-     31            ALARMS[slot] |= alarm;
+     30            ALARMS[slot] |= alarm;
    \                     ??TM_SetAlarm_0:
    \   000046   EE           MOV       A,R6
    \   000047   F8           MOV       R0,A
@@ -4067,13 +4104,13 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
    \   000054   E0           MOVX      A,@DPTR
    \   000055   4F           ORL       A,R7
    \   000056   F0           MOVX      @DPTR,A
-     32          }
+     31          }
    \   000057   7F02         MOV       R7,#0x2
    \   000059   02....       LJMP      ?BANKED_LEAVE_XDATA
-     33          
+     32          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     34          void TM_ClrAlarm(timeslot_t slot, alarm_t alarm){
+     33          void TM_ClrAlarm(timeslot_t slot, alarm_t alarm){
    \                     TM_ClrAlarm:
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
@@ -4085,7 +4122,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
    \   000006   FE           MOV       R6,A
    \   000007   EA           MOV       A,R2
    \   000008   FF           MOV       R7,A
-     35            ASSERT(slot < MAX_TIME_SLOTS);
+     34            ASSERT(slot < MAX_TIME_SLOTS);
    \   000009   EE           MOV       A,R6
    \   00000A   C3           CLR       C
    \   00000B   9432         SUBB      A,#0x32
@@ -4095,7 +4132,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
    \   000012   75....       MOV       ?V1,#(??__FUNCTION___17 >> 8) & 0xff
    \   000015   78..         MOV       R0,#?V0
    \   000017   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   00001A   75..23       MOV       ?V0,#0x23
+   \   00001A   75..22       MOV       ?V0,#0x22
    \   00001D   75..00       MOV       ?V1,#0x0
    \   000020   78..         MOV       R0,#?V0
    \   000022   12....       LCALL     ?PUSH_XSTACK_I_TWO
@@ -4114,7 +4151,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
    \   000040   12....       LCALL     `??printf::?relay`; Banked call to: printf
    \   000043                ; Setup parameters for call to function DBG_CORE_HALT
    \   000043   12....       LCALL     `??DBG_CORE_HALT::?relay`; Banked call to: DBG_CORE_HALT
-     36            ALARMS[slot] &= (~alarm);
+     35            ALARMS[slot] &= (~alarm);
    \                     ??TM_ClrAlarm_0:
    \   000046   EF           MOV       A,R7
    \   000047   F4           CPL       A
@@ -4131,23 +4168,23 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
    \   000057   E0           MOVX      A,@DPTR
    \   000058   5A           ANL       A,R2
    \   000059   F0           MOVX      @DPTR,A
-     37          }
+     36          }
    \   00005A   7F02         MOV       R7,#0x2
    \   00005C   02....       LJMP      ?BANKED_LEAVE_XDATA
-     38          
+     37          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     39          void TM_AdjustTime(nwtime_t time){
+     38          void TM_AdjustTime(nwtime_t time){
    \                     TM_AdjustTime:
    \   000000                ; Saved register size: 0
    \   000000                ; Auto size: 0
-     40            
-     41          }
+     39            
+     40          }
    \   000000   02....       LJMP      ?BRET
-     42          
+     41          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     43          void TM_IRQ(nwtime_t time){
+     42          void TM_IRQ(nwtime_t time){
    \                     TM_IRQ:
    \   000000   74F7         MOV       A,#-0x9
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
@@ -4157,11 +4194,11 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
    \   000006   FE           MOV       R6,A
    \   000007   EB           MOV       A,R3
    \   000008   FF           MOV       R7,A
-     44            LOG_OFF("ALARM! %d", time);
-     45            AM_Hot_start();
+     43            LOG_OFF("ALARM! %d", time);
+     44            AM_Hot_start();
    \   000009                ; Setup parameters for call to function AM_Hot_start
    \   000009   12....       LCALL     `??AM_Hot_start::?relay`; Banked call to: AM_Hot_start
-     46          }
+     45          }
    \   00000C   7F01         MOV       R7,#0x1
    \   00000E   02....       LJMP      ?BANKED_LEAVE_XDATA
 E:\WMNU\IAR_new_arch\PRJ Test\u_alarm_timer.c
@@ -4267,6 +4304,197 @@ E:\WMNU\IAR_NEW_ARCH\PRJ Test\u_debug.c
       9          }
    \   000077   7F02         MOV       R7,#0x2
    \   000079   02....       LJMP      ?BANKED_LEAVE_XDATA
+E:\WMNU\IAR_NEW_ARCH\PRJ Test\u_frame.c
+      1          #include "debug.h"
+      2          #include "frame.h"
+      3          
+      4          
+      5          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+      6          void create(void){
+   \                     create:
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
+   \   000000   74F4         MOV       A,#-0xc
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 12
+   \   000005                ; Auto size: 10
+   \   000005   74F6         MOV       A,#-0xa
+   \   000007   12....       LCALL     ?ALLOC_XSTACK8
+      7          struct frame *fr = FR_create();
+   \   00000A                ; Setup parameters for call to function FR_create
+   \   00000A   12....       LCALL     `??FR_create::?relay`; Banked call to: FR_create
+   \   00000D   8A..         MOV       ?V0,R2
+   \   00000F   8B..         MOV       ?V1,R3
+   \   000011   AE..         MOV       R6,?V0
+   \   000013   AF..         MOV       R7,?V1
+      8          
+      9          printf("frame busy %d",FR_busy());
+   \   000015                ; Setup parameters for call to function FR_busy
+   \   000015   12....       LCALL     `??FR_busy::?relay`; Banked call to: FR_busy
+   \   000018   8A..         MOV       ?V2,R2
+   \   00001A   8B..         MOV       ?V3,R3
+   \   00001C   85....       MOV       ?V0,?V2
+   \   00001F   85....       MOV       ?V1,?V3
+   \   000022                ; Setup parameters for call to function printf
+   \   000022   78..         MOV       R0,#?V0
+   \   000024   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000027   7A..         MOV       R2,#`?<Constant "frame busy %d">` & 0xff
+   \   000029   7B..         MOV       R3,#(`?<Constant "frame busy %d">` >> 8) & 0xff
+   \   00002B   12....       LCALL     `??printf::?relay`; Banked call to: printf
+   \   00002E   7402         MOV       A,#0x2
+   \   000030   12....       LCALL     ?DEALLOC_XSTACK8
+     10          printf("frame available %d",FR_available());
+   \   000033                ; Setup parameters for call to function FR_available
+   \   000033   12....       LCALL     `??FR_available::?relay`; Banked call to: FR_available
+   \   000036   8A..         MOV       ?V2,R2
+   \   000038   8B..         MOV       ?V3,R3
+   \   00003A   85....       MOV       ?V0,?V2
+   \   00003D   85....       MOV       ?V1,?V3
+   \   000040                ; Setup parameters for call to function printf
+   \   000040   78..         MOV       R0,#?V0
+   \   000042   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000045   7A..         MOV       R2,#`?<Constant "frame available %d">` & 0xff
+   \   000047   7B..         MOV       R3,#(`?<Constant "frame available %d">` >> 8) & 0xff
+   \   000049   12....       LCALL     `??printf::?relay`; Banked call to: printf
+   \   00004C   7402         MOV       A,#0x2
+   \   00004E   12....       LCALL     ?DEALLOC_XSTACK8
+     11          
+     12          FR_delete(fr);
+   \   000051                ; Setup parameters for call to function FR_delete
+   \   000051   EE           MOV       A,R6
+   \   000052   FA           MOV       R2,A
+   \   000053   EF           MOV       A,R7
+   \   000054   FB           MOV       R3,A
+   \   000055   12....       LCALL     `??FR_delete::?relay`; Banked call to: FR_delete
+     13          
+     14          printf("frame busy %d",FR_busy());
+   \   000058                ; Setup parameters for call to function FR_busy
+   \   000058   12....       LCALL     `??FR_busy::?relay`; Banked call to: FR_busy
+   \   00005B   8A..         MOV       ?V2,R2
+   \   00005D   8B..         MOV       ?V3,R3
+   \   00005F   85....       MOV       ?V0,?V2
+   \   000062   85....       MOV       ?V1,?V3
+   \   000065                ; Setup parameters for call to function printf
+   \   000065   78..         MOV       R0,#?V0
+   \   000067   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00006A   7A..         MOV       R2,#`?<Constant "frame busy %d">` & 0xff
+   \   00006C   7B..         MOV       R3,#(`?<Constant "frame busy %d">` >> 8) & 0xff
+   \   00006E   12....       LCALL     `??printf::?relay`; Banked call to: printf
+   \   000071   7402         MOV       A,#0x2
+   \   000073   12....       LCALL     ?DEALLOC_XSTACK8
+     15          printf("frame available %d",FR_available());
+   \   000076                ; Setup parameters for call to function FR_available
+   \   000076   12....       LCALL     `??FR_available::?relay`; Banked call to: FR_available
+   \   000079   8A..         MOV       ?V2,R2
+   \   00007B   8B..         MOV       ?V3,R3
+   \   00007D   85....       MOV       ?V0,?V2
+   \   000080   85....       MOV       ?V1,?V3
+   \   000083                ; Setup parameters for call to function printf
+   \   000083   78..         MOV       R0,#?V0
+   \   000085   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000088   7A..         MOV       R2,#`?<Constant "frame available %d">` & 0xff
+   \   00008A   7B..         MOV       R3,#(`?<Constant "frame available %d">` >> 8) & 0xff
+   \   00008C   12....       LCALL     `??printf::?relay`; Banked call to: printf
+   \   00008F   7402         MOV       A,#0x2
+   \   000091   12....       LCALL     ?DEALLOC_XSTACK8
+     16          
+     17          fr = FR_create();
+   \   000094                ; Setup parameters for call to function FR_create
+   \   000094   12....       LCALL     `??FR_create::?relay`; Banked call to: FR_create
+   \   000097   8A..         MOV       ?V0,R2
+   \   000099   8B..         MOV       ?V1,R3
+   \   00009B   AE..         MOV       R6,?V0
+   \   00009D   AF..         MOV       R7,?V1
+     18          
+     19          char tst[] = {1,2,3,4,5,6,7,8,9,10};
+   \   00009F   90....       MOV       DPTR,#`?<Constant {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}>`
+   \   0000A2   AC..         MOV       R4,?XSP + 0
+   \   0000A4   AD..         MOV       R5,?XSP + 1
+   \   0000A6   740A         MOV       A,#0xa
+   \   0000A8   12....       LCALL     ?MOVE_LONG8_XDATA_XDATA
+     20          FR_add_header(fr, tst, sizeof(tst));
+   \   0000AB                ; Setup parameters for call to function FR_add_header
+   \   0000AB   790A         MOV       R1,#0xa
+   \   0000AD   AC..         MOV       R4,?XSP + 0
+   \   0000AF   AD..         MOV       R5,?XSP + 1
+   \   0000B1   EE           MOV       A,R6
+   \   0000B2   FA           MOV       R2,A
+   \   0000B3   EF           MOV       A,R7
+   \   0000B4   FB           MOV       R3,A
+   \   0000B5   12....       LCALL     `??FR_add_header::?relay`; Banked call to: FR_add_header
+     21          FR_del_header(fr, 5);
+   \   0000B8                ; Setup parameters for call to function FR_del_header
+   \   0000B8   7905         MOV       R1,#0x5
+   \   0000BA   EE           MOV       A,R6
+   \   0000BB   FA           MOV       R2,A
+   \   0000BC   EF           MOV       A,R7
+   \   0000BD   FB           MOV       R3,A
+   \   0000BE   12....       LCALL     `??FR_del_header::?relay`; Banked call to: FR_del_header
+     22          
+     23          printf("frame busy %d",FR_busy());
+   \   0000C1                ; Setup parameters for call to function FR_busy
+   \   0000C1   12....       LCALL     `??FR_busy::?relay`; Banked call to: FR_busy
+   \   0000C4   8A..         MOV       ?V2,R2
+   \   0000C6   8B..         MOV       ?V3,R3
+   \   0000C8   85....       MOV       ?V0,?V2
+   \   0000CB   85....       MOV       ?V1,?V3
+   \   0000CE                ; Setup parameters for call to function printf
+   \   0000CE   78..         MOV       R0,#?V0
+   \   0000D0   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   0000D3   7A..         MOV       R2,#`?<Constant "frame busy %d">` & 0xff
+   \   0000D5   7B..         MOV       R3,#(`?<Constant "frame busy %d">` >> 8) & 0xff
+   \   0000D7   12....       LCALL     `??printf::?relay`; Banked call to: printf
+   \   0000DA   7402         MOV       A,#0x2
+   \   0000DC   12....       LCALL     ?DEALLOC_XSTACK8
+     24          printf("frame available %d",FR_available());
+   \   0000DF                ; Setup parameters for call to function FR_available
+   \   0000DF   12....       LCALL     `??FR_available::?relay`; Banked call to: FR_available
+   \   0000E2   8A..         MOV       ?V2,R2
+   \   0000E4   8B..         MOV       ?V3,R3
+   \   0000E6   85....       MOV       ?V0,?V2
+   \   0000E9   85....       MOV       ?V1,?V3
+   \   0000EC                ; Setup parameters for call to function printf
+   \   0000EC   78..         MOV       R0,#?V0
+   \   0000EE   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   0000F1   7A..         MOV       R2,#`?<Constant "frame available %d">` & 0xff
+   \   0000F3   7B..         MOV       R3,#(`?<Constant "frame available %d">` >> 8) & 0xff
+   \   0000F5   12....       LCALL     `??printf::?relay`; Banked call to: printf
+   \   0000F8   7402         MOV       A,#0x2
+   \   0000FA   12....       LCALL     ?DEALLOC_XSTACK8
+     25          
+     26          FR_delete(fr);
+   \   0000FD                ; Setup parameters for call to function FR_delete
+   \   0000FD   EE           MOV       A,R6
+   \   0000FE   FA           MOV       R2,A
+   \   0000FF   EF           MOV       A,R7
+   \   000100   FB           MOV       R3,A
+   \   000101   12....       LCALL     `??FR_delete::?relay`; Banked call to: FR_delete
+     27          
+     28          }
+   \   000104   740A         MOV       A,#0xa
+   \   000106   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000109   7F04         MOV       R7,#0x4
+   \   00010B   02....       LJMP      ?BANKED_LEAVE_XDATA
+     29          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     30          void u_frame(void){
+   \                     u_frame:
+   \   000000   C082         PUSH      DPL
+   \   000002   C083         PUSH      DPH
+   \   000004                ; Saved register size: 2
+   \   000004                ; Auto size: 0
+     31              create();
+   \   000004                ; Setup parameters for call to function create
+   \   000004   12....       LCALL     `??create::?relay`; Banked call to: create
+     32          }
+   \   000007   D083         POP       DPH
+   \   000009   D082         POP       DPL
+   \   00000B   02....       LJMP      ?BRET
 E:\WMNU\IAR_NEW_ARCH\PRJ Test\u_macros.c
       1          #include "debug.h"
       2          #include "stddef.h"
@@ -4881,7 +5109,7 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
    \   000005   74E3         MOV       A,#-0x1d
    \   000007   12....       LCALL     ?ALLOC_XSTACK8
       5            char tst1[10] = {1,2,3,4,5,6,7,8,9,10};
-   \   00000A   90....       MOV       DPTR,#`?<Constant {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}>`
+   \   00000A   90....       MOV       DPTR,#`?<Constant {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}>_1`
    \   00000D   7409         MOV       A,#0x9
    \   00000F   12....       LCALL     ?XSTACK_DISP102_8
    \   000012   740A         MOV       A,#0xa
@@ -5442,6 +5670,15 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
    \            7200    
 
    \                                 In  segment XDATA_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "\\"len != NULL\\" F`:
+   \   000000   226C656E     DB "\"len != NULL\" Faild! \015\012"
+   \            20213D20
+   \            4E554C4C
+   \            22204661
+   \            696C6421
+   \            200D0A00
+
+   \                                 In  segment XDATA_ID, align 1, keep-with-next
    \                     `?<Initializer for <Constant "\\"frame->len >= l`:
    \   000000   22667261     DB "\"frame->len >= len\" Faild! \015\012"
    \            6D652D3E
@@ -5604,6 +5841,34 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
    \            200D0A00
 
    \                                 In  segment XDATA_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "frame busy %d">>`:
+   \   000000   6672616D     DB "frame busy %d"
+   \            65206275
+   \            73792025
+   \            6400    
+
+   \                                 In  segment XDATA_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "frame available %`:
+   \   000000   6672616D     DB "frame available %d"
+   \            65206176
+   \            61696C61
+   \            626C6520
+   \            256400  
+
+   \                                 In  segment XDATA_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant {1, 2, 3, 4, 5, 6,`:
+   \   000000   01           DB 1
+   \   000001   02           DB 2
+   \   000002   03           DB 3
+   \   000003   04           DB 4
+   \   000004   05           DB 5
+   \   000005   06           DB 6
+   \   000006   07           DB 7
+   \   000007   08           DB 8
+   \   000008   09           DB 9
+   \   000009   0A           DB 10
+
+   \                                 In  segment XDATA_ID, align 1, keep-with-next
    \                     `?<Initializer for <Constant {1}>>`:
    \   000000   0100         DW 1
 
@@ -5690,7 +5955,7 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
    \            696C7300
 
    \                                 In  segment XDATA_ID, align 1, keep-with-next
-   \                     `?<Initializer for <Constant {1, 2, 3, 4, 5, 6,`:
+   \                     `?<Initializer for <Constant {1, 2, 3, 4, 5, 6,_1`:
    \   000000   01           DB 1
    \   000001   02           DB 2
    \   000002   03           DB 3
@@ -5796,6 +6061,12 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
    \   000002   ....         DW `??SW_Init::?relay_1`
    \   000004   00000000     DB 0, 0, 0, 0, 0, 0, 0, 0
    \            00000000
+
+   \                                 In  segment XDATA_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant {(char *)0, 0, 0}>`:
+   \   000000   0000         DW 0H
+   \   000002   00           DB 0
+   \   000003   00           DB 0
 
    \                                 In  segment XDATA_ID, align 1, keep-with-next
    \                     `?<Initializer for MS_MODULE>`:
@@ -6162,6 +6433,16 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
    \   000003   ......       DC24    u_test
 
    \                                 In  segment BANK_RELAYS, align 1
+   \                     `??create::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    create
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??u_frame::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    u_frame
+
+   \                                 In  segment BANK_RELAYS, align 1
    \                     `??u_macros::?relay`:
    \   000000   12....       LCALL   ?BDISPATCH
    \   000003   ......       DC24    u_macros
@@ -6317,6 +6598,12 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
    \   000027                REQUIRE __INIT_XDATA_I
 
    \                                 In  segment XDATA_I, align 1, keep-with-next
+   \                     `?<Constant "\\"len != NULL\\" Faild! \\r\\n">`:
+   \   000000                DS 24
+   \   000018                REQUIRE `?<Initializer for <Constant "\\"len != NULL\\" F`
+   \   000018                REQUIRE __INIT_XDATA_I
+
+   \                                 In  segment XDATA_I, align 1, keep-with-next
    \                     `?<Constant "\\"frame->len >= len\\" F...">`:
    \   000000                DS 30
    \   00001E                REQUIRE `?<Initializer for <Constant "\\"frame->len >= l`
@@ -6407,6 +6694,24 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
    \   000010                REQUIRE __INIT_XDATA_I
 
    \                                 In  segment XDATA_I, align 1, keep-with-next
+   \                     `?<Constant "frame busy %d">`:
+   \   000000                DS 14
+   \   00000E                REQUIRE `?<Initializer for <Constant "frame busy %d">>`
+   \   00000E                REQUIRE __INIT_XDATA_I
+
+   \                                 In  segment XDATA_I, align 1, keep-with-next
+   \                     `?<Constant "frame available %d">`:
+   \   000000                DS 19
+   \   000013                REQUIRE `?<Initializer for <Constant "frame available %`
+   \   000013                REQUIRE __INIT_XDATA_I
+
+   \                                 In  segment XDATA_I, align 1, keep-with-next
+   \                     `?<Constant {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}>`:
+   \   000000                DS 10
+   \   00000A                REQUIRE `?<Initializer for <Constant {1, 2, 3, 4, 5, 6,`
+   \   00000A                REQUIRE __INIT_XDATA_I
+
+   \                                 In  segment XDATA_I, align 1, keep-with-next
    \                     `?<Constant {1}>`:
    \   000000                DS 2
    \   000002                REQUIRE `?<Initializer for <Constant {1}>>`
@@ -6478,9 +6783,9 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
    \   000012                REQUIRE __INIT_XDATA_I
 
    \                                 In  segment XDATA_I, align 1, keep-with-next
-   \                     `?<Constant {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}>`:
+   \                     `?<Constant {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}>_1`:
    \   000000                DS 10
-   \   00000A                REQUIRE `?<Initializer for <Constant {1, 2, 3, 4, 5, 6,`
+   \   00000A                REQUIRE `?<Initializer for <Constant {1, 2, 3, 4, 5, 6,_1`
    \   00000A                REQUIRE __INIT_XDATA_I
 
    \                                 In  segment XDATA_I, align 1, keep-with-next
@@ -6604,23 +6909,24 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
       0      0   Cold_Start
       0      0   DBG_CORE_FAULT
       0     41   DBG_CORE_HALT
-      1     27   FR_add_header
+      1     54   FR_add_header
+        0     26   -> DBG_CORE_HALT
+        0     26   -> MEM_memcpy
+        0     26   -> printf
+        0     32   -> printf
+      2     22   FR_available
+        2      0   -> SL_available
+      2     22   FR_busy
+        2      0   -> SL_busy
+      2     22   FR_create
+        2      0   -> SL_alloc
+      1     49   FR_del_header
         0     21   -> DBG_CORE_HALT
         0     21   -> MEM_memcpy
+        0     21   -> MEM_memset
         0     21   -> printf
         0     27   -> printf
-      2      0   FR_available
-        2      0   -> SL_available
-      2      0   FR_busy
-        2      0   -> SL_busy
-      2      0   FR_create
-        2      0   -> SL_alloc
-      1     25   FR_del_header
-        0     19   -> DBG_CORE_HALT
-        0     19   -> MEM_memcpy
-        0     19   -> printf
-        0     25   -> printf
-      0      9   FR_delete
+      0     31   FR_delete
         0      9   -> SL_free
       2      0   HW_Init
       0      0   HW_Init
@@ -6650,10 +6956,10 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
       2     12   SL_zone_check
       0      0   SW_Init
       0      0   SW_Init
-      2      0   SW_Init
-      2      0   SW_Init
+      0      0   SW_Init
       2      0   SW_Init
       0      0   SW_Init
+      2      0   SW_Init
       0      0   Sleep
       0      0   TM_AdjustTime
       0     16   TM_ClrAlarm
@@ -6689,6 +6995,14 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
         0     64   -> SL_free
         0     64   -> printf
         0     66   -> printf
+      0     24   create
+        0     22   -> FR_add_header
+        0     22   -> FR_available
+        0     22   -> FR_busy
+        0     22   -> FR_create
+        0     22   -> FR_del_header
+        0     22   -> FR_delete
+        0     24   -> printf
       0     23   fill_zero_slot
         0     13   -> MEM_memset
       0     26   free_idx
@@ -6700,13 +7014,15 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
       0      0   main
         0      0   -> AM_SW_Init
         0      0   -> DBG_CORE_HALT
-        0      0   -> u_mem_slots
+        0      0   -> u_frame
       2     10   protect_alloc
       0     12   red_zones
         0     12   -> SL_alloc
         0     12   -> SL_zone_check
       0      9   u_alarm_timer
         0      9   -> AT_set_alarm
+      2      0   u_frame
+        2      0   -> create
       0     73   u_macros
         0     71   -> printf
         0     73   -> printf
@@ -6765,6 +7081,7 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
       30  ?<Constant "\"frame->len >= len\" F...">
       46  ?<Constant "\"idx >= 0 && idx < MA...">
       37  ?<Constant "\"index < SLOT_BUFFER_...">
+      24  ?<Constant "\"len != NULL\" Faild! \r\n">
       39  ?<Constant "\"new_len < MAX_PAYLOA...">
       24  ?<Constant "\"offset == 0\" Faild! \r\n">
       34  ?<Constant "\"slot < MAX_TIME_SLOT...">
@@ -6777,15 +7094,19 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
       17  ?<Constant "action_manager.c">
       14  ?<Constant "alarm_timer.c">
        9  ?<Constant "buffer.c">
+      19  ?<Constant "frame available %d">
+      14  ?<Constant "frame busy %d">
        8  ?<Constant "frame.c">
       12  ?<Constant "mem_slots.c">
       15  ?<Constant "time_manager.c">
       10  ?<Constant "u_debug.c">
       14  ?<Constant "u_mem_utils.c">
        5  ?<Constant {(char *)0, (char *)0, 10}>
+       4  ?<Constant {(char *)0, 0, 0}>
        4  ?<Constant {(char *)0, 10, 7}>
        4  ?<Constant {(char *)0, 150, 0}>
       10  ?<Constant {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}>
+      10  ?<Constant {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}>_1
        2  ?<Constant {1}>
        4  ?<Initializer for <Constant "%d ">>
       13  ?<Initializer for <Constant "%s:%d:%s -> ">>
@@ -6822,6 +7143,7 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
       30  ?<Initializer for <Constant "\"frame->len >= l
       46  ?<Initializer for <Constant "\"idx >= 0 && idx
       37  ?<Initializer for <Constant "\"index < SLOT_BU
+      24  ?<Initializer for <Constant "\"len != NULL\" F
       39  ?<Initializer for <Constant "\"new_len < MAX_P
       24  ?<Initializer for <Constant "\"offset == 0\" F
       34  ?<Initializer for <Constant "\"slot < MAX_TIME
@@ -6834,15 +7156,19 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
       17  ?<Initializer for <Constant "action_manager.c"
       14  ?<Initializer for <Constant "alarm_timer.c">>
        9  ?<Initializer for <Constant "buffer.c">>
+      19  ?<Initializer for <Constant "frame available %
+      14  ?<Initializer for <Constant "frame busy %d">>
        8  ?<Initializer for <Constant "frame.c">>
       12  ?<Initializer for <Constant "mem_slots.c">>
       15  ?<Initializer for <Constant "time_manager.c">>
       10  ?<Initializer for <Constant "u_debug.c">>
       14  ?<Initializer for <Constant "u_mem_utils.c">>
        5  ?<Initializer for <Constant {(char *)0, (char
+       4  ?<Initializer for <Constant {(char *)0, 0, 0}>
        4  ?<Initializer for <Constant {(char *)0, 10, 7}
        4  ?<Initializer for <Constant {(char *)0, 150, 0
       10  ?<Initializer for <Constant {1, 2, 3, 4, 5, 6,
+      10  ?<Initializer for <Constant {1, 2, 3, 4, 5, 6,_1
        2  ?<Initializer for <Constant {1}>>
       12  ?<Initializer for AT_MODULE>
       12  ?<Initializer for BF_MODULE>
@@ -6927,19 +7253,18 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
        2  DBG_CORE_HALT
        6  DBG_CORE_HALT::?relay
       12  DBG_MODULE
-       2  FRAME_COUNT
       12  FR_MODULE
-     257  FR_add_header
+     261  FR_add_header
        6  FR_add_header::?relay
       14  FR_available
        6  FR_available::?relay
       14  FR_busy
        6  FR_busy::?relay
-      26  FR_create
+      14  FR_create
        6  FR_create::?relay
-     195  FR_del_header
+     284  FR_del_header
        6  FR_del_header::?relay
-      33  FR_delete
+      21  FR_delete
        6  FR_delete::?relay
        2  HOT_MOD
        3  HW_Init
@@ -6958,7 +7283,7 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
       12  MD_MODULE
      116  MEM_memcpy
        6  MEM_memcpy::?relay
-      57  MEM_memset
+      79  MEM_memset
        6  MEM_memset::?relay
       10  MODEL
       12  MS_MODULE
@@ -6985,7 +7310,7 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
        3  SW_Init
        3  SW_Init
        3  SW_Init
-      21  SW_Init
+       3  SW_Init
       34  SW_Init
       81  SW_Init
        6  SW_Init::?relay
@@ -7027,6 +7352,8 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
        6  check_create_delete::?relay
      223  check_max_alloc
        6  check_max_alloc::?relay
+     270  create
+       6  create::?relay
       61  fill_zero_slot
        6  fill_zero_slot::?relay
      107  free_idx
@@ -7046,6 +7373,8 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
        2  slot_ptr
       20  u_alarm_timer
        6  u_alarm_timer::?relay
+      14  u_frame
+       6  u_frame::?relay
      196  u_macros
        6  u_macros::?relay
       20  u_mem_slots
@@ -7058,19 +7387,19 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
      217  -- Other
 
  
- 6 060 bytes in segment BANKED_CODE
-   402 bytes in segment BANK_RELAYS
+ 6 417 bytes in segment BANKED_CODE
+   414 bytes in segment BANK_RELAYS
      3 bytes in segment INTVEC
     41 bytes in segment NEAR_CODE
      9 bytes in segment SFR_AN
- 1 475 bytes in segment XDATA_I
- 1 475 bytes in segment XDATA_ID
- 3 204 bytes in segment XDATA_Z
+ 1 546 bytes in segment XDATA_I
+ 1 546 bytes in segment XDATA_ID
+ 3 202 bytes in segment XDATA_Z
  
- 1 902 bytes of CODE     memory (+ 19 bytes shared)
+ 1 985 bytes of CODE     memory (+ 19 bytes shared)
      0 bytes of DATA     memory (+  9 bytes shared)
- 6 060 bytes of HUGECODE memory
- 4 663 bytes of XDATA    memory (+ 16 bytes shared)
+ 6 417 bytes of HUGECODE memory
+ 4 732 bytes of XDATA    memory (+ 16 bytes shared)
 
 Errors: none
 Warnings: 3

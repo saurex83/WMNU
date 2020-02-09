@@ -25,7 +25,6 @@ static alarm_t ALARMS[MAX_TIME_SLOTS];
 
 static void SW_Init(void){}; 
 
-
 void TM_SetAlarm(timeslot_t slot, alarm_t alarm){
   ASSERT(slot < MAX_TIME_SLOTS);
   ALARMS[slot] |= alarm;
