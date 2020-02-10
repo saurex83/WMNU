@@ -31,6 +31,28 @@
         <StopTimersOnHalt>0</StopTimersOnHalt>
         <LeaveTargetRunning>1</LeaveTargetRunning>
     </ChipconEmu>
+    <DriverProfiling>
+        <Enabled>0</Enabled>
+        <Mode>1</Mode>
+        <Graph>0</Graph>
+        <Symbiont>0</Symbiont>
+        <Exclusions />
+    </DriverProfiling>
+    <CallStackLog>
+        <Enabled>0</Enabled>
+    </CallStackLog>
+    <CallStackStripe>
+        <ShowTiming>1</ShowTiming>
+    </CallStackStripe>
+    <LogFile>
+        <LoggingEnabled>_ 0</LoggingEnabled>
+        <LogFile>_ ""</LogFile>
+        <Category>_ 0</Category>
+    </LogFile>
+    <TermIOLog>
+        <LoggingEnabled>_ 0</LoggingEnabled>
+        <LogFile>_ ""</LogFile>
+    </TermIOLog>
     <InterruptLog>
         <LogEnabled>0</LogEnabled>
         <GraphEnabled>0</GraphEnabled>
@@ -48,7 +70,7 @@
     </DataLog>
     <Breakpoints2>
         <Bp0>_ 0 "STD_CODE2" "{$PROJ_DIR$\..\..\IAR_NEW_ARCH\PRJ TEST\u_frame.c}.20.1" 0 0 1 "" 0 ""</Bp0>
-        <Bp1>_ 1 "STD_CODE2" "{$PROJ_DIR$\..\..\IAR_NEW_ARCH\PRJ Test\u_mem_slots.c}.13.14" 0 0 1 "" 0 ""</Bp1>
+        <Bp1>_ 1 "STD_CODE2" "{$PROJ_DIR$\..\..\IAR_NEW_ARCH\PRJ TEST\u_mem_slots.c}.13.14" 0 0 1 "" 0 ""</Bp1>
         <Count>2</Count>
     </Breakpoints2>
     <Interrupts>
@@ -62,32 +84,10 @@
         <UnspecRange>1</UnspecRange>
         <ActionState>1</ActionState>
     </MemoryMap>
-    <DriverProfiling>
-        <Enabled>0</Enabled>
-        <Mode>1</Mode>
-        <Graph>0</Graph>
-        <Symbiont>0</Symbiont>
-        <Exclusions />
-    </DriverProfiling>
     <Trace1>
         <Enabled>0</Enabled>
         <ShowSource>1</ShowSource>
     </Trace1>
-    <CallStackLog>
-        <Enabled>0</Enabled>
-    </CallStackLog>
-    <CallStackStripe>
-        <ShowTiming>1</ShowTiming>
-    </CallStackStripe>
-    <LogFile>
-        <LoggingEnabled>_ 0</LoggingEnabled>
-        <LogFile>_ ""</LogFile>
-        <Category>_ 0</Category>
-    </LogFile>
-    <TermIOLog>
-        <LoggingEnabled>_ 0</LoggingEnabled>
-        <LogFile>_ ""</LogFile>
-    </TermIOLog>
     <Aliases>
         <Count>0</Count>
         <SuppressDialog>0</SuppressDialog>

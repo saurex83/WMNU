@@ -1,6 +1,5 @@
 #include "stddef.h"
 
-
 //!< Возвращает указатель на контейнер 
 #define container_of(ptr, type, member) \
  ((type *)(void *)((char *)(ptr) - offsetof(type, member)))

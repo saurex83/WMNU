@@ -63,20 +63,27 @@ char* SL_alloc(void){
   return NULL;
 };
 
-void SL_free(char *buff){
+static bool _free(char *buff){
+  struct slot *slot = container_of(buff, struct slot, buffer);
+  // Найдем индекс в массиве по указателю
+  size_t index = ptr_distance(slot, SLOT_POOL) / sizeof(struct slot);
+  size_t offset = ptr_distance(slot, SLOT_POOL) % sizeof(struct slot);
+    
+  if (!(index < SLOT_BUFFER_SIZE && offset == 0 &&
+    slot->property.taken == true))
+    return false;
+    
+  slot->property.taken = false;
+  slot_busy--;
+  return true;
+}
+
+bool SL_free(char *buff){
+  bool res;
   ATOMIC_BLOCK_RESTORE{
-    struct slot *slot = container_of(buff, struct slot, buffer);
-    // Найдем индекс в массиве по указателю
-    size_t index = ptr_distance(slot, SLOT_POOL) / sizeof(struct slot);
-    size_t offset = ptr_distance(slot, SLOT_POOL) % sizeof(struct slot);
-    
-    ASSERT(index < SLOT_BUFFER_SIZE);
-    ASSERT(offset == 0);
-    ASSERT(slot->property.taken == true);
-    
-    slot->property.taken = false;
-    slot_busy--;
+    res = _free(buff);
   }
+  return res;
 };
 
 

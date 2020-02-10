@@ -2133,10 +2133,13 @@
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\frame.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\frame.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\frame.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\Stack_core_src\global.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\list.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\Stack_core_src\macros.h</name>
@@ -2157,25 +2160,25 @@
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\model.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\model.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\model.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\model_import_struct.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\model_import_struct.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\modules_list.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\modules_list.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\rtc.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\rtc.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\rtc.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\time_manager.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\time_manager.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\time_manager.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\ustimer.c</name>

@@ -7,8 +7,9 @@
 
 #define FRAME_FOOTER_DEL //!< FR_del_header заполняет пустое место нулями
 #define FILL_SLOT_ZERO //!< SL_alloc заполняет буфер нулями
-
+ 
 #define MAX_PACKETS 20 
+#define MAX_TXRX_BUFF_SIZE MAX_PACKETS //!< Кол-во пакетов в буфере
 #define SLOT_POOL_ITEMS MAX_PACKETS //!< Количество слотов памяти в системе
 #define FRAME_POOL_ITEMS_COUNT MAX_PACKETS //!< Количество фреймов в системе
 #define MAX_TXRX_BUFFER MAX_PACKETS //!< Размер буфера
