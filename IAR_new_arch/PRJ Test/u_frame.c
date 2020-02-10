@@ -1,6 +1,6 @@
 #include "debug.h"
 #include "frame.h"
-
+#include "cpu.h"
 
 
 void create(void){
@@ -20,10 +20,13 @@ char tst[] = {1,2,3,4,5,6,7,8,9,10};
 FR_add_header(fr, tst, sizeof(tst));
 FR_del_header(fr, 5);
 
+ATOMIC_BLOCK_RESTORE{
 printf("frame busy %d",FR_busy());
 printf("frame available %d",FR_available());
-
+}
+ATOMIC_BLOCK_FORCEON{
 FR_delete(fr);
+}
 
 }
 
