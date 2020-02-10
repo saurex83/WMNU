@@ -16,7 +16,7 @@ void main(){
  // u_alarm_timer();
   //u_macros();
   //u_mem_utils(); // TODO красные зоны
-  //u_mem_slots();
-  u_frame();
+  u_mem_slots();
+  //u_frame();
   DBG_CORE_HALT();
 }

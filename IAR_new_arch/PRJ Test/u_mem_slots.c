@@ -37,7 +37,7 @@ void check_max_alloc(void){
     max++;
   }
 
-  printf("Max alloc slot %d", max);
+  printf("Max alloc slot %d\r\n", max);
   
   for (int i = 0; i < max; i++){
     SL_free(buff[i]);
@@ -73,7 +73,7 @@ res = SL_zone_check();
 
 void u_mem_slots(void){
 //aasert_test();
-  red_zones();
+//  red_zones();
 check_create_delete();
 check_max_alloc();
 }

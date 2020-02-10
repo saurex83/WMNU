@@ -172,11 +172,11 @@ static inline bool isIRQEnable(void){
 */
 #pragma vector=ST_VECTOR
 __interrupt void TimerCompareInterrupt(void){ 
-  INTERRUPT_DISABLE();  
-  nwtime_t time = AT_time();
-  // Отключаем прерывание таймера. Забота пользователя его включить
-  IRQEnable(false); 
-  TM_IRQ(time); // Передаем управление менеджеру времени
-  STIF = 0; // Очищаем флаг прерывания
-  INTERRUPT_ENABLE();
+  ATOMIC_BLOCK_FORCEON{  
+    nwtime_t time = AT_time();
+    // Отключаем прерывание таймера. Забота пользователя его включить
+    IRQEnable(false); 
+    TM_IRQ(time); // Передаем управление менеджеру времени
+    STIF = 0; // Очищаем флаг прерывания
+  }
 }

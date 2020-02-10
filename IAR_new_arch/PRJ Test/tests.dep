@@ -30,7 +30,7 @@
             <file>$PROJ_DIR$\..\STACK_CORE_SRC\model.c</file>
             <file>$PROJ_DIR$\..\Stack_core_src\model.h</file>
             <file>$PROJ_DIR$\..\Stack_core_src\model_import_struct.h</file>
-            <file>$PROJ_DIR$\..\Stack_core_src\modules_list.h</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\modules_list.h</file>
             <file>$PROJ_DIR$\..\STACK_CORE_SRC\rtc.c</file>
             <file>$PROJ_DIR$\..\Stack_core_src\rtc.h</file>
             <file>$PROJ_DIR$\..\STACK_CORE_SRC\time_manager.c</file>
@@ -181,7 +181,7 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 91 86 85 101 76 5 13 106 29 100 11 7 92 87 83 77 16 104 105</file>
+                    <file> 91 86 85 101 76 5 13 7 106 29 100 11 92 87 83 77 16 104 105</file>
                 </tool>
             </inputs>
         </file>
@@ -286,7 +286,7 @@
                 </tool>
                 <tool>
                     <name>ICC8051</name>
-                    <file> 115 112</file>
+                    <file> 112</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
@@ -297,10 +297,6 @@
                 <tool>
                     <name>BICOMP</name>
                     <file> 106 5 91 92 17 11 76 85 16 101 21 104 105 86 118 13 87 83 77 3</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 13 16 106 104 91 76 86 83 77 87 85 92 105 17 118 3 101 5 21 11</file>
                 </tool>
             </inputs>
         </file>
@@ -468,17 +464,13 @@
                 </tool>
                 <tool>
                     <name>ICC8051</name>
-                    <file> 0 119</file>
+                    <file> 119</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
                     <file> 106 76 91 87 77 16 104 105 83 13 92 86 85 15 107 11 7 29</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 13 16 106 104 91 76 86 83 77 87 85 92 105 15 107 7 29 11</file>
                 </tool>
             </inputs>
         </file>

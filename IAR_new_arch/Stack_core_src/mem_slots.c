@@ -52,6 +52,7 @@ char* SL_alloc(void){
     for_each_type(struct slot, SLOT_POOL, slot){
       if (!slot->property.taken){
         slot->property.taken = true;
+        slot_busy++;
         #ifdef FILL_SLOT_ZERO
           MEMSET(slot->buffer, 0, SLOT_BUFFER_SIZE);
         #endif
@@ -63,17 +64,19 @@ char* SL_alloc(void){
 };
 
 void SL_free(char *buff){
-  struct slot *slot = container_of(buff, struct slot, buffer);
-  // Найдем индекс в массиве по указателю
-  size_t index = ptr_distance(slot, SLOT_POOL) / sizeof(struct slot);
-  size_t offset = ptr_distance(slot, SLOT_POOL) % sizeof(struct slot);
-  
-  ASSERT(index < SLOT_BUFFER_SIZE);
-  ASSERT(offset == 0);
-  ASSERT(slot->property.taken == true);
-  
-  slot->property.taken = false;
-  slot_busy--;
+  ATOMIC_BLOCK_RESTORE{
+    struct slot *slot = container_of(buff, struct slot, buffer);
+    // Найдем индекс в массиве по указателю
+    size_t index = ptr_distance(slot, SLOT_POOL) / sizeof(struct slot);
+    size_t offset = ptr_distance(slot, SLOT_POOL) % sizeof(struct slot);
+    
+    ASSERT(index < SLOT_BUFFER_SIZE);
+    ASSERT(offset == 0);
+    ASSERT(slot->property.taken == true);
+    
+    slot->property.taken = false;
+    slot_busy--;
+  }
 };
 
 
