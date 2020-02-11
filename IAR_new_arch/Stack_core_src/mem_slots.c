@@ -65,12 +65,15 @@ char* SL_alloc(void){
 
 static bool _free(char *buff){
   struct slot *slot = container_of(buff, struct slot, buffer);
-  // Найдем индекс в массиве по указателю
-  size_t index = ptr_distance(slot, SLOT_POOL) / sizeof(struct slot);
-  size_t offset = ptr_distance(slot, SLOT_POOL) % sizeof(struct slot);
-    
-  if (!(index < SLOT_BUFFER_SIZE && offset == 0 &&
-    slot->property.taken == true))
+  
+  if (!is_array_ptr(SLOT_POOL, slot, sizeof(struct slot)))
+    return false;
+  
+  size_t index = array_index(SLOT_POOL, slot, sizeof(struct slot));
+  if (!(index < SLOT_BUFFER_SIZE))
+    return false;
+  
+  if (slot->property.taken == true)
     return false;
     
   slot->property.taken = false;

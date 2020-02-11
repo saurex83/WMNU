@@ -7,6 +7,7 @@ extern void u_mem_utils(void);
 extern void u_macros(void);
 extern void u_mem_slots(void);
 extern void u_frame(void);
+extern void u_buffer(void);
 
 void main(){
 //  AM_HW_Init();
@@ -16,7 +17,8 @@ void main(){
  // u_alarm_timer();
   //u_macros();
   //u_mem_utils(); // TODO красные зоны
-  u_mem_slots();
+  //u_mem_slots();
   //u_frame();
-  DBG_CORE_HALT();
+  u_buffer();
+    DBG_CORE_HALT();
 }

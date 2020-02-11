@@ -524,7 +524,7 @@ static inline void list_splice_tail_init(struct list_head *list,
  */
 #define list_first_entry_or_null(ptr, type, member) ({ \
 	struct list_head *head__ = (ptr); \
-	struct list_head *pos__ = READ_ONCE(head__->next); \
+	struct list_head *pos__ = head__->next; \
 	pos__ != head__ ? list_entry(pos__, type, member) : NULL; \
 })
 
@@ -533,8 +533,8 @@ static inline void list_splice_tail_init(struct list_head *list,
  * @pos:	the type * to cursor
  * @member:	the name of the list_head within the struct.
  */
-#define list_next_entry(pos, member) \
-	list_entry((pos)->member.next, typeof(*(pos)), member)
+#define list_next_entry(pos, type, member) \
+	list_entry((pos)->member.next, type, member)
 
 /**
  * list_prev_entry - get the prev element in list

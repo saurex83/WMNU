@@ -1,11 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
     <fileVersion>2</fileVersion>
-    <fileChecksum>1979186077</fileChecksum>
+    <fileChecksum>4108609545</fileChecksum>
     <configuration>
         <name>Debug</name>
         <outputs>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\bugs.txt</file>
+            <file>$PROJ_DIR$\Debug\Obj\buffer.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\mem_slots.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\u_frame.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\mem_slots.pbi</file>
+            <file>$PROJ_DIR$\Debug\List\mem_slots.lst</file>
+            <file>$PROJ_DIR$\Debug\Obj\u_macros.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\u_macros.pbi</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\stddef.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\u_frame.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\u_mem_slots.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\u_mem_slots.pbi</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\setjmp.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\u_macros.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\u_debug.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\mem_slots.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\cpu.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\u_alarm_timer.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\buffer.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\debug.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\cpu.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\cpu.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\List\action_manager.lst</file>
+            <file>$PROJ_DIR$\Debug\Obj\mem_utils.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\action_manager.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\frame.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\alarm_timer.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\frame.r51</file>
+            <file>$PROJ_DIR$\Debug\List\buffer.lst</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\action_manager.c</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\action_manager.h</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\alarm_timer.c</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\alarm_timer.h</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\buffer.c</file>
+            <file>$PROJ_DIR$\..\Stack_core_src\buffer.h</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\cpu.c</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\cpu.h</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\debug.c</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\debug.h</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\frame.c</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\frame.h</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\global.h</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\list.h</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\macros.h</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\mem_slots.c</file>
+            <file>$PROJ_DIR$\..\Stack_core_src\mem_slots.h</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\mem_utils.c</file>
+            <file>$PROJ_DIR$\..\Stack_core_src\mem_utils.h</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\model.c</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\model.h</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\model_import_struct.h</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\modules_list.h</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\rtc.c</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\rtc.h</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\time_manager.c</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\time_manager.h</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\ustimer.c</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\ustimer.h</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\ideas.txt</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\rules.txt</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\tempalte.txt</file>
+            <file>$PROJ_DIR$\u_alarm_timer.c</file>
+            <file>$PROJ_DIR$\u_debug.c</file>
+            <file>$PROJ_DIR$\u_frame.c</file>
+            <file>$PROJ_DIR$\u_macros.c</file>
+            <file>$PROJ_DIR$\u_mem_slots.c</file>
+            <file>$PROJ_DIR$\u_mem_utils.c</file>
+            <file>$PROJ_DIR$\main.c</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\NOTE.txt</file>
             <file>$PROJ_DIR$\Debug\Obj\frame.__cstat.et</file>
             <file>$PROJ_DIR$\Debug\Obj\action_manager.r51</file>
             <file>$PROJ_DIR$\Debug\Obj\action_manager.pbi</file>
@@ -53,129 +122,48 @@
             <file>$TOOLKIT_DIR$\inc\dlib\c\stdio.h</file>
             <file>$TOOLKIT_DIR$\inc\dlib\c\ystdio.h</file>
             <file>$TOOLKIT_DIR$\inc\ioCC2530.h</file>
-            <file>$PROJ_DIR$\..\Stack_core_src\meta.h</file>
+            <file>$PROJ_DIR$\..\STACK_CORE_SRC\meta.h</file>
             <file>$PROJ_DIR$\Debug\Obj\buffer.pbi</file>
             <file>$PROJ_DIR$\Debug\Obj\u_mem_slots.__cstat.et</file>
             <file>$PROJ_DIR$\Debug\Obj\u_mem_utils.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\buffer.r51</file>
-            <file>$PROJ_DIR$\Debug\Obj\mem_slots.r51</file>
-            <file>$PROJ_DIR$\Debug\Obj\u_frame.pbi</file>
-            <file>$PROJ_DIR$\Debug\Obj\mem_slots.pbi</file>
-            <file>$PROJ_DIR$\Debug\List\mem_slots.lst</file>
-            <file>$PROJ_DIR$\Debug\Obj\u_macros.r51</file>
-            <file>$PROJ_DIR$\Debug\Obj\u_macros.pbi</file>
-            <file>$TOOLKIT_DIR$\inc\dlib\c\stddef.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\u_frame.r51</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\action_manager.c</file>
-            <file>$PROJ_DIR$\..\Stack_core_src\action_manager.h</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\alarm_timer.c</file>
-            <file>$PROJ_DIR$\..\Stack_core_src\alarm_timer.h</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\buffer.c</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\buffer.h</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\cpu.c</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\cpu.h</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\debug.c</file>
-            <file>$PROJ_DIR$\..\Stack_core_src\debug.h</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\frame.c</file>
-            <file>$PROJ_DIR$\..\Stack_core_src\frame.h</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\global.h</file>
-            <file>$PROJ_DIR$\..\Stack_core_src\macros.h</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\mem_slots.c</file>
-            <file>$PROJ_DIR$\..\Stack_core_src\mem_slots.h</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\mem_utils.c</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\mem_utils.h</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\model.c</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\model.h</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\model_import_struct.h</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\modules_list.h</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\rtc.c</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\rtc.h</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\time_manager.c</file>
-            <file>$PROJ_DIR$\..\Stack_core_src\time_manager.h</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\ustimer.c</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\ustimer.h</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\ideas.txt</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\rules.txt</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\tempalte.txt</file>
-            <file>$PROJ_DIR$\u_alarm_timer.c</file>
-            <file>$PROJ_DIR$\u_debug.c</file>
-            <file>$PROJ_DIR$\u_frame.c</file>
-            <file>$PROJ_DIR$\u_macros.c</file>
-            <file>$PROJ_DIR$\u_mem_slots.c</file>
-            <file>$PROJ_DIR$\u_mem_utils.c</file>
-            <file>$PROJ_DIR$\main.c</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\NOTE.txt</file>
-            <file>$PROJ_DIR$\Debug\Obj\u_mem_slots.r51</file>
-            <file>$PROJ_DIR$\Debug\Obj\u_mem_slots.pbi</file>
-            <file>$TOOLKIT_DIR$\inc\dlib\c\setjmp.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\u_macros.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\u_debug.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\mem_slots.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\cpu.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\u_alarm_timer.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\buffer.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\debug.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\cpu.pbi</file>
-            <file>$PROJ_DIR$\Debug\Obj\cpu.r51</file>
-            <file>$PROJ_DIR$\Debug\Obj\main.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\List\action_manager.lst</file>
-            <file>$PROJ_DIR$\Debug\Obj\mem_utils.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
-            <file>$PROJ_DIR$\Debug\Obj\action_manager.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\frame.pbi</file>
-            <file>$PROJ_DIR$\Debug\Obj\alarm_timer.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\frame.r51</file>
-            <file>$PROJ_DIR$\Debug\List\buffer.lst</file>
-            <file>$PROJ_DIR$\..\STACK_CORE_SRC\list.h</file>
+            <file>$PROJ_DIR$\u_buffer.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\u_buffer.r51</file>
+            <file>$PROJ_DIR$\Debug\Obj\u_buffer.pbi</file>
+            <file>$PROJ_DIR$\Debug\List\u_buffer.lst</file>
         </outputs>
         <file>
             <name>[ROOT_NODE]</name>
             <outputs>
                 <tool>
                     <name>XLINK</name>
-                    <file> 8 22</file>
+                    <file> 77 91</file>
                 </tool>
             </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Debug\Exe\tests.d51</name>
-            <outputs>
-                <tool>
-                    <name>XLINK</name>
-                    <file> 22</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>XLINK</name>
-                    <file> 21 2 13 52 111 10 119 37 53 30 16 34 6 40 44 60 57 100 20 15 23</file>
-                </tool>
-            </inputs>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\action_manager.c</name>
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 3</file>
+                    <file> 72</file>
                 </tool>
                 <tool>
                     <name>ICC8051</name>
-                    <file> 113 2 13 52 111 10 119 37 53 30 16 34 6 40 44 60 57 100 20 15</file>
+                    <file> 22 71 82 0 20 79 28 106 1 99 85 103 75 109 122 113 8 5 9 89 84</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 116</file>
+                    <file> 25</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 81 33 17 64 45 32 28 18 46 80 62 24 84 86 73 82 70 25 27 26 72 48 47</file>
+                    <file> 51 102 86 33 114 101 97 87 115 50 31 93 54 56 42 52 39 94 96 95 41 117 116</file>
                 </tool>
                 <tool>
                     <name>ICC8051</name>
-                    <file> 62 82 25 32 17 27 24 18 28 26 33 80 81 64 72 48 86 84 70 73 47 45 46 63 42 41 68 65 74 59 102 121 67 69 71 78 76 98 75 77 79 83 85 92 93 94 95 96 97 87</file>
+                    <file> 31 52 94 101 86 96 93 87 97 95 102 50 51 33 41 117 56 54 39 42 116 114 115 32 111 110 37 34 44 7 11 43 36 38 40 48 46 68 45 47 49 53 55 62 121 35 63 64 65 66 67 57</file>
                 </tool>
             </inputs>
         </file>
@@ -184,17 +172,17 @@
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 12</file>
+                    <file> 81</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 118</file>
+                    <file> 27</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 32 18 42 62 70 64 45 86 47 41 68 28 24 73 33 17 27 26 46</file>
+                    <file> 101 87 111 31 39 33 114 56 116 110 37 97 93 42 102 86 96 95 115</file>
                 </tool>
             </inputs>
         </file>
@@ -203,25 +191,25 @@
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 49</file>
+                    <file> 118</file>
                 </tool>
                 <tool>
                     <name>ICC8051</name>
-                    <file> 120 52</file>
+                    <file> 29 0</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 108</file>
+                    <file> 17</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 46 28 68 73 32 72 62 45 24 59 64 74 42 121 47 17 18 70 33 27 26 102 48 86</file>
+                    <file> 42 86 37 41 31 114 102 44 111 43 116 101 96 95 117 56 39 115 97 93 87 7 11 33</file>
                 </tool>
                 <tool>
                     <name>ICC8051</name>
-                    <file> 70 73 47 45 32 17 27 24 18 28 26 33 46 74 59 102 72 48 64 86 42 68 121 62</file>
+                    <file> 39 42 116 114 101 86 96 93 87 97 95 102 115 44 7 111 11 41 117 33 56 37 43 31</file>
                 </tool>
             </inputs>
         </file>
@@ -230,17 +218,17 @@
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 110</file>
+                    <file> 19</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 106</file>
+                    <file> 15</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 47 62</file>
+                    <file> 116 31</file>
                 </tool>
             </inputs>
         </file>
@@ -249,17 +237,17 @@
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 11</file>
+                    <file> 80</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 109</file>
+                    <file> 18</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 47 17 32 28 18 73 45 46 24 70 33 27 26 62</file>
+                    <file> 116 86 101 97 87 42 114 115 93 39 102 96 95 31</file>
                 </tool>
             </inputs>
         </file>
@@ -268,17 +256,17 @@
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 117</file>
+                    <file> 26</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 1</file>
+                    <file> 70</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 45 64 70 86 73 17 32 28 18 72 48 47 46 24 62 33 27 26 78 76 42</file>
+                    <file> 114 33 39 56 42 86 101 97 87 41 117 116 115 93 31 102 96 95 48 46 111</file>
                 </tool>
             </inputs>
         </file>
@@ -287,25 +275,17 @@
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 55</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 56 53</file>
+                    <file> 3</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 105</file>
+                    <file> 14</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 47 62 32 33 74 68 17 26 73 42 78 45 46 27 59 70 28 24 18 102</file>
-                </tool>
-                <tool>
-                    <name>ICC8051</name>
-                    <file> 70 73 47 45 32 17 27 24 18 28 26 33 46 74 59 102 42 62 78 68</file>
+                    <file> 95 116 31 86 102 44 37 101 11 42 111 48 114 115 96 7 39 97 93 87</file>
                 </tool>
             </inputs>
         </file>
@@ -314,17 +294,17 @@
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 29</file>
+                    <file> 98</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 114</file>
+                    <file> 23</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 73 45 17 32 28 18 70 47 46 24 78 33 27 26</file>
+                    <file> 42 114 86 101 97 87 39 116 115 93 48 102 96 95</file>
                 </tool>
             </inputs>
         </file>
@@ -333,17 +313,17 @@
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 31</file>
+                    <file> 100</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 4</file>
+                    <file> 73</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 80 81 62 64 72 84 48 86</file>
+                    <file> 50 51 31 33 41 54 117 56</file>
                 </tool>
             </inputs>
         </file>
@@ -352,58 +332,7 @@
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 5</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 38</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 62</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\time_manager.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 7</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 36</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 72 64 73 62 86 45 17 32 28 18 80 70 81 84 48 47 46 24 33 27 26</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\ustimer.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 14</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 35</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\u_alarm_timer.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 39</file>
+                    <file> 74</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
@@ -413,7 +342,58 @@
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 47 17 32 28 18 73 45 46 24 70 33 27 26 64 68</file>
+                    <file> 31</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\time_manager.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 76</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 105</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 41 33 42 31 56 114 86 101 97 87 50 39 51 54 117 116 115 93 102 96 95</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\ustimer.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 83</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 104</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\u_alarm_timer.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 108</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 16</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 116 86 101 97 87 42 114 115 93 39 102 96 95 33 37</file>
                 </tool>
             </inputs>
         </file>
@@ -422,17 +402,17 @@
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 43</file>
+                    <file> 112</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 104</file>
+                    <file> 13</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 47 17 32 28 18 73 45 46 24 70 33 27 26</file>
+                    <file> 116 86 101 97 87 42 114 115 93 39 102 96 95</file>
                 </tool>
             </inputs>
         </file>
@@ -441,13 +421,13 @@
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 54</file>
+                    <file> 2</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 47 17 32 28 18 73 45 46 24 70 33 27 26 72 48 68 64 86</file>
+                    <file> 116 86 101 97 87 42 114 115 93 39 102 96 95 41 117 37 33 56</file>
                 </tool>
             </inputs>
         </file>
@@ -456,17 +436,17 @@
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 58</file>
+                    <file> 6</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 103</file>
+                    <file> 12</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 47 27 41 46 59 73 45 17 26 32 70 74 33 28 24 18 102</file>
+                    <file> 116 96 110 115 7 42 114 86 95 101 39 44 102 97 93 87 111 11</file>
                 </tool>
             </inputs>
         </file>
@@ -475,17 +455,17 @@
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 101</file>
+                    <file> 10</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 50</file>
+                    <file> 119</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 47 17 32 28 18 73 45 46 24 70 33 27 26 76 42</file>
+                    <file> 116 86 101 97 87 42 114 115 93 39 102 96 95 46 111</file>
                 </tool>
             </inputs>
         </file>
@@ -494,17 +474,17 @@
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 19</file>
+                    <file> 88</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 51</file>
+                    <file> 120</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 47 17 32 28 18 73 45 46 24 70 33 27 26 78</file>
+                    <file> 116 86 101 97 87 42 114 115 93 39 102 96 95 48</file>
                 </tool>
             </inputs>
         </file>
@@ -513,17 +493,47 @@
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 115</file>
+                    <file> 24</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 112</file>
+                    <file> 21</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 73 45 17 32 28 18 70 47 46 24 62 33 27 26</file>
+                    <file> 42 114 86 101 97 87 39 116 115 93 31 102 96 95</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Debug\Exe\tests.d51</name>
+            <outputs>
+                <tool>
+                    <name>XLINK</name>
+                    <file> 91</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>XLINK</name>
+                    <file> 90 71 82 0 20 79 28 106 1 99 85 103 75 109 122 113 8 5 9 89 84 92</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\u_buffer.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 123</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 116 86 101 97 87 42 114 115 93 39 102 96 95 35 111 41 117 33 56</file>
                 </tool>
             </inputs>
         </file>
@@ -574,10 +584,6 @@
         <forcedrebuild>
             <name>$PROJ_DIR$\main.c</name>
             <tool>ICC8051</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>[MULTI_TOOL]</name>
-            <tool>XLINK</tool>
         </forcedrebuild>
     </configuration>
     <configuration>
