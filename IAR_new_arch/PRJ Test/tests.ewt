@@ -2109,19 +2109,19 @@
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\alarm_timer.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\alarm_timer.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\alarm_timer.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\buffer.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\buffer.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\buffer.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\cpu.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\cpu.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\cpu.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\debug.c</name>
@@ -2133,7 +2133,7 @@
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\frame.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\frame.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\frame.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\Stack_core_src\global.h</name>
@@ -2142,7 +2142,7 @@
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\list.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\macros.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\macros.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\mem_slots.c</name>
@@ -2178,7 +2178,7 @@
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\time_manager.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\time_manager.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\time_manager.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\ustimer.c</name>
@@ -2202,6 +2202,9 @@
     <group>
         <name>unit tests</name>
         <file>
+            <name>$PROJ_DIR$\modules_test_list.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\u_alarm_timer.c</name>
         </file>
         <file>
@@ -2221,6 +2224,12 @@
         </file>
         <file>
             <name>$PROJ_DIR$\u_mem_utils.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\utest.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\utest.h</name>
         </file>
     </group>
     <file>

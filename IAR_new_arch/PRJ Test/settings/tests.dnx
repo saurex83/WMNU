@@ -12,7 +12,7 @@
         <ByteLimit>50</ByteLimit>
     </Stack>
     <DebugChecksum>
-        <Checksum>3724389303</Checksum>
+        <Checksum>2511800164</Checksum>
     </DebugChecksum>
     <CodeCoverage>
         <Enabled>_ 0</Enabled>
@@ -69,11 +69,8 @@
         <ShowTimeSum>1</ShowTimeSum>
     </DataLog>
     <Breakpoints2>
-        <Bp0>_ 0 "STD_CODE2" "{$PROJ_DIR$\..\..\IAR_NEW_ARCH\PRJ TEST\u_frame.c}.20.1" 0 0 1 "" 0 ""</Bp0>
-        <Bp1>_ 0 "STD_CODE2" "{$PROJ_DIR$\..\..\IAR_NEW_ARCH\PRJ TEST\u_mem_slots.c}.13.14" 0 0 1 "" 0 ""</Bp1>
-        <Bp2>_ 1 "STD_CODE2" "{$PROJ_DIR$\..\..\IAR_NEW_ARCH\PRJ TEST\u_buffer.c}.28.3" 0 0 1 "" 0 ""</Bp2>
-        <Bp3>_ 1 "STD_CODE2" "{$PROJ_DIR$\..\..\IAR_NEW_ARCH\PRJ TEST\u_buffer.c}.15.3" 0 0 1 "" 0 ""</Bp3>
-        <Count>4</Count>
+        <Bp0>_ 1 "STD_CODE2" "{$PROJ_DIR$\..\..\IAR_NEW_ARCH\PRJ TEST\u_buffer.c}.23.3" 0 0 1 "" 0 ""</Bp0>
+        <Count>1</Count>
     </Breakpoints2>
     <Interrupts>
         <Enabled>1</Enabled>

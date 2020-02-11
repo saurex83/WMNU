@@ -1,5 +1,11 @@
-#include "debug.h"
+#include "utest.h"
+#include "stddef.h"
+
+static int test1(void);
+struct test_unit UT_BF_1 = {.name = "BF:push", .fun = test1};
+
 #include "buffer.h"
+#include "frame.h"
 
 //bool BF_next_tx(struct frame* frame);
 //bool BF_remove_tx(struct frame *frame);
@@ -7,44 +13,46 @@
 //bool BF_push_rx(struct frame *frame);
 //bool BF_push_tx(struct frame *frame);
 
-static void add_buf(void){
-  struct frame *frame1 = FR_create();
-  struct frame *frame2 = FR_create();
-  bool res;
+static int test1(void){
+  int test_res = 0;
+  struct frame *fr = FR_create();
   
-  res = BF_push_tx(frame1);
-  if (res)
-    printf("Pushed ok\r\n");
-  else
-    printf("Push err\r\n");
-  
-  res = BF_push_tx(frame2);
-  if (res)
-    printf("Pushed ok\r\n");
-  else
-    printf("Push err\r\n"); 
-  
-struct frame *cur_fr = NULL;  
-  res = BF_next_tx(cur_fr);
-  if (res)
-    printf("In TX: %x", cur_fr);
-  else
-    printf("err");
-  
-  res = BF_next_tx(cur_fr);
-  if (res)
-    printf("In TX: %x", cur_fr);
-  else
-    printf("err");
+  if (!BF_push_tx(fr))
+    test_res = 1;
 
-  res = BF_next_tx(cur_fr);
-  if (res)
-    printf("In TX: %x", cur_fr);
-  else
-    printf("END");
+  if (!BF_push_rx(fr))
+    test_res = 2;
   
-}
-
-void u_buffer(void){
-  add_buf();
+  // Должен извлечся тот же самый фрейм
+  struct frame *pop_fr = NULL;
+  pop_fr = BF_next_tx(pop_fr);
+  if (!pop_fr)
+    test_res = 3;
+    
+  if (pop_fr != fr)
+    test_res = 4;
+  
+  if (!BF_remove_tx(fr))
+    test_res = 5;
+  
+  // ничего не должно извлечся
+  pop_fr = NULL;
+  pop_fr = BF_next_tx(pop_fr);
+  if (pop_fr)
+    test_res = 6;
+  
+//  // Должен извлечся тот же самый фрейм
+//  pop_fr = NULL;
+//  if (!BF_next_rx(pop_fr))
+//    test_res = 6;
+//  
+//  if (pop_fr != fr)
+//    test_res = 7;
+//  
+//  // ничего не должно извлечся
+//  pop_fr = NULL;
+//  if (BF_next_rx(pop_fr))
+//    test_res = 8;
+  
+  return test_res;
 }

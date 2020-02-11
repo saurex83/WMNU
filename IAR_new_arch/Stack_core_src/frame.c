@@ -20,13 +20,14 @@ struct frame* FR_create(){
   return (struct frame*)SL_alloc();
 };
 
-void FR_delete(struct frame *frame){
-  SL_free((char*)frame);
+bool FR_delete(struct frame *frame){
+  return SL_free((char*)frame);
 }
 
-void FR_add_header(struct frame* frame ,void *head, char len){
+bool FR_add_header(struct frame* frame ,void *head, char len){
   int new_len = frame->len + len;
-  ASSERT( new_len < MAX_PAYLOAD_SIZE);
+  if (!(new_len < MAX_PAYLOAD_SIZE))
+    return false;
   
   // Сдвинем данные на размер вставки при необходимости
   if (frame->len != 0)
@@ -35,11 +36,12 @@ void FR_add_header(struct frame* frame ,void *head, char len){
   // Скопируем новые данные
   MEMCPY(frame->payload, head, len);
   frame->len = new_len;
+  return true;
 };
 
-void FR_del_header(struct frame* frame, char len){
-  ASSERT(len != NULL);
-  ASSERT(frame->len >= len);
+bool FR_del_header(struct frame* frame, char len){
+  if (len == 0 || len > frame->len )
+    return false;
   MEMCPY(frame->payload, &frame->payload[len], len);
   
   #ifdef FRAME_FOOTER_DEL
@@ -47,6 +49,7 @@ void FR_del_header(struct frame* frame, char len){
   #endif
   
   frame->len = frame->len - len;;
+  return true;
 }
 
 int FR_busy(){

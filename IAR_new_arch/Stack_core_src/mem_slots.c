@@ -73,7 +73,7 @@ static bool _free(char *buff){
   if (!(index < SLOT_BUFFER_SIZE))
     return false;
   
-  if (slot->property.taken == true)
+  if (slot->property.taken != true)
     return false;
     
   slot->property.taken = false;
@@ -91,12 +91,12 @@ bool SL_free(char *buff){
 
 
 int SL_busy(){
-  ASSERT(slot_busy < SLOT_POOL_ITEMS);
+  ASSERT(slot_busy <= SLOT_POOL_ITEMS);
   return slot_busy;
 };
 
 int SL_available(){
-  ASSERT(slot_busy < SLOT_POOL_ITEMS);  
+  ASSERT(slot_busy <= SLOT_POOL_ITEMS);  
   return SLOT_POOL_ITEMS - slot_busy;
 };
 

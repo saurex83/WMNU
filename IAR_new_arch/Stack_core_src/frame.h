@@ -1,5 +1,6 @@
 #pragma once
 #include "meta.h"
+#include "stdbool.h"
 
 /**
 @brief Представление модели модуля
@@ -18,9 +19,9 @@ struct frame{
 };
 
 struct frame* FR_create();
-void FR_delete(struct frame*);
-void FR_add_header(struct frame*, void *head, char len);
-void FR_del_header(struct frame*, char len);
+bool FR_delete(struct frame*);
+bool FR_add_header(struct frame*, void *head, char len);
+bool FR_del_header(struct frame*, char len);
 int FR_busy();
 int FR_available();
  

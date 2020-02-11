@@ -1,9 +1,7 @@
-#include "debug.h"
+#include "utest.h"
 
+struct test_unit UTEST_DEBUG = {.name = "DEBUG MODUL"};
 
-void u_test(void){
-  LOG_OFF("BAD")
-  LOG_ON("HELLO");
-  ASSERT(2<0);
-  ASSERT(2>0);
+static void u_test(void){
+
 }

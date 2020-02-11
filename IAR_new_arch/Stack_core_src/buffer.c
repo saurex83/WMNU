@@ -71,17 +71,21 @@ bool BF_push_rx(struct frame *frame){
   return res;
 };
 
+static inline struct node* find_node_by_frame_ptr(struct frame *frame){
+  for_each_type(struct node, NODE_LIST, node){
+  if (node->frame == frame)
+    return node;
+  }
+  return NULL;
+}
+
 /**
 @brief
 @return -1 неверный указатель, 0 - нет элемента, 1 - удалил
 */
 static int _remove(struct list_head *list, struct frame *frame){
-  struct node *node = container_of(frame, struct node, frame);
-  if (!is_array_ptr(NODE_LIST, node, sizeof(struct node)))
-    return -1; 
-  
-  size_t index = array_index(NODE_LIST, node, sizeof(struct node));
-  if (!(index < MAX_TXRX_BUFF_SIZE)) 
+  struct node *node = find_node_by_frame_ptr(frame);
+  if (!node)
     return -1;
   
   struct list_head *ptr;
@@ -113,31 +117,29 @@ bool BF_remove_tx(struct frame *frame){
   int ret;
   ATOMIC_BLOCK_RESTORE{
     ret = _remove(&TX_LIST_HEAD, frame);
-    if (ret)
+    if (ret == 1)
       TX_BUFF_FRAME_COUNT--; 
   };
-  if (ret)
+  if (ret == 1)
      return true;
   return false;
 };
 
-bool BF_next_tx(struct frame* frame){
+struct frame* BF_next_tx(struct frame* frame){
   struct node *node;
   if (!frame) // инициализируется новый перебор
     if (list_empty(&TX_LIST_HEAD)) // Список пустой
-      return false;
+      return NULL;
     else{ // Если список не пустой, берем первый элемент
       node = list_first_entry(&TX_LIST_HEAD, struct node, list);
-      frame = node->frame;
-      return true;
+      return(node->frame);
     }
   
   // Итерируем текущий курсор
   node = container_of(frame, struct node, frame);
   struct node *n_node = list_next_entry(node, struct node, list);
   if (node == n_node)
-    return false;
+    return NULL;
  
-  frame = n_node->frame;
-  return true;
+  return n_node->frame;
 }
