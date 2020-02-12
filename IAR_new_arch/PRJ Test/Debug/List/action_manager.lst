@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               12/Feb/2020  10:50:07
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               12/Feb/2020  11:05:27
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,7 +13,7 @@
 #                          
 #    Source file        =  E:\WMNU\IAR_new_arch\STACK_CORE_SRC\action_manager.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EW17A8.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW22B3.tmp
 #        (E:\WMNU\IAR_new_arch\STACK_CORE_SRC\action_manager.c -lC
 #        "E:\WMNU\IAR_new_arch\PRJ Test\Debug\List" -o
 #        "E:\WMNU\IAR_new_arch\PRJ Test\Debug\Obj" -e --debug --core=plain
@@ -2561,7 +2561,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\buffer.c
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
    \   000005                ; Saved register size: 10
    \   000005                ; Auto size: 0
-     89            if (list_empty(&RX_LIST_HEAD))
+     89            if (list_empty(&RX_LIST_HEAD)) 
    \   000005                ; Setup parameters for call to function list_empty
    \   000005   7A..         MOV       R2,#RX_LIST_HEAD & 0xff
    \   000007   7B..         MOV       R3,#(RX_LIST_HEAD >> 8) & 0xff
@@ -2574,26 +2574,56 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\buffer.c
      90              return NULL;
    \   000016   7A00         MOV       R2,#0x0
    \   000018   7B00         MOV       R3,#0x0
-   \   00001A   800C         SJMP      ??BF_cursor_rx_1
-     91            struct node *node = list_first_entry(&RX_LIST_HEAD, struct node, list);
+   \   00001A   802C         SJMP      ??BF_cursor_rx_1
+     91            void *ret_val;
+     92            ATOMIC_BLOCK_RESTORE{   
    \                     ??BF_cursor_rx_0:
-   \   00001C   90....       MOV       DPTR,#RX_LIST_HEAD
-   \   00001F   E0           MOVX      A,@DPTR
-   \   000020   24FE         ADD       A,#-0x2
-   \   000022   FA           MOV       R2,A
-   \   000023   A3           INC       DPTR
-   \   000024   E0           MOVX      A,@DPTR
-   \   000025   34FF         ADDC      A,#-0x1
-   \   000027   FB           MOV       R3,A
-     92            return node;
+   \   00001C   A2AF         MOV       C,0xa8.7
+   \   00001E   E4           CLR       A
+   \   00001F   33           RLC       A
+   \   000020   F5..         MOV       ?V0,A
+   \   000022                ; Setup parameters for call to function __cli
+   \   000022   12....       LCALL     `??__cli::?relay_1`; Banked call to: __cli
+   \   000025   E9           MOV       A,R1
+   \   000026   F8           MOV       R0,A
+   \                     ??BF_cursor_rx_2:
+   \   000027   E8           MOV       A,R0
+   \   000028   601A         JZ        ??BF_cursor_rx_3
+     93              struct node *node = list_first_entry(&RX_LIST_HEAD, struct node, list);
+   \   00002A   90....       MOV       DPTR,#RX_LIST_HEAD
+   \   00002D   E0           MOVX      A,@DPTR
+   \   00002E   24FE         ADD       A,#-0x2
+   \   000030   F8           MOV       R0,A
+   \   000031   A3           INC       DPTR
+   \   000032   E0           MOVX      A,@DPTR
+   \   000033   34FF         ADDC      A,#-0x1
+   \   000035   F9           MOV       R1,A
+     94              ret_val =  node;
+   \   000036   E8           MOV       A,R0
+   \   000037   FE           MOV       R6,A
+   \   000038   E9           MOV       A,R1
+   \   000039   FF           MOV       R7,A
+     95            }
+   \   00003A   7800         MOV       R0,#0x0
+   \   00003C   E5..         MOV       A,?V0
+   \   00003E   A2E0         MOV       C,0xE0 /* A   */.0
+   \   000040   92AF         MOV       0xa8.7,C
+   \   000042   80E3         SJMP      ??BF_cursor_rx_2
+     96            return ret_val;
+   \                     ??BF_cursor_rx_3:
+   \   000044   EE           MOV       A,R6
+   \   000045   FA           MOV       R2,A
+   \   000046   EF           MOV       A,R7
+   \   000047   FB           MOV       R3,A
    \                     ??BF_cursor_rx_1:
-   \   000028   7F02         MOV       R7,#0x2
-   \   00002A   02....       LJMP      ?BANKED_LEAVE_XDATA
-     93          }
-     94          
+   \   000048   7F02         MOV       R7,#0x2
+   \   00004A   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   00004D                REQUIRE _A_IEN0
+     97          }
+     98          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     95          void* BF_cursor_tx(void){
+     99          void* BF_cursor_tx(void){
    \                     BF_cursor_tx:
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
@@ -2601,7 +2631,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\buffer.c
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
    \   000005                ; Saved register size: 10
    \   000005                ; Auto size: 0
-     96            if (list_empty(&TX_LIST_HEAD)) 
+    100            if (list_empty(&TX_LIST_HEAD)) 
    \   000005                ; Setup parameters for call to function list_empty
    \   000005   7A..         MOV       R2,#TX_LIST_HEAD & 0xff
    \   000007   7B..         MOV       R3,#(TX_LIST_HEAD >> 8) & 0xff
@@ -2611,89 +2641,147 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\buffer.c
    \   000010   E5..         MOV       A,?V0
    \   000012   45..         ORL       A,?V1
    \   000014   6006         JZ        ??BF_cursor_tx_0
-     97              return NULL;
+    101              return NULL;
    \   000016   7A00         MOV       R2,#0x0
    \   000018   7B00         MOV       R3,#0x0
-   \   00001A   800C         SJMP      ??BF_cursor_tx_1
-     98            struct node *node = list_first_entry(&TX_LIST_HEAD, struct node, list);
+   \   00001A   802C         SJMP      ??BF_cursor_tx_1
+    102            void *ret_val;
+    103            ATOMIC_BLOCK_RESTORE{   
    \                     ??BF_cursor_tx_0:
-   \   00001C   90....       MOV       DPTR,#TX_LIST_HEAD
-   \   00001F   E0           MOVX      A,@DPTR
-   \   000020   24FE         ADD       A,#-0x2
-   \   000022   FA           MOV       R2,A
-   \   000023   A3           INC       DPTR
-   \   000024   E0           MOVX      A,@DPTR
-   \   000025   34FF         ADDC      A,#-0x1
-   \   000027   FB           MOV       R3,A
-     99            return node;
+   \   00001C   A2AF         MOV       C,0xa8.7
+   \   00001E   E4           CLR       A
+   \   00001F   33           RLC       A
+   \   000020   F5..         MOV       ?V0,A
+   \   000022                ; Setup parameters for call to function __cli
+   \   000022   12....       LCALL     `??__cli::?relay_1`; Banked call to: __cli
+   \   000025   E9           MOV       A,R1
+   \   000026   F8           MOV       R0,A
+   \                     ??BF_cursor_tx_2:
+   \   000027   E8           MOV       A,R0
+   \   000028   601A         JZ        ??BF_cursor_tx_3
+    104              struct node *node = list_first_entry(&TX_LIST_HEAD, struct node, list);
+   \   00002A   90....       MOV       DPTR,#TX_LIST_HEAD
+   \   00002D   E0           MOVX      A,@DPTR
+   \   00002E   24FE         ADD       A,#-0x2
+   \   000030   F8           MOV       R0,A
+   \   000031   A3           INC       DPTR
+   \   000032   E0           MOVX      A,@DPTR
+   \   000033   34FF         ADDC      A,#-0x1
+   \   000035   F9           MOV       R1,A
+    105              ret_val =  node;
+   \   000036   E8           MOV       A,R0
+   \   000037   FE           MOV       R6,A
+   \   000038   E9           MOV       A,R1
+   \   000039   FF           MOV       R7,A
+    106            }
+   \   00003A   7800         MOV       R0,#0x0
+   \   00003C   E5..         MOV       A,?V0
+   \   00003E   A2E0         MOV       C,0xE0 /* A   */.0
+   \   000040   92AF         MOV       0xa8.7,C
+   \   000042   80E3         SJMP      ??BF_cursor_tx_2
+    107            return ret_val;
+   \                     ??BF_cursor_tx_3:
+   \   000044   EE           MOV       A,R6
+   \   000045   FA           MOV       R2,A
+   \   000046   EF           MOV       A,R7
+   \   000047   FB           MOV       R3,A
    \                     ??BF_cursor_tx_1:
-   \   000028   7F02         MOV       R7,#0x2
-   \   00002A   02....       LJMP      ?BANKED_LEAVE_XDATA
-    100          }  
+   \   000048   7F02         MOV       R7,#0x2
+   \   00004A   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   00004D                REQUIRE _A_IEN0
+    108          }  
+    109          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-    101          void* BF_cursor_next(void* cursor){
+    110          void* BF_cursor_next(void* cursor){
    \                     BF_cursor_next:
-   \   000000   74F7         MOV       A,#-0x9
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000                REQUIRE ?V2
+   \   000000   74F5         MOV       A,#-0xb
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
-   \   000005                ; Saved register size: 9
+   \   000005                ; Saved register size: 11
    \   000005                ; Auto size: 0
-   \   000005   EA           MOV       A,R2
-   \   000006   F8           MOV       R0,A
-   \   000007   EB           MOV       A,R3
-   \   000008   F9           MOV       R1,A
-    102            if (!cursor)
-   \   000009   E8           MOV       A,R0
-   \   00000A   49           ORL       A,R1
-   \   00000B   7006         JNZ       ??BF_cursor_next_0
-    103              return NULL;
-   \   00000D   7A00         MOV       R2,#0x0
-   \   00000F   7B00         MOV       R3,#0x0
-   \   000011   8025         SJMP      ??BF_cursor_next_1
-    104            struct node *node = (struct node*)(cursor);
+   \   000005   8A..         MOV       ?V0,R2
+   \   000007   8B..         MOV       ?V1,R3
+    111            if (!cursor)
+   \   000009   E5..         MOV       A,?V0
+   \   00000B   45..         ORL       A,?V1
+   \   00000D   7006         JNZ       ??BF_cursor_next_0
+    112              return NULL;
+   \   00000F   7A00         MOV       R2,#0x0
+   \   000011   7B00         MOV       R3,#0x0
+   \   000013   8041         SJMP      ??BF_cursor_next_1
+    113            void *ret_val;
+    114            ATOMIC_BLOCK_RESTORE{  
    \                     ??BF_cursor_next_0:
-   \   000013   E8           MOV       A,R0
-   \   000014   FC           MOV       R4,A
-   \   000015   E9           MOV       A,R1
-   \   000016   FD           MOV       R5,A
-    105            struct node *next = list_next_entry(node, struct node, list);
-   \   000017   8C82         MOV       DPL,R4
-   \   000019   8D83         MOV       DPH,R5
-   \   00001B   A3           INC       DPTR
-   \   00001C   A3           INC       DPTR
-   \   00001D   E0           MOVX      A,@DPTR
-   \   00001E   24FE         ADD       A,#-0x2
-   \   000020   FE           MOV       R6,A
-   \   000021   A3           INC       DPTR
-   \   000022   E0           MOVX      A,@DPTR
-   \   000023   34FF         ADDC      A,#-0x1
-   \   000025   FF           MOV       R7,A
-    106            if (node == next)
-   \   000026   EE           MOV       A,R6
-   \   000027   6C           XRL       A,R4
-   \   000028   7002         JNZ       ??BF_cursor_next_2
-   \   00002A   EF           MOV       A,R7
-   \   00002B   6D           XRL       A,R5
+   \   000015   A2AF         MOV       C,0xa8.7
+   \   000017   E4           CLR       A
+   \   000018   33           RLC       A
+   \   000019   F5..         MOV       ?V2,A
+   \   00001B                ; Setup parameters for call to function __cli
+   \   00001B   12....       LCALL     `??__cli::?relay_1`; Banked call to: __cli
+   \   00001E   E9           MOV       A,R1
+   \   00001F   F8           MOV       R0,A
    \                     ??BF_cursor_next_2:
-   \   00002C   7006         JNZ       ??BF_cursor_next_3
-    107              return NULL;
-   \   00002E   7A00         MOV       R2,#0x0
-   \   000030   7B00         MOV       R3,#0x0
-   \   000032   8004         SJMP      ??BF_cursor_next_1
-    108            return next;
+   \   000020   E8           MOV       A,R0
+   \   000021   602F         JZ        ??BF_cursor_next_3
+    115              struct node *node = (struct node*)(cursor);
+   \   000023   A8..         MOV       R0,?V0
+   \   000025   A9..         MOV       R1,?V1
+    116              struct node *next = list_next_entry(node, struct node, list);
+   \   000027   8882         MOV       DPL,R0
+   \   000029   8983         MOV       DPH,R1
+   \   00002B   A3           INC       DPTR
+   \   00002C   A3           INC       DPTR
+   \   00002D   E0           MOVX      A,@DPTR
+   \   00002E   24FE         ADD       A,#-0x2
+   \   000030   FA           MOV       R2,A
+   \   000031   A3           INC       DPTR
+   \   000032   E0           MOVX      A,@DPTR
+   \   000033   34FF         ADDC      A,#-0x1
+   \   000035   FB           MOV       R3,A
+    117              if (node == next)
+   \   000036   EA           MOV       A,R2
+   \   000037   68           XRL       A,R0
+   \   000038   7002         JNZ       ??BF_cursor_next_4
+   \   00003A   EB           MOV       A,R3
+   \   00003B   69           XRL       A,R1
+   \                     ??BF_cursor_next_4:
+   \   00003C   7006         JNZ       ??BF_cursor_next_5
+    118                ret_val = NULL;
+   \   00003E   7E00         MOV       R6,#0x0
+   \   000040   7F00         MOV       R7,#0x0
+   \   000042   8004         SJMP      ??BF_cursor_next_6
+    119              else 
+    120                ret_val = next;
+   \                     ??BF_cursor_next_5:
+   \   000044   EA           MOV       A,R2
+   \   000045   FE           MOV       R6,A
+   \   000046   EB           MOV       A,R3
+   \   000047   FF           MOV       R7,A
+    121            }
+   \                     ??BF_cursor_next_6:
+   \   000048   7800         MOV       R0,#0x0
+   \   00004A   E5..         MOV       A,?V2
+   \   00004C   A2E0         MOV       C,0xE0 /* A   */.0
+   \   00004E   92AF         MOV       0xa8.7,C
+   \   000050   80CE         SJMP      ??BF_cursor_next_2
+    122            return ret_val;
    \                     ??BF_cursor_next_3:
-   \   000034   EE           MOV       A,R6
-   \   000035   FA           MOV       R2,A
-   \   000036   EF           MOV       A,R7
-   \   000037   FB           MOV       R3,A
+   \   000052   EE           MOV       A,R6
+   \   000053   FA           MOV       R2,A
+   \   000054   EF           MOV       A,R7
+   \   000055   FB           MOV       R3,A
    \                     ??BF_cursor_next_1:
-   \   000038   7F01         MOV       R7,#0x1
-   \   00003A   02....       LJMP      ?BANKED_LEAVE_XDATA
-    109          }
-    110          
+   \   000056   7F03         MOV       R7,#0x3
+   \   000058   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   00005B                REQUIRE _A_IEN0
+    123          }
+    124          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-    111          bool BF_remove(void *cursor){
+    125          bool BF_remove(void *cursor){
    \                     BF_remove:
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
@@ -2704,14 +2792,14 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\buffer.c
    \   000005                ; Auto size: 0
    \   000005   8A..         MOV       ?V0,R2
    \   000007   8B..         MOV       ?V1,R3
-    112            if (!cursor)
+    126            if (!cursor)
    \   000009   E5..         MOV       A,?V0
    \   00000B   45..         ORL       A,?V1
    \   00000D   7003         JNZ       ??BF_remove_0
-    113              return false;
+    127              return false;
    \   00000F   C3           CLR       C
    \   000010   803E         SJMP      ??BF_remove_1
-    114            ATOMIC_BLOCK_RESTORE{
+    128            ATOMIC_BLOCK_RESTORE{
    \                     ??BF_remove_0:
    \   000012   A2AF         MOV       C,0xa8.7
    \   000014   E4           CLR       A
@@ -2724,10 +2812,10 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\buffer.c
    \                     ??BF_remove_2:
    \   00001D   E8           MOV       A,R0
    \   00001E   602F         JZ        ??BF_remove_3
-    115              struct node *node = (struct node*)(cursor);    
+    129              struct node *node = (struct node*)(cursor);    
    \   000020   AE..         MOV       R6,?V0
    \   000022   AF..         MOV       R7,?V1
-    116              node->frame = NULL;
+    130              node->frame = NULL;
    \   000024   8E82         MOV       DPL,R6
    \   000026   8F83         MOV       DPH,R7
    \   000028   7400         MOV       A,#0x0
@@ -2735,7 +2823,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\buffer.c
    \   00002B   A3           INC       DPTR
    \   00002C   7400         MOV       A,#0x0
    \   00002E   F0           MOVX      @DPTR,A
-    117              list_del(&node->list);    
+    131              list_del(&node->list);    
    \   00002F                ; Setup parameters for call to function list_del
    \   00002F   EE           MOV       A,R6
    \   000030   2402         ADD       A,#0x2
@@ -2744,7 +2832,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\buffer.c
    \   000034   3F           ADDC      A,R7
    \   000035   FB           MOV       R3,A
    \   000036   12....       LCALL     `??list_del::?relay`; Banked call to: list_del
-    118              TX_BUFF_FRAME_COUNT--; 
+    132              TX_BUFF_FRAME_COUNT--; 
    \   000039   90....       MOV       DPTR,#??TX_BUFF_FRAME_COUNT
    \   00003C   E0           MOVX      A,@DPTR
    \   00003D   24FF         ADD       A,#-0x1
@@ -2753,24 +2841,24 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\buffer.c
    \   000041   E0           MOVX      A,@DPTR
    \   000042   34FF         ADDC      A,#-0x1
    \   000044   F0           MOVX      @DPTR,A
-    119            };  
+    133            };  
    \   000045   7800         MOV       R0,#0x0
    \   000047   E5..         MOV       A,?V2
    \   000049   A2E0         MOV       C,0xE0 /* A   */.0
    \   00004B   92AF         MOV       0xa8.7,C
    \   00004D   80CE         SJMP      ??BF_remove_2
-    120            return true;
+    134            return true;
    \                     ??BF_remove_3:
    \   00004F   D3           SETB      C
    \                     ??BF_remove_1:
    \   000050   7F03         MOV       R7,#0x3
    \   000052   02....       LJMP      ?BANKED_LEAVE_XDATA
    \   000055                REQUIRE _A_IEN0
-    121          }
-    122          
+    135          }
+    136          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-    123          struct frame* BF_content(void* cursor){
+    137          struct frame* BF_content(void* cursor){
    \                     BF_content:
    \   000000   C082         PUSH      DPL
    \   000002   C083         PUSH      DPH
@@ -2780,19 +2868,19 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\buffer.c
    \   000005   F8           MOV       R0,A
    \   000006   EB           MOV       A,R3
    \   000007   F9           MOV       R1,A
-    124            if (!cursor)
+    138            if (!cursor)
    \   000008   E8           MOV       A,R0
    \   000009   49           ORL       A,R1
    \   00000A   7006         JNZ       ??BF_content_0
-    125              return NULL;
+    139              return NULL;
    \   00000C   7A00         MOV       R2,#0x0
    \   00000E   7B00         MOV       R3,#0x0
    \   000010   8009         SJMP      ??BF_content_1
-    126            struct node *node = (struct node*)(cursor);
+    140            struct node *node = (struct node*)(cursor);
    \                     ??BF_content_0:
    \   000012   8882         MOV       DPL,R0
    \   000014   8983         MOV       DPH,R1
-    127            return node->frame;
+    141            return node->frame;
    \   000016   E0           MOVX      A,@DPTR
    \   000017   FA           MOV       R2,A
    \   000018   A3           INC       DPTR
@@ -2802,7 +2890,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\buffer.c
    \   00001B   D083         POP       DPH
    \   00001D   D082         POP       DPL
    \   00001F   02....       LJMP      ?BRET
-    128          }
+    142          }
 E:\WMNU\IAR_new_arch\STACK_CORE_SRC\cpu.c
       1          #include "action_manager.h"
       2          #include "ioCC2530.h"
@@ -9665,10 +9753,13 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
         0     10   -> printf
         0     16   -> printf
       2     58   BF_content
-      0     67   BF_cursor_next
+      0     69   BF_cursor_next
+        0     11   -> __cli
       0     68   BF_cursor_rx
+        0     10   -> __cli
         0     10   -> list_empty
       0     68   BF_cursor_tx
+        0     10   -> __cli
         0     10   -> list_empty
       0     67   BF_push_rx
         0      9   -> __cli
@@ -9971,11 +10062,11 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
        6  BF_available::?relay
       34  BF_content
        6  BF_content::?relay
-      61  BF_cursor_next
+      91  BF_cursor_next
        6  BF_cursor_next::?relay
-      45  BF_cursor_rx
+      77  BF_cursor_rx
        6  BF_cursor_rx::?relay
-      45  BF_cursor_tx
+      77  BF_cursor_tx
        6  BF_cursor_tx::?relay
       69  BF_push_rx
        6  BF_push_rx::?relay
@@ -10194,7 +10285,7 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
      177  -- Other
 
  
- 10 065 bytes in segment BANKED_CODE
+ 10 159 bytes in segment BANKED_CODE
     570 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
      49 bytes in segment NEAR_CODE
@@ -10207,7 +10298,7 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
   1 183 bytes of CODE     memory (+  3 bytes shared)
   1 093 bytes of CONST    memory (+ 16 bytes shared)
       0 bytes of DATA     memory (+  9 bytes shared)
- 10 065 bytes of HUGECODE memory
+ 10 159 bytes of HUGECODE memory
   3 832 bytes of XDATA    memory
 
 Errors: none

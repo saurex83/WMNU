@@ -86,26 +86,40 @@ bool BF_push_rx(struct frame *frame){
 };
 
 void* BF_cursor_rx(void){
-  if (list_empty(&RX_LIST_HEAD))
+  if (list_empty(&RX_LIST_HEAD)) 
     return NULL;
-  struct node *node = list_first_entry(&RX_LIST_HEAD, struct node, list);
-  return node;
+  void *ret_val;
+  ATOMIC_BLOCK_RESTORE{   
+    struct node *node = list_first_entry(&RX_LIST_HEAD, struct node, list);
+    ret_val =  node;
+  }
+  return ret_val;
 }
 
 void* BF_cursor_tx(void){
   if (list_empty(&TX_LIST_HEAD)) 
     return NULL;
-  struct node *node = list_first_entry(&TX_LIST_HEAD, struct node, list);
-  return node;
+  void *ret_val;
+  ATOMIC_BLOCK_RESTORE{   
+    struct node *node = list_first_entry(&TX_LIST_HEAD, struct node, list);
+    ret_val =  node;
+  }
+  return ret_val;
 }  
+
 void* BF_cursor_next(void* cursor){
   if (!cursor)
     return NULL;
-  struct node *node = (struct node*)(cursor);
-  struct node *next = list_next_entry(node, struct node, list);
-  if (node == next)
-    return NULL;
-  return next;
+  void *ret_val;
+  ATOMIC_BLOCK_RESTORE{  
+    struct node *node = (struct node*)(cursor);
+    struct node *next = list_next_entry(node, struct node, list);
+    if (node == next)
+      ret_val = NULL;
+    else 
+      ret_val = next;
+  }
+  return ret_val;
 }
 
 bool BF_remove(void *cursor){
