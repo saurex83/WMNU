@@ -1,42 +1,71 @@
-#include "debug.h"
-#include "stddef.h"
+#include "utest.h"
+static int test1(void);
+static int test2(void);
+struct test_unit UT_MACR_1 = {.name = "MACROS: EXCEPTIOS", .fun = test1};
+struct test_unit UT_MACR_2 = {.name = "MACROS: EXCEPTIOS", .fun = test2};
+
+
 #include "stdint.h"
 #include "macros.h"
+#include "stdbool.h"
 
-#define TIMEOUT_EXCP 1
-#define UNHANDLED_EXCP 2
-
-void u_macros(void){
-  int test[] = {1};
+static int test2(void){
+  bool catched = false;
+  bool finalyed = false;
+  bool noexe = true;
   
-  struct abc{
-  int a;
-  int b;
-  int c;
-  };
-  
-  struct abc oleg;
-  struct abc *y;
-  
-  int *c = &oleg.c;
-  y = container_of(c, struct abc, c);
-  
-  for_each_type(int, test, item){ 
-    printf("%d ",*item);
-  };
-  printf("\r\n");
-  
-  printf("Try/CATCH macro \r\n");
   TRY{
-    y = &oleg;
-    THROW(UNHANDLED_EXCP);
-    printf("Code run!\r\n");
+    THROW(2);
+    noexe = false;
   }
-  CATCH(TIMEOUT_EXCP){
-    printf("Exception catch!\r\n");
+  CATCH(1){
+    catched = true;
   }
   FINALLY{
-    printf("Finnaly!\r\n");
+    finalyed = true;
   }
-  ETRY;
+  ETRY;  
+  
+  if (!noexe)
+    return 1;
+
+  if (catched)
+    return 2;  
+
+  if (!finalyed)
+    return 3;
+    
+  return 0;
 }
+
+
+static int test1(void){
+  bool catched = false;
+  bool finalyed = false;
+  bool noexe = true;
+  
+  TRY{
+    THROW(1);
+    noexe = false;
+  }
+  CATCH(1){
+    catched = true;
+  }
+  FINALLY{
+    finalyed = true;
+  }
+  ETRY;  
+  
+  if (!noexe)
+    return 1;
+
+  if (!catched)
+    return 2;  
+
+  if (!finalyed)
+    return 3;
+    
+  return 0;
+}
+
+
