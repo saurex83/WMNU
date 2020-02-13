@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.10.1.4655 for 8051               12/Feb/2020  20:58:57
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               13/Feb/2020  22:15:35
 # Copyright 2004-2017 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,7 +13,7 @@
 #                          
 #    Source file        =  E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c
 #    Command line       =  
-#        -f C:\Users\08A4~1\AppData\Local\Temp\EWDC61.tmp
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW4247.tmp
 #        (E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c -lC
 #        "E:\WMNU\IAR_new_arch\PRJ Test\Debug\List" -o
 #        "E:\WMNU\IAR_new_arch\PRJ Test\Debug\Obj" -e --debug --core=plain
@@ -39,7 +39,7 @@
 #        Test\u_debug.c" "E:\WMNU\IAR_new_arch\PRJ Test\u_frame.c"
 #        "E:\WMNU\IAR_NEW_ARCH\PRJ Test\u_macros.c" "E:\WMNU\IAR_NEW_ARCH\PRJ
 #        Test\u_mem_slots.c" "E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c"
-#        E:\WMNU\IAR_new_arch\STACK_CORE_SRC\ustimer.c
+#        E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\ustimer.c
 #        "E:\WMNU\IAR_new_arch\PRJ Test\utest.c")
 #    Locale             =  Russian_Russia.1251
 #    List file          =  
@@ -54,6 +54,11 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c
       2          #include "modules_list.h"
       3          #include "model.h"
       4          #include "debug.h"
+
+   \                                 In  segment SFR_AN, at 0x94
+   \   unsigned char volatile __sfr T2CTRL
+   \                     T2CTRL:
+   \   000000                DS 1
 
    \                                 In  segment SFR_AN, at 0x95
    \   unsigned char volatile __sfr ST0
@@ -78,6 +83,26 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c
    \                                 In  segment SFR_AN, at 0x9e
    \   unsigned char volatile __sfr CLKCONSTA
    \                     CLKCONSTA:
+   \   000000                DS 1
+
+   \                                 In  segment SFR_AN, at 0xa2
+   \   unsigned char volatile __sfr T2M0
+   \                     T2M0:
+   \   000000                DS 1
+
+   \                                 In  segment SFR_AN, at 0xa3
+   \   unsigned char volatile __sfr T2M1
+   \                     T2M1:
+   \   000000                DS 1
+
+   \                                 In  segment SFR_AN, at 0xa4
+   \   unsigned char volatile __sfr T2MOVF0
+   \                     T2MOVF0:
+   \   000000                DS 1
+
+   \                                 In  segment SFR_AN, at 0xa5
+   \   unsigned char volatile __sfr T2MOVF1
+   \                     T2MOVF1:
    \   000000                DS 1
 
    \                                 In  segment SFR_AN, at 0xa8
@@ -131,16 +156,16 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c
    \                                 In  segment XDATA_I, align 1, keep-with-next
      23          static module_s* HW_MOD[] = HW_MOD_DEF;
    \                     ??HW_MOD:
-   \   000000                DS 6
-   \   000006                REQUIRE `?<Initializer for HW_MOD>`
-   \   000006                REQUIRE __INIT_XDATA_I
+   \   000000                DS 8
+   \   000008                REQUIRE `?<Initializer for HW_MOD>`
+   \   000008                REQUIRE __INIT_XDATA_I
 
    \                                 In  segment XDATA_I, align 1, keep-with-next
      24          static module_s* SW_MOD[] = SW_MOD_DEF;
    \                     ??SW_MOD:
-   \   000000                DS 10
-   \   00000A                REQUIRE `?<Initializer for SW_MOD>`
-   \   00000A                REQUIRE __INIT_XDATA_I
+   \   000000                DS 8
+   \   000008                REQUIRE `?<Initializer for SW_MOD>`
+   \   000008                REQUIRE __INIT_XDATA_I
 
    \                                 In  segment XDATA_I, align 1, keep-with-next
      25          static module_s* POW_MOD[] = POW_MOD_DEF;
@@ -426,7 +451,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c
    \                     ??AM_HW_Init_0:
    \   000007   EE           MOV       A,R6
    \   000008   C3           CLR       C
-   \   000009   9403         SUBB      A,#0x3
+   \   000009   9404         SUBB      A,#0x4
    \   00000B   4003         JC        $+5
    \   00000D   02....       LJMP      ??AM_HW_Init_1 & 0xFFFF
    \   000010   EE           MOV       A,R6
@@ -550,7 +575,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\action_manager.c
    \                     ??AM_SW_Init_0:
    \   000007   EE           MOV       A,R6
    \   000008   C3           CLR       C
-   \   000009   9405         SUBB      A,#0x5
+   \   000009   9404         SUBB      A,#0x4
    \   00000B   4003         JC        $+5
    \   00000D   02....       LJMP      ??AM_SW_Init_1 & 0xFFFF
    \   000010   EE           MOV       A,R6
@@ -930,6 +955,16 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
       6          #include "stdint.h"
       7          #include "debug.h"
       8          #include "cpu.h"
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \   static __banked_func __xdata_reentrant char __cli(void)
+   \                     ??__cli:
+   \   000000                ; Saved register size: 0
+   \   000000                ; Auto size: 0
+   \   000000   C2AF         CLR       0xa8.7
+   \   000002   7901         MOV       R1,#0x1
+   \   000004   02....       LJMP      ?BRET
+   \   000007                REQUIRE _A_IEN0
       9          
      10          /**
      11          @file
@@ -964,22 +999,23 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000000                DS 4
    \   000004                REQUIRE __INIT_XDATA_Z
      26          
+     27          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     27          static void HW_Init(void){
+     28          static void HW_Init(void){
    \                     ??HW_Init:
    \   000000   C082         PUSH      DPL
    \   000002   C083         PUSH      DPH
    \   000004                ; Saved register size: 2
    \   000004                ; Auto size: 0
-     28            TOFFSET = 0;
+     29            TOFFSET = 0;
    \   000004   90....       MOV       DPTR,#??TOFFSET
    \   000007   7400         MOV       A,#0x0
    \   000009   F0           MOVX      @DPTR,A
    \   00000A   A3           INC       DPTR
    \   00000B   7400         MOV       A,#0x0
    \   00000D   F0           MOVX      @DPTR,A
-     29            COMPARE_TIME = 0;
+     30            COMPARE_TIME = 0;
    \   00000E   90....       MOV       DPTR,#??COMPARE_TIME
    \   000011   7400         MOV       A,#0x0
    \   000013   F0           MOVX      @DPTR,A
@@ -992,14 +1028,62 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   00001C   A3           INC       DPTR
    \   00001D   7400         MOV       A,#0x0
    \   00001F   F0           MOVX      @DPTR,A
-     30          }; 
-   \   000020   D083         POP       DPH
-   \   000022   D082         POP       DPL
-   \   000024   02....       LJMP      ?BRET
-     31          
+     31            IRQEnable(false);
+   \   000020                ; Setup parameters for call to function IRQEnable
+   \   000020   C2F0         CLR       B.0
+   \   000022   12....       LCALL     `??IRQEnable::?relay`; Banked call to: IRQEnable
+     32          };
+   \   000025   D083         POP       DPH
+   \   000027   D082         POP       DPL
+   \   000029   02....       LJMP      ?BRET
+     33          
+     34          static void SW_Init(void){
+     35            TOFFSET = 0;
+     36            COMPARE_TIME = 0;
+     37            IRQEnable(false);
+     38          }; 
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     32          void AT_set_time(nwtime_t time){
+     39          void AT_enable(bool state){
+   \                     AT_enable:
+   \   000000   74F7         MOV       A,#-0x9
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 9
+   \   000005                ; Auto size: 0
+   \   000005   A2F0         MOV       C,B.0
+   \   000007   92..         MOV       ?VB.0,C
+     40            ATOMIC_BLOCK_RESTORE{
+   \   000009   A2AF         MOV       C,0xa8.7
+   \   00000B   E4           CLR       A
+   \   00000C   33           RLC       A
+   \   00000D   FE           MOV       R6,A
+   \   00000E                ; Setup parameters for call to function __cli
+   \   00000E   12....       LCALL     `??__cli::?relay`; Banked call to: __cli
+   \   000011   E9           MOV       A,R1
+   \   000012   F8           MOV       R0,A
+   \                     ??AT_enable_0:
+   \   000013   E8           MOV       A,R0
+   \   000014   6010         JZ        ??AT_enable_1
+     41              IRQEnable(state);
+   \   000016                ; Setup parameters for call to function IRQEnable
+   \   000016   A2..         MOV       C,?VB.0
+   \   000018   92F0         MOV       B.0,C
+   \   00001A   12....       LCALL     `??IRQEnable::?relay`; Banked call to: IRQEnable
+     42            }
+   \   00001D   7800         MOV       R0,#0x0
+   \   00001F   EE           MOV       A,R6
+   \   000020   A2E0         MOV       C,0xE0 /* A   */.0
+   \   000022   92AF         MOV       0xa8.7,C
+   \   000024   80ED         SJMP      ??AT_enable_0
+     43          };
+   \                     ??AT_enable_1:
+   \   000026   7F01         MOV       R7,#0x1
+   \   000028   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   00002B                REQUIRE _A_IEN0
+     44          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     45          void AT_set_time(nwtime_t time){
    \                     AT_set_time:
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
@@ -1015,7 +1099,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000006   FE           MOV       R6,A
    \   000007   EB           MOV       A,R3
    \   000008   FF           MOV       R7,A
-     33            ASSERT(time <= MAX_NWTIME);
+     46            ASSERT(time <= MAX_NWTIME);
    \   000009   C3           CLR       C
    \   00000A   EE           MOV       A,R6
    \   00000B   9400         SUBB      A,#0x0
@@ -1027,7 +1111,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000015   75....       MOV       ?V1,#(??__FUNCTION___6 >> 8) & 0xff
    \   000018   78..         MOV       R0,#?V0
    \   00001A   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   00001D   75..21       MOV       ?V0,#0x21
+   \   00001D   75..2E       MOV       ?V0,#0x2e
    \   000020   75..00       MOV       ?V1,#0x0
    \   000023   78..         MOV       R0,#?V0
    \   000025   12....       LCALL     ?PUSH_XSTACK_I_TWO
@@ -1046,7 +1130,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000043   12....       LCALL     `??printf::?relay`; Banked call to: printf
    \   000046                ; Setup parameters for call to function DBG_CORE_HALT
    \   000046   12....       LCALL     `??DBG_CORE_HALT::?relay`; Banked call to: DBG_CORE_HALT
-     34            nwtime_t timer = ReadTimer();
+     47            nwtime_t timer = ReadTimer();
    \                     ??AT_set_time_0:
    \   000049                ; Setup parameters for call to function ReadTimer
    \   000049   12....       LCALL     `??ReadTimer::?relay`; Banked call to: ReadTimer
@@ -1056,7 +1140,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000052   8D..         MOV       ?V3,R5
    \   000054   85....       MOV       ?V4,?V0
    \   000057   85....       MOV       ?V5,?V1
-     35            TOFFSET = time - timer;
+     48            TOFFSET = time - timer;
    \   00005A   EE           MOV       A,R6
    \   00005B   C3           CLR       C
    \   00005C   95..         SUBB      A,?V4
@@ -1070,7 +1154,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000068   A3           INC       DPTR
    \   000069   E9           MOV       A,R1
    \   00006A   F0           MOVX      @DPTR,A
-     36            TOFFSET &= 0x7FFF;
+     49            TOFFSET &= 0x7FFF;
    \   00006B   90....       MOV       DPTR,#??TOFFSET
    \   00006E   E0           MOVX      A,@DPTR
    \   00006F   54FF         ANL       A,#0xff
@@ -1079,13 +1163,13 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000073   E0           MOVX      A,@DPTR
    \   000074   547F         ANL       A,#0x7f
    \   000076   F0           MOVX      @DPTR,A
-     37            // После установки времени нужно изменить compare time в таймере
-     38            // Но только в случаи если прерывание активно
-     39            if (isIRQEnable())
+     50            // После установки времени нужно изменить compare time в таймере
+     51            // Но только в случаи если прерывание активно
+     52            if (isIRQEnable())
    \   000077                ; Setup parameters for call to function isIRQEnable
    \   000077   12....       LCALL     `??isIRQEnable::?relay`; Banked call to: isIRQEnable
    \   00007A   500F         JNC       ??AT_set_time_1
-     40              AT_set_alarm(COMPARE_TIME);
+     53              AT_set_alarm(COMPARE_TIME);
    \   00007C                ; Setup parameters for call to function AT_set_alarm
    \   00007C   90....       MOV       DPTR,#??COMPARE_TIME
    \   00007F   78..         MOV       R0,#?V0
@@ -1093,14 +1177,14 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000084   AA..         MOV       R2,?V0
    \   000086   AB..         MOV       R3,?V1
    \   000088   12....       LCALL     `??AT_set_alarm::?relay`; Banked call to: AT_set_alarm
-     41          }
+     54          }
    \                     ??AT_set_time_1:
    \   00008B   7F06         MOV       R7,#0x6
    \   00008D   02....       LJMP      ?BANKED_LEAVE_XDATA
-     42          
+     55          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     43          nwtime_t AT_time(void){
+     56          nwtime_t AT_time(void){
    \                     AT_time:
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
@@ -1114,16 +1198,16 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
    \   000005                ; Saved register size: 16
    \   000005                ; Auto size: 0
-     44            uint32_t val = ReadTimer();
+     57            uint32_t val = ReadTimer();
    \   000005                ; Setup parameters for call to function ReadTimer
    \   000005   12....       LCALL     `??ReadTimer::?relay`; Banked call to: ReadTimer
    \   000008   8A..         MOV       ?V4,R2
    \   00000A   8B..         MOV       ?V5,R3
    \   00000C   8C..         MOV       ?V6,R4
    \   00000E   8D..         MOV       ?V7,R5
-     45            // TOFFSET = NETWORK TIME - TIMER
-     46            // NETWORK TIME = TIMER + TOFFSET
-     47            val +=TOFFSET;
+     58            // TOFFSET = NETWORK TIME - TIMER
+     59            // NETWORK TIME = TIMER + TOFFSET
+     60            val +=TOFFSET;
    \   000010   90....       MOV       DPTR,#??TOFFSET
    \   000013   E0           MOVX      A,@DPTR
    \   000014   F5..         MOV       ?V0,A
@@ -1136,23 +1220,23 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   00001F   78..         MOV       R0,#?V4
    \   000021   79..         MOV       R1,#?V0
    \   000023   12....       LCALL     ?L_ADD
-     48            val &= 0x7FFF; // Приводим значения таймера к 0-32767
+     61            val &= 0x7FFF; // Приводим значения таймера к 0-32767
    \   000026   90....       MOV       DPTR,#__Constant_7fff
    \   000029   78..         MOV       R0,#?V4
    \   00002B   12....       LCALL     ?L_AND_X
-     49            return val;
+     62            return val;
    \   00002E   AA..         MOV       R2,?V4
    \   000030   AB..         MOV       R3,?V5
    \   000032   7F08         MOV       R7,#0x8
    \   000034   02....       LJMP      ?BANKED_LEAVE_XDATA
-     50          }
-     51          
-     52          /**
-     53          @brief Ждем наступления определенного момента времени
-     54          */
+     63          }
+     64          
+     65          /**
+     66          @brief Ждем наступления определенного момента времени
+     67          */
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     55          void AT_wait(nwtime_t time){
+     68          void AT_wait(nwtime_t time){
    \                     AT_wait:
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
@@ -1166,7 +1250,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000006   FE           MOV       R6,A
    \   000007   EB           MOV       A,R3
    \   000008   FF           MOV       R7,A
-     56            ASSERT(time <= MAX_NWTIME);  
+     69            ASSERT(time <= MAX_NWTIME);  
    \   000009   C3           CLR       C
    \   00000A   EE           MOV       A,R6
    \   00000B   9400         SUBB      A,#0x0
@@ -1178,7 +1262,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000015   75....       MOV       ?V1,#(??__FUNCTION___7 >> 8) & 0xff
    \   000018   78..         MOV       R0,#?V0
    \   00001A   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   00001D   75..38       MOV       ?V0,#0x38
+   \   00001D   75..45       MOV       ?V0,#0x45
    \   000020   75..00       MOV       ?V1,#0x0
    \   000023   78..         MOV       R0,#?V0
    \   000025   12....       LCALL     ?PUSH_XSTACK_I_TWO
@@ -1197,12 +1281,12 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000043   12....       LCALL     `??printf::?relay`; Banked call to: printf
    \   000046                ; Setup parameters for call to function DBG_CORE_HALT
    \   000046   12....       LCALL     `??DBG_CORE_HALT::?relay`; Banked call to: DBG_CORE_HALT
-     57            static union 
-     58            {
-     59              uint32_t val;
-     60              uint8_t fild[4];
-     61            } val;
-     62            val.val = 0;
+     70            static union 
+     71            {
+     72              uint32_t val;
+     73              uint8_t fild[4];
+     74            } val;
+     75            val.val = 0;
    \                     ??AT_wait_0:
    \   000049   90....       MOV       DPTR,#??val
    \   00004C   7400         MOV       A,#0x0
@@ -1216,30 +1300,30 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000057   A3           INC       DPTR
    \   000058   7400         MOV       A,#0x0
    \   00005A   F0           MOVX      @DPTR,A
-     63            // TOFFSET = NETWORK TIME - TIMER
-     64            // NETWORK TIME = TIMER + TOFFSET
-     65            // Ждем синхронизацию таймера после пробуждения
-     66            while (!(SLEEPSTA & 0x01));
+     76            // TOFFSET = NETWORK TIME - TIMER
+     77            // NETWORK TIME = TIMER + TOFFSET
+     78            // Ждем синхронизацию таймера после пробуждения
+     79            while (!(SLEEPSTA & 0x01));
    \                     ??AT_wait_1:
    \   00005B   E59D         MOV       A,0x9d
    \   00005D   A2E0         MOV       C,0xE0 /* A   */.0
    \   00005F   50FA         JNC       ??AT_wait_1
-     67            do{
-     68              // Соблюдаем порядок чтения регисторов ST  
-     69              val.fild[0] = ST0;
+     80            do{
+     81              // Соблюдаем порядок чтения регисторов ST  
+     82              val.fild[0] = ST0;
    \                     ??AT_wait_2:
    \   000061   E595         MOV       A,0x95
    \   000063   90....       MOV       DPTR,#??val
    \   000066   F0           MOVX      @DPTR,A
-     70              val.fild[1] = ST1;
+     83              val.fild[1] = ST1;
    \   000067   E596         MOV       A,0x96
    \   000069   90....       MOV       DPTR,#??val + 1
    \   00006C   F0           MOVX      @DPTR,A
-     71              val.fild[2] = ST2;
+     84              val.fild[2] = ST2;
    \   00006D   E597         MOV       A,0x97
    \   00006F   90....       MOV       DPTR,#??val + 2
    \   000072   F0           MOVX      @DPTR,A
-     72              val.val +=TOFFSET;
+     85              val.val +=TOFFSET;
    \   000073   90....       MOV       DPTR,#??TOFFSET
    \   000076   E0           MOVX      A,@DPTR
    \   000077   F5..         MOV       ?V0,A
@@ -1252,14 +1336,14 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000082   90....       MOV       DPTR,#??val
    \   000085   78..         MOV       R0,#?V0
    \   000087   12....       LCALL     ?L_ADD_TO_X
-     73              val.val &= 0x7FFF; // Приводим значения таймера к 0-32767    
+     86              val.val &= 0x7FFF; // Приводим значения таймера к 0-32767    
    \   00008A   90....       MOV       DPTR,#__Constant_7fff
    \   00008D   78..         MOV       R0,#?V0
    \   00008F   12....       LCALL     ?L_MOV_X
    \   000092   90....       MOV       DPTR,#??val
    \   000095   78..         MOV       R0,#?V0
    \   000097   12....       LCALL     ?L_AND_TO_X
-     74            } while (val.val < time);
+     87            } while (val.val < time);
    \   00009A   8E..         MOV       ?V0,R6
    \   00009C   8F..         MOV       ?V1,R7
    \   00009E   E4           CLR       A
@@ -1269,7 +1353,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   0000A6   78..         MOV       R0,#?V0
    \   0000A8   12....       LCALL     ?UL_GT_X
    \   0000AB   40B4         JC        ??AT_wait_2
-     75          }
+     88          }
    \   0000AD   7F04         MOV       R7,#0x4
    \   0000AF   02....       LJMP      ?BANKED_LEAVE_XDATA
    \   0000B2                REQUIRE SLEEPSTA
@@ -1281,44 +1365,44 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \                     ??val:
    \   000000                DS 4
    \   000004                REQUIRE __INIT_XDATA_Z
-     76          
-     77          /**
-     78          @brief Разрешение прерываний таймера сна
-     79          @params[in] state = true - разрешить обработку прерываний
-     80          */
+     89          
+     90          /**
+     91          @brief Разрешение прерываний таймера сна
+     92          @params[in] state = true - разрешить обработку прерываний
+     93          */
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     81          static inline void IRQEnable(bool state){
+     94          static inline void IRQEnable(bool state){
    \                     ??IRQEnable:
    \   000000                ; Saved register size: 0
    \   000000                ; Auto size: 0
    \   000000   A2F0         MOV       C,B.0
    \   000002   92F0         MOV       B.0,C
-     82            if (state)
+     95            if (state)
    \   000004   A2F0         MOV       C,B.0
    \   000006   5004         JNC       ??IRQEnable_1
-     83              STIE = 1;
+     96              STIE = 1;
    \   000008   D2AD         SETB      0xa8.5
    \   00000A   8002         SJMP      ??IRQEnable_2
-     84            else
-     85              STIE = 0;
+     97            else
+     98              STIE = 0;
    \                     ??IRQEnable_1:
    \   00000C   C2AD         CLR       0xa8.5
-     86          }
+     99          }
    \                     ??IRQEnable_2:
    \   00000E   02....       LJMP      ?BRET
    \   000011                REQUIRE _A_IEN0
-     87          
-     88          /**
-     89          @brief Устанавливает время прерывания
-     90          @details Время прерывания устанавливается относительно времени сети
-     91          ,к примеру, что бы проснуться в таймслот номер 0, нужно установить ticks = 0.
-     92          Процедура учитывает текущее значение таймера и перерасчитывает значение ticks. 
-     93          @params[in] ticks время сети в тиках когда нужно проснуться
-     94          */
+    100          
+    101          /**
+    102          @brief Устанавливает время прерывания
+    103          @details Время прерывания устанавливается относительно времени сети
+    104          ,к примеру, что бы проснуться в таймслот номер 0, нужно установить ticks = 0.
+    105          Процедура учитывает текущее значение таймера и перерасчитывает значение ticks. 
+    106          @params[in] ticks время сети в тиках когда нужно проснуться
+    107          */
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     95          void AT_set_alarm(nwtime_t alarm){
+    108          void AT_set_alarm(nwtime_t alarm){
    \                     AT_set_alarm:
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
@@ -1332,7 +1416,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000006   FE           MOV       R6,A
    \   000007   EB           MOV       A,R3
    \   000008   FF           MOV       R7,A
-     96            ASSERT(alarm <= MAX_NWTIME);
+    109            ASSERT(alarm <= MAX_NWTIME);
    \   000009   C3           CLR       C
    \   00000A   EE           MOV       A,R6
    \   00000B   9400         SUBB      A,#0x0
@@ -1344,7 +1428,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000015   75....       MOV       ?V1,#(??__FUNCTION___8 >> 8) & 0xff
    \   000018   78..         MOV       R0,#?V0
    \   00001A   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   00001D   75..60       MOV       ?V0,#0x60
+   \   00001D   75..6D       MOV       ?V0,#0x6d
    \   000020   75..00       MOV       ?V1,#0x0
    \   000023   78..         MOV       R0,#?V0
    \   000025   12....       LCALL     ?PUSH_XSTACK_I_TWO
@@ -1363,7 +1447,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000043   12....       LCALL     `??printf::?relay`; Banked call to: printf
    \   000046                ; Setup parameters for call to function DBG_CORE_HALT
    \   000046   12....       LCALL     `??DBG_CORE_HALT::?relay`; Banked call to: DBG_CORE_HALT
-     97            COMPARE_TIME = alarm; // Сохраняем установленное значение
+    110            COMPARE_TIME = alarm; // Сохраняем установленное значение
    \                     ??AT_set_alarm_0:
    \   000049   EE           MOV       A,R6
    \   00004A   FA           MOV       R2,A
@@ -1384,7 +1468,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   00005B   A3           INC       DPTR
    \   00005C   ED           MOV       A,R5
    \   00005D   F0           MOVX      @DPTR,A
-     98            uint32_t compare_time = calcCompareTime(alarm);
+    111            uint32_t compare_time = calcCompareTime(alarm);
    \   00005E                ; Setup parameters for call to function calcCompareTime
    \   00005E   EE           MOV       A,R6
    \   00005F   FA           MOV       R2,A
@@ -1395,28 +1479,28 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000067   8B..         MOV       ?V1,R3
    \   000069   8C..         MOV       ?V2,R4
    \   00006B   8D..         MOV       ?V3,R5
-     99            loadTimerCompare(compare_time);
+    112            loadTimerCompare(compare_time);
    \   00006D                ; Setup parameters for call to function loadTimerCompare
    \   00006D   AA..         MOV       R2,?V0
    \   00006F   AB..         MOV       R3,?V1
    \   000071   AC..         MOV       R4,?V2
    \   000073   AD..         MOV       R5,?V3
    \   000075   12....       LCALL     `??loadTimerCompare::?relay`; Banked call to: loadTimerCompare
-    100            IRQEnable(true);
+    113            IRQEnable(true);
    \   000078                ; Setup parameters for call to function IRQEnable
    \   000078   D2F0         SETB      B.0
    \   00007A   12....       LCALL     `??IRQEnable::?relay`; Banked call to: IRQEnable
-    101          }
+    114          }
    \   00007D   7F04         MOV       R7,#0x4
    \   00007F   02....       LJMP      ?BANKED_LEAVE_XDATA
-    102          
-    103          /**
-    104          @brief Вычисляет значение, которое нужно установить в регистр compare таймера.
-    105          @params[in] time время сети в тикак
-    106          */
+    115          
+    116          /**
+    117          @brief Вычисляет значение, которое нужно установить в регистр compare таймера.
+    118          @params[in] time время сети в тикак
+    119          */
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-    107          static inline uint32_t calcCompareTime(nwtime_t time){   
+    120          static inline uint32_t calcCompareTime(nwtime_t time){   
    \                     ??calcCompareTime:
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
@@ -1439,16 +1523,16 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000011   A3           INC       DPTR
    \   000012   EB           MOV       A,R3
    \   000013   F0           MOVX      @DPTR,A
-    108              uint32_t timer = ReadTimer(); // Текущее значение счетчика
+    121              uint32_t timer = ReadTimer(); // Текущее значение счетчика
    \   000014                ; Setup parameters for call to function ReadTimer
    \   000014   12....       LCALL     `??ReadTimer::?relay`; Banked call to: ReadTimer
    \   000017   8A..         MOV       ?V4,R2
    \   000019   8B..         MOV       ?V5,R3
    \   00001B   8C..         MOV       ?V6,R4
    \   00001D   8D..         MOV       ?V7,R5
-    109              //NETWORK TIME = TIMER + TOFFSET  
-    110              // Приводим такты к тактам таймера
-    111              uint16_t ticks_offset = (time - TOFFSET) & 0x7FFF;
+    122              //NETWORK TIME = TIMER + TOFFSET  
+    123              // Приводим такты к тактам таймера
+    124              uint16_t ticks_offset = (time - TOFFSET) & 0x7FFF;
    \   00001F   7404         MOV       A,#0x4
    \   000021   12....       LCALL     ?XSTACK_DISP0_8
    \   000024   C082         PUSH      DPL
@@ -1475,7 +1559,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000040   E9           MOV       A,R1
    \   000041   547F         ANL       A,#0x7f
    \   000043   FF           MOV       R7,A
-    112              uint32_t cmp_time = timer & ~0x7FFF; // Убираем младшие 15 бит
+    125              uint32_t cmp_time = timer & ~0x7FFF; // Убираем младшие 15 бит
    \   000044   85....       MOV       ?V0,?V4
    \   000047   85....       MOV       ?V1,?V5
    \   00004A   85....       MOV       ?V2,?V6
@@ -1487,7 +1571,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   00005B   85..83       MOV       DPH,?XSP + 1
    \   00005E   78..         MOV       R0,#?V0
    \   000060   12....       LCALL     ?L_MOV_TO_X
-    113              cmp_time |= ticks_offset; // Вычисляем новое время
+    126              cmp_time |= ticks_offset; // Вычисляем новое время
    \   000063   8E..         MOV       ?V0,R6
    \   000065   8F..         MOV       ?V1,R7
    \   000067   E4           CLR       A
@@ -1497,13 +1581,13 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   00006F   85..83       MOV       DPH,?XSP + 1
    \   000072   78..         MOV       R0,#?V0
    \   000074   12....       LCALL     ?L_IOR_TO_X
-    114              if (cmp_time <= timer){
+    127              if (cmp_time <= timer){
    \   000077   85..82       MOV       DPL,?XSP + 0
    \   00007A   85..83       MOV       DPH,?XSP + 1
    \   00007D   78..         MOV       R0,#?V4
    \   00007F   12....       LCALL     ?UL_GE_X
    \   000082   5026         JNC       ??calcCompareTime_1
-    115                cmp_time += 0x8000;
+    128                cmp_time += 0x8000;
    \   000084   90....       MOV       DPTR,#__Constant_8000
    \   000087   78..         MOV       R0,#?V0
    \   000089   12....       LCALL     ?L_MOV_X
@@ -1511,7 +1595,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   00008F   85..83       MOV       DPH,?XSP + 1
    \   000092   78..         MOV       R0,#?V0
    \   000094   12....       LCALL     ?L_ADD_TO_X
-    116                cmp_time &=0xFFFFFF;
+    129                cmp_time &=0xFFFFFF;
    \   000097   90....       MOV       DPTR,#__Constant_ffffff
    \   00009A   78..         MOV       R0,#?V0
    \   00009C   12....       LCALL     ?L_MOV_X
@@ -1519,10 +1603,10 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   0000A2   85..83       MOV       DPH,?XSP + 1
    \   0000A5   78..         MOV       R0,#?V0
    \   0000A7   12....       LCALL     ?L_AND_TO_X
-    117              }
-    118               LOG_OFF("Timer = %lu, Ticks = %d,CMP = %lu \r\n",
-    119                    timer, ticks, cmp_time );
-    120              return cmp_time;
+    130              }
+    131               LOG_OFF("Timer = %lu, Ticks = %d,CMP = %lu \r\n",
+    132                    timer, ticks, cmp_time );
+    133              return cmp_time;
    \                     ??calcCompareTime_1:
    \   0000AA   85..82       MOV       DPL,?XSP + 0
    \   0000AD   85..83       MOV       DPH,?XSP + 1
@@ -1531,26 +1615,26 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   0000B5   12....       LCALL     ?DEALLOC_XSTACK8
    \   0000B8   7F08         MOV       R7,#0x8
    \   0000BA   02....       LJMP      ?BANKED_LEAVE_XDATA
-    121          }
-    122          
-    123          /**
-    124          @brief Возвращает текущее значение таймера
-    125          @return Текущие ticks
-    126          */
+    134          }
+    135          
+    136          /**
+    137          @brief Возвращает текущее значение таймера
+    138          @return Текущие ticks
+    139          */
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-    127          static uint32_t ReadTimer(void){
+    140          static uint32_t ReadTimer(void){
    \                     ??ReadTimer:
    \   000000   C082         PUSH      DPL
    \   000002   C083         PUSH      DPH
    \   000004                ; Saved register size: 2
    \   000004                ; Auto size: 0
-    128            static union 
-    129            {
-    130              uint32_t val;
-    131              uint8_t fild[4];
-    132            } ret_val;
-    133            ret_val.val = 0;
+    141            static union 
+    142            {
+    143              uint32_t val;
+    144              uint8_t fild[4];
+    145            } ret_val;
+    146            ret_val.val = 0;
    \   000004   90....       MOV       DPTR,#??ret_val
    \   000007   7400         MOV       A,#0x0
    \   000009   F0           MOVX      @DPTR,A
@@ -1563,26 +1647,26 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000012   A3           INC       DPTR
    \   000013   7400         MOV       A,#0x0
    \   000015   F0           MOVX      @DPTR,A
-    134            // Ждем синхронизацию таймера после пробуждения
-    135            while (!(SLEEPSTA & 0x01));
+    147            // Ждем синхронизацию таймера после пробуждения
+    148            while (!(SLEEPSTA & 0x01));
    \                     ??ReadTimer_1:
    \   000016   E59D         MOV       A,0x9d
    \   000018   A2E0         MOV       C,0xE0 /* A   */.0
    \   00001A   50FA         JNC       ??ReadTimer_1
-    136            // Соблюдаем порядок чтения регисторов ST  
-    137            ret_val.fild[0] = ST0;
+    149            // Соблюдаем порядок чтения регисторов ST  
+    150            ret_val.fild[0] = ST0;
    \   00001C   E595         MOV       A,0x95
    \   00001E   90....       MOV       DPTR,#??ret_val
    \   000021   F0           MOVX      @DPTR,A
-    138            ret_val.fild[1] = ST1;
+    151            ret_val.fild[1] = ST1;
    \   000022   E596         MOV       A,0x96
    \   000024   90....       MOV       DPTR,#??ret_val + 1
    \   000027   F0           MOVX      @DPTR,A
-    139            ret_val.fild[2] = ST2;
+    152            ret_val.fild[2] = ST2;
    \   000028   E597         MOV       A,0x97
    \   00002A   90....       MOV       DPTR,#??ret_val + 2
    \   00002D   F0           MOVX      @DPTR,A
-    140            return ret_val.val;
+    153            return ret_val.val;
    \   00002E   90....       MOV       DPTR,#??ret_val
    \   000031   12....       LCALL     ?XLOAD_R2345
    \   000034   D083         POP       DPH
@@ -1592,20 +1676,20 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   00003B                REQUIRE ST0
    \   00003B                REQUIRE ST1
    \   00003B                REQUIRE ST2
-    141          }
+    154          }
 
    \                                 In  segment XDATA_Z, align 1, keep-with-next
    \                     ??ret_val:
    \   000000                DS 4
    \   000004                REQUIRE __INIT_XDATA_Z
-    142          
-    143          /**
-    144          @brief Устанавливает время пробуждения микроконтролера
-    145          @params[in] ticks 24 битное значение времени пробуждения в ticks
-    146          */
+    155          
+    156          /**
+    157          @brief Устанавливает время пробуждения микроконтролера
+    158          @params[in] ticks 24 битное значение времени пробуждения в ticks
+    159          */
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-    147          static void loadTimerCompare(uint32_t ticks){
+    160          static void loadTimerCompare(uint32_t ticks){
    \                     ??loadTimerCompare:
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
@@ -1621,39 +1705,39 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   00000C   8B..         MOV       ?V1,R3
    \   00000E   8C..         MOV       ?V2,R4
    \   000010   8D..         MOV       ?V3,R5
-    148            union 
-    149            {
-    150              uint32_t val;
-    151              uint8_t fild[4];
-    152            } value;
-    153            value.val = ticks;
+    161            union 
+    162            {
+    163              uint32_t val;
+    164              uint8_t fild[4];
+    165            } value;
+    166            value.val = ticks;
    \   000012   85..82       MOV       DPL,?XSP + 0
    \   000015   85..83       MOV       DPH,?XSP + 1
    \   000018   78..         MOV       R0,#?V0
    \   00001A   12....       LCALL     ?L_MOV_TO_X
-    154            // Ждем разрешения на запись нового значения
-    155            while (!(STLOAD & 0x01));
+    167            // Ждем разрешения на запись нового значения
+    168            while (!(STLOAD & 0x01));
    \                     ??loadTimerCompare_1:
    \   00001D   E5AD         MOV       A,0xad
    \   00001F   A2E0         MOV       C,0xE0 /* A   */.0
    \   000021   50FA         JNC       ??loadTimerCompare_1
-    156            // Регистр ST0 должен быть записан в последнию очередь
-    157            ST2 = value.fild[2];
+    169            // Регистр ST0 должен быть записан в последнию очередь
+    170            ST2 = value.fild[2];
    \   000023   7402         MOV       A,#0x2
    \   000025   12....       LCALL     ?XSTACK_DISP0_8
    \   000028   E0           MOVX      A,@DPTR
    \   000029   F597         MOV       0x97,A
-    158            ST1 = value.fild[1];
+    171            ST1 = value.fild[1];
    \   00002B   7401         MOV       A,#0x1
    \   00002D   12....       LCALL     ?XSTACK_DISP0_8
    \   000030   E0           MOVX      A,@DPTR
    \   000031   F596         MOV       0x96,A
-    159            ST0 = value.fild[0];
+    172            ST0 = value.fild[0];
    \   000033   85..82       MOV       DPL,?XSP + 0
    \   000036   85..83       MOV       DPH,?XSP + 1
    \   000039   E0           MOVX      A,@DPTR
    \   00003A   F595         MOV       0x95,A
-    160          }
+    173          }
    \   00003C   7404         MOV       A,#0x4
    \   00003E   12....       LCALL     ?DEALLOC_XSTACK8
    \   000041   7F04         MOV       R7,#0x4
@@ -1662,30 +1746,30 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000046                REQUIRE ST2
    \   000046                REQUIRE ST1
    \   000046                REQUIRE ST0
-    161          
-    162          /**
-    163          @brief Проверка активности прерывания таймера
-    164          @return true если прерывание установленно
-    165          */
+    174          
+    175          /**
+    176          @brief Проверка активности прерывания таймера
+    177          @return true если прерывание установленно
+    178          */
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-    166          static inline bool isIRQEnable(void){
+    179          static inline bool isIRQEnable(void){
    \                     ??isIRQEnable:
    \   000000                ; Saved register size: 0
    \   000000                ; Auto size: 0
-    167            return STIE;
+    180            return STIE;
    \   000000   A2AD         MOV       C,0xa8.5
    \   000002   02....       LJMP      ?BRET
    \   000005                REQUIRE _A_IEN0
-    168          }
-    169          
-    170          /**
-    171          @brief Обработчик прерывания таймера сна
-    172          */
-    173          #pragma vector=ST_VECTOR
+    181          }
+    182          
+    183          /**
+    184          @brief Обработчик прерывания таймера сна
+    185          */
+    186          #pragma vector=ST_VECTOR
 
    \                                 In  segment NEAR_CODE, align 1, keep-with-next
-    174          __interrupt void TimerCompareInterrupt(void){ 
+    187          __interrupt void TimerCompareInterrupt(void){ 
    \                     TimerCompareInterrupt:
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
@@ -1694,28 +1778,28 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c
    \   000004   12....       LCALL     ?INTERRUPT_ENTER_XSP
    \   000007                ; Saved register size: 15
    \   000007                ; Auto size: 0
-    175            nwtime_t time = AT_time();
+    188            nwtime_t time = AT_time();
    \   000007                ; Setup parameters for call to function AT_time
    \   000007   12....       LCALL     `??AT_time::?relay`; Banked call to: AT_time
    \   00000A   8A..         MOV       ?V0,R2
    \   00000C   8B..         MOV       ?V1,R3
    \   00000E   AE..         MOV       R6,?V0
    \   000010   AF..         MOV       R7,?V1
-    176            // Отключаем прерывание таймера. Забота пользователя его включить
-    177            IRQEnable(false); 
+    189            // Отключаем прерывание таймера. Забота пользователя его включить
+    190            IRQEnable(false); 
    \   000012                ; Setup parameters for call to function IRQEnable
    \   000012   C2F0         CLR       B.0
    \   000014   12....       LCALL     `??IRQEnable::?relay`; Banked call to: IRQEnable
-    178            TM_IRQ(time); // Передаем управление менеджеру времени
+    191            TM_IRQ(time); // Передаем управление менеджеру времени
    \   000017                ; Setup parameters for call to function TM_IRQ
    \   000017   EE           MOV       A,R6
    \   000018   FA           MOV       R2,A
    \   000019   EF           MOV       A,R7
    \   00001A   FB           MOV       R3,A
    \   00001B   12....       LCALL     `??TM_IRQ::?relay`; Banked call to: TM_IRQ
-    179            STIF = 0; // Очищаем флаг прерывания
+    192            STIF = 0; // Очищаем флаг прерывания
    \   00001E   C2C7         CLR       0xc0.7
-    180          }
+    193          }
    \   000020   7F02         MOV       R7,#0x2
    \   000022   02....       LJMP      ?INTERRUPT_LEAVE_XSP
    \   000025                REQUIRE _A_IRCON
@@ -1728,7 +1812,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\buffer.c
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \   static __banked_func __xdata_reentrant char __cli(void)
-   \                     ??__cli:
+   \                     ??__cli_1:
    \   000000                ; Saved register size: 0
    \   000000                ; Auto size: 0
    \   000000   C2AF         CLR       0xa8.7
@@ -2106,13 +2190,13 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\buffer.c
      29            for_each_type(struct node, NODE_LIST, node){
    \   000027   7E..         MOV       R6,#??NODE_LIST & 0xff
    \   000029   7F..         MOV       R7,#(??NODE_LIST >> 8) & 0xff
-   \                     ??SW_Init_6:
+   \                     ??SW_Init_5:
    \   00002B   C3           CLR       C
    \   00002C   EE           MOV       A,R6
    \   00002D   94..         SUBB      A,#(??NODE_LIST + 120) & 0xff
    \   00002F   EF           MOV       A,R7
    \   000030   94..         SUBB      A,#((??NODE_LIST + 120) >> 8) & 0xff
-   \   000032   501E         JNC       ??SW_Init_7
+   \   000032   501E         JNC       ??SW_Init_6
      30              node->frame = NULL;
    \   000034   8E82         MOV       DPL,R6
    \   000036   8F83         MOV       DPH,R7
@@ -2134,11 +2218,11 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\buffer.c
    \   000049   EE           MOV       A,R6
    \   00004A   2406         ADD       A,#0x6
    \   00004C   FE           MOV       R6,A
-   \   00004D   50DC         JNC       ??SW_Init_6
+   \   00004D   50DC         JNC       ??SW_Init_5
    \   00004F   0F           INC       R7
-   \   000050   80D9         SJMP      ??SW_Init_6
+   \   000050   80D9         SJMP      ??SW_Init_5
      33          };
-   \                     ??SW_Init_7:
+   \                     ??SW_Init_6:
    \   000052   7F01         MOV       R7,#0x1
    \   000054   02....       LJMP      ?BANKED_LEAVE_XDATA
      34          
@@ -2423,7 +2507,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\buffer.c
    \   00000C   33           RLC       A
    \   00000D   F5..         MOV       ?V0,A
    \   00000F                ; Setup parameters for call to function __cli
-   \   00000F   12....       LCALL     `??__cli::?relay`; Banked call to: __cli
+   \   00000F   12....       LCALL     `??__cli::?relay_1`; Banked call to: __cli
    \   000012   E9           MOV       A,R1
    \   000013   F8           MOV       R0,A
    \                     ??BF_push_tx_0:
@@ -2486,7 +2570,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\buffer.c
    \   00000C   33           RLC       A
    \   00000D   F5..         MOV       ?V0,A
    \   00000F                ; Setup parameters for call to function __cli
-   \   00000F   12....       LCALL     `??__cli::?relay`; Banked call to: __cli
+   \   00000F   12....       LCALL     `??__cli::?relay_1`; Banked call to: __cli
    \   000012   E9           MOV       A,R1
    \   000013   F8           MOV       R0,A
    \                     ??BF_push_rx_0:
@@ -2561,7 +2645,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\buffer.c
    \   00001F   33           RLC       A
    \   000020   F5..         MOV       ?V0,A
    \   000022                ; Setup parameters for call to function __cli
-   \   000022   12....       LCALL     `??__cli::?relay`; Banked call to: __cli
+   \   000022   12....       LCALL     `??__cli::?relay_1`; Banked call to: __cli
    \   000025   E9           MOV       A,R1
    \   000026   F8           MOV       R0,A
    \                     ??BF_cursor_rx_2:
@@ -2631,7 +2715,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\buffer.c
    \   00001F   33           RLC       A
    \   000020   F5..         MOV       ?V0,A
    \   000022                ; Setup parameters for call to function __cli
-   \   000022   12....       LCALL     `??__cli::?relay`; Banked call to: __cli
+   \   000022   12....       LCALL     `??__cli::?relay_1`; Banked call to: __cli
    \   000025   E9           MOV       A,R1
    \   000026   F8           MOV       R0,A
    \                     ??BF_cursor_tx_2:
@@ -2698,7 +2782,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\buffer.c
    \   000018   33           RLC       A
    \   000019   F5..         MOV       ?V2,A
    \   00001B                ; Setup parameters for call to function __cli
-   \   00001B   12....       LCALL     `??__cli::?relay`; Banked call to: __cli
+   \   00001B   12....       LCALL     `??__cli::?relay_1`; Banked call to: __cli
    \   00001E   E9           MOV       A,R1
    \   00001F   F8           MOV       R0,A
    \                     ??BF_cursor_next_2:
@@ -2784,7 +2868,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\buffer.c
    \   000015   33           RLC       A
    \   000016   F5..         MOV       ?V2,A
    \   000018                ; Setup parameters for call to function __cli
-   \   000018   12....       LCALL     `??__cli::?relay`; Banked call to: __cli
+   \   000018   12....       LCALL     `??__cli::?relay_1`; Banked call to: __cli
    \   00001B   E9           MOV       A,R1
    \   00001C   F8           MOV       R0,A
    \                     ??BF_remove_2:
@@ -2898,18 +2982,18 @@ E:\WMNU\IAR_new_arch\STACK_CORE_SRC\cpu.c
    \   000000   53C67F       ANL       0xc6,#0x7f
      15            /* Ждем пока бит не станет 0 */
      16            while (CLKCONSTA & (1<<7)); 
-   \                     ??HW_Init_4:
+   \                     ??HW_Init_5:
    \   000003   E59E         MOV       A,0x9e
    \   000005   A2E7         MOV       C,0xE0 /* A   */.7
-   \   000007   40FA         JC        ??HW_Init_4
+   \   000007   40FA         JC        ??HW_Init_5
      17            /* Переходим на 32 Мгц */
      18            CLKCONCMD = 0;// (1<<3);
    \   000009   75C600       MOV       0xc6,#0x0
      19            while (CLKCONSTA&(1<<6));
-   \                     ??HW_Init_5:
+   \                     ??HW_Init_6:
    \   00000C   E59E         MOV       A,0x9e
    \   00000E   A2E6         MOV       C,0xE0 /* A   */.6
-   \   000010   40FA         JC        ??HW_Init_5
+   \   000010   40FA         JC        ??HW_Init_6
      20          };  
    \   000012   02....       LJMP      ?BRET
    \   000015                REQUIRE CLKCONCMD
@@ -3421,68 +3505,14 @@ E:\WMNU\IAR_NEW_ARCH\PRJ Test\main.c
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
       3          void main(){
    \                     main:
-   \   000000                REQUIRE ?V0
-   \   000000                REQUIRE ?V1
-   \   000000                REQUIRE ?V2
-   \   000000                REQUIRE ?V3
-   \   000000                REQUIRE ?V4
-   \   000000                REQUIRE ?V5
-   \   000000                REQUIRE ?V6
-   \   000000                REQUIRE ?V7
-   \   000000                ; Auto size: 4
-   \   000000   74FC         MOV       A,#-0x4
-   \   000002   12....       LCALL     ?ALLOC_XSTACK8
-      4            float v = 0;
-   \   000005   75..00       MOV       ?V0,#0x0
-   \   000008   75..00       MOV       ?V1,#0x0
-   \   00000B   75..00       MOV       ?V2,#0x0
-   \   00000E   75..00       MOV       ?V3,#0x0
-      5            for (uint32_t i= 0; i < 10000; i++) 
-   \   000011   85..82       MOV       DPL,?XSP + 0
-   \   000014   85..83       MOV       DPH,?XSP + 1
-   \   000017   7400         MOV       A,#0x0
-   \   000019   F0           MOVX      @DPTR,A
-   \   00001A   A3           INC       DPTR
-   \   00001B   7400         MOV       A,#0x0
-   \   00001D   F0           MOVX      @DPTR,A
-   \   00001E   A3           INC       DPTR
-   \   00001F   7400         MOV       A,#0x0
-   \   000021   F0           MOVX      @DPTR,A
-   \   000022   A3           INC       DPTR
-   \   000023   7400         MOV       A,#0x0
-   \   000025   F0           MOVX      @DPTR,A
+   \   000000                ; Auto size: 0
+      4            run_tests();
+   \   000000                ; Setup parameters for call to function run_tests
+   \   000000   12....       LCALL     `??run_tests::?relay`; Banked call to: run_tests
+      5            while(1);
    \                     ??main_0:
-   \   000026   90....       MOV       DPTR,#__Constant_2710
-   \   000029   78..         MOV       R0,#?V4
-   \   00002B   12....       LCALL     ?L_MOV_X
-   \   00002E   85..82       MOV       DPL,?XSP + 0
-   \   000031   85..83       MOV       DPH,?XSP + 1
-   \   000034   78..         MOV       R0,#?V4
-   \   000036   12....       LCALL     ?UL_GT_X
-   \   000039   5024         JNC       ??main_1
-      6              v += 0.000005;
-   \   00003B   90....       MOV       DPTR,#__Constant_36a7c5ac
-   \   00003E   78..         MOV       R0,#?V4
-   \   000040   12....       LCALL     ?L_MOV_X
-   \   000043   78..         MOV       R0,#?V0
-   \   000045   79..         MOV       R1,#?V4
-   \   000047   12....       LCALL     ?FLT_ADD
-   \   00004A   90....       MOV       DPTR,#__Constant_1
-   \   00004D   78..         MOV       R0,#?V4
-   \   00004F   12....       LCALL     ?L_MOV_X
-   \   000052   85..82       MOV       DPL,?XSP + 0
-   \   000055   85..83       MOV       DPH,?XSP + 1
-   \   000058   78..         MOV       R0,#?V4
-   \   00005A   12....       LCALL     ?L_ADD_TO_X
-   \   00005D   80C7         SJMP      ??main_0
-      7            run_tests();
-   \                     ??main_1:
-   \   00005F                ; Setup parameters for call to function run_tests
-   \   00005F   12....       LCALL     `??run_tests::?relay`; Banked call to: run_tests
-      8            while(1);
-   \                     ??main_2:
-   \   000062   80FE         SJMP      ??main_2
-      9          }
+   \   000003   80FE         SJMP      ??main_0
+      6          }
 E:\WMNU\IAR_new_arch\STACK_CORE_SRC\mem_slots.c
       1          #include "debug.h"
       2          #include "global.h"
@@ -3581,7 +3611,7 @@ E:\WMNU\IAR_new_arch\STACK_CORE_SRC\mem_slots.c
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \   static __banked_func __xdata_reentrant char __cli(void)
-   \                     ??__cli_1:
+   \                     ??__cli_2:
    \   000000                ; Saved register size: 0
    \   000000                ; Auto size: 0
    \   000000   C2AF         CLR       0xa8.7
@@ -3650,13 +3680,13 @@ E:\WMNU\IAR_new_arch\STACK_CORE_SRC\mem_slots.c
      36            for_each_type(struct slot, SLOT_POOL, slot){
    \   000014   7E..         MOV       R6,#??SLOT_POOL & 0xff
    \   000016   7F..         MOV       R7,#(??SLOT_POOL >> 8) & 0xff
-   \                     ??SW_Init_8:
+   \                     ??SW_Init_7:
    \   000018   C3           CLR       C
    \   000019   EE           MOV       A,R6
    \   00001A   94..         SUBB      A,#(??SLOT_POOL + 244) & 0xff
    \   00001C   EF           MOV       A,R7
    \   00001D   94..         SUBB      A,#((??SLOT_POOL + 3060) >> 8) & 0xff
-   \   00001F   504A         JNC       ??SW_Init_9
+   \   00001F   504A         JNC       ??SW_Init_8
      37              slot->property.taken = false;
    \   000021   8E82         MOV       DPL,R6
    \   000023   8F83         MOV       DPH,R7
@@ -3707,11 +3737,11 @@ E:\WMNU\IAR_new_arch\STACK_CORE_SRC\mem_slots.c
    \   000062   EE           MOV       A,R6
    \   000063   2499         ADD       A,#-0x67
    \   000065   FE           MOV       R6,A
-   \   000066   50B0         JNC       ??SW_Init_8
+   \   000066   50B0         JNC       ??SW_Init_7
    \   000068   0F           INC       R7
-   \   000069   80AD         SJMP      ??SW_Init_8
+   \   000069   80AD         SJMP      ??SW_Init_7
      44          };
-   \                     ??SW_Init_9:
+   \                     ??SW_Init_8:
    \   00006B   7404         MOV       A,#0x4
    \   00006D   12....       LCALL     ?DEALLOC_XSTACK8
    \   000070   7F01         MOV       R7,#0x1
@@ -3744,7 +3774,7 @@ E:\WMNU\IAR_new_arch\STACK_CORE_SRC\mem_slots.c
    \   00000D   33           RLC       A
    \   00000E   F5..         MOV       ?V0,A
    \   000010                ; Setup parameters for call to function __cli
-   \   000010   12....       LCALL     `??__cli::?relay_1`; Banked call to: __cli
+   \   000010   12....       LCALL     `??__cli::?relay_2`; Banked call to: __cli
    \   000013   E9           MOV       A,R1
    \   000014   F8           MOV       R0,A
    \                     ??SL_alloc_0:
@@ -3975,7 +4005,7 @@ E:\WMNU\IAR_new_arch\STACK_CORE_SRC\mem_slots.c
    \   00000C   33           RLC       A
    \   00000D   F5..         MOV       ?V0,A
    \   00000F                ; Setup parameters for call to function __cli
-   \   00000F   12....       LCALL     `??__cli::?relay_1`; Banked call to: __cli
+   \   00000F   12....       LCALL     `??__cli::?relay_2`; Banked call to: __cli
    \   000012   E9           MOV       A,R1
    \   000013   F8           MOV       R0,A
    \                     ??SL_free_0:
@@ -4381,8 +4411,8 @@ E:\WMNU\IAR_new_arch\STACK_CORE_SRC\model.c
    \                                 In  segment XDATA_Z, align 1, keep-with-next
       8          MODEL_s MODEL;
    \                     MODEL:
-   \   000000                DS 10
-   \   00000A                REQUIRE __INIT_XDATA_Z
+   \   000000                DS 12
+   \   00000C                REQUIRE __INIT_XDATA_Z
       9          
      10          static void HW_Init(void);  
      11          static void SW_Init(void); 
@@ -4476,55 +4506,40 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \   static __banked_func __xdata_reentrant char __cli(void)
-   \                     ??__cli_2:
+   \                     ??__cli_3:
    \   000000                ; Saved register size: 0
    \   000000                ; Auto size: 0
    \   000000   C2AF         CLR       0xa8.7
    \   000002   7901         MOV       R1,#0x1
    \   000004   02....       LJMP      ?BRET
    \   000007                REQUIRE _A_IEN0
-      6          
-      7          /**
-      8          @file
-      9          */
-     10          
-     11          #define MAX_TIME_SLOTS 50
-     12          
-     13          #define ACTIVE_INTERVAL (nwtime_t)327 // 9.979 мс
-     14          #define SLEEP_INTERVAL (nwtime_t)327  // 9.979 мс
-     15          #define UNACCOUNTED 68 // Остаток времени после 50ого интервала.
-     16          #define FULL_INTERVAL (ACTIVE_INTERVAL + SLEEP_INTERVAL)
-     17          #define SLOT_TO_NWTIME(slot) ((nwtime_t)((slot) * FULL_INTERVAL))
-     18          
-     19          static void SW_Init(void); 
-     20          
-
-   \                                 In  segment XDATA_I, align 1, keep-with-next
-     21          module_s TM_MODULE = {ALIAS(SW_Init)};
-   \                     TM_MODULE:
-   \   000000                DS 12
-   \   00000C                REQUIRE `?<Initializer for TM_MODULE>`
-   \   00000C                REQUIRE __INIT_XDATA_I
-     22           
-     23          //!< Список задач менеджера. Индекс - номер слота, значение-действие
+      6          #include "macros.h"
+      7          
+      8          /**
+      9          @file
+     10          */
+     11          
+     12          #define MAX_TIME_SLOTS 50
+     13          
+     14          #define ACTIVE_INTERVAL (nwtime_t)327 // 9.979 мс
+     15          #define SLEEP_INTERVAL (nwtime_t)327  // 9.979 мс
+     16          #define UNACCOUNTED 68 // Остаток времени после 50ого интервала.
+     17          #define FULL_INTERVAL (ACTIVE_INTERVAL + SLEEP_INTERVAL)
+     18          #define SLOT_TO_NWTIME(slot) ((nwtime_t)((slot) * FULL_INTERVAL)) 
+     19          #define NWTIME_TO_SLOT(nwtime) ((timeslot_t)((time)/FULL_INTERVAL))
+     20           
+     21          //!< Список задач менеджера. Индекс - номер слота, значение-действие
 
    \                                 In  segment XDATA_Z, align 1, keep-with-next
-     24          static alarm_t ALARMS[MAX_TIME_SLOTS];
+     22          static alarm_t ALARMS[MAX_TIME_SLOTS];
    \                     ??ALARMS:
    \   000000                DS 50
    \   000032                REQUIRE __INIT_XDATA_Z
-     25          
+     23          
+     24          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     26          static void SW_Init(void){}; 
-   \                     ??SW_Init_5:
-   \   000000                ; Saved register size: 0
-   \   000000                ; Auto size: 0
-   \   000000   02....       LJMP      ?BRET
-     27          
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     28          void TM_SetAlarm(timeslot_t slot, alarm_t alarm){
+     25          void TM_SetAlarm(timeslot_t slot, alarm_t alarm){
    \                     TM_SetAlarm:
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
@@ -4536,7 +4551,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
    \   000006   FE           MOV       R6,A
    \   000007   EA           MOV       A,R2
    \   000008   FF           MOV       R7,A
-     29            ASSERT(slot < MAX_TIME_SLOTS);
+     26            ASSERT(slot < MAX_TIME_SLOTS);
    \   000009   EE           MOV       A,R6
    \   00000A   C3           CLR       C
    \   00000B   9432         SUBB      A,#0x32
@@ -4546,7 +4561,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
    \   000012   75....       MOV       ?V1,#(??__FUNCTION___13 >> 8) & 0xff
    \   000015   78..         MOV       R0,#?V0
    \   000017   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   00001A   75..1D       MOV       ?V0,#0x1d
+   \   00001A   75..1A       MOV       ?V0,#0x1a
    \   00001D   75..00       MOV       ?V1,#0x0
    \   000020   78..         MOV       R0,#?V0
    \   000022   12....       LCALL     ?PUSH_XSTACK_I_TWO
@@ -4565,7 +4580,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
    \   000040   12....       LCALL     `??printf::?relay`; Banked call to: printf
    \   000043                ; Setup parameters for call to function DBG_CORE_HALT
    \   000043   12....       LCALL     `??DBG_CORE_HALT::?relay`; Banked call to: DBG_CORE_HALT
-     30            ALARMS[slot] |= alarm;
+     27            ALARMS[slot] |= alarm;
    \                     ??TM_SetAlarm_0:
    \   000046   EE           MOV       A,R6
    \   000047   F8           MOV       R0,A
@@ -4579,13 +4594,13 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
    \   000054   E0           MOVX      A,@DPTR
    \   000055   4F           ORL       A,R7
    \   000056   F0           MOVX      @DPTR,A
-     31          }
+     28          }
    \   000057   7F02         MOV       R7,#0x2
    \   000059   02....       LJMP      ?BANKED_LEAVE_XDATA
-     32          
+     29          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     33          void TM_ClrAlarm(timeslot_t slot, alarm_t alarm){
+     30          void TM_ClrAlarm(timeslot_t slot, alarm_t alarm){
    \                     TM_ClrAlarm:
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
@@ -4597,7 +4612,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
    \   000006   FE           MOV       R6,A
    \   000007   EA           MOV       A,R2
    \   000008   FF           MOV       R7,A
-     34            ASSERT(slot < MAX_TIME_SLOTS);
+     31            ASSERT(slot < MAX_TIME_SLOTS);
    \   000009   EE           MOV       A,R6
    \   00000A   C3           CLR       C
    \   00000B   9432         SUBB      A,#0x32
@@ -4607,7 +4622,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
    \   000012   75....       MOV       ?V1,#(??__FUNCTION___14 >> 8) & 0xff
    \   000015   78..         MOV       R0,#?V0
    \   000017   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   00001A   75..22       MOV       ?V0,#0x22
+   \   00001A   75..1F       MOV       ?V0,#0x1f
    \   00001D   75..00       MOV       ?V1,#0x0
    \   000020   78..         MOV       R0,#?V0
    \   000022   12....       LCALL     ?PUSH_XSTACK_I_TWO
@@ -4626,7 +4641,7 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
    \   000040   12....       LCALL     `??printf::?relay`; Banked call to: printf
    \   000043                ; Setup parameters for call to function DBG_CORE_HALT
    \   000043   12....       LCALL     `??DBG_CORE_HALT::?relay`; Banked call to: DBG_CORE_HALT
-     35            ALARMS[slot] &= (~alarm);
+     32            ALARMS[slot] &= (~alarm);
    \                     ??TM_ClrAlarm_0:
    \   000046   EF           MOV       A,R7
    \   000047   F4           CPL       A
@@ -4643,22 +4658,138 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
    \   000057   E0           MOVX      A,@DPTR
    \   000058   5A           ANL       A,R2
    \   000059   F0           MOVX      @DPTR,A
-     36          }
+     33          }
    \   00005A   7F02         MOV       R7,#0x2
    \   00005C   02....       LJMP      ?BANKED_LEAVE_XDATA
-     37          
+     34          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     38          static void scheulder_next_alarm(void){
-   \                     ??scheulder_next_alarm:
+     35          static inline timeslot_t _inc_timeslot(timeslot_t slot){
+   \                     ??_inc_timeslot:
    \   000000                ; Saved register size: 0
    \   000000                ; Auto size: 0
-     39          }
-   \   000000   02....       LJMP      ?BRET
-     40          
+   \   000000   E9           MOV       A,R1
+   \   000001   F8           MOV       R0,A
+     36            slot++;
+   \   000002   08           INC       R0
+     37            return (slot >= MAX_TIME_SLOTS) ? 0 : slot;
+   \   000003   E8           MOV       A,R0
+   \   000004   C3           CLR       C
+   \   000005   9432         SUBB      A,#0x32
+   \   000007   4004         JC        ??_inc_timeslot_1
+   \   000009   7900         MOV       R1,#0x0
+   \   00000B   8002         SJMP      ??_inc_timeslot_2
+   \                     ??_inc_timeslot_1:
+   \   00000D   E8           MOV       A,R0
+   \   00000E   F9           MOV       R1,A
+   \                     ??_inc_timeslot_2:
+   \   00000F   02....       LJMP      ?BRET
+     38          }
+     39          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     41          void TM_IRQ(nwtime_t time){
+     40          static inline timeslot_t _find_next_active(timeslot_t slot){
+   \                     ??_find_next_active:
+   \   000000   74F7         MOV       A,#-0x9
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 9
+   \   000005                ; Auto size: 0
+   \   000005   E9           MOV       A,R1
+   \   000006   FE           MOV       R6,A
+     41            slot = _inc_timeslot(slot);
+   \   000007                ; Setup parameters for call to function _inc_timeslot
+   \   000007   EE           MOV       A,R6
+   \   000008   F9           MOV       R1,A
+   \   000009   12....       LCALL     `??_inc_timeslot::?relay`; Banked call to: _inc_timeslot
+   \   00000C   E9           MOV       A,R1
+   \   00000D   FE           MOV       R6,A
+     42            while (!slot && !ALARMS[slot])
+   \                     ??_find_next_active_1:
+   \   00000E   EE           MOV       A,R6
+   \   00000F   701A         JNZ       ??_find_next_active_2
+   \   000011   EE           MOV       A,R6
+   \   000012   F8           MOV       R0,A
+   \   000013   7900         MOV       R1,#0x0
+   \   000015   74..         MOV       A,#??ALARMS & 0xff
+   \   000017   28           ADD       A,R0
+   \   000018   F582         MOV       DPL,A
+   \   00001A   74..         MOV       A,#(??ALARMS >> 8) & 0xff
+   \   00001C   39           ADDC      A,R1
+   \   00001D   F583         MOV       DPH,A
+   \   00001F   E0           MOVX      A,@DPTR
+   \   000020   7009         JNZ       ??_find_next_active_2
+     43              slot = _inc_timeslot(slot);
+   \   000022                ; Setup parameters for call to function _inc_timeslot
+   \   000022   EE           MOV       A,R6
+   \   000023   F9           MOV       R1,A
+   \   000024   12....       LCALL     `??_inc_timeslot::?relay`; Banked call to: _inc_timeslot
+   \   000027   E9           MOV       A,R1
+   \   000028   FE           MOV       R6,A
+   \   000029   80E3         SJMP      ??_find_next_active_1
+     44            return slot;
+   \                     ??_find_next_active_2:
+   \   00002B   EE           MOV       A,R6
+   \   00002C   F9           MOV       R1,A
+   \   00002D   7F01         MOV       R7,#0x1
+   \   00002F   02....       LJMP      ?BANKED_LEAVE_XDATA
+     45          }
+     46          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     47          static void scheulder_next_alarm(nwtime_t time){
+   \                     ??scheulder_next_alarm:
+   \   000000                REQUIRE ?V0
+   \   000000   74F7         MOV       A,#-0x9
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 9
+   \   000005                ; Auto size: 0
+   \   000005   EA           MOV       A,R2
+   \   000006   FE           MOV       R6,A
+   \   000007   EB           MOV       A,R3
+   \   000008   FF           MOV       R7,A
+     48            timeslot_t slot = NWTIME_TO_SLOT(time);
+   \   000009   EE           MOV       A,R6
+   \   00000A   F8           MOV       R0,A
+   \   00000B   EF           MOV       A,R7
+   \   00000C   F9           MOV       R1,A
+   \   00000D   7A8E         MOV       R2,#-0x72
+   \   00000F   7B02         MOV       R3,#0x2
+   \   000011   12....       LCALL     ?US_DIV_MOD
+   \   000014   E8           MOV       A,R0
+   \   000015   F5..         MOV       ?V0,A
+     49            slot = _find_next_active(slot);
+   \   000017                ; Setup parameters for call to function _find_next_active
+   \   000017   A9..         MOV       R1,?V0
+   \   000019   12....       LCALL     `??_find_next_active::?relay`; Banked call to: _find_next_active
+   \   00001C   E9           MOV       A,R1
+   \   00001D   F5..         MOV       ?V0,A
+     50            AT_set_alarm(SLOT_TO_NWTIME(slot));
+   \   00001F                ; Setup parameters for call to function AT_set_alarm
+   \   00001F   E5..         MOV       A,?V0
+   \   000021   FA           MOV       R2,A
+   \   000022   7B00         MOV       R3,#0x0
+   \   000024   EA           MOV       A,R2
+   \   000025   75F08E       MOV       B,#-0x72
+   \   000028   A4           MUL       AB
+   \   000029   CA           XCH       A,R2
+   \   00002A   A8F0         MOV       R0,B
+   \   00002C   75F002       MOV       B,#0x2
+   \   00002F   A4           MUL       AB
+   \   000030   28           ADD       A,R0
+   \   000031   F8           MOV       R0,A
+   \   000032   75F08E       MOV       B,#-0x72
+   \   000035   EB           MOV       A,R3
+   \   000036   A4           MUL       AB
+   \   000037   28           ADD       A,R0
+   \   000038   FB           MOV       R3,A
+   \   000039   12....       LCALL     `??AT_set_alarm::?relay`; Banked call to: AT_set_alarm
+     51          }
+   \   00003C   7F01         MOV       R7,#0x1
+   \   00003E   02....       LJMP      ?BANKED_LEAVE_XDATA
+     52          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     53          void TM_IRQ(nwtime_t time){
    \                     TM_IRQ:
    \   000000   74F7         MOV       A,#-0x9
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
@@ -4668,81 +4799,253 @@ E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\time_manager.c
    \   000006   FE           MOV       R6,A
    \   000007   EB           MOV       A,R3
    \   000008   FF           MOV       R7,A
-     42            ATOMIC_BLOCK_FORCEON{    
-   \   000009                ; Setup parameters for call to function __cli
-   \   000009   12....       LCALL     `??__cli::?relay_2`; Banked call to: __cli
-   \   00000C   E9           MOV       A,R1
+     54            if (MODEL.TM.MODE == 0){
+   \   000009   90....       MOV       DPTR,#MODEL + 6
+   \   00000C   E0           MOVX      A,@DPTR
+   \   00000D   7007         JNZ       ??TM_IRQ_0
+     55              AT_enable(false);
+   \   00000F                ; Setup parameters for call to function AT_enable
+   \   00000F   C2F0         CLR       B.0
+   \   000011   12....       LCALL     `??AT_enable::?relay`; Banked call to: AT_enable
+     56              return;
+   \   000014   802E         SJMP      ??TM_IRQ_1
+     57            }
+     58            
+     59            ATOMIC_BLOCK_FORCEON{    
    \                     ??TM_IRQ_0:
-   \   00000D   600C         JZ        ??TM_IRQ_1
-     43              LOG_OFF("ALARM! %d", time);
-     44              scheulder_next_alarm();
-   \   00000F                ; Setup parameters for call to function scheulder_next_alarm
-   \   00000F   12....       LCALL     `??scheulder_next_alarm::?relay`; Banked call to: scheulder_next_alarm
-     45              AM_Hot_start();
-   \   000012                ; Setup parameters for call to function AM_Hot_start
-   \   000012   12....       LCALL     `??AM_Hot_start::?relay`; Banked call to: AM_Hot_start
-     46            };
-   \   000015   7400         MOV       A,#0x0
-   \   000017   D2AF         SETB      0xa8.7
-   \   000019   80F2         SJMP      ??TM_IRQ_0
-     47            AM_Wakeup();
+   \   000016                ; Setup parameters for call to function __cli
+   \   000016   12....       LCALL     `??__cli::?relay_3`; Banked call to: __cli
+   \   000019   E9           MOV       A,R1
+   \                     ??TM_IRQ_2:
+   \   00001A   6028         JZ        ??TM_IRQ_1
+     60              LOG_OFF("ALARM! %d", time); 
+     61              MODEL.TM.timeslot = NWTIME_TO_SLOT(time);
+   \   00001C   EE           MOV       A,R6
+   \   00001D   F8           MOV       R0,A
+   \   00001E   EF           MOV       A,R7
+   \   00001F   F9           MOV       R1,A
+   \   000020   7A8E         MOV       R2,#-0x72
+   \   000022   7B02         MOV       R3,#0x2
+   \   000024   12....       LCALL     ?US_DIV_MOD
+   \   000027   E8           MOV       A,R0
+   \   000028   90....       MOV       DPTR,#MODEL + 7
+   \   00002B   F0           MOVX      @DPTR,A
+     62              MODEL.TM.time = time;
+   \   00002C   90....       MOV       DPTR,#MODEL + 8
+   \   00002F   EE           MOV       A,R6
+   \   000030   F0           MOVX      @DPTR,A
+   \   000031   A3           INC       DPTR
+   \   000032   EF           MOV       A,R7
+   \   000033   F0           MOVX      @DPTR,A
+     63              scheulder_next_alarm(time);
+   \   000034                ; Setup parameters for call to function scheulder_next_alarm
+   \   000034   EE           MOV       A,R6
+   \   000035   FA           MOV       R2,A
+   \   000036   EF           MOV       A,R7
+   \   000037   FB           MOV       R3,A
+   \   000038   12....       LCALL     `??scheulder_next_alarm::?relay`; Banked call to: scheulder_next_alarm
+     64              AM_Hot_start();
+   \   00003B                ; Setup parameters for call to function AM_Hot_start
+   \   00003B   12....       LCALL     `??AM_Hot_start::?relay`; Banked call to: AM_Hot_start
+     65            };
+   \   00003E   7400         MOV       A,#0x0
+   \   000040   D2AF         SETB      0xa8.7
+   \   000042   80D6         SJMP      ??TM_IRQ_2
+     66          }
    \                     ??TM_IRQ_1:
-   \   00001B                ; Setup parameters for call to function AM_Wakeup
-   \   00001B   12....       LCALL     `??AM_Wakeup::?relay`; Banked call to: AM_Wakeup
-     48            AM_Cold_start();
-   \   00001E                ; Setup parameters for call to function AM_Cold_start
-   \   00001E   12....       LCALL     `??AM_Cold_start::?relay`; Banked call to: AM_Cold_start
-     49            AM_Sleep();
-   \   000021                ; Setup parameters for call to function AM_Sleep
-   \   000021   12....       LCALL     `??AM_Sleep::?relay`; Banked call to: AM_Sleep
-     50          }
-   \   000024   7F01         MOV       R7,#0x1
-   \   000026   02....       LJMP      ?BANKED_LEAVE_XDATA
-   \   000029                REQUIRE _A_IEN0
-     51          
+   \   000044   7F01         MOV       R7,#0x1
+   \   000046   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000049                REQUIRE _A_IEN0
+     67          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     52          static inline void mcu_sleep(void){
+     68          static inline void mcu_sleep(void){
    \                     ??mcu_sleep:
    \   000000                ; Saved register size: 0
    \   000000                ; Auto size: 0
-     53          }
+     69          }
    \   000000   02....       LJMP      ?BRET
-     54          
+     70          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-     55          void Neocore_start(void){
-   \                     Neocore_start:
+     71          static inline void _clr_all(void){
+   \                     ??_clr_all:
    \   000000   C082         PUSH      DPL
    \   000002   C083         PUSH      DPH
    \   000004                ; Saved register size: 2
    \   000004                ; Auto size: 0
-     56            AM_HW_Init();
-   \   000004                ; Setup parameters for call to function AM_HW_Init
-   \   000004   12....       LCALL     `??AM_HW_Init::?relay`; Banked call to: AM_HW_Init
-     57            AM_SW_Init();
-   \   000007                ; Setup parameters for call to function AM_SW_Init
-   \   000007   12....       LCALL     `??AM_SW_Init::?relay`; Banked call to: AM_SW_Init
-     58            mcu_sleep();
-   \   00000A                ; Setup parameters for call to function mcu_sleep
-   \   00000A   12....       LCALL     `??mcu_sleep::?relay`; Banked call to: mcu_sleep
-     59            while (true){
-     60              AM_Wakeup();
+     72            for_each_type(alarm_t, ALARMS, i)
+   \   000004   7582..       MOV       DPL,#??ALARMS & 0xff
+   \   000007   7583..       MOV       DPH,#(??ALARMS >> 8) & 0xff
+   \                     ??_clr_all_1:
+   \   00000A   C3           CLR       C
+   \   00000B   E582         MOV       A,DPL
+   \   00000D   94..         SUBB      A,#(??ALARMS + 50) & 0xff
+   \   00000F   E583         MOV       A,DPH
+   \   000011   94..         SUBB      A,#((??ALARMS + 50) >> 8) & 0xff
+   \   000013   5009         JNC       ??_clr_all_2
+     73              i = 0;
+   \   000015   758200       MOV       DPL,#0x0
+   \   000018   758300       MOV       DPH,#0x0
+   \   00001B   A3           INC       DPTR
+   \   00001C   80EC         SJMP      ??_clr_all_1
+     74          }
+   \                     ??_clr_all_2:
+   \   00001E   D083         POP       DPH
+   \   000020   D082         POP       DPL
+   \   000022   02....       LJMP      ?BRET
+     75          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     76          static void init(void){
+   \                     ??init:
+   \   000000   C082         PUSH      DPL
+   \   000002   C083         PUSH      DPH
+   \   000004                ; Saved register size: 2
+   \   000004                ; Auto size: 0
+     77            _clr_all();
+   \   000004                ; Setup parameters for call to function _clr_all
+   \   000004   12....       LCALL     `??_clr_all::?relay`; Banked call to: _clr_all
+     78            scheulder_next_alarm(0);
+   \   000007                ; Setup parameters for call to function scheulder_next_alarm
+   \   000007   7A00         MOV       R2,#0x0
+   \   000009   7B00         MOV       R3,#0x0
+   \   00000B   12....       LCALL     `??scheulder_next_alarm::?relay`; Banked call to: scheulder_next_alarm
+     79            AT_enable(true);
+   \   00000E                ; Setup parameters for call to function AT_enable
+   \   00000E   D2F0         SETB      B.0
+   \   000010   12....       LCALL     `??AT_enable::?relay`; Banked call to: AT_enable
+     80          }
+   \   000013   D083         POP       DPH
+   \   000015   D082         POP       DPL
+   \   000017   02....       LJMP      ?BRET
+     81          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     82          static void start_mode_1(void){
+   \                     ??start_mode_1:
+   \   000000   C082         PUSH      DPL
+   \   000002   C083         PUSH      DPH
+   \   000004                ; Saved register size: 2
+   \   000004                ; Auto size: 0
+     83            AM_SW_Init();
+   \   000004                ; Setup parameters for call to function AM_SW_Init
+   \   000004   12....       LCALL     `??AM_SW_Init::?relay`; Banked call to: AM_SW_Init
+     84            init();
+   \   000007                ; Setup parameters for call to function init
+   \   000007   12....       LCALL     `??init::?relay` ; Banked call to: init
+     85            
+     86            while (true){
+     87              AM_Sleep();
+   \                     ??start_mode_1_1:
+   \   00000A                ; Setup parameters for call to function AM_Sleep
+   \   00000A   12....       LCALL     `??AM_Sleep::?relay`; Banked call to: AM_Sleep
+     88              mcu_sleep();
+   \   00000D                ; Setup parameters for call to function mcu_sleep
+   \   00000D   12....       LCALL     `??mcu_sleep::?relay`; Banked call to: mcu_sleep
+     89              
+     90              if (MODEL.TM.MODE == 0)
+   \   000010   90....       MOV       DPTR,#MODEL + 6
+   \   000013   E0           MOVX      A,@DPTR
+   \   000014   6008         JZ        ??start_mode_1_2
+     91                return;
+     92              
+     93              AM_Wakeup();
+   \   000016                ; Setup parameters for call to function AM_Wakeup
+   \   000016   12....       LCALL     `??AM_Wakeup::?relay`; Banked call to: AM_Wakeup
+     94              AM_Cold_start();    
+   \   000019                ; Setup parameters for call to function AM_Cold_start
+   \   000019   12....       LCALL     `??AM_Cold_start::?relay`; Banked call to: AM_Cold_start
+   \   00001C   80EC         SJMP      ??start_mode_1_1
+     95            }  
+   \                     ??start_mode_1_2:
+   \   00001E   D083         POP       DPH
+   \   000020   D082         POP       DPL
+   \   000022   02....       LJMP      ?BRET
+     96          }
+     97          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     98          static void start_mode_2(void){
+   \                     ??start_mode_2:
+   \   000000   C082         PUSH      DPL
+   \   000002   C083         PUSH      DPH
+   \   000004                ; Saved register size: 2
+   \   000004                ; Auto size: 0
+     99            AM_SW_Init();
+   \   000004                ; Setup parameters for call to function AM_SW_Init
+   \   000004   12....       LCALL     `??AM_SW_Init::?relay`; Banked call to: AM_SW_Init
+    100            init();
+   \   000007                ; Setup parameters for call to function init
+   \   000007   12....       LCALL     `??init::?relay` ; Banked call to: init
+    101          }
+   \   00000A   D083         POP       DPH
+   \   00000C   D082         POP       DPL
+   \   00000E   02....       LJMP      ?BRET
+    102          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+    103          void Neocore_start(void){
+   \                     Neocore_start:
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000   74F6         MOV       A,#-0xa
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 10
+   \   000005                ; Auto size: 0
+    104            switch (MODEL.TM.MODE){
+   \   000005   90....       MOV       DPTR,#MODEL + 6
+   \   000008   E0           MOVX      A,@DPTR
+   \   000009   6045         JZ        ??Neocore_start_0
+   \   00000B   14           DEC       A
+   \   00000C   6005         JZ        ??Neocore_start_1
+   \   00000E   14           DEC       A
+   \   00000F   6005         JZ        ??Neocore_start_2
+   \   000011   8006         SJMP      ??Neocore_start_3
+    105            case 0:
+    106              return;
+    107            case 1:
+    108              start_mode_1();
+   \                     ??Neocore_start_1:
+   \   000013                ; Setup parameters for call to function start_mode_1
+   \   000013   12....       LCALL     `??start_mode_1::?relay`; Banked call to: start_mode_1
+    109            case 2:
+    110              start_mode_2();
+   \                     ??Neocore_start_2:
+   \   000016                ; Setup parameters for call to function start_mode_2
+   \   000016   12....       LCALL     `??start_mode_2::?relay`; Banked call to: start_mode_2
+    111            default: 
+    112              HALT("Incorrect MODEL.TM.MODE");
+   \                     ??Neocore_start_3:
+   \   000019                ; Setup parameters for call to function printf
+   \   000019   75....       MOV       ?V0,#??__FUNCTION___15 & 0xff
+   \   00001C   75....       MOV       ?V1,#(??__FUNCTION___15 >> 8) & 0xff
+   \   00001F   78..         MOV       R0,#?V0
+   \   000021   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000024   75..70       MOV       ?V0,#0x70
+   \   000027   75..00       MOV       ?V1,#0x0
+   \   00002A   78..         MOV       R0,#?V0
+   \   00002C   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00002F   75....       MOV       ?V0,#`?<Constant "time_manager.c">` & 0xff
+   \   000032   75....       MOV       ?V1,#(`?<Constant "time_manager.c">` >> 8) & 0xff
+   \   000035   78..         MOV       R0,#?V0
+   \   000037   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00003A   7A..         MOV       R2,#`?<Constant "%s:%d:%s -> ">_4` & 0xff
+   \   00003C   7B..         MOV       R3,#(`?<Constant "%s:%d:%s -> ">_4` >> 8) & 0xff
+   \   00003E   12....       LCALL     `??printf::?relay`; Banked call to: printf
+   \   000041   7406         MOV       A,#0x6
+   \   000043   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000046                ; Setup parameters for call to function printf
+   \   000046   7A..         MOV       R2,#`?<Constant "Incorrect MODEL.TM.MODE">` & 0xff
+   \   000048   7B..         MOV       R3,#(`?<Constant "Incorrect MODEL.TM.MODE">` >> 8) & 0xff
+   \   00004A   12....       LCALL     `??printf::?relay`; Banked call to: printf
+   \   00004D                ; Setup parameters for call to function DBG_CORE_HALT
+   \   00004D   12....       LCALL     `??DBG_CORE_HALT::?relay`; Banked call to: DBG_CORE_HALT
+    113            }
+    114          }
    \                     ??Neocore_start_0:
-   \   00000D                ; Setup parameters for call to function AM_Wakeup
-   \   00000D   12....       LCALL     `??AM_Wakeup::?relay`; Banked call to: AM_Wakeup
-     61              AM_Cold_start();
-   \   000010                ; Setup parameters for call to function AM_Cold_start
-   \   000010   12....       LCALL     `??AM_Cold_start::?relay`; Banked call to: AM_Cold_start
-     62              AM_Sleep();
-   \   000013                ; Setup parameters for call to function AM_Sleep
-   \   000013   12....       LCALL     `??AM_Sleep::?relay`; Banked call to: AM_Sleep
-     63              mcu_sleep();    
-   \   000016                ; Setup parameters for call to function mcu_sleep
-   \   000016   12....       LCALL     `??mcu_sleep::?relay`; Banked call to: mcu_sleep
-   \   000019   80F2         SJMP      ??Neocore_start_0
-     64            }
-     65          }
+   \   000050   7F02         MOV       R7,#0x2
+   \   000052   02....       LJMP      ?BANKED_LEAVE_XDATA
 E:\WMNU\IAR_new_arch\PRJ Test\u_alarm_timer.c
       1          #include "debug.h"
       2          #include "alarm_timer.h"
@@ -7241,6 +7544,13 @@ Warning[Pe111]: statement is unreachable
           detected during compilation of secondary translation unit
                     "E:\WMNU\IAR_NEW_ARCH\PRJ Test\u_macros.c"
 
+  static void SW_Init(void){
+              ^
+"E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c",34  Warning[Pe177]: 
+          function "SW_Init" was declared but never referenced
+          detected during compilation of secondary translation unit
+                    "E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\alarm_timer.c"
+
   static void uart_init(void){
               ^
 "E:\WMNU\IAR_new_arch\STACK_CORE_SRC\debug.c",32  Warning[Pe177]: function
@@ -8182,8 +8492,8 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
    \   00008E   4F           ORL       A,R7
    \   00008F   6037         JZ        ??u_mem_utils_4
    \   000091                ; Setup parameters for call to function printf
-   \   000091   75....       MOV       ?V2,#??__FUNCTION___15 & 0xff
-   \   000094   75....       MOV       ?V3,#(??__FUNCTION___15 >> 8) & 0xff
+   \   000091   75....       MOV       ?V2,#??__FUNCTION___16 & 0xff
+   \   000094   75....       MOV       ?V3,#(??__FUNCTION___16 >> 8) & 0xff
    \   000097   78..         MOV       R0,#?V2
    \   000099   12....       LCALL     ?PUSH_XSTACK_I_TWO
    \   00009C   75..0E       MOV       ?V2,#0xe
@@ -8215,8 +8525,8 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
      16            LOG_ON("MEM_memcpy ok!");
    \                     ??u_mem_utils_1:
    \   0000D3                ; Setup parameters for call to function printf
-   \   0000D3   75....       MOV       ?V0,#??__FUNCTION___15 & 0xff
-   \   0000D6   75....       MOV       ?V1,#(??__FUNCTION___15 >> 8) & 0xff
+   \   0000D3   75....       MOV       ?V0,#??__FUNCTION___16 & 0xff
+   \   0000D6   75....       MOV       ?V1,#(??__FUNCTION___16 >> 8) & 0xff
    \   0000D9   78..         MOV       R0,#?V0
    \   0000DB   12....       LCALL     ?PUSH_XSTACK_I_TWO
    \   0000DE   75..10       MOV       ?V0,#0x10
@@ -8296,8 +8606,8 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
    \   000163   4F           ORL       A,R7
    \   000164   6037         JZ        ??u_mem_utils_9
    \   000166                ; Setup parameters for call to function printf
-   \   000166   75....       MOV       ?V2,#??__FUNCTION___15 & 0xff
-   \   000169   75....       MOV       ?V3,#(??__FUNCTION___15 >> 8) & 0xff
+   \   000166   75....       MOV       ?V2,#??__FUNCTION___16 & 0xff
+   \   000169   75....       MOV       ?V3,#(??__FUNCTION___16 >> 8) & 0xff
    \   00016C   78..         MOV       R0,#?V2
    \   00016E   12....       LCALL     ?PUSH_XSTACK_I_TWO
    \   000171   75..17       MOV       ?V2,#0x17
@@ -8329,8 +8639,8 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
      25            LOG_ON("MEM_memset ok!");
    \                     ??u_mem_utils_6:
    \   0001A7                ; Setup parameters for call to function printf
-   \   0001A7   75....       MOV       ?V0,#??__FUNCTION___15 & 0xff
-   \   0001AA   75....       MOV       ?V1,#(??__FUNCTION___15 >> 8) & 0xff
+   \   0001A7   75....       MOV       ?V0,#??__FUNCTION___16 & 0xff
+   \   0001AA   75....       MOV       ?V1,#(??__FUNCTION___16 >> 8) & 0xff
    \   0001AD   78..         MOV       R0,#?V0
    \   0001AF   12....       LCALL     ?PUSH_XSTACK_I_TWO
    \   0001B2   75..19       MOV       ?V0,#0x19
@@ -8371,6 +8681,471 @@ E:\WMNU\IAR_new_arch\PRJ Test\u_mem_utils.c
    \   000000   0000         DW 0H
    \   000002   0A           DB 10
    \   000003   07           DB 7
+E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\ustimer.c
+      1          #include "ioCC2530.h"
+      2          #include "ustimer.h"
+      3          #include "stdint.h"
+      4          #include "action_manager.h"
+      5          
+      6          #define TICK_NS  31.25 // Количество нс в одном такте TIM2
+      7          #define TICK_US  0.03125 // Количество мкс в одном такте TIM2
+      8          #define TICK_PER_US 32 // Количество тактов в одной микросекунде
+      9          #define TICKS_TO_US(tick) ((tick)/TICK_PER_US)
+     10          #define US_TO_TICKS(us)   ((us)*TICK_PER_US)
+     11          #define ACCURATE_VAL_US 500 
+     12          
+     13          // Максимальное кол-во тактов таймера. Константа 40 бит, 5 байт
+
+   \                                 In  segment XDATA_ROM_C, align 1
+     14          static const uint32_t MAC_TIMER_MAX = 0xFFFFFFFFUL; 
+   \                     ??MAC_TIMER_MAX:
+   \   000000   FFFFFFFF     DD 4294967295
+
+   \                                 In  segment XDATA_Z, align 1, keep-with-next
+     15          static uint32_t DELAY_CALIBRATE_TICS; // Калибровка функции задержки
+   \                     ??DELAY_CALIBRATE_TICS:
+   \   000000                DS 4
+   \   000004                REQUIRE __INIT_XDATA_Z
+     16          
+     17          static void DelayCalibrate(void);
+     18          static void HW_Init(void);  
+
+   \                                 In  segment XDATA_I, align 1, keep-with-next
+     19          module_s UST_MODULE = {ALIAS(HW_Init)};
+   \                     UST_MODULE:
+   \   000000                DS 12
+   \   00000C                REQUIRE `?<Initializer for UST_MODULE>`
+   \   00000C                REQUIRE __INIT_XDATA_I
+     20          
+     21          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     22          void HW_Init(void){
+   \                     ??HW_Init_4:
+   \   000000   C082         PUSH      DPL
+   \   000002   C083         PUSH      DPH
+   \   000004                ; Saved register size: 2
+   \   000004                ; Auto size: 0
+     23            // Запускаем таймер, LATCH MODE = 1
+     24            // Latch mode фиксирует значение таймера переполнения при чтении T2M0
+     25            // ЗАпускаем MAC таймер без синхронизации с кварцем 32.768к
+     26            T2CTRL = (1<<0) | (1<<3); 
+   \   000004   759409       MOV       0x94,#0x9
+     27            // Калибровка функции задержки
+     28            DelayCalibrate();
+   \   000007                ; Setup parameters for call to function DelayCalibrate
+   \   000007   12....       LCALL     `??DelayCalibrate::?relay`; Banked call to: DelayCalibrate
+     29          }
+   \   00000A   D083         POP       DPH
+   \   00000C   D082         POP       DPL
+   \   00000E   02....       LJMP      ?BRET
+   \   000011                REQUIRE T2CTRL
+     30          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     31          ustime_t UST_now(void){
+   \                     UST_now:
+   \   000000   C082         PUSH      DPL
+   \   000002   C083         PUSH      DPH
+   \   000004                ; Saved register size: 2
+   \   000004                ; Auto size: 4
+   \   000004   74FC         MOV       A,#-0x4
+   \   000006   12....       LCALL     ?ALLOC_XSTACK8
+     32            ustime_t now;
+     33            ((char*)&now)[0] = T2M0;
+   \   000009   E5A2         MOV       A,0xa2
+   \   00000B   C0E0         PUSH      A
+   \   00000D   85..82       MOV       DPL,?XSP + 0
+   \   000010   85..83       MOV       DPH,?XSP + 1
+   \   000013   D0E0         POP       A
+   \   000015   F0           MOVX      @DPTR,A
+     34            ((char*)&now)[1] = T2M1;
+   \   000016   E5A3         MOV       A,0xa3
+   \   000018   C0E0         PUSH      A
+   \   00001A   7401         MOV       A,#0x1
+   \   00001C   12....       LCALL     ?XSTACK_DISP0_8
+   \   00001F   D0E0         POP       A
+   \   000021   F0           MOVX      @DPTR,A
+     35            ((char*)&now)[2] = T2MOVF0;
+   \   000022   E5A4         MOV       A,0xa4
+   \   000024   C0E0         PUSH      A
+   \   000026   7402         MOV       A,#0x2
+   \   000028   12....       LCALL     ?XSTACK_DISP0_8
+   \   00002B   D0E0         POP       A
+   \   00002D   F0           MOVX      @DPTR,A
+     36            ((char*)&now)[3] = T2MOVF1;
+   \   00002E   E5A5         MOV       A,0xa5
+   \   000030   C0E0         PUSH      A
+   \   000032   7403         MOV       A,#0x3
+   \   000034   12....       LCALL     ?XSTACK_DISP0_8
+   \   000037   D0E0         POP       A
+   \   000039   F0           MOVX      @DPTR,A
+     37            return now;
+   \   00003A   85..82       MOV       DPL,?XSP + 0
+   \   00003D   85..83       MOV       DPH,?XSP + 1
+   \   000040   12....       LCALL     ?XLOAD_R2345
+   \   000043   7404         MOV       A,#0x4
+   \   000045   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000048   D083         POP       DPH
+   \   00004A   D082         POP       DPL
+   \   00004C   02....       LJMP      ?BRET
+   \   00004F                REQUIRE T2M0
+   \   00004F                REQUIRE T2M1
+   \   00004F                REQUIRE T2MOVF0
+   \   00004F                REQUIRE T2MOVF1
+     38          }
+     39          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     40          ustime_t UST_interval(stamp_t beg, stamp_t end){
+   \                     UST_interval:
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
+   \   000000                REQUIRE ?V4
+   \   000000                REQUIRE ?V5
+   \   000000                REQUIRE ?V6
+   \   000000                REQUIRE ?V7
+   \   000000   74F0         MOV       A,#-0x10
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 16
+   \   000005                ; Auto size: 8
+   \   000005   74F8         MOV       A,#-0x8
+   \   000007   12....       LCALL     ?ALLOC_XSTACK8
+   \   00000A   85..82       MOV       DPL,?XSP + 0
+   \   00000D   85..83       MOV       DPH,?XSP + 1
+   \   000010   EA           MOV       A,R2
+   \   000011   F0           MOVX      @DPTR,A
+   \   000012   A3           INC       DPTR
+   \   000013   EB           MOV       A,R3
+   \   000014   F0           MOVX      @DPTR,A
+   \   000015   A3           INC       DPTR
+   \   000016   EC           MOV       A,R4
+   \   000017   F0           MOVX      @DPTR,A
+   \   000018   A3           INC       DPTR
+   \   000019   ED           MOV       A,R5
+   \   00001A   F0           MOVX      @DPTR,A
+   \   00001B   7418         MOV       A,#0x18
+   \   00001D   12....       LCALL     ?XSTACK_DISP0_8
+   \   000020   78..         MOV       R0,#?V0
+   \   000022   12....       LCALL     ?L_MOV_X
+     41            return (end >= beg) ? 
+     42              TICKS_TO_US(end - beg) :
+     43              TICKS_TO_US(MAC_TIMER_MAX - beg + end);
+   \   000025   85..82       MOV       DPL,?XSP + 0
+   \   000028   85..83       MOV       DPH,?XSP + 1
+   \   00002B   78..         MOV       R0,#?V0
+   \   00002D   12....       LCALL     ?UL_GE_X
+   \   000030   501E         JNC       ??UST_interval_0
+   \   000032   85..82       MOV       DPL,?XSP + 0
+   \   000035   85..83       MOV       DPH,?XSP + 1
+   \   000038   78..         MOV       R0,#?V0
+   \   00003A   12....       LCALL     ?L_SUB_X
+   \   00003D   7405         MOV       A,#0x5
+   \   00003F   78..         MOV       R0,#?V0
+   \   000041   12....       LCALL     ?UL_SHR
+   \   000044   7404         MOV       A,#0x4
+   \   000046   12....       LCALL     ?XSTACK_DISP0_8
+   \   000049   78..         MOV       R0,#?V0
+   \   00004B   12....       LCALL     ?L_MOV_TO_X
+   \   00004E   802B         SJMP      ??UST_interval_1
+   \                     ??UST_interval_0:
+   \   000050   90....       MOV       DPTR,#??MAC_TIMER_MAX
+   \   000053   78..         MOV       R0,#?V4
+   \   000055   12....       LCALL     ?L_MOV_X
+   \   000058   85..82       MOV       DPL,?XSP + 0
+   \   00005B   85..83       MOV       DPH,?XSP + 1
+   \   00005E   78..         MOV       R0,#?V4
+   \   000060   12....       LCALL     ?L_SUB_X
+   \   000063   78..         MOV       R0,#?V4
+   \   000065   79..         MOV       R1,#?V0
+   \   000067   12....       LCALL     ?L_ADD
+   \   00006A   7405         MOV       A,#0x5
+   \   00006C   78..         MOV       R0,#?V4
+   \   00006E   12....       LCALL     ?UL_SHR
+   \   000071   7404         MOV       A,#0x4
+   \   000073   12....       LCALL     ?XSTACK_DISP0_8
+   \   000076   78..         MOV       R0,#?V4
+   \   000078   12....       LCALL     ?L_MOV_TO_X
+   \                     ??UST_interval_1:
+   \   00007B   7404         MOV       A,#0x4
+   \   00007D   12....       LCALL     ?XSTACK_DISP0_8
+   \   000080   12....       LCALL     ?XLOAD_R2345
+   \   000083   7408         MOV       A,#0x8
+   \   000085   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000088   7F08         MOV       R7,#0x8
+   \   00008A   02....       LJMP      ?BANKED_LEAVE_XDATA
+     44          };
+     45          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     46          void UST_delay(ustime_t time){
+   \                     UST_delay:
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
+   \   000000                REQUIRE ?V4
+   \   000000                REQUIRE ?V5
+   \   000000                REQUIRE ?V6
+   \   000000                REQUIRE ?V7
+   \   000000   74F0         MOV       A,#-0x10
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 16
+   \   000005                ; Auto size: 16
+   \   000005   74F0         MOV       A,#-0x10
+   \   000007   12....       LCALL     ?ALLOC_XSTACK8
+   \   00000A   740C         MOV       A,#0xc
+   \   00000C   12....       LCALL     ?XSTACK_DISP0_8
+   \   00000F   EA           MOV       A,R2
+   \   000010   F0           MOVX      @DPTR,A
+   \   000011   A3           INC       DPTR
+   \   000012   EB           MOV       A,R3
+   \   000013   F0           MOVX      @DPTR,A
+   \   000014   A3           INC       DPTR
+   \   000015   EC           MOV       A,R4
+   \   000016   F0           MOVX      @DPTR,A
+   \   000017   A3           INC       DPTR
+   \   000018   ED           MOV       A,R5
+   \   000019   F0           MOVX      @DPTR,A
+     47            stamp_t now = UST_now();
+   \   00001A                ; Setup parameters for call to function UST_now
+   \   00001A   12....       LCALL     `??UST_now::?relay`; Banked call to: UST_now
+   \   00001D   7408         MOV       A,#0x8
+   \   00001F   12....       LCALL     ?XSTACK_DISP0_8
+   \   000022   12....       LCALL     ?XSTORE_R2345
+     48            stamp_t len = US_TO_TICKS(time);
+   \   000025   740C         MOV       A,#0xc
+   \   000027   12....       LCALL     ?XSTACK_DISP0_8
+   \   00002A   78..         MOV       R0,#?V0
+   \   00002C   12....       LCALL     ?L_MOV_X
+   \   00002F   90....       MOV       DPTR,#__Constant_20
+   \   000032   78..         MOV       R0,#?V4
+   \   000034   12....       LCALL     ?L_MOV_X
+   \   000037   78..         MOV       R0,#?V0
+   \   000039   79..         MOV       R1,#?V4
+   \   00003B   12....       LCALL     ?L_MUL
+   \   00003E   7404         MOV       A,#0x4
+   \   000040   12....       LCALL     ?XSTACK_DISP0_8
+   \   000043   78..         MOV       R0,#?V0
+   \   000045   12....       LCALL     ?L_MOV_TO_X
+     49            stamp_t offset = (time > DELAY_CALIBRATE_TICS) ?
+     50                              DELAY_CALIBRATE_TICS : 0;
+   \   000048   740C         MOV       A,#0xc
+   \   00004A   12....       LCALL     ?XSTACK_DISP0_8
+   \   00004D   78..         MOV       R0,#?V0
+   \   00004F   12....       LCALL     ?L_MOV_X
+   \   000052   90....       MOV       DPTR,#??DELAY_CALIBRATE_TICS
+   \   000055   78..         MOV       R0,#?V0
+   \   000057   12....       LCALL     ?UL_GT_X
+   \   00005A   5011         JNC       ??UST_delay_0
+   \   00005C   90....       MOV       DPTR,#??DELAY_CALIBRATE_TICS
+   \   00005F   12....       LCALL     ?XLOAD_R0123
+   \   000062   85..82       MOV       DPL,?XSP + 0
+   \   000065   85..83       MOV       DPH,?XSP + 1
+   \   000068   12....       LCALL     ?XSTORE_R0123
+   \   00006B   8015         SJMP      ??UST_delay_1
+   \                     ??UST_delay_0:
+   \   00006D   85..82       MOV       DPL,?XSP + 0
+   \   000070   85..83       MOV       DPH,?XSP + 1
+   \   000073   7400         MOV       A,#0x0
+   \   000075   F0           MOVX      @DPTR,A
+   \   000076   A3           INC       DPTR
+   \   000077   7400         MOV       A,#0x0
+   \   000079   F0           MOVX      @DPTR,A
+   \   00007A   A3           INC       DPTR
+   \   00007B   7400         MOV       A,#0x0
+   \   00007D   F0           MOVX      @DPTR,A
+   \   00007E   A3           INC       DPTR
+   \   00007F   7400         MOV       A,#0x0
+   \   000081   F0           MOVX      @DPTR,A
+     51            while (UST_now() < (now + len - offset));
+   \                     ??UST_delay_1:
+   \   000082   7408         MOV       A,#0x8
+   \   000084   12....       LCALL     ?XSTACK_DISP0_8
+   \   000087   78..         MOV       R0,#?V0
+   \   000089   12....       LCALL     ?L_MOV_X
+   \   00008C   7404         MOV       A,#0x4
+   \   00008E   12....       LCALL     ?XSTACK_DISP0_8
+   \   000091   78..         MOV       R0,#?V0
+   \   000093   12....       LCALL     ?L_ADD_X
+   \   000096   85..82       MOV       DPL,?XSP + 0
+   \   000099   85..83       MOV       DPH,?XSP + 1
+   \   00009C   78..         MOV       R0,#?V0
+   \   00009E   12....       LCALL     ?L_SUB_X
+   \   0000A1                ; Setup parameters for call to function UST_now
+   \   0000A1   12....       LCALL     `??UST_now::?relay`; Banked call to: UST_now
+   \   0000A4   8A..         MOV       ?V4,R2
+   \   0000A6   8B..         MOV       ?V5,R3
+   \   0000A8   8C..         MOV       ?V6,R4
+   \   0000AA   8D..         MOV       ?V7,R5
+   \   0000AC   78..         MOV       R0,#?V0
+   \   0000AE   79..         MOV       R1,#?V4
+   \   0000B0   12....       LCALL     ?UL_GT
+   \   0000B3   40CD         JC        ??UST_delay_1
+     52          }
+   \   0000B5   7410         MOV       A,#0x10
+   \   0000B7   12....       LCALL     ?DEALLOC_XSTACK8
+   \   0000BA   7F08         MOV       R7,#0x8
+   \   0000BC   02....       LJMP      ?BANKED_LEAVE_XDATA
+     53          
+     54          
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     55          stamp_t _interval(stamp_t beg, stamp_t end){
+   \                     _interval:
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
+   \   000000                REQUIRE ?V4
+   \   000000                REQUIRE ?V5
+   \   000000                REQUIRE ?V6
+   \   000000                REQUIRE ?V7
+   \   000000   74F0         MOV       A,#-0x10
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 16
+   \   000005                ; Auto size: 8
+   \   000005   74F8         MOV       A,#-0x8
+   \   000007   12....       LCALL     ?ALLOC_XSTACK8
+   \   00000A   85..82       MOV       DPL,?XSP + 0
+   \   00000D   85..83       MOV       DPH,?XSP + 1
+   \   000010   EA           MOV       A,R2
+   \   000011   F0           MOVX      @DPTR,A
+   \   000012   A3           INC       DPTR
+   \   000013   EB           MOV       A,R3
+   \   000014   F0           MOVX      @DPTR,A
+   \   000015   A3           INC       DPTR
+   \   000016   EC           MOV       A,R4
+   \   000017   F0           MOVX      @DPTR,A
+   \   000018   A3           INC       DPTR
+   \   000019   ED           MOV       A,R5
+   \   00001A   F0           MOVX      @DPTR,A
+   \   00001B   7418         MOV       A,#0x18
+   \   00001D   12....       LCALL     ?XSTACK_DISP0_8
+   \   000020   78..         MOV       R0,#?V0
+   \   000022   12....       LCALL     ?L_MOV_X
+     56            return (end >= beg) ? 
+     57              (end - beg) :
+     58              (MAC_TIMER_MAX - beg + end);
+   \   000025   85..82       MOV       DPL,?XSP + 0
+   \   000028   85..83       MOV       DPH,?XSP + 1
+   \   00002B   78..         MOV       R0,#?V0
+   \   00002D   12....       LCALL     ?UL_GE_X
+   \   000030   5017         JNC       ??_interval_0
+   \   000032   85..82       MOV       DPL,?XSP + 0
+   \   000035   85..83       MOV       DPH,?XSP + 1
+   \   000038   78..         MOV       R0,#?V0
+   \   00003A   12....       LCALL     ?L_SUB_X
+   \   00003D   7404         MOV       A,#0x4
+   \   00003F   12....       LCALL     ?XSTACK_DISP0_8
+   \   000042   78..         MOV       R0,#?V0
+   \   000044   12....       LCALL     ?L_MOV_TO_X
+   \   000047   8024         SJMP      ??_interval_1
+   \                     ??_interval_0:
+   \   000049   90....       MOV       DPTR,#??MAC_TIMER_MAX
+   \   00004C   78..         MOV       R0,#?V4
+   \   00004E   12....       LCALL     ?L_MOV_X
+   \   000051   85..82       MOV       DPL,?XSP + 0
+   \   000054   85..83       MOV       DPH,?XSP + 1
+   \   000057   78..         MOV       R0,#?V4
+   \   000059   12....       LCALL     ?L_SUB_X
+   \   00005C   78..         MOV       R0,#?V4
+   \   00005E   79..         MOV       R1,#?V0
+   \   000060   12....       LCALL     ?L_ADD
+   \   000063   7404         MOV       A,#0x4
+   \   000065   12....       LCALL     ?XSTACK_DISP0_8
+   \   000068   78..         MOV       R0,#?V4
+   \   00006A   12....       LCALL     ?L_MOV_TO_X
+   \                     ??_interval_1:
+   \   00006D   7404         MOV       A,#0x4
+   \   00006F   12....       LCALL     ?XSTACK_DISP0_8
+   \   000072   12....       LCALL     ?XLOAD_R2345
+   \   000075   7408         MOV       A,#0x8
+   \   000077   12....       LCALL     ?DEALLOC_XSTACK8
+   \   00007A   7F08         MOV       R7,#0x8
+   \   00007C   02....       LJMP      ?BANKED_LEAVE_XDATA
+     59          };
+     60          
+     61          /**
+     62          @brief Калибровка функции задержки TIM_delay
+     63          */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     64          static void DelayCalibrate(void){
+   \                     ??DelayCalibrate:
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
+   \   000000                REQUIRE ?V4
+   \   000000                REQUIRE ?V5
+   \   000000                REQUIRE ?V6
+   \   000000                REQUIRE ?V7
+   \   000000   74F0         MOV       A,#-0x10
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 16
+   \   000005                ; Auto size: 4
+   \   000005   74FC         MOV       A,#-0x4
+   \   000007   12....       LCALL     ?ALLOC_XSTACK8
+     65            DELAY_CALIBRATE_TICS = 0;  
+   \   00000A   90....       MOV       DPTR,#??DELAY_CALIBRATE_TICS
+   \   00000D   7400         MOV       A,#0x0
+   \   00000F   F0           MOVX      @DPTR,A
+   \   000010   A3           INC       DPTR
+   \   000011   7400         MOV       A,#0x0
+   \   000013   F0           MOVX      @DPTR,A
+   \   000014   A3           INC       DPTR
+   \   000015   7400         MOV       A,#0x0
+   \   000017   F0           MOVX      @DPTR,A
+   \   000018   A3           INC       DPTR
+   \   000019   7400         MOV       A,#0x0
+   \   00001B   F0           MOVX      @DPTR,A
+     66            stamp_t start = UST_now();
+   \   00001C                ; Setup parameters for call to function UST_now
+   \   00001C   12....       LCALL     `??UST_now::?relay`; Banked call to: UST_now
+   \   00001F   85..82       MOV       DPL,?XSP + 0
+   \   000022   85..83       MOV       DPH,?XSP + 1
+   \   000025   12....       LCALL     ?XSTORE_R2345
+     67            UST_delay(ACCURATE_VAL_US);
+   \   000028                ; Setup parameters for call to function UST_delay
+   \   000028   90....       MOV       DPTR,#__Constant_1f4
+   \   00002B   12....       LCALL     ?XLOAD_R2345
+   \   00002E   12....       LCALL     `??UST_delay::?relay`; Banked call to: UST_delay
+     68            stamp_t end = UST_now();
+   \   000031                ; Setup parameters for call to function UST_now
+   \   000031   12....       LCALL     `??UST_now::?relay`; Banked call to: UST_now
+   \   000034   8A..         MOV       ?V0,R2
+   \   000036   8B..         MOV       ?V1,R3
+   \   000038   8C..         MOV       ?V2,R4
+   \   00003A   8D..         MOV       ?V3,R5
+     69            DELAY_CALIBRATE_TICS = _interval(start, end) -
+     70                                    US_TO_TICKS(ACCURATE_VAL_US);
+   \   00003C                ; Setup parameters for call to function _interval
+   \   00003C   78..         MOV       R0,#?V0
+   \   00003E   12....       LCALL     ?PUSH_XSTACK_I_FOUR
+   \   000041   7404         MOV       A,#0x4
+   \   000043   12....       LCALL     ?XSTACK_DISP0_8
+   \   000046   12....       LCALL     ?XLOAD_R2345
+   \   000049   12....       LCALL     `??_interval::?relay`; Banked call to: _interval
+   \   00004C   7404         MOV       A,#0x4
+   \   00004E   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000051   8A..         MOV       ?V4,R2
+   \   000053   8B..         MOV       ?V5,R3
+   \   000055   8C..         MOV       ?V6,R4
+   \   000057   8D..         MOV       ?V7,R5
+   \   000059   90....       MOV       DPTR,#__Constant_ffffc180
+   \   00005C   78..         MOV       R0,#?V4
+   \   00005E   12....       LCALL     ?L_ADD_X
+   \   000061   90....       MOV       DPTR,#??DELAY_CALIBRATE_TICS
+   \   000064   78..         MOV       R0,#?V4
+   \   000066   12....       LCALL     ?L_MOV_TO_X
+     71          };
+   \   000069   7404         MOV       A,#0x4
+   \   00006B   12....       LCALL     ?DEALLOC_XSTACK8
+   \   00006E   7F08         MOV       R7,#0x8
+   \   000070   02....       LJMP      ?BANKED_LEAVE_XDATA
 E:\WMNU\IAR_new_arch\PRJ Test\utest.c
       1          #include "utest.h"
       2          #include "macros.h"
@@ -8685,14 +9460,14 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
    \   000000   ....         DW CPU_MODULE
    \   000002   ....         DW DBG_MODULE
    \   000004   ....         DW AT_MODULE
+   \   000006   ....         DW UST_MODULE
 
    \                                 In  segment XDATA_ID, align 1, keep-with-next
    \                     `?<Initializer for SW_MOD>`:
-   \   000000   ....         DW TM_MODULE
-   \   000002   ....         DW FR_MODULE
-   \   000004   ....         DW MD_MODULE
-   \   000006   ....         DW MS_MODULE
-   \   000008   ....         DW BF_MODULE
+   \   000000   ....         DW FR_MODULE
+   \   000002   ....         DW MD_MODULE
+   \   000004   ....         DW MS_MODULE
+   \   000006   ....         DW BF_MODULE
 
    \                                 In  segment XDATA_ID, align 1, keep-with-next
    \                     `?<Initializer for POW_MOD>`:
@@ -8763,13 +9538,6 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
    \                     `?<Initializer for RTC_MODULE>`:
    \   000000   0000         DW 0H
    \   000002   ....         DW `??SW_Init::?relay_4`
-   \   000004   00000000     DB 0, 0, 0, 0, 0, 0, 0, 0
-   \            00000000
-
-   \                                 In  segment XDATA_ID, align 1, keep-with-next
-   \                     `?<Initializer for TM_MODULE>`:
-   \   000000   0000         DW 0H
-   \   000002   ....         DW `??SW_Init::?relay_5`
    \   000004   00000000     DB 0, 0, 0, 0, 0, 0, 0, 0
    \            00000000
 
@@ -8929,6 +9697,13 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
    \   000020   ....         DW `??test3::?relay_2`
 
    \                                 In  segment XDATA_ID, align 1, keep-with-next
+   \                     `?<Initializer for UST_MODULE>`:
+   \   000000   ....         DW `??HW_Init::?relay_4`
+   \   000002   00000000     DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            00000000
+   \   00000A   0000         DB 0, 0
+
+   \                                 In  segment XDATA_ID, align 1, keep-with-next
    \                     `?<Initializer for TEST_FUN>`:
    \   000000   ....         DW UT_MS_1
    \   000002   ....         DW UT_MS_2
@@ -8973,9 +9748,19 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
    \   000003   ......       DC24    AM_Wakeup
 
    \                                 In  segment BANK_RELAYS, align 1
+   \                     `??__cli::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    ??__cli
+
+   \                                 In  segment BANK_RELAYS, align 1
    \                     `??HW_Init::?relay`:
    \   000000   12....       LCALL   ?BDISPATCH
    \   000003   ......       DC24    ??HW_Init
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??AT_enable::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    AT_enable
 
    \                                 In  segment BANK_RELAYS, align 1
    \                     `??AT_set_time::?relay`:
@@ -9023,9 +9808,9 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
    \   000003   ......       DC24    ??isIRQEnable
 
    \                                 In  segment BANK_RELAYS, align 1
-   \                     `??__cli::?relay`:
+   \                     `??__cli::?relay_1`:
    \   000000   12....       LCALL   ?BDISPATCH
-   \   000003   ......       DC24    ??__cli
+   \   000003   ......       DC24    ??__cli_1
 
    \                                 In  segment BANK_RELAYS, align 1
    \                     `??INIT_LIST_HEAD::?relay`:
@@ -9208,9 +9993,9 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
    \   000003   ......       DC24    ??array_index
 
    \                                 In  segment BANK_RELAYS, align 1
-   \                     `??__cli::?relay_1`:
+   \                     `??__cli::?relay_2`:
    \   000000   12....       LCALL   ?BDISPATCH
-   \   000003   ......       DC24    ??__cli_1
+   \   000003   ......       DC24    ??__cli_2
 
    \                                 In  segment BANK_RELAYS, align 1
    \                     `??SW_Init::?relay_2`:
@@ -9293,14 +10078,9 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
    \   000003   ......       DC24    ??SW_Init_4
 
    \                                 In  segment BANK_RELAYS, align 1
-   \                     `??__cli::?relay_2`:
+   \                     `??__cli::?relay_3`:
    \   000000   12....       LCALL   ?BDISPATCH
-   \   000003   ......       DC24    ??__cli_2
-
-   \                                 In  segment BANK_RELAYS, align 1
-   \                     `??SW_Init::?relay_5`:
-   \   000000   12....       LCALL   ?BDISPATCH
-   \   000003   ......       DC24    ??SW_Init_5
+   \   000003   ......       DC24    ??__cli_3
 
    \                                 In  segment BANK_RELAYS, align 1
    \                     `??TM_SetAlarm::?relay`:
@@ -9311,6 +10091,16 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
    \                     `??TM_ClrAlarm::?relay`:
    \   000000   12....       LCALL   ?BDISPATCH
    \   000003   ......       DC24    TM_ClrAlarm
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??_inc_timeslot::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    ??_inc_timeslot
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??_find_next_active::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    ??_find_next_active
 
    \                                 In  segment BANK_RELAYS, align 1
    \                     `??scheulder_next_alarm::?relay`:
@@ -9326,6 +10116,26 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
    \                     `??mcu_sleep::?relay`:
    \   000000   12....       LCALL   ?BDISPATCH
    \   000003   ......       DC24    ??mcu_sleep
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??_clr_all::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    ??_clr_all
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??init::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    ??init
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??start_mode_1::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    ??start_mode_1
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??start_mode_2::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    ??start_mode_2
 
    \                                 In  segment BANK_RELAYS, align 1
    \                     `??Neocore_start::?relay`:
@@ -9406,6 +10216,36 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
    \                     `??u_mem_utils::?relay`:
    \   000000   12....       LCALL   ?BDISPATCH
    \   000003   ......       DC24    u_mem_utils
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??HW_Init::?relay_4`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    ??HW_Init_4
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??UST_now::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    UST_now
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??UST_interval::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    UST_interval
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??UST_delay::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    UST_delay
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??_interval::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    _interval
+
+   \                                 In  segment BANK_RELAYS, align 1
+   \                     `??DelayCalibrate::?relay`:
+   \   000000   12....       LCALL   ?BDISPATCH
+   \   000003   ......       DC24    ??DelayCalibrate
 
    \                                 In  segment BANK_RELAYS, align 1
    \                     `??run_unit_fun::?relay`:
@@ -9648,6 +10488,15 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
    \            0A00    
 
    \                                 In  segment XDATA_ROM_C, align 1
+   \                     `?<Constant "Incorrect MODEL.TM.MODE">`:
+   \   000000   496E636F     DB "Incorrect MODEL.TM.MODE"
+   \            72726563
+   \            74204D4F
+   \            44454C2E
+   \            544D2E4D
+   \            4F444500
+
+   \                                 In  segment XDATA_ROM_C, align 1
    \                     `?<Constant {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}>`:
    \   000000   01           DB 1
    \   000001   02           DB 2
@@ -9819,22 +10668,22 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
    \   000000   FFFFFF00     DD 16777215
 
    \                                 In  segment XDATA_ROM_C, align 1
-   \                     __Constant_2710:
-   \   000000   10270000     DD 10000
+   \                     __Constant_20:
+   \   000000   20000000     DD 32
 
    \                                 In  segment XDATA_ROM_C, align 1
-   \                     __Constant_36a7c5ac:
-   \   000000   ACC5A736     DD 36A7C5ACH
+   \                     __Constant_1f4:
+   \   000000   F4010000     DD 500
 
    \                                 In  segment XDATA_ROM_C, align 1
-   \                     __Constant_1:
-   \   000000   01000000     DD 1
+   \                     __Constant_ffffc180:
+   \   000000   80C1FFFF     DD 4294951296
 
    Maximum stack usage in bytes:
 
    ISTACK XSTACK Function
    ------ ------ --------
-      0     25   AM_Cold_start
+      0     16   AM_Cold_start
         0     10   -> DBG_CORE_HALT
         0     10   -> printf
         0     16   -> printf
@@ -9850,14 +10699,17 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
         0     10   -> DBG_CORE_HALT
         0     10   -> printf
         0     16   -> printf
-      0     25   AM_Sleep
+      0     16   AM_Sleep
         0     10   -> DBG_CORE_HALT
         0     10   -> printf
         0     16   -> printf
-      0     25   AM_Wakeup
+      0     16   AM_Wakeup
         0     10   -> DBG_CORE_HALT
         0     10   -> printf
         0     16   -> printf
+      0     18   AT_enable
+        0      9   -> IRQEnable
+        0      9   -> __cli
       0     32   AT_set_alarm
         0     12   -> DBG_CORE_HALT
         0     12   -> IRQEnable
@@ -9905,6 +10757,10 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
       0      0   Cold_Start
       0      0   DBG_CORE_FAULT
       0     41   DBG_CORE_HALT
+      0     24   DelayCalibrate
+        0     20   -> UST_delay
+        0     20   -> UST_now
+        0     24   -> _interval
       1     45   FR_add_header
         0     23   -> MEM_memcpy
       2     52   FR_available
@@ -9919,7 +10775,10 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
       0     67   FR_delete
         0      9   -> SL_free
       2      0   HW_Init
+        2      0   -> IRQEnable
       0      0   HW_Init
+      2      0   HW_Init
+        2      0   -> DelayCalibrate
       0      0   HW_Init
       0      0   HW_Init
       0      0   Hot_Start
@@ -9927,13 +10786,12 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
       0     15   IRQEnable
       3     41   MEM_memcpy
       3     41   MEM_memset
-      2      0   Neocore_start
-        2      0   -> AM_Cold_start
-        2      0   -> AM_HW_Init
-        2      0   -> AM_SW_Init
-        2      0   -> AM_Sleep
-        2      0   -> AM_Wakeup
-        2      0   -> mcu_sleep
+      0     16   Neocore_start
+        0     10   -> DBG_CORE_HALT
+        0     10   -> printf
+        0     16   -> printf
+        0     10   -> start_mode_1
+        0     10   -> start_mode_2
       2     22   ReadTimer
       0     65   SL_alloc
         0     13   -> MEM_memset
@@ -9950,24 +10808,21 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
         0      9   -> __cli
         0      9   -> _free
       2     16   SL_zone_check
+      0      9   SW_Init
+        0      9   -> INIT_LIST_HEAD
+      0      0   SW_Init
+      0      0   SW_Init
       0      0   SW_Init
       0     13   SW_Init
         0     13   -> MEM_memset
-      0      0   SW_Init
-      0      0   SW_Init
-      0      0   SW_Init
-      0      9   SW_Init
-        0      9   -> INIT_LIST_HEAD
       0      0   Sleep
       0     16   TM_ClrAlarm
         0     10   -> DBG_CORE_HALT
         0     10   -> printf
         0     16   -> printf
       0     24   TM_IRQ
-        0      9   -> AM_Cold_start
         0      9   -> AM_Hot_start
-        0      9   -> AM_Sleep
-        0      9   -> AM_Wakeup
+        0      9   -> AT_enable
         0      9   -> __cli
         0      9   -> scheulder_next_alarm
       0     16   TM_SetAlarm
@@ -9978,9 +10833,14 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
         0     15   -> AT_time
         0     15   -> IRQEnable
         0     15   -> TM_IRQ
+      0     52   UST_delay
+        0     32   -> UST_now
+      0     28   UST_interval
+      3     36   UST_now
       0      0   Wakeup
-      0     11   __cli
+      0      9   __cli
       0     13   __cli
+      0     11   __cli
       0      9   __cli
       0     26   __list_add
         0     14   -> __list_add_valid
@@ -9990,9 +10850,14 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
         0      9   -> __list_del
         0      9   -> __list_del_entry_valid
       0      9   __list_del_entry_valid
+      2      0   _clr_all
+      0     18   _find_next_active
+        0      9   -> _inc_timeslot
       0     23   _free
         0     14   -> array_index
         0     14   -> is_array_ptr
+      0      9   _inc_timeslot
+      0     48   _interval
       0     29   _push
         0     14   -> DBG_CORE_HALT
         0     14   -> find_free_node
@@ -10006,6 +10871,10 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
       0     31   ch_cmp_val
       0     23   find_free_node
         0      9   -> INIT_LIST_HEAD
+      2      0   init
+        2      0   -> AT_enable
+        2      0   -> _clr_all
+        2      0   -> scheulder_next_alarm
       0     14   isIRQEnable
       0     26   is_array_ptr
       0     26   list_add
@@ -10014,10 +10883,10 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
         0      9   -> __list_del_entry
       2     10   list_empty
       0     28   loadTimerCompare
-      0      4   main
-        0      4   -> run_tests
+      0      0   main
+        0      0   -> run_tests
       0      0   mcu_sleep
-      0     14   run_tests
+      0     10   run_tests
         0     10   -> AM_SW_Init
         0     10   -> run_unit_fun
         0     10   -> show_grating
@@ -10025,18 +10894,24 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
       0     26   run_unit_fun
         0     14   -> printf
         0     16   -> printf
-      0      9   scheulder_next_alarm
+      0     18   scheulder_next_alarm
+        0      9   -> AT_set_alarm
+        0      9   -> _find_next_active
       2     10   show_grating
         2      0   -> printf
       2     12   show_statistic
         2      0   -> printf
         2      2   -> printf
-      0     10   test1
-        0     10   -> SL_alloc
-        0     10   -> SL_available
-        0     10   -> SL_busy
-        0     10   -> SL_free
-      0     59   test1
+      2     10   start_mode_1
+        2      0   -> AM_Cold_start
+        2      0   -> AM_SW_Init
+        2      0   -> AM_Sleep
+        2      0   -> AM_Wakeup
+        2      0   -> init
+        2      0   -> mcu_sleep
+      2     10   start_mode_2
+        2      0   -> AM_SW_Init
+        2      0   -> init
       0     18   test1
         0     18   -> BF_content
         0     18   -> BF_cursor_next
@@ -10050,11 +10925,23 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
         0     12   -> FR_busy
         0     12   -> FR_create
         0     12   -> FR_delete
+      0     59   test1
+      0     10   test1
+        0     10   -> SL_alloc
+        0     10   -> SL_available
+        0     10   -> SL_busy
+        0     10   -> SL_free
       0     52   test2
         0     52   -> FR_available
         0     52   -> FR_busy
         0     52   -> FR_create
         0     52   -> FR_delete
+      0     59   test2
+      0     52   test2
+        0     52   -> SL_alloc
+        0     52   -> SL_available
+        0     52   -> SL_busy
+        0     52   -> SL_free
       0     58   test2
         0     58   -> BF_content
         0     58   -> BF_cursor_next
@@ -10063,12 +10950,6 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
         0     58   -> BF_remove
         0     58   -> FR_create
         0     58   -> FR_delete
-      0     52   test2
-        0     52   -> SL_alloc
-        0     52   -> SL_available
-        0     52   -> SL_busy
-        0     52   -> SL_free
-      0     59   test2
       0     24   test3
         0     22   -> FR_add_header
         0     22   -> FR_create
@@ -10113,6 +10994,7 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
       13  ?<Constant "%s:%d:%s -> ">_5
       18  ?<Constant "Begin unit test\r\n">
       10  ?<Constant "Failed!\r\n">
+      24  ?<Constant "Incorrect MODEL.TM.MODE">
       15  ?<Constant "MEM_memcpy ok!">
       15  ?<Constant "MEM_memset ok!">
       10  ?<Constant "Succes!\r\n">
@@ -10155,16 +11037,16 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
       12  ?<Initializer for CPU_MODULE>
       12  ?<Initializer for DBG_MODULE>
       12  ?<Initializer for FR_MODULE>
-       6  ?<Initializer for HW_MOD>
+       8  ?<Initializer for HW_MOD>
       12  ?<Initializer for MD_MODULE>
       12  ?<Initializer for MS_MODULE>
        2  ?<Initializer for POW_MOD>
       12  ?<Initializer for RTC_MODULE>
        4  ?<Initializer for RX_LIST_HEAD>
-      10  ?<Initializer for SW_MOD>
+       8  ?<Initializer for SW_MOD>
       22  ?<Initializer for TEST_FUN>
-      12  ?<Initializer for TM_MODULE>
        4  ?<Initializer for TX_LIST_HEAD>
+      12  ?<Initializer for UST_MODULE>
       34  ?<Initializer for UTEST_DEBUG>
       34  ?<Initializer for UT_BF_1>
       34  ?<Initializer for UT_BF_2>
@@ -10191,6 +11073,8 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
      195  AM_Wakeup
        6  AM_Wakeup::?relay
       12  AT_MODULE
+      43  AT_enable
+       6  AT_enable::?relay
      130  AT_set_alarm
        6  AT_set_alarm::?relay
      144  AT_set_time
@@ -10232,6 +11116,9 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
        2  DBG_CORE_HALT
        6  DBG_CORE_HALT::?relay
       12  DBG_MODULE
+       4  DELAY_CALIBRATE_TICS
+     115  DelayCalibrate
+       6  DelayCalibrate::?relay
       12  FR_MODULE
      211  FR_add_header
        6  FR_add_header::?relay
@@ -10248,28 +11135,31 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
        2  HOT_MOD
        3  HW_Init
        3  HW_Init
+      17  HW_Init
       21  HW_Init
-      39  HW_Init
+      44  HW_Init
        6  HW_Init::?relay
        6  HW_Init::?relay
        6  HW_Init::?relay
        6  HW_Init::?relay
-       6  HW_MOD
+       6  HW_Init::?relay
+       8  HW_MOD
        3  Hot_Start
        6  Hot_Start::?relay
       31  INIT_LIST_HEAD
        6  INIT_LIST_HEAD::?relay
       17  IRQEnable
        6  IRQEnable::?relay
+       4  MAC_TIMER_MAX
       12  MD_MODULE
      116  MEM_memcpy
        6  MEM_memcpy::?relay
       79  MEM_memset
        6  MEM_memset::?relay
-      10  MODEL
+      12  MODEL
       12  MS_MODULE
      120  NODE_LIST
-      27  Neocore_start
+      85  Neocore_start
        6  Neocore_start::?relay
        2  POW_MOD
       12  RTC_MODULE
@@ -10296,7 +11186,6 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
        3  SW_Init
        3  SW_Init
        3  SW_Init
-       3  SW_Init
       87  SW_Init
      117  SW_Init
        6  SW_Init::?relay
@@ -10304,16 +11193,19 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
        6  SW_Init::?relay
        6  SW_Init::?relay
        6  SW_Init::?relay
-       6  SW_Init::?relay
-      10  SW_MOD
+       8  SW_MOD
        3  Sleep
        6  Sleep::?relay
+       1  T2CTRL
+       1  T2M0
+       1  T2M1
+       1  T2MOVF0
+       1  T2MOVF1
       22  TEST_FUN
       95  TM_ClrAlarm
        6  TM_ClrAlarm::?relay
-      41  TM_IRQ
+      73  TM_IRQ
        6  TM_IRQ::?relay
-      12  TM_MODULE
       92  TM_SetAlarm
        6  TM_SetAlarm::?relay
        2  TOFFSET
@@ -10321,6 +11213,13 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
        4  TX_LIST_HEAD
       37  TimerCompareInterrupt
        3  TimerCompareInterrupt::??INTVEC 43
+      12  UST_MODULE
+     191  UST_delay
+       6  UST_delay::?relay
+     141  UST_interval
+       6  UST_interval::?relay
+      79  UST_now
+       6  UST_now::?relay
       34  UTEST_DEBUG
       34  UT_BF_1
       34  UT_BF_2
@@ -10337,16 +11236,18 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
        6  Wakeup::?relay
        1  _A_IEN0
        1  _A_IRCON
-       4  __Constant_1
-       4  __Constant_2710
-       4  __Constant_36a7c5ac
+       4  __Constant_1f4
+       4  __Constant_20
        4  __Constant_7fff
        4  __Constant_8000
        4  __Constant_ffff8000
+       4  __Constant_ffffc180
        4  __Constant_ffffff
        7  __cli
        7  __cli
        7  __cli
+       7  __cli
+       6  __cli::?relay
        6  __cli::?relay
        6  __cli::?relay
        6  __cli::?relay
@@ -10360,8 +11261,16 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
        6  __list_del_entry::?relay
        4  __list_del_entry_valid
        6  __list_del_entry_valid::?relay
+      37  _clr_all
+       6  _clr_all::?relay
+      50  _find_next_active
+       6  _find_next_active::?relay
      136  _free
        6  _free::?relay
+      18  _inc_timeslot
+       6  _inc_timeslot::?relay
+     127  _interval
+       6  _interval::?relay
      123  _push
        6  _push::?relay
       48  array_index
@@ -10375,6 +11284,8 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
        2  common_count
       65  find_free_node
        6  find_free_node::?relay
+      26  init
+       6  init::?relay
        5  isIRQEnable
        6  isIRQEnable::?relay
       60  is_array_ptr
@@ -10387,7 +11298,7 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
        6  list_empty::?relay
       70  loadTimerCompare
        6  loadTimerCompare::?relay
-     100  main
+       5  main
        6  main::?relay
        3  mcu_sleep
        6  mcu_sleep::?relay
@@ -10397,13 +11308,17 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
        6  run_tests::?relay
      148  run_unit_fun
        6  run_unit_fun::?relay
-       3  scheulder_next_alarm
+      65  scheulder_next_alarm
        6  scheulder_next_alarm::?relay
       18  show_grating
        6  show_grating::?relay
       90  show_statistic
        6  show_statistic::?relay
        2  slot_busy
+      37  start_mode_1
+       6  start_mode_1::?relay
+      17  start_mode_2
+       6  start_mode_2::?relay
      108  test1
      151  test1
      180  test1
@@ -10431,24 +11346,24 @@ E:\WMNU\IAR_new_arch\PRJ Test\utest.c
      492  u_mem_utils
        6  u_mem_utils::?relay
        4  val
-     177  -- Other
+     191  -- Other
 
  
- 10 308 bytes in segment BANKED_CODE
-    582 bytes in segment BANK_RELAYS
+ 11 272 bytes in segment BANKED_CODE
+    660 bytes in segment BANK_RELAYS
       3 bytes in segment INTVEC
      37 bytes in segment NEAR_CODE
-      9 bytes in segment SFR_AN
+     14 bytes in segment SFR_AN
     564 bytes in segment XDATA_I
     564 bytes in segment XDATA_ID
-  1 121 bytes in segment XDATA_ROM_C
-  3 268 bytes in segment XDATA_Z
+  1 163 bytes in segment XDATA_ROM_C
+  3 274 bytes in segment XDATA_Z
  
-  1 183 bytes of CODE     memory (+  3 bytes shared)
-  1 093 bytes of CONST    memory (+ 28 bytes shared)
-      0 bytes of DATA     memory (+  9 bytes shared)
- 10 308 bytes of HUGECODE memory
-  3 832 bytes of XDATA    memory
+  1 261 bytes of CODE     memory (+  3 bytes shared)
+  1 135 bytes of CONST    memory (+ 28 bytes shared)
+      0 bytes of DATA     memory (+ 14 bytes shared)
+ 11 272 bytes of HUGECODE memory
+  3 838 bytes of XDATA    memory
 
 Errors: none
-Warnings: 4
+Warnings: 5

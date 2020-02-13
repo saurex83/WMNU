@@ -16,6 +16,7 @@ struct TM{
 };
 
 
+void Neocore_start(void);
 void TM_SetAlarm(timeslot_t slot, alarm_t alarm);
 void TM_ClrAlarm(timeslot_t slot, alarm_t alarm);
 void TM_IRQ(nwtime_t time);

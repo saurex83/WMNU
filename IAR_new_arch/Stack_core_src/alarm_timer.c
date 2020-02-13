@@ -34,7 +34,6 @@ static void HW_Init(void){
 static void SW_Init(void){
   TOFFSET = 0;
   COMPARE_TIME = 0;
-  ALARM_ENABLE = false;
   IRQEnable(false);
 }; 
 void AT_enable(bool state){

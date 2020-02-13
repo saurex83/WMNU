@@ -17,15 +17,10 @@
 #define FULL_INTERVAL (ACTIVE_INTERVAL + SLEEP_INTERVAL)
 #define SLOT_TO_NWTIME(slot) ((nwtime_t)((slot) * FULL_INTERVAL)) 
 #define NWTIME_TO_SLOT(nwtime) ((timeslot_t)((time)/FULL_INTERVAL))
-
-static void SW_Init(void); 
-
-module_s TM_MODULE = {ALIAS(SW_Init)};
  
 //!< Список задач менеджера. Индекс - номер слота, значение-действие
 static alarm_t ALARMS[MAX_TIME_SLOTS];
 
-static void SW_Init(void){}; 
 
 void TM_SetAlarm(timeslot_t slot, alarm_t alarm){
   ASSERT(slot < MAX_TIME_SLOTS);
