@@ -1,4 +1,5 @@
 #pragma once
+#include "stdbool.h"
 
 /**
 @brief Представление модели модуля
@@ -15,3 +16,4 @@ void AT_set_time(nwtime_t time);
 void AT_set_alarm(nwtime_t time);
 nwtime_t AT_time(void);
 void AT_wait(nwtime_t time);
+void AT_enable(bool state);

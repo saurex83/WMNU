@@ -24,10 +24,24 @@ module_s AT_MODULE = {ALIAS(HW_Init)};
 static nwtime_t TOFFSET; 
 static uint32_t COMPARE_TIME; //!< Значение в регистре compare
 
+
 static void HW_Init(void){
   TOFFSET = 0;
   COMPARE_TIME = 0;
+  IRQEnable(false);
+};
+
+static void SW_Init(void){
+  TOFFSET = 0;
+  COMPARE_TIME = 0;
+  ALARM_ENABLE = false;
+  IRQEnable(false);
 }; 
+void AT_enable(bool state){
+  ATOMIC_BLOCK_RESTORE{
+    IRQEnable(state);
+  }
+};
 
 void AT_set_time(nwtime_t time){
   ASSERT(time <= MAX_NWTIME);
@@ -172,11 +186,9 @@ static inline bool isIRQEnable(void){
 */
 #pragma vector=ST_VECTOR
 __interrupt void TimerCompareInterrupt(void){ 
-  ATOMIC_BLOCK_FORCEON{  
-    nwtime_t time = AT_time();
-    // Отключаем прерывание таймера. Забота пользователя его включить
-    IRQEnable(false); 
-    TM_IRQ(time); // Передаем управление менеджеру времени
-    STIF = 0; // Очищаем флаг прерывания
-  }
+  nwtime_t time = AT_time();
+  // Отключаем прерывание таймера. Забота пользователя его включить
+  IRQEnable(false); 
+  TM_IRQ(time); // Передаем управление менеджеру времени
+  STIF = 0; // Очищаем флаг прерывания
 }

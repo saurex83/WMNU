@@ -137,7 +137,7 @@
                 </option>
                 <option>
                     <name>RTLibraryPath</name>
-                    <state>$TOOLKIT_DIR$\LIB\DLIB\dl-pli-blxc-1e16x01n.r51</state>
+                    <state>$TOOLKIT_DIR$\LIB\DLIB\dl-pli-blxd-1e16x01n.r51</state>
                 </option>
                 <option>
                     <name>Input variant</name>
@@ -516,7 +516,7 @@
                 </option>
                 <option>
                     <name>IccAllowVLA</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IccCppDialect</name>
@@ -524,7 +524,7 @@
                 </option>
                 <option>
                     <name>IccCppInlineSemantics</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IccStaticDestr</name>
@@ -2289,10 +2289,10 @@
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\model.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\Stack_core_src\model.h</name>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\model.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\Stack_core_src\model_import_struct.h</name>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\model_import_struct.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\modules_list.h</name>
@@ -2301,7 +2301,7 @@
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\rtc.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\Stack_core_src\rtc.h</name>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\rtc.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\time_manager.c</name>
