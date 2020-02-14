@@ -13,6 +13,7 @@ struct FR{
 #define MAX_PAYLOAD_SIZE 127
 
 struct frame{
+  char tx_attempts;
   char len;
   struct meta meta;
   char payload[MAX_PAYLOAD_SIZE];
