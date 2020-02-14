@@ -5,5 +5,6 @@
 */
 #define RTC_MODEL RTC
 struct RTC{
-  int uptime;
+  unsigned long uptime;
+  unsigned long rtc;
 };

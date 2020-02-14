@@ -17,3 +17,4 @@ void AT_set_alarm(nwtime_t time);
 nwtime_t AT_time(void);
 void AT_wait(nwtime_t time);
 void AT_enable(bool state);
+nwtime_t AT_interval(nwtime_t beg, nwtime_t end);

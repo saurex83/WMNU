@@ -4,11 +4,7 @@
 #include "action_manager.h"
 #include "stdbool.h"
 
-#define TICK_NS  31.25 // Количество нс в одном такте TIM2
-#define TICK_US  0.03125 // Количество мкс в одном такте TIM2
-#define TICK_PER_US 32 // Количество тактов в одной микросекунде
-#define TICKS_TO_US(tick) ((tick)/TICK_PER_US)
-#define US_TO_TICKS(us)   ((us)*TICK_PER_US)
+
 #define ACCURATE_VAL_US 500 
 
 // Максимальное кол-во тактов таймера. Константа 40 бит, 5 байт

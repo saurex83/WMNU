@@ -119,7 +119,7 @@ void HW_Init(void)
 @param[in] iv  Указатель на вектор иницилизации. 16 байт 
 @param[in] len Длинна данных
 */
-void AES_StreamCoder(bool enc_mode, uint8_t *src, uint8_t *dst, uint8_t len)
+void AES_StreamCoder(bool enc_mode, char *src, char *dst, uint8_t len)
 {
   // Установим метод кодироваения
   AES_SET_MODE(STREAM_ENC_MODE);
@@ -163,7 +163,7 @@ void AES_StreamCoder(bool enc_mode, uint8_t *src, uint8_t *dst, uint8_t len)
       // Загрузка блоками по 128 бит с разделением на под-блоки по 32 бита
       uint8_t nbrBlocks = len / 16; // Количество целых блоков по 128 бит
       uint8_t ptr, sub_ptr; // Смещение
-      uint8_t *download, *upload;
+      char *download, *upload;
       
       // Для этих типов шифрования длина блоков по 4 байта
       ST_DEF(DMA_CH[0], LENL, 4);
@@ -199,7 +199,7 @@ void AES_StreamCoder(bool enc_mode, uint8_t *src, uint8_t *dst, uint8_t len)
       if (!block_len)
         return;
       
-      uint8_t padding_block[16]; // Блок заполненый нулями
+      char padding_block[16]; // Блок заполненый нулями
       ptr = 16*nbrBlocks; // Смещение на первый байт последнего блока в src
       memset(padding_block, 0x00, sizeof(padding_block)); // Заполняем нулями
       memcpy(padding_block, &src[ptr], block_len); // Копируем данные

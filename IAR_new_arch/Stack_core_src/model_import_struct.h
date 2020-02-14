@@ -6,6 +6,7 @@
 #include "time_manager.h"
 #include "coder.h"
 #include "radio.h"
+#include "sync.h"
 
 
 

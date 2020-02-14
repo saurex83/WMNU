@@ -2121,7 +2121,7 @@
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\coder.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\coder.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\coder.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\cpu.c</name>
@@ -2139,19 +2139,37 @@
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\dma.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\Stack_core_src\dma.h</name>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\dma.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\frame.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\Stack_core_src\frame.h</name>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\frame.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\Stack_core_src\global.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\led.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\led.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\list.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\llc.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\llc.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\mac.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\mac.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\Stack_core_src\macros.h</name>
@@ -2169,6 +2187,9 @@
             <name>$PROJ_DIR$\..\Stack_core_src\mem_utils.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\meta.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\model.c</name>
         </file>
         <file>
@@ -2178,22 +2199,28 @@
             <name>$PROJ_DIR$\..\Stack_core_src\model_import_struct.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\Stack_core_src\modules_list.h</name>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\modules_list.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\radio.c</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\radio.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\Stack_core_src\radio.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\Stack_core_src\Radio_defs.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\radio_defs.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\rtc.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\Stack_core_src\rtc.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\sync.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Stack_core_src\sync.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\time_manager.c</name>

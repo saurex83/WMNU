@@ -11,6 +11,7 @@ typedef struct {
     struct FR_MODEL FR;
     struct AES_MODEL AES;
     struct RADIO_MODEL RADIO;
+    struct SYNC_MODEL SYNC;
 } MODEL_s;
 
 

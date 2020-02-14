@@ -59,7 +59,6 @@ enum TX_POWER_e
   m14x0 = 0x45, m16x0 = 0x35, m20x0 = 0x15, m22x0 = 0x05
 };
 
-void RI_init(void);
 bool RI_SetChannel(channel_t CH);
 bool RI_Send(struct frame *fr);
 struct frame* RI_Receive(ustime_t timeout);

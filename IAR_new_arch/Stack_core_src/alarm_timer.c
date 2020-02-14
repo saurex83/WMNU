@@ -42,6 +42,10 @@ void AT_enable(bool state){
   }
 };
 
+nwtime_t AT_interval(nwtime_t beg, nwtime_t end){
+  return (beg > end) ? (beg - end) : (MAX_NWTIME - beg + end);
+}
+
 void AT_set_time(nwtime_t time){
   ASSERT(time <= MAX_NWTIME);
   nwtime_t timer = ReadTimer();
