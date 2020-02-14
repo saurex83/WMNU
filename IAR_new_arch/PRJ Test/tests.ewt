@@ -2118,6 +2118,12 @@
             <name>$PROJ_DIR$\..\Stack_core_src\buffer.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\coder.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\coder.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\cpu.c</name>
         </file>
         <file>
@@ -2128,6 +2134,12 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\Stack_core_src\debug.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\dma.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Stack_core_src\dma.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\frame.c</name>
@@ -2160,19 +2172,28 @@
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\model.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\model.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\model.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\model_import_struct.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\model_import_struct.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\modules_list.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\modules_list.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\STACK_CORE_SRC\radio.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Stack_core_src\radio.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Stack_core_src\Radio_defs.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\rtc.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\rtc.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\rtc.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\time_manager.c</name>
@@ -2184,7 +2205,7 @@
             <name>$PROJ_DIR$\..\STACK_CORE_SRC\ustimer.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\STACK_CORE_SRC\ustimer.h</name>
+            <name>$PROJ_DIR$\..\Stack_core_src\ustimer.h</name>
         </file>
     </group>
     <group>

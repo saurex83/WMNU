@@ -9,6 +9,8 @@ typedef struct {
     struct RTC_MODEL RTC;
     struct TM_MODEL TM;
     struct FR_MODEL FR;
+    struct AES_MODEL AES;
+    struct RADIO_MODEL RADIO;
 } MODEL_s;
 
 
