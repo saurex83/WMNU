@@ -4,6 +4,7 @@
 #include "macros.h"
 #include "model.h"
 #include "debug.h"
+#include "radio.h"
 
 #define MAX_SLOTS 50
 
@@ -14,21 +15,22 @@ static void Hot_Start(void);
 module_s LLC_MODULE = {ALIAS(SW_Init), ALIAS(Cold_Start), 
   ALIAS(Hot_Start)};
 
-static char OPENSLOTS[MAX_SLOTS];
+static channel_t OPENSLOTS[MAX_SLOTS];
 
 static void SW_Init(void){
-  for_each_type(char, OPENSLOTS, slot)
-    slot = false;
+  for_each_type(channel_t, OPENSLOTS, slot)
+    *slot = 0;
 };
 
-void LLC_open_slot(timeslot_t ts){
+void LLC_open_slot(timeslot_t ts, channel_t ch){
   ASSERT(ts > 1 && ts < MAX_SLOTS);
-  OPENSLOTS[ts] = true;
+  ASSERT(ch >= MIN_CH && ch <= MAX_CH);
+  OPENSLOTS[ts] = ch;
 }
 
 void LLC_close_slot(timeslot_t ts){
   ASSERT(ts > 1 && ts < MAX_SLOTS);
-  OPENSLOTS[ts] = false;
+  OPENSLOTS[ts] = 0;
 }
 
 static void scheduler_tx(void){
@@ -81,6 +83,7 @@ static inline bool scan_tx_buffer_by_ts(struct frame *frame, timeslot_t ts){
 
 static void receive(void){
   // MAC получить
+  // OPENSLOTS содержит номер канала.0 - слот закрыт
   struct frame *frame = NULL;
   if (!BF_push_rx(frame))
       HALT("BF_push_rx");

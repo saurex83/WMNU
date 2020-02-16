@@ -14,7 +14,6 @@
   &BF_MODULE, &RADIO_MODULE, &SYNC_MODULE, &LLC_MODULE, \
   &MAC_MODULE}
 
-#define POW_MOD_DEF {&RTC_MODULE}
 
 /* Обьявления всех модулей */
 extern module_s  AT_MODULE, FR_MODULE, RTC_MODULE, UST_MODULE,

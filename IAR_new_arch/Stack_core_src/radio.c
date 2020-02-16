@@ -22,8 +22,6 @@ static char RXBUFF[128];
 #define IEEE_MODE 0     //!< Режимы фазы сигнала
 #define NOT_IEEE_MODE 1 //!< Режимы фазы сигнала
 #define RSSI_OFFSET -76 //!< Константа для вычисления реальной мощности
-#define MAX_CH  CH28
-#define MIN_CH  CH11
 /*!
 \details 
  Расчет качества связи. Коэффициенты получаются эксперементально.

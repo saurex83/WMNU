@@ -8,6 +8,9 @@ typedef char channel_t;
 typedef char power_t;
 
 #define RADIO_DEBUG
+#define MAX_CH  CH28
+#define MIN_CH  CH11
+
 
 #define RADIO_MODEL RADIO
 struct RADIO{

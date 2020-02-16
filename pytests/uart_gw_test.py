@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import transiver_control
 import neigh_test
+import cmd_check
 
 DEFAULT_KEY = b'\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F\x10'
 DEFAULT_IV =  b'\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F\x10'
@@ -137,6 +138,11 @@ def energy__scan(UART_CONN):
 
 def main():
     UART_CONN = connector.Connector()
+
+    cmd_check.CmdChecker(UART_CONN)
+    exit (0)
+    energy__scan(UART_CONN)
+    exit(0)
 
     transiver_control.TransiverStart(UART_CONN)
     while(True):

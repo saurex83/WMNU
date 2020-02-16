@@ -36,6 +36,7 @@ static void SW_Init(void){
   COMPARE_TIME = 0;
   IRQEnable(false);
 }; 
+
 void AT_enable(bool state){
   ATOMIC_BLOCK_RESTORE{
     IRQEnable(state);

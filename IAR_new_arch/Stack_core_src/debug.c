@@ -14,7 +14,7 @@ static void HW_Init(void){
 #ifndef DEBUG
   return;
 #endif
-#ifndef PRINT_TO_TERMINAL  
+#ifdef PRINT_TO_TERMINAL  
   uart_init();
 #endif
 };  
@@ -43,7 +43,7 @@ static void uart_init(void){
   U0CSR |= (1<<6);
 }
 
-#ifndef PRINT_TO_TERMINAL 
+#ifdef PRINT_TO_TERMINAL 
 #include <yfuns.h>
 _STD_BEGIN
 #pragma module_name = "?__write"

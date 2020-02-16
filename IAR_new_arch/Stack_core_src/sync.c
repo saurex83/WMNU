@@ -9,13 +9,14 @@
 #include "stdlib.h"
 #include "macros.h"
 
-#define MODE_0 0 // Прием, ретрансляция, синхронизация
-#define MODE_1 1 // Периодическое вещание
+#define MODE_0 0 // Отклчена модуль синхронизации 
+#define MODE_1 1 // Прием, ретрансляция, синхронизация
+#define MODE_2 2 // Периодическое вещание
 #define SYNC_TS 0 // Слот для синхронизации
 #define MAGIC 0x19833891 // Проверка что пакет действительно sync
-#define SYNC_TIME 3 // Точное время отправки пакета.nwtime
-#define NEG_RECV_OFFSET 1 // nwtime
-#define POS_RECV_OFFSET 1 // nwtime
+#define SYNC_TIME 163 // Точное время отправки пакета.nwtime
+#define NEG_RECV_OFFSET 33 // nwtime
+#define POS_RECV_OFFSET 33 // nwtime
 #define SEND_PERIOD 10 // Периодичность отправки пакетов
 #define RETRANSMITE_TRY 3 // Кол-во попыток отправки sync
 #define PROBABILIT 40 // % вероятность одной попытки отправки 
@@ -40,7 +41,7 @@ struct sync{
 
 static void SW_Init(void){ 
   MODEL.SYNC.next_sync_send = 0;
-   MODEL.SYNC.next_time_recv = 0;
+  MODEL.SYNC.next_time_recv = 0;
   retransmite = 0;
 };
 
@@ -65,7 +66,7 @@ static inline void syncronize_timer(struct frame *frame){
   AT_set_time(SYNC_TIME + passed);
 };
 
-static inline void mode_0_receive_process(void){
+static inline void mode_1_receive_process(void){
   struct frame *fr = NULL;
   if (!recv_sync(fr))
     return;
@@ -87,7 +88,7 @@ static inline bool _throw_dice(void){
   return  ((rand() % 100) <= PROBABILIT) ? true : false;
 };
 
-static inline void mode_0_retransmition_process(void){
+static inline void mode_1_retransmition_process(void){
   retransmite--;
   if (!_throw_dice())
     return;
@@ -95,15 +96,15 @@ static inline void mode_0_retransmition_process(void){
   retransmite = 0;
 }
 
-static void mode_0_process(){
+static void mode_1_process(){
  // Прием, ретрансляция, синхронизация    
   if ( MODEL.RTC.uptime >= MODEL.SYNC.next_time_recv)
-    mode_0_receive_process();
+    mode_1_receive_process();
   else if(retransmite)
-    mode_0_retransmition_process();  
+    mode_1_retransmition_process();  
 }
 
-static void mode_1_process(){
+static void mode_2_process(){
   // Периодическое вещание
   if ( MODEL.RTC.uptime < MODEL.SYNC.next_sync_send)
     return;
@@ -116,8 +117,9 @@ static void Hot_Start(void){
     return;
   
   switch(MODEL.SYNC.mode){
-    case MODE_0: mode_0_process();
-    case MODE_1: mode_1_process();
+    case MODE_0: break;
+    case MODE_1: mode_1_process(); break;
+    case MODE_2: mode_2_process(); break;
     default:
     HALT("Wrong mode");
   }
@@ -158,7 +160,7 @@ static bool send_sync(void){
   sync.magic = MAGIC;
   
   struct frame *fr = FR_create();
-  ASSERT(!fr);
+  ASSERT(fr);
   FR_add_header(fr, &sync, sizeof(struct sync));
   
   fr->meta.SEND_TIME = (nwtime_t)SYNC_TIME;
@@ -167,6 +169,7 @@ static bool send_sync(void){
   RI_SetChannel(MODEL.SYNC.sync_channel);
   bool res = RI_Send(fr);
   FR_delete(fr);
+  LOG_ON("SYNC sended, res = %d", res);
   return res;
 }
 

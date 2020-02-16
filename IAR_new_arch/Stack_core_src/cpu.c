@@ -17,4 +17,5 @@ static void HW_Init(void){
   /* Переходим на 32 Мгц */
   CLKCONCMD = 0;// (1<<3);
   while (CLKCONSTA&(1<<6));
+  EA = 1;
 };  

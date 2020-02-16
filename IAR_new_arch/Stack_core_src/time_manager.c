@@ -39,7 +39,7 @@ static inline timeslot_t _inc_timeslot(timeslot_t slot){
 
 static inline timeslot_t _find_next_active(timeslot_t slot){
   slot = _inc_timeslot(slot);
-  while (!slot && !ALARMS[slot])
+  while (slot && !ALARMS[slot])
     slot = _inc_timeslot(slot);
   return slot;
 }
@@ -62,6 +62,7 @@ void TM_IRQ(nwtime_t time){
     MODEL.TM.time = time;
     scheulder_next_alarm(time);
     AM_Hot_start();
+    AM_Cold_start();
   };
 }
 
@@ -70,7 +71,7 @@ static inline void mcu_sleep(void){
 
 static inline void _clr_all(void){
   for_each_type(alarm_t, ALARMS, i)
-    i = 0;
+    *i = 0;
 }
 
 static void init(void){
@@ -84,14 +85,12 @@ static void start_mode_1(void){
   init();
   
   while (true){
-    AM_Sleep();
     mcu_sleep();
     
     if (MODEL.TM.MODE == 0)
       return;
     
-    AM_Wakeup();
-    AM_Cold_start();    
+    AM_Callback();    
   }  
 }
 
@@ -106,8 +105,10 @@ void Neocore_start(void){
     return;
   case 1:
     start_mode_1();
+    break;
   case 2:
     start_mode_2();
+    break;
   default: 
     HALT("Incorrect MODEL.TM.MODE");
   }
