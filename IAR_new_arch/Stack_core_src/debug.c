@@ -17,6 +17,10 @@ static void HW_Init(void){
 #ifdef PRINT_TO_TERMINAL  
   uart_init();
 #endif
+#ifdef SIG_DEBUG
+  P1DIR |=0x01;
+  P1_0 |= 0x01;  
+#endif
 };  
 
 

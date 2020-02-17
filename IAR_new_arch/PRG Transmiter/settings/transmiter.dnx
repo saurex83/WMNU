@@ -12,7 +12,7 @@
         <ByteLimit>50</ByteLimit>
     </Stack>
     <DebugChecksum>
-        <Checksum>4230485692</Checksum>
+        <Checksum>4022438314</Checksum>
     </DebugChecksum>
     <CodeCoverage>
         <Enabled>_ 0</Enabled>
@@ -74,6 +74,9 @@
         <Freq>50000000</Freq>
         <FreqHi>0</FreqHi>
     </Simulator>
+    <struct_types>
+        <Fmt0>struct SYNC-sync_channel	3	0</Fmt0>
+    </struct_types>
     <LogFile>
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>
@@ -84,10 +87,11 @@
         <LogFile>_ ""</LogFile>
     </TermIOLog>
     <Breakpoints>
-        <Count>0</Count>
+        <Bp0>_ "STD_CODE" "{$PROJ_DIR$\..\..\IAR_NEW_ARCH\STACK_CORE_SRC\radio.c}.158.1" 1 0 0 0 "" 0 ""</Bp0>
+        <Count>1</Count>
     </Breakpoints>
     <ChipconEmu>
-        <StopTimersOnHalt>0</StopTimersOnHalt>
+        <StopTimersOnHalt>1</StopTimersOnHalt>
         <LeaveTargetRunning>1</LeaveTargetRunning>
     </ChipconEmu>
     <Aliases>

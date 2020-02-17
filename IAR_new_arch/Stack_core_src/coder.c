@@ -5,6 +5,7 @@
 #include "dma.h"
 #include "action_manager.h"
 #include "model.h"
+#include "mem_utils.h"
 
 static void HW_Init(void);
 module_s CODER_MODULE = {ALIAS(HW_Init)};
@@ -80,6 +81,15 @@ typedef struct //!< Структура блока A0 для режима CCM
 */
 void HW_Init(void)
 {
+  char STREAM_KEY[16] = DEFAULT_STREAM_KEY;
+  char STREAM_IV[16] = DEFAULT_STREAM_IV;
+  char CCM_KEY[16] = DEFAULT_CCM_KEY;
+  char CCM_IV[16] = DEFAULT_CCM_IV;
+  MEMCPY(MODEL.AES.STREAM_KEY, STREAM_KEY, 16);
+  MEMCPY(MODEL.AES.STREAM_IV, STREAM_IV, 16);
+  MEMCPY(MODEL.AES.CCM_KEY, CCM_KEY, 16);
+  MEMCPY(MODEL.AES.CCM_IV, CCM_IV, 16);
+  
   //DMA_AES_s DMA_CH[0]; //!< DMA на запись будет DMA[0]
   //DMA_AES_s DMA_CH[1]; //!< DMA на чтение DMA_CH[1]
   

@@ -81,8 +81,7 @@ bool RI_SetChannel(channel_t channel){
   if (!(channel >= MIN_CH) && (channel <= MAX_CH))
     return false;
   MODEL.RADIO.channel = channel;
-  return false;
-  
+  return true;
 }
 
 static void LoadTXData(char *src, size_t len){
@@ -96,6 +95,11 @@ static void LoadTXData(char *src, size_t len){
 
 static bool SendData(struct frame *fr){
   LoadTXData(fr->payload, fr->len);
+  
+  // Прежде чем включать радио нужно подождать
+  if (fr->meta.SEND_TIME != 0) 
+      AT_wait(fr->meta.SEND_TIME - 29);
+  
   ISRXON();
   WRITE_TIME_DBG(MODEL.RADIO.DEBUG_TX.isrxon);
   RFIRQF1 &= ~RFIRQF1_TXDONE;
@@ -117,6 +121,7 @@ static bool SendData(struct frame *fr){
     // Ждем завершения отправки сообщения
     while (!(RFIRQF1 & RFIRQF1_TXDONE));
     WRITE_TIME_DBG(MODEL.RADIO.DEBUG_TX.txdone);
+    
   }
   CATCH(1){ //SAMPLED_CCA == 0
     result = false;
@@ -137,6 +142,8 @@ bool RI_Send(struct frame *fr){
   stamp_t start = UST_now();
   bool send_res = SendData(fr);
   stamp_t stop = UST_now();
+  //TODO Неверно считает интервал так как при отправке
+  // sync пакета мы ждем
   ustime_t tx_time = UST_interval(start, stop); 
   WRITE_PARA_DBG(MODEL.RADIO.DEBUG_TX.fulltime, tx_time);
   MODEL.RADIO.UptimeTX += tx_time;
@@ -237,7 +244,7 @@ struct frame* RI_Receive(ustime_t timeout){
   
   // Создаем буфер, последнии два байта FCS1,2 и поле LEN не копируем
   struct frame *frame = FR_create();
-  ASSERT(!frame);
+  ASSERT(frame);
   bool add_h = FR_add_header(frame, &RXBUFF[1], frame_size - 3);
   ASSERT(add_h);
   

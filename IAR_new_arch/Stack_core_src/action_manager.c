@@ -22,15 +22,17 @@ static module_s* COLD_MOD[] = COLD_MOD_DEF;
 static module_s* HOT_MOD[] = HOT_MOD_DEF;
 static module_s* HW_MOD[] = HW_MOD_DEF;
 static module_s* SW_MOD[] = SW_MOD_DEF;
+static module_s* IRQ_MOD[] = IRQ_MOD_DEF;
+
 static void (*CALLBACK)(void);
 
 void AM_set_callback(void (*fn)(void)){
-  ASSERT(!CALLBACK);
+  ASSERT(fn);
   CALLBACK = fn;
 }
 
 void AM_Callback(void){
-  ASSERT(!CALLBACK);
+  ASSERT(CALLBACK);
   CALLBACK();
 }
 
@@ -48,6 +50,10 @@ void AM_HW_Init(void){
 
 void AM_SW_Init(void){
   RUNNER(SW_MOD, SW_Init);
+}
+
+void AM_IRQ_Init(void){
+  RUNNER(IRQ_MOD, IRQ_Init);
 }
 
 

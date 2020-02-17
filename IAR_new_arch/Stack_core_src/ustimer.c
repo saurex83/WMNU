@@ -35,7 +35,9 @@ ustime_t UST_now(void){
 }
 
 bool UST_time_over(stamp_t beg, ustime_t wait){
-  return (UST_now() >= (beg + US_TO_TICKS(wait))) ?  true:false;
+  stamp_t now = UST_now(); 
+  ustime_t delta = UST_interval(beg, now);
+  return (delta > wait) ?  true:false;
 }
 
 ustime_t UST_interval(stamp_t beg, stamp_t end){

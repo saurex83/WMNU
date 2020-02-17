@@ -31,7 +31,7 @@ extern void DBG_CORE_FAULT(void);
 #endif
 
 #ifdef SIG_DEBUG
-  #define PIN1
+  #define PIN1 P1_0
   #define PIN2
   #define PIN3
   #define HIGH(pin) pin = 1
@@ -39,7 +39,7 @@ extern void DBG_CORE_FAULT(void);
   #define BLINK(pin) {pin = 1; pin = 0}
   #define SIG_ON(action, pin) action(pin)
 #else
-  #define PIN1
+  #define PIN1  
   #define PIN2
   #define PIN3
   #define HIGH(pin) {}

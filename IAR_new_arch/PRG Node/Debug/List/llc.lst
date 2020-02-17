@@ -1,0 +1,259 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               16/Feb/2020  21:04:30
+# Copyright 2004-2017 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for 8051
+#
+#    Core               =  plain
+#    Code model         =  banked
+#    Data model         =  large
+#    Calling convention =  xdata reentrant
+#    Constant location  =  data
+#    Dptr setup         =  1,16
+#                          
+#    Source file        =  E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\llc.c
+#    Command line       =  
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW608F.tmp
+#        (E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\llc.c -lc
+#        "E:\WMNU\IAR_new_arch\PRG Node\Debug\List" -o
+#        "E:\WMNU\IAR_new_arch\PRG Node\Debug\Obj" -e --debug --core=plain
+#        --dptr=16,1 --data_model=large --code_model=banked
+#        --calling_convention=xdata_reentrant --place_constants=data
+#        --nr_virtual_regs 8 --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.0\8051\LIB\DLIB\dl8051Normal.h"
+#        --no_path_in_file_macros -I E:\WMNU\IAR_new_arch\Stack_core_src\ -On
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_cross_call)
+#    Locale             =  Russian_Russia.1251
+#    List file          =  E:\WMNU\IAR_new_arch\PRG Node\Debug\List\llc.lst
+#    Object file        =  E:\WMNU\IAR_new_arch\PRG Node\Debug\Obj\llc.r51
+#
+###############################################################################
+
+E:\WMNU\IAR_NEW_ARCH\STACK_CORE_SRC\llc.c
+      1          #include "action_manager.h"
+      2          #include "buffer.h"
+      3          #include "stddef.h"
+      4          #include "macros.h"
+      5          #include "model.h"
+      6          #include "debug.h"
+      7          #include "radio.h"
+      8          
+      9          #define MAX_SLOTS 50
+     10          
+     11          static void SW_Init(void);
+     12          static void Cold_Start(void);
+     13          static void Hot_Start(void);
+     14          
+     15          module_s LLC_MODULE = {ALIAS(SW_Init), ALIAS(Cold_Start), 
+     16            ALIAS(Hot_Start)};
+     17          
+     18          static channel_t OPENSLOTS[MAX_SLOTS];
+     19          
+     20          static void SW_Init(void){
+     21            for_each_type(channel_t, OPENSLOTS, slot)
+     22              *slot = 0;
+     23          };
+     24          
+     25          void LLC_open_slot(timeslot_t ts, channel_t ch){
+     26            ASSERT(ts > 1 && ts < MAX_SLOTS);
+     27            ASSERT(ch >= MIN_CH && ch <= MAX_CH);
+     28            OPENSLOTS[ts] = ch;
+     29          }
+     30          
+     31          void LLC_close_slot(timeslot_t ts){
+     32            ASSERT(ts > 1 && ts < MAX_SLOTS);
+     33            OPENSLOTS[ts] = 0;
+     34          }
+     35          
+     36          static void scheduler_tx(void){
+     37            void *cursor = BF_cursor_tx();
+     38            if (!cursor)
+     39              return;
+     40            
+     41            struct frame *frame = NULL;
+     42            while(!cursor){
+     43              frame = BF_content(cursor);
+     44              ASSERT(frame->meta.TS != 0);
+     45              TM_SetAlarm(frame->meta.TS, 1);  
+     46              cursor = BF_cursor_next(cursor);
+     47            }
+     48          }
+     49          
+     50          static void scheduler_rx(void){
+     51            ASSERT(OPENSLOTS[0] == 0);
+     52            for (char i = 1; i < MAX_SLOTS; i++)
+     53              if (OPENSLOTS[i])
+     54                TM_SetAlarm(i, 1);
+     55              else
+     56                TM_ClrAlarm(i, 1);
+     57          }
+     58          
+     59          static void Cold_Start(void){
+     60          // Планировщик планирует на один суперфрейм в начале ts0
+     61            if (MODEL.TM.timeslot != 0)
+     62              return;
+     63            
+     64            scheduler_tx();
+     65            scheduler_rx();
+     66          };
+     67          
+     68          static inline bool scan_tx_buffer_by_ts(struct frame *frame, timeslot_t ts){
+     69            frame = NULL;
+     70            void *cursor = BF_cursor_tx();
+     71            if (!cursor)
+     72              return false;
+     73            do{
+     74              frame = BF_content(cursor);
+     75              if (frame->meta.TS == 0)
+     76                HALT("Depricated slot 0");
+     77              if (frame->meta.TS == ts)
+     78                return true;
+     79              cursor = BF_cursor_next(cursor);
+     80            } while(cursor);
+     81            return false;
+     82          }
+     83          
+     84          static void receive(void){
+     85            // MAC получить
+     86            // OPENSLOTS содержит номер канала.0 - слот закрыт
+     87            struct frame *frame = NULL;
+     88            if (!BF_push_rx(frame))
+     89                HALT("BF_push_rx");
+     90          }
+     91          
+     92          static void transmite(void){
+     93            timeslot_t ts = MODEL.TM.timeslot;
+     94            struct frame *frame = NULL;
+     95            if (!scan_tx_buffer_by_ts(frame, ts))
+     96              return;
+     97            // MAC передать
+     98            // void TM_ClrAlarm(timeslot_t slot, alarm_t alarm);
+     99            // Нужно как то учитывать неудачных кол-во передач
+    100            // frame->tx_attempts
+    101          }
+    102          
+    103          static void Hot_Start(void){
+    104            timeslot_t ts = MODEL.TM.timeslot;
+    105            if (ts == 0)
+    106              return;
+    107            
+    108            if (OPENSLOTS[ts])
+    109              receive();
+    110            else 
+    111              transmite();
+    112          };
+
+   Maximum stack usage in bytes:
+
+   ISTACK XSTACK Function
+   ------ ------ --------
+      2      0   Cold_Start
+        2      0   -> scheduler_rx
+        2      0   -> scheduler_tx
+      0      9   Hot_Start
+        0      9   -> receive
+        0      9   -> transmite
+      0     16   LLC_close_slot
+        0     10   -> DBG_CORE_HALT
+        0     10   -> printf
+        0     16   -> printf
+      1     16   LLC_open_slot
+        0     10   -> DBG_CORE_HALT
+        0     10   -> printf
+        0     16   -> printf
+      2      0   SW_Init
+      0     25   receive
+        0     10   -> BF_push_rx
+        0     10   -> DBG_CORE_HALT
+        0     10   -> printf
+        0     16   -> printf
+      0     29   scan_tx_buffer_by_ts
+        0     14   -> BF_content
+        0     14   -> BF_cursor_next
+        0     14   -> BF_cursor_tx
+        0     14   -> DBG_CORE_HALT
+        0     14   -> printf
+        0     20   -> printf
+      0     16   scheduler_rx
+        0     10   -> DBG_CORE_HALT
+        0     10   -> TM_ClrAlarm
+        0     10   -> TM_SetAlarm
+        0     10   -> printf
+        0     16   -> printf
+      0     18   scheduler_tx
+        0     12   -> BF_content
+        0     12   -> BF_cursor_next
+        0     12   -> BF_cursor_tx
+        0     12   -> DBG_CORE_HALT
+        0     12   -> TM_SetAlarm
+        0     12   -> printf
+        0     18   -> printf
+      0     18   transmite
+        0      9   -> scan_tx_buffer_by_ts
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      13  ?<Constant "%s:%d:%s -> ">
+      11  ?<Constant "BF_push_rx">
+      18  ?<Constant "Depricated slot 0">
+      30  ?<Constant "\"OPENSLOTS[0] == 0\" F...">
+      41  ?<Constant "\"ch >= MIN_CH && ch <...">
+      32  ?<Constant "\"frame->meta.TS != 0\"...">
+      37  ?<Constant "\"ts > 1 && ts < MAX_S...">
+       6  ?<Constant "llc.c">
+      13  ?<Initializer for <Constant "%s:%d:%s -> ">>
+      11  ?<Initializer for <Constant "BF_push_rx">>
+      18  ?<Initializer for <Constant "Depricated slot 0
+      30  ?<Initializer for <Constant "\"OPENSLOTS[0] ==
+      41  ?<Initializer for <Constant "\"ch >= MIN_CH &&
+      32  ?<Initializer for <Constant "\"frame->meta.TS
+      37  ?<Initializer for <Constant "\"ts > 1 && ts <
+       6  ?<Initializer for <Constant "llc.c">>
+       8  ?<Initializer for LLC_MODULE>
+      14  ?<Initializer for __FUNCTION__>
+      15  ?<Initializer for __FUNCTION__>_1
+      13  ?<Initializer for __FUNCTION__>_2
+      13  ?<Initializer for __FUNCTION__>_3
+      21  ?<Initializer for __FUNCTION__>_4
+       8  ?<Initializer for __FUNCTION__>_5
+      23  Cold_Start
+       6  Cold_Start::?relay
+      43  Hot_Start
+       6  Hot_Start::?relay
+       8  LLC_MODULE
+      96  LLC_close_slot
+       6  LLC_close_slot::?relay
+     168  LLC_open_slot
+       6  LLC_open_slot::?relay
+      50  OPENSLOTS
+      34  SW_Init
+       6  SW_Init::?relay
+      78  receive
+       6  receive::?relay
+     167  scan_tx_buffer_by_ts
+       6  scan_tx_buffer_by_ts::?relay
+     115  scheduler_rx
+       6  scheduler_rx::?relay
+     161  scheduler_tx
+       6  scheduler_tx::?relay
+      29  transmite
+       6  transmite::?relay
+      84  -- Other
+
+ 
+ 914 bytes in segment BANKED_CODE
+  60 bytes in segment BANK_RELAYS
+ 280 bytes in segment XDATA_I
+ 280 bytes in segment XDATA_ID
+  50 bytes in segment XDATA_Z
+ 
+ 340 bytes of CODE     memory
+ 914 bytes of HUGECODE memory
+ 330 bytes of XDATA    memory
+
+Errors: none
+Warnings: none

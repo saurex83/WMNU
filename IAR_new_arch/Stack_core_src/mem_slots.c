@@ -48,6 +48,7 @@ void SW_Init(void){
 @detail 
 */
 char* SL_alloc(void){  
+  char *ret_ptr = NULL;
   ATOMIC_BLOCK_RESTORE{
     for_each_type(struct slot, SLOT_POOL, slot){
       if (!slot->property.taken){
@@ -56,11 +57,12 @@ char* SL_alloc(void){
         #ifdef FILL_SLOT_ZERO
           MEMSET(slot->buffer, 0, SLOT_BUFFER_SIZE);
         #endif
-        return slot->buffer;
+        ret_ptr = slot->buffer;
+        break;
       };
     };  
   };
-  return NULL;
+  return ret_ptr;
 };
 
 static bool _free(char *buff){

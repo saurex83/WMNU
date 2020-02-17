@@ -56,8 +56,7 @@ void TM_IRQ(nwtime_t time){
     return;
   }
   
-  ATOMIC_BLOCK_FORCEON{    
-    LOG_OFF("ALARM! %d", time); 
+  ATOMIC_BLOCK_RESTORE{     
     MODEL.TM.timeslot = NWTIME_TO_SLOT(time);
     MODEL.TM.time = time;
     scheulder_next_alarm(time);
@@ -67,6 +66,8 @@ void TM_IRQ(nwtime_t time){
 }
 
 static inline void mcu_sleep(void){
+  SLEEPCMD = 2; // Режим PM2
+  PCON = 1;
 }
 
 static inline void _clr_all(void){
@@ -81,21 +82,23 @@ static void init(void){
 }
 
 static void start_mode_1(void){
-  AM_SW_Init();
+  AM_IRQ_Init();
   init();
-  
+  LOG_ON("mcu sleep");
+//  EA = 1;
   while (true){
     mcu_sleep();
-    
-    if (MODEL.TM.MODE == 0)
-      return;
+    if (MODEL.TM.MODE == 0){
+      AT_enable(false);
+      break;
+    }
     
     AM_Callback();    
   }  
 }
 
 static void start_mode_2(void){
-  AM_SW_Init();
+  AM_IRQ_Init();
   init();
 }
 

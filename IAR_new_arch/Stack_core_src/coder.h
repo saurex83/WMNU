@@ -2,6 +2,7 @@
 #include "stdbool.h"
 #include "stdint.h"
 #include "ustimer.h"
+#include "global.h"
 
 #define AES_MODEL AES
 struct AES{

@@ -7,7 +7,8 @@
 
 #include "action_manager.h"
 static void SW_Init(void);
-module_s BF_MODULE = {ALIAS(SW_Init)};
+static void IRQ_Init(void);
+module_s BF_MODULE = {ALIAS(SW_Init),ALIAS(IRQ_Init)};
 
 struct node {
   struct frame *frame;
@@ -19,6 +20,8 @@ LIST_HEAD(TX_LIST_HEAD);
 LIST_HEAD(RX_LIST_HEAD);
 static int TX_BUFF_FRAME_COUNT;
 static int RX_BUFF_FRAME_COUNT;
+
+static void IRQ_Init(void){};
 
 static void SW_Init(void){
   TX_BUFF_FRAME_COUNT = 0;

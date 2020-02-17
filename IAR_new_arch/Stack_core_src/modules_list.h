@@ -14,6 +14,7 @@
   &BF_MODULE, &RADIO_MODULE, &SYNC_MODULE, &LLC_MODULE, \
   &MAC_MODULE}
 
+#define IRQ_MOD_DEF {&BF_MODULE}
 
 /* Обьявления всех модулей */
 extern module_s  AT_MODULE, FR_MODULE, RTC_MODULE, UST_MODULE,

@@ -1,9 +1,17 @@
+#include "radio.h"
 //C compiler options->extra options add  --no_path_in_file_macros
 
 #define DEBUG
 #define PRINT_TO_TERMINAL
 #define SIG_DEBUG
 
+#define DEFAULT_STREAM_KEY  {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}
+#define DEFAULT_STREAM_IV   {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}
+#define DEFAULT_CCM_KEY  {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}
+#define DEFAULT_CCM_IV   {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}
+
+#define DEFAULT_SYNC_CH CH28
+#define DEFAULT_SYS_CH CH11
 
 #define FRAME_FOOTER_DEL //!< FR_del_header заполняет пустое место нулями
 #define FILL_SLOT_ZERO //!< SL_alloc заполняет буфер нулями

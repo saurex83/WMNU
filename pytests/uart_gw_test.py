@@ -139,12 +139,13 @@ def energy__scan(UART_CONN):
 def main():
     UART_CONN = connector.Connector()
 
-    cmd_check.CmdChecker(UART_CONN)
-    exit (0)
-    energy__scan(UART_CONN)
-    exit(0)
+  #  cmd_check.CmdChecker(UART_CONN)
+ #   exit (0)
+  #  energy__scan(UART_CONN)
+ #   exit(0)
 
     transiver_control.TransiverStart(UART_CONN)
+    exit(0)
     while(True):
         neigh_test.test2(UART_CONN)
     exit(0)

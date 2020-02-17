@@ -1,0 +1,111 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               16/Feb/2020  21:04:30
+# Copyright 2004-2017 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for 8051
+#
+#    Core               =  plain
+#    Code model         =  banked
+#    Data model         =  large
+#    Calling convention =  xdata reentrant
+#    Constant location  =  data
+#    Dptr setup         =  1,16
+#                          
+#    Source file        =  E:\WMNU\IAR_NEW_ARCH\PRG Node\main.c
+#    Command line       =  
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW6227.tmp
+#        ("E:\WMNU\IAR_NEW_ARCH\PRG Node\main.c" -lc "E:\WMNU\IAR_new_arch\PRG
+#        Node\Debug\List" -o "E:\WMNU\IAR_new_arch\PRG Node\Debug\Obj" -e
+#        --debug --core=plain --dptr=16,1 --data_model=large
+#        --code_model=banked --calling_convention=xdata_reentrant
+#        --place_constants=data --nr_virtual_regs 8 --dlib_config "C:\Program
+#        Files (x86)\IAR Systems\Embedded Workbench
+#        8.0\8051\LIB\DLIB\dl8051Normal.h" --no_path_in_file_macros -I
+#        E:\WMNU\IAR_new_arch\Stack_core_src\ -On --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --no_cross_call)
+#    Locale             =  Russian_Russia.1251
+#    List file          =  E:\WMNU\IAR_new_arch\PRG Node\Debug\List\main.lst
+#    Object file        =  E:\WMNU\IAR_new_arch\PRG Node\Debug\Obj\main.r51
+#
+###############################################################################
+
+E:\WMNU\IAR_NEW_ARCH\PRG Node\main.c
+      1          #include "action_manager.h"
+      2          #include "time_manager.h"
+      3          #include "debug.h"
+      4          #include "model.h"
+      5          #include "sync.h"
+      6          
+      7          static void pre_init(void){
+      8            AM_HW_Init();
+      9            LOG_ON("Hardware inited");
+     10            MODEL.SYNC.mode = 1;
+     11            MODEL.TM.MODE = 1;
+     12          }
+     13          
+     14          void main(void){
+     15            pre_init();
+     16            MODEL.TM.MODE = 1;
+     17            LOG_ON("Node started");
+     18            
+     19            while (1){
+     20              while (!network_sync(1000000U));
+     21              LOG_ON("Synced");
+     22              Neocore_start();
+     23            }
+     24          };
+
+   Maximum stack usage in bytes:
+
+   XSTACK Function
+   ------ --------
+      6   main
+        0   -> Neocore_start
+        0   -> network_sync
+        0   -> pre_init
+        0   -> printf
+        6   -> printf
+     16   pre_init
+       10   -> AM_HW_Init
+       10   -> printf
+       16   -> printf
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      13  ?<Constant "%s:%d:%s -> ">
+      16  ?<Constant "Hardware inited">
+      13  ?<Constant "Node started">
+       7  ?<Constant "Synced">
+       3  ?<Constant "\r\n">
+       7  ?<Constant "main.c">
+      13  ?<Initializer for <Constant "%s:%d:%s -> ">>
+      16  ?<Initializer for <Constant "Hardware inited">
+      13  ?<Initializer for <Constant "Node started">>
+       7  ?<Initializer for <Constant "Synced">>
+       3  ?<Initializer for <Constant "\r\n">>
+       7  ?<Initializer for <Constant "main.c">>
+       4  ?<Initializer for __Constant_f4240>
+       9  ?<Initializer for __FUNCTION__>
+       5  ?<Initializer for __FUNCTION__>_1
+       4  __Constant_f4240
+     143  main
+       6  main::?relay
+      84  pre_init
+       6  pre_init::?relay
+      14  -- Other
+
+ 
+ 227 bytes in segment BANKED_CODE
+  12 bytes in segment BANK_RELAYS
+  77 bytes in segment XDATA_I
+  77 bytes in segment XDATA_ID
+ 
+  85 bytes of CODE     memory (+ 4 bytes shared)
+ 227 bytes of HUGECODE memory
+  73 bytes of XDATA    memory (+ 4 bytes shared)
+
+Errors: none
+Warnings: none

@@ -1,0 +1,100 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V10.10.1.4655 for 8051               16/Feb/2020  21:04:30
+# Copyright 2004-2017 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for 8051
+#
+#    Core               =  plain
+#    Code model         =  banked
+#    Data model         =  large
+#    Calling convention =  xdata reentrant
+#    Constant location  =  data
+#    Dptr setup         =  1,16
+#                          
+#    Source file        =  E:\WMNU\IAR_new_arch\Stack_core_src\mac.c
+#    Command line       =  
+#        -f C:\Users\08A4~1\AppData\Local\Temp\EW619A.tmp
+#        (E:\WMNU\IAR_new_arch\Stack_core_src\mac.c -lc
+#        "E:\WMNU\IAR_new_arch\PRG Node\Debug\List" -o
+#        "E:\WMNU\IAR_new_arch\PRG Node\Debug\Obj" -e --debug --core=plain
+#        --dptr=16,1 --data_model=large --code_model=banked
+#        --calling_convention=xdata_reentrant --place_constants=data
+#        --nr_virtual_regs 8 --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.0\8051\LIB\DLIB\dl8051Normal.h"
+#        --no_path_in_file_macros -I E:\WMNU\IAR_new_arch\Stack_core_src\ -On
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_cross_call)
+#    Locale             =  Russian_Russia.1251
+#    List file          =  E:\WMNU\IAR_new_arch\PRG Node\Debug\List\mac.lst
+#    Object file        =  E:\WMNU\IAR_new_arch\PRG Node\Debug\Obj\mac.r51
+#
+###############################################################################
+
+E:\WMNU\IAR_new_arch\Stack_core_src\mac.c
+      1          #include "action_manager.h"
+      2          #include "frame.h"
+      3          #include "coder.h"
+      4          
+      5          static void SW_Init(void);
+      6          
+      7          
+      8          module_s MAC_MODULE = {ALIAS(SW_Init)};
+      9          
+     10          struct ack{ // Формат структуры пакета ACK
+     11            char CRC8;
+     12          } __attribute__((packed));
+     13          
+     14          static void SW_Init(void){};
+     15          
+     16          void MAC_Send(){
+     17          }
+     18          
+     19          void MAC_Receive(){
+     20          }
+     21          
+     22          static char xor_calc(struct frame *fr){
+                             ^
+Warning[Pe177]: function "xor_calc" was declared but never referenced
+     23            char crc = 0x34; // Начальное значение
+     24            char *val = fr->payload;
+     25            for (char i = 0; i < fr->len; i++)
+     26              crc ^= val[i];
+     27            return crc;
+     28          }
+     29          // AES_StreamCoder(false, src, src, KEY, IV, size); BitRawDecrypt
+     30          // AES_StreamCoder(true, src, src, KEY, IV, size);
+
+   Maximum stack usage in bytes:
+
+   ISTACK Function
+   ------ --------
+      0   MAC_Receive
+      0   MAC_Send
+      0   SW_Init
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       8  ?<Initializer for MAC_MODULE>
+       8  MAC_MODULE
+       3  MAC_Receive
+       6  MAC_Receive::?relay
+       3  MAC_Send
+       6  MAC_Send::?relay
+       3  SW_Init
+       6  SW_Init::?relay
+
+ 
+  9 bytes in segment BANKED_CODE
+ 18 bytes in segment BANK_RELAYS
+  8 bytes in segment XDATA_I
+  8 bytes in segment XDATA_ID
+ 
+ 26 bytes of CODE     memory
+  9 bytes of HUGECODE memory
+  8 bytes of XDATA    memory
+
+Errors: none
+Warnings: 1

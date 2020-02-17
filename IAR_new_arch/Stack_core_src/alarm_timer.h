@@ -9,6 +9,8 @@ struct AT{
   int a;
 };
 
+#define NWTIME_TICK_US       31 //30.517578125    
+#define NWTIME_TO_US(nwtick) ((nwtick)*NWTIME_TICK_US)
 
 typedef unsigned int nwtime_t;
 
